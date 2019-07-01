@@ -1,0 +1,11 @@
+#include "TROOT.h"
+#include "TString.h"
+
+void loadAllAnalyses()
+{
+
+  gROOT->ProcessLine(".L DTNtupleBaseAnalyzer.C++");
+  gROOT->ProcessLine(".L DTNtupleDigiAnalyzer.C++");
+  gROOT->ProcessLine(".L DTNtupleTPGAnalyzer.C++");
+
+}
