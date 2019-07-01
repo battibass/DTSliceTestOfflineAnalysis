@@ -19,4 +19,6 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
   auto triggerAnalysis = DTNtupleTPGAnalyzer(inputFile, runName + "/trigger/results_trigger.root");
   triggerAnalysis.Loop();
 
+  gSystem->Exec("rm *d *pcm *so");
+
 }
