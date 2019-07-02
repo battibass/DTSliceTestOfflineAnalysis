@@ -21,5 +21,5 @@ root [2] runAllAnalyses("/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_
 ### Publishing the plots:
 ```
 . plotAndPublish.sh run328798/
-# Type the dtdqm@lcplus ssh password to publish a directory
+# Type the dtdqm@lxplus ssh password to publish a directory
 ```
