@@ -4,10 +4,9 @@
 # Configuration parameters
 ##########################
 
-RUN_FOLDER="./run329614"
-
 UTILS_FOLDER="./plotAndPublish/"
-PUBLUSH_FOLDER="/eos/user/b/battilan/www/DTDPG/proveSliceTest/"
+# PUBLUSH_FOLDER="/eos/user/b/battilan/www/DTDPG/proveSliceTest/"
+PUBLUSH_FOLDER="/afs/cern.ch/cms/MUON/dt/sx5/Results/ProveSliceTest"
 
 PLOTTER_CFGS=("configDigi.json" "configTrigger.json")
 PLOTTER_ROOTS=("results_digi.root" "results_trigger.root")
@@ -23,7 +22,12 @@ INDEX_FILE="index.php"
 # Commands
 ##########################
 
-cmsenv
+if [ "$#" -ne 1 ]; then
+    echo "Usage : $0 PATH_TO_RUN_RESULTS_FILE"
+    exit 999
+fi
+
+RUN_FOLDER=$1
 
 for index in ${!PLOTTER_CFGS[*]}
 do :
@@ -32,8 +36,4 @@ done
 
 python $UTILS_FOLDER/$PUBLISH_CMD $RUN_FOLDER $UTILS_FOLDER/$INDEX_FILE
 
-scp -r $RUN_FOLDER battilan@lxplus:$PUBLUSH_FOLDER
-
-
-
-
+scp -r $RUN_FOLDER dtdqm@lxplus:$PUBLUSH_FOLDER
