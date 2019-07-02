@@ -87,7 +87,7 @@ void DTNtupleDigiAnalyzer::book()
 		  
 		  string layerTag = layerTagS.str();
 		  
-		  int nBins = typeTag == "Ph2" ? 6000 : 6400;
+		  int nBins = typeTag == "Ph2" ? 1200 : 1280;
 
 		  m_plots[("hTimeBox" + layerTag).c_str()] = new TH1F(("hTimeBox" + layerTag).c_str(),
 								     "Digi time box; time (ns); entries",
