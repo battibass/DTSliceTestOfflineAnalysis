@@ -2,7 +2,7 @@
 #include "TString.h"
 
 #include "DTNtupleDigiAnalyzer.h"
-#include "DTNtupleTPGAnalyzer.h"
+#include "DTNtupleTriggerAnalyzer.h"
 
 void runAllAnalyses(TString inputFile, Int_t runNumber)
 {
@@ -16,7 +16,7 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
   auto digiAnalysis = DTNtupleDigiAnalyzer(inputFile, runName + "/digi/results_digi.root");
   digiAnalysis.Loop();
 
-  auto triggerAnalysis = DTNtupleTPGAnalyzer(inputFile, runName + "/trigger/results_trigger.root");
+  auto triggerAnalysis = DTNtupleTriggerAnalyzer(inputFile, runName + "/trigger/results_trigger.root");
   triggerAnalysis.Loop();
 
   gSystem->Exec("rm *d *pcm *so");

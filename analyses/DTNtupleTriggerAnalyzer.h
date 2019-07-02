@@ -1,5 +1,5 @@
-#ifndef DTNtupleTPGAnalyzer_h
-#define DTNtupleTPGAnalyzer_h
+#ifndef DTNtupleTriggerAnalyzer_h
+#define DTNtupleTriggerAnalyzer_h
 
 #include "DTNtupleBaseAnalyzer.h"
 
@@ -19,16 +19,16 @@
 #include <sstream>
 #include <map>
 
-class DTNtupleTPGAnalyzer : public DTNtupleBaseAnalyzer 
+class DTNtupleTriggerAnalyzer : public DTNtupleBaseAnalyzer 
 {
 
  public:
   
-  DTNtupleTPGAnalyzer( const TString & inFileName,
-		       const TString & outFileName
-		       );
+  DTNtupleTriggerAnalyzer( const TString & inFileName,
+			   const TString & outFileName
+			   );
 
-  ~DTNtupleTPGAnalyzer();
+  ~DTNtupleTriggerAnalyzer();
   
   void virtual Loop() override;
 

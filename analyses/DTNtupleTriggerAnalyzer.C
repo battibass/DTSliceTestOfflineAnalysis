@@ -1,7 +1,7 @@
-#include "DTNtupleTPGAnalyzer.h"
+#include "DTNtupleTriggerAnalyzer.h"
 
-DTNtupleTPGAnalyzer::DTNtupleTPGAnalyzer(const TString & inFileName,
-					 const TString & outFileName) :
+DTNtupleTriggerAnalyzer::DTNtupleTriggerAnalyzer(const TString & inFileName,
+						 const TString & outFileName) :
   m_outFile(outFileName,"RECREATE"), DTNtupleBaseAnalyzer(inFileName)  
 { 
 
@@ -15,13 +15,13 @@ DTNtupleTPGAnalyzer::DTNtupleTPGAnalyzer(const TString & inFileName,
 
 }
 
-DTNtupleTPGAnalyzer::~DTNtupleTPGAnalyzer() 
+DTNtupleTriggerAnalyzer::~DTNtupleTriggerAnalyzer() 
 { 
 
 }
 
 
-void DTNtupleTPGAnalyzer::Loop()
+void DTNtupleTriggerAnalyzer::Loop()
 {
 
 
@@ -40,7 +40,7 @@ void DTNtupleTPGAnalyzer::Loop()
       nb = fChain->GetEvent(jentry);   nbytes += nb;
 
       if(jentry % 100 == 0) 
-	std::cout << "[DTNtupleTPGAnalyzer::Loop] processed : " 
+	std::cout << "[DTNtupleTriggerAnalyzer::Loop] processed : " 
 		  << jentry << " entries\r" << std::flush;
 
       if(jentry >500000) break;  // set maximum number of processed events
@@ -54,7 +54,7 @@ void DTNtupleTPGAnalyzer::Loop()
 
 }
 
-void DTNtupleTPGAnalyzer::book()
+void DTNtupleTriggerAnalyzer::book()
 {
 
   m_outFile.cd();
@@ -391,7 +391,7 @@ void DTNtupleTPGAnalyzer::book()
 				   "Phase2Hw t0;Phase2Hw t0;#entries/Phase2Hw t0",
 				   100,0.,90000.); 
 
-	hName = "Phase2Hw_BX_vs_quality" + iChTag.str();   // Phase2Hw BX vs quality distribution 
+	hName = "Phase2Hw_BX_vs_quality_" + iChTag.str();   // Phase2Hw BX vs quality distribution 
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "Phase2Hw BX vs quality;Phase2Hw quality;Phase2Hw BX",
 				   11, -0.5,10.5,21,-10.5,10.5); 
@@ -659,7 +659,7 @@ void DTNtupleTPGAnalyzer::book()
     }
 }
 
-void DTNtupleTPGAnalyzer::fill()
+void DTNtupleTriggerAnalyzer::fill()
 {
 
   Int_t iWh = 2;
@@ -672,8 +672,6 @@ void DTNtupleTPGAnalyzer::fill()
   
   Double_t phi_Ph1_conv = 0.5/2048.;  // conversion from trig phi to phi in rad in Phase1
   Double_t phiB_Ph1_conv = 1./512.;  // conversion from trig phiB to phiB in rad in Phase1
-
-
   
   // Double_t phi_Ph2_conv = 0.8/65536.;  // conversion from trig phi to phi in rad in Phase2
   // Double_t phiB_Ph2_conv = 1.4/2048.;  // conversion from trig phiB to phiB in rad in Phase2
@@ -682,14 +680,9 @@ void DTNtupleTPGAnalyzer::fill()
   Double_t phiB_Ph2_conv = 1/4096.; // to transform in radians
 
   Int_t BXOK_TwinMuxOut = 0;
-  Int_t BXOK_ph2Hw = 0;  // -269
+  Int_t BXOK_ph2Hw = -269;  // -269
   Int_t BXOK_ph2EmuHb = 0; // to be properly set
   Int_t BXOK_ph2EmuAm = 0; // to be properly set
-
-
-  // for (std::size_t iDigi = 0; iDigi < digi_nDigis; ++iDigi) {
-  //   m_plots["hTimeBox"]->Fill(digi_time->at(iDigi));   
-  // }
 
   // ============================================================================
   //  find the "best" tdc segments (according to number of hits) 
@@ -962,7 +955,7 @@ void DTNtupleTPGAnalyzer::fill()
 	  std::stringstream iChTag;    
 	  iChTag << "MB" << ph2TpgPhiHw_station->at(itr);  
 	  std::string hName = "Phase2Hw_BX_" + iChTag.str();    // BX
-	  m_plots[hName]->Fill(ph2TpgPhiHw_BX->at(itr));
+	  m_plots[hName]->Fill(ph2TpgPhiHw_BX->at(itr) - BXOK_ph2Hw);
 
 
 	  hName = "Phase2Hw_quality_" + iChTag.str();    // quality
@@ -980,8 +973,8 @@ void DTNtupleTPGAnalyzer::fill()
 	  hName = "Phase2Hw_t0_" + iChTag.str();    // t0
 	  m_plots[hName]->Fill(ph2TpgPhiHw_t0->at(itr));
 
-	  hName = "Phase2Hw_BX_vs_quality" + iChTag.str();   // Phase2Hw BX vs quality distribution 
-	  m_plots[hName]->Fill(ph2TpgPhiHw_quality->at(itr),ph2TpgPhiHw_BX->at(itr));
+	  hName = "Phase2Hw_BX_vs_quality_" + iChTag.str();   // Phase2Hw BX vs quality distribution 
+	  m_plots[hName]->Fill(ph2TpgPhiHw_quality->at(itr),ph2TpgPhiHw_BX->at(itr) - BXOK_ph2Hw);
       
   
 	  if(ph2TpgPhiHw_BX->at(itr)==BXOK_ph2Hw)  {  // -------- when BXOK 
@@ -1193,7 +1186,7 @@ void DTNtupleTPGAnalyzer::fill()
   }
 }
 
-void DTNtupleTPGAnalyzer::endJob()
+void DTNtupleTriggerAnalyzer::endJob()
 {
     
   m_outFile.cd();
@@ -1205,7 +1198,7 @@ void DTNtupleTPGAnalyzer::endJob()
   
 // -----------------------------------
 
-UInt_t DTNtupleTPGAnalyzer::getBestSegm(const Int_t stMu,
+UInt_t DTNtupleTriggerAnalyzer::getBestSegm(const Int_t stMu,
 					    const Int_t secMu,
 					    const Int_t whMu
 					    )
@@ -1240,10 +1233,10 @@ UInt_t DTNtupleTPGAnalyzer::getBestSegm(const Int_t stMu,
 
 // ----------------
 
-UInt_t DTNtupleTPGAnalyzer::getBestTwinMuxOut(const Int_t stMu,
-					      const Int_t secMu,
-					      const Int_t whMu
-					      )
+UInt_t DTNtupleTriggerAnalyzer::getBestTwinMuxOut(const Int_t stMu,
+						  const Int_t secMu,
+						  const Int_t whMu
+						  )
 {
     
   UInt_t ibestTwinMuxOut   = 9999;
@@ -1280,10 +1273,10 @@ UInt_t DTNtupleTPGAnalyzer::getBestTwinMuxOut(const Int_t stMu,
 }
 // ----------------
 
-UInt_t DTNtupleTPGAnalyzer::getBestTwinMuxOutBXOK(const Int_t stMu,
-						  const Int_t secMu,
-						  const Int_t whMu
-						  )
+UInt_t DTNtupleTriggerAnalyzer::getBestTwinMuxOutBXOK(const Int_t stMu,
+						      const Int_t secMu,
+						      const Int_t whMu
+						      )
 {
     
   UInt_t ibestTwinMuxOut   = 9999;
@@ -1321,10 +1314,10 @@ UInt_t DTNtupleTPGAnalyzer::getBestTwinMuxOutBXOK(const Int_t stMu,
 
 // ----------------
 
-UInt_t DTNtupleTPGAnalyzer::getBestTpgPhiHw(const Int_t stMu,
-					    const Int_t secMu,
-					    const Int_t whMu
-					    )
+UInt_t DTNtupleTriggerAnalyzer::getBestTpgPhiHw(const Int_t stMu,
+						const Int_t secMu,
+						const Int_t whMu
+						)
 {
     
   UInt_t ibestTpgPhiHw   = 9999;
@@ -1362,10 +1355,10 @@ UInt_t DTNtupleTPGAnalyzer::getBestTpgPhiHw(const Int_t stMu,
 
 // --------------------
 
-UInt_t DTNtupleTPGAnalyzer::getBestTpgPhiHwBXOK(const Int_t stMu,
-						const Int_t secMu,
-						const Int_t whMu
-						)
+UInt_t DTNtupleTriggerAnalyzer::getBestTpgPhiHwBXOK(const Int_t stMu,
+						    const Int_t secMu,
+						    const Int_t whMu
+						    )
 {
     
   UInt_t ibestTpgPhiHw   = 9999;
@@ -1403,10 +1396,10 @@ UInt_t DTNtupleTPGAnalyzer::getBestTpgPhiHwBXOK(const Int_t stMu,
 
 // --------------------
 
-UInt_t DTNtupleTPGAnalyzer::getBestTpgPhiEmuAm(const Int_t stMu,
-					       const Int_t secMu,
-					       const Int_t whMu
-					       )
+UInt_t DTNtupleTriggerAnalyzer::getBestTpgPhiEmuAm(const Int_t stMu,
+						   const Int_t secMu,
+						   const Int_t whMu
+						   )
 {
     
   UInt_t ibestTpgPhiEmuAm   = 9999;
@@ -1444,10 +1437,10 @@ UInt_t DTNtupleTPGAnalyzer::getBestTpgPhiEmuAm(const Int_t stMu,
 
 // --------------------
 
-UInt_t DTNtupleTPGAnalyzer::getBestTpgPhiEmuAmBXOK(const Int_t stMu,
-						   const Int_t secMu,
-						   const Int_t whMu
-						   )
+UInt_t DTNtupleTriggerAnalyzer::getBestTpgPhiEmuAmBXOK(const Int_t stMu,
+						       const Int_t secMu,
+						       const Int_t whMu
+						       )
 {
     
   UInt_t ibestTpgPhiEmuAm   = 9999;
@@ -1485,10 +1478,10 @@ UInt_t DTNtupleTPGAnalyzer::getBestTpgPhiEmuAmBXOK(const Int_t stMu,
 
 // --------------------
 
-UInt_t DTNtupleTPGAnalyzer::getBestTpgPhiEmuHb(const Int_t stMu,
-					       const Int_t secMu,
-					       const Int_t whMu
-					       )
+UInt_t DTNtupleTriggerAnalyzer::getBestTpgPhiEmuHb(const Int_t stMu,
+						   const Int_t secMu,
+						   const Int_t whMu
+						   )
 {
     
   UInt_t ibestTpgPhiEmuHb   = 9999;
