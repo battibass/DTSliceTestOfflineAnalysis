@@ -6,11 +6,12 @@
 
 UTILS_FOLDER="./plotAndPublish/"
 # PUBLUSH_FOLDER="/eos/user/b/battilan/www/DTDPG/proveSliceTest/"
-PUBLUSH_FOLDER="/afs/cern.ch/cms/MUON/dt/sx5/Results/ProveSliceTest"
+#PUBLUSH_FOLDER="/afs/cern.ch/cms/MUON/dt/sx5/Results/ProveSliceTest"
+PUBLUSH_FOLDER="/afs/cern.ch/user/g/gpinnaan/www/DTslice/ProveSliceTest"
 
-PLOTTER_CFGS=("configDigi.json" "configTrigger.json")
-PLOTTER_ROOTS=("results_digi.root" "results_trigger.root")
-PLOTTER_FOLDERS=("digi/" "trigger/")
+PLOTTER_CFGS=("configDigi.json" "configTrigger.json" "configSegment.json")
+PLOTTER_ROOTS=("results_digi.root" "results_trigger.root" "results_segment.root")
+PLOTTER_FOLDERS=("digi/" "trigger/" "segment/")
 
 PLOTTER_CMD="plotter.py"
 PUBLISH_CMD="publishDir.py"
@@ -36,4 +37,5 @@ done
 
 python $UTILS_FOLDER/$PUBLISH_CMD $RUN_FOLDER $UTILS_FOLDER/$INDEX_FILE
 
-scp -r $RUN_FOLDER dtdqm@lxplus:$PUBLUSH_FOLDER
+#scp -r $RUN_FOLDER dtdqm@lxplus:$PUBLUSH_FOLDER
+cp -r $RUN_FOLDER $PUBLUSH_FOLDER
