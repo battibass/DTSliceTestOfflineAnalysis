@@ -1,9 +1,11 @@
 # DTSliceTestOfflineAnalysis
-Package collecting the offline analysis program for the DT slice-test
+Package collecting the offline analysis programs for the DT slice-test
 
 ## Downloading the package and setting up the environment:
 ```
 git clone https://github.com/battibass/DTSliceTestOfflineAnalysis.git
+
+cd DTSliceTestOfflineAnalysis
 
 # For BASH:
 . configForSlcieTestAnalysis.sh
@@ -36,8 +38,8 @@ cmsRun DumpDBToFile_cfg.py
 
 # Edit the txt:
 # - You can use an existing ntuple to get tTrig values
-#   in the ntuple, look either at the segment t0 or at 
-#   the rising edge of the phase-1 timeboxes.
+#   from it, look either at the segment t0 or at the 
+#   rising edge of the phase-1 timeboxes.
 # - Once ready open the txt file and look for "2 2 12"
 #   (these are wheel station sector), then edit the 
 #   7th column (it corresponds to tTrigs) for all 3 
@@ -51,6 +53,9 @@ cmsRun DumpFileToDB_cfg.py
 # Run ntuple production using the new tTrigs:
 cd ..
 cmsRun dtDpgNtuples_slicetest_cfg.py inputFile=/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/root/run329614_streamDQM_fu-c2f13-09-03.root ntupleName=./DTDPGNtuple_run329614.root tTrigFile=calib/TTrigDB_cosmics_ttrig.db 
+
+# If OK, copy again the file to the DT EOS area:
+cp DTDPGNtuple_run329614.root /eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/ntuples/
 ```
 
 ## Running ntuple analysis and publishing in a webpage:
