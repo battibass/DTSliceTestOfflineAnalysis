@@ -83,11 +83,34 @@ class DTNtupleTriggerAnalyzer : public DTNtupleBaseAnalyzer
   
   // Boolean variables to switch on/off parts of the code for the analysis
   
-  Bool_t m_twinMux = true;   
-  Bool_t m_ph2TpgPhiHw = true;
-  Bool_t m_ph2TpgPhiEmuAm = true;
-  Bool_t m_ph2TpgPhiEmuHb = false;
-  Bool_t m_segments = true;
+  Bool_t m_twinMux;   
+  Bool_t m_ph2TpgPhiHw;
+  Bool_t m_ph2TpgPhiEmuAm;
+  Bool_t m_ph2TpgPhiEmuHb;
+  Bool_t m_segments;
+
+  // definition of other variables hat are not changed in the analysis
+
+  Int_t iWh;
+  Int_t iSec;
+  Int_t iPhihits_min;
+
+
+  Double_t pi;
+  
+  Double_t phi_Ph1_conv;  // conversion from trig phi to phi in rad in Phase1
+  Double_t phiB_Ph1_conv;  // conversion from trig phiB to phiB in rad in Phase1
+ 
+
+  Double_t phi_Ph2_conv; // in cm, local position in the station
+  Double_t phiB_Ph2_conv; // to transform in radians
+
+  Int_t BXOK_TwinMuxOut;
+  Int_t BXOK_ph2Hw;  // -269
+  Int_t BXOK_ph2EmuHb; // to be properly set
+  Int_t BXOK_ph2EmuAm; // to be properly set
+
+  Long64_t nMaxEvents;
   
   std::map<std::string, TH1*> m_plots;
   std::map<std::string, TEfficiency*> m_effs; 

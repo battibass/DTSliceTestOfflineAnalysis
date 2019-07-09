@@ -13,6 +13,25 @@ DTNtupleTriggerAnalyzer::DTNtupleTriggerAnalyzer(const TString & inFileName,
   m_ph2TpgPhiEmuHb = false;
   m_segments = false;
 
+  nMaxEvents = 999999; // maximum number of events to be processed
+
+  iWh = 2;
+  iSec = 12;
+  iPhihits_min = 4;
+
+  phi_Ph1_conv = 0.5/2048.;  // conversion from trig phi to phi in rad in Phase1
+  phiB_Ph1_conv = 1./512.;  // conversion from trig phiB to phiB in rad in Phase1
+
+  phi_Ph2_conv = 0.025; // in cm, local position in the station 
+  phiB_Ph2_conv = 1/4096.; // to transform in radians
+
+  BXOK_TwinMuxOut = 0;
+  BXOK_ph2Hw = 3295; // From ntuple based on run 329705
+  BXOK_ph2EmuHb = 0; // to be properly set
+  BXOK_ph2EmuAm = 0; // to be properly set
+
+  pi=TMath::Pi();
+
 }
 
 DTNtupleTriggerAnalyzer::~DTNtupleTriggerAnalyzer() 
@@ -43,7 +62,7 @@ void DTNtupleTriggerAnalyzer::Loop()
 	std::cout << "[DTNtupleTriggerAnalyzer::Loop] processed : " 
 		  << jentry << " entries\r" << std::flush;
 
-      if(jentry >500000) break;  // set maximum number of processed events
+      if(jentry >nMaxEvents) break;  // set maximum number of processed events
 
       fill();
 
@@ -662,34 +681,18 @@ void DTNtupleTriggerAnalyzer::book()
 void DTNtupleTriggerAnalyzer::fill()
 {
 
-  Int_t iWh = 2;
-  Int_t iSec = 12;
-  Int_t iPhihits_min = 4;
+
   float_t tan_phi;
   float_t  philoc;
 
-  Double_t pi=TMath::Pi();
-  
-  Double_t phi_Ph1_conv = 0.5/2048.;  // conversion from trig phi to phi in rad in Phase1
-  Double_t phiB_Ph1_conv = 1./512.;  // conversion from trig phiB to phiB in rad in Phase1
-  
-  // Double_t phi_Ph2_conv = 0.8/65536.;  // conversion from trig phi to phi in rad in Phase2
-  // Double_t phiB_Ph2_conv = 1.4/2048.;  // conversion from trig phiB to phiB in rad in Phase2
-
-  Double_t phi_Ph2_conv = 0.025; // in cm, local position in the station
-  Double_t phiB_Ph2_conv = 1/4096.; // to transform in radians
-
-  Int_t BXOK_TwinMuxOut = 0;
-  Int_t BXOK_ph2Hw = -269;  // -269
-  Int_t BXOK_ph2EmuHb = 0; // to be properly set
-  Int_t BXOK_ph2EmuAm = 0; // to be properly set
 
   // ============================================================================
   //  find the "best" tdc segments (according to number of hits) 
   //  and the "best" primitives (based on quality) for each algorithm, for the four stations of Sector 12
   // ============================================================================
 
-  UInt_t iBestSeg[4];  // from 0 to 3!
+
+  UInt_t iBestSeg[4];  //******  All from 0 to 3!
   UInt_t iBestTwinMuxOut[4];
   UInt_t iBestTwinMuxOutBXOK[4];
   UInt_t iBestTpgPhiHw[4];
@@ -697,9 +700,6 @@ void DTNtupleTriggerAnalyzer::fill()
   UInt_t iBestTpgPhiEmuAm[4];
   UInt_t iBestTpgPhiEmuAmBXOK[4];
   UInt_t iBestTpgPhiEmuHb[4];
-
- 
-
 
   
   for(Int_t iMB=1; iMB<5; ++iMB) {  // 
@@ -717,9 +717,6 @@ void DTNtupleTriggerAnalyzer::fill()
   //   efficiency and correlations btw segment and primitive
   // =========================================================
 
-
-  
- 
 
   for(Int_t iMB=1; iMB<5; ++iMB) {   
 
