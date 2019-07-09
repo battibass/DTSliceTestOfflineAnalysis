@@ -40,6 +40,7 @@ void DTNtupleSegmentAnalyzer::Loop()
      
     }
 
+  std::cout << std::endl; 
   endJob();
 
 }
@@ -66,10 +67,25 @@ void DTNtupleSegmentAnalyzer::book()
 				    "# hits;# hits; entries",
 				    12,1,13);  
 
-      m_plots[Form("hPhiProbChi2_st%d",st)]    = new TH1F(Form("hPhiProbChi2_st%d",st), Form("Segment #phi prob(#chi^2) st%d; prob(#chi^2); entries",st), 200,0.,1.); 
-      m_plots[Form("hThetaProbChi2_st%d",st)]  = new TH1F(Form("hThetaProbChi2_st%d",st), Form("Segment #theta Prob. #chi^2 st%d; prob(#chi^2); entries",st), 200,0.,1.); 
-      m_plots[Form("hPhiChi2_st%d",st)]        = new TH1F(Form("hPhiChi2_st%d",st), Form("Segment #phi #chi^2 st%d;  #chi^2/ndof; entries",st), 200,0.,200.);
-      m_plots[Form("hThetaChi2_st%d",st)]      = new TH1F(Form("hThetaChi2_st%d",st), Form("Segment #theta #chi^2 st%d; #chi^2/ndof; entries",st), 200,0.,200.);
+      m_plots[Form("hT0_st%d",st)] = new TH1F(Form("hT0_st%d",st),
+					      "Segment t0;t0 (ns); entries",
+					      400,-100.,100.);  
+
+      m_plots[Form("hPhiProbChi2_st%d",st)] = new TH1F(Form("hPhiProbChi2_st%d",st), 
+						       Form("Segment #phi prob(#chi^2) st%d; prob(#chi^2); entries",st), 
+						       200,0.,1.);
+ 
+      m_plots[Form("hThetaProbChi2_st%d",st)] = new TH1F(Form("hThetaProbChi2_st%d",st), 
+							 Form("Segment #theta Prob. #chi^2 st%d; prob(#chi^2); entries",st), 
+							 200,0.,1.);
+ 
+      m_plots[Form("hPhiChi2_st%d",st)] = new TH1F(Form("hPhiChi2_st%d",st), 
+						   Form("Segment #phi #chi^2 st%d;  #chi^2/ndof; entries",st), 
+						   200,0.,200.);
+
+      m_plots[Form("hThetaChi2_st%d",st)] = new TH1F(Form("hThetaChi2_st%d",st), 
+						     Form("Segment #theta #chi^2 st%d; #chi^2/ndof; entries",st), 
+						     200,0.,200.);
     }
 }
 
@@ -78,34 +94,32 @@ void DTNtupleSegmentAnalyzer::fill()
   
   m_plots["hNsegment"] ->Fill(seg_nSegments);
 
-  int phiSeg = -1; int zSeg = -1;
-  for (uint iseg=0; iseg<seg_nSegments; iseg++) {
+  for (uint iSeg=0; iSeg<seg_nSegments; iSeg++) {
 
-    if(seg_sector->at(iseg)!=12 || seg_wheel->at(iseg)!=2) continue;    
-    
-    if(seg_hasPhi->at(iseg)) phiSeg++;
-    if(seg_hasZed->at(iseg)) zSeg++;
+    if(seg_sector->at(iSeg)!=12 || seg_wheel->at(iSeg)!=2) continue;    
     
     int nHits = 0;
-    if(seg_hasPhi->at(iseg)){
-      nHits+=seg_phi_nHits->at(phiSeg);
-      m_plots[Form("hPhiNhits_st%d",seg_station->at(phiSeg))]->Fill(seg_phi_nHits->at(phiSeg));
+    if(seg_hasPhi->at(iSeg)){
+      nHits+=seg_phi_nHits->at(iSeg);
+      m_plots[Form("hPhiNhits_st%d",seg_station->at(iSeg))]->Fill(seg_phi_nHits->at(iSeg));
+      if (seg_phi_t0->at(iSeg) > -900)
+	m_plots[Form("hT0_st%d",seg_station->at(iSeg))]->Fill(std::max(float(-99.9),(std::min(float(99.9),seg_phi_t0->at(iSeg)))));
     }
-    if(seg_hasZed->at(iseg)){
-      nHits+=seg_z_nHits->at(zSeg);
-      m_plots[Form("hThetaNhits_st%d",seg_station->at(iseg))]->Fill(seg_z_nHits->at(zSeg));
+    if(seg_hasZed->at(iSeg)){
+      nHits+=seg_z_nHits->at(iSeg);
+      m_plots[Form("hThetaNhits_st%d",seg_station->at(iSeg))]->Fill(seg_z_nHits->at(iSeg));
     }
-    m_plots[Form("hNhits_st%d",seg_station->at(iseg))]->Fill(nHits);
+    m_plots[Form("hNhits_st%d",seg_station->at(iSeg))]->Fill(nHits);
 
-    if(seg_hasPhi->at(iseg)) m_plots[Form("hPhiChi2_st%d",seg_station->at(phiSeg))]->Fill(seg_phi_normChi2->at(phiSeg));
-    if(seg_hasZed->at(iseg)) m_plots[Form("hThetaChi2_st%d",seg_station->at(zSeg))]->Fill(seg_z_normChi2->at(zSeg));
+    if(seg_hasPhi->at(iSeg)) m_plots[Form("hPhiChi2_st%d",seg_station->at(iSeg))]->Fill(seg_phi_normChi2->at(iSeg));
+    if(seg_hasZed->at(iSeg)) m_plots[Form("hThetaChi2_st%d",seg_station->at(iSeg))]->Fill(seg_z_normChi2->at(iSeg));
 
-    if(seg_hasPhi->at(iseg) && seg_phi_nHits->at(phiSeg)==8){       
-      m_plots[Form("hPhiProbChi2_st%d",seg_station->at(phiSeg))]->Fill(TMath::Prob(seg_phi_normChi2->at(phiSeg)*6,6));  
+    if(seg_hasPhi->at(iSeg) && seg_phi_nHits->at(iSeg)==8){       
+      m_plots[Form("hPhiProbChi2_st%d",seg_station->at(iSeg))]->Fill(TMath::Prob(seg_phi_normChi2->at(iSeg)*6,6));  
     }
 
-    if(seg_hasZed->at(iseg) && seg_z_nHits->at(zSeg)==4){ 
-      m_plots[Form("hThetaProbChi2_st%d",seg_station->at(zSeg))]->Fill(TMath::Prob(seg_z_normChi2->at(zSeg)*2,2));  
+    if(seg_hasZed->at(iSeg) && seg_z_nHits->at(iSeg)==4){ 
+      m_plots[Form("hThetaProbChi2_st%d",seg_station->at(iSeg))]->Fill(TMath::Prob(seg_z_normChi2->at(iSeg)*2,2));  
     }
   }
 }
