@@ -72,7 +72,7 @@ void DTNtupleDigiAnalyzer::book()
 
 	  m_plots[("hOccupancy" + stTag).c_str()] = new TH2F(("hOccupancy" + stTag).c_str(),
 							     "Occupancy; wire; layer / superlayer",
-							     100,0.5,100.5, 12, 0.2, 12.5);
+							     100,0.5,100.5, 12, -0.5, 11.5);
 	  
 	  for (int iSl = 1; iSl <= 3; ++iSl)
 	    {

@@ -16,7 +16,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 80.0, "wire"],
-            "y"                 : [0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 MB2",
             "caption"           : "DT SliceTest",
@@ -48,7 +48,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 80.0, "wire"],
-            "y"                 : [0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB2",
             "caption"           : "DT SliceTest",
