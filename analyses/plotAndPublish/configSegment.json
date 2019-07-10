@@ -80,7 +80,7 @@
             "x"                 : [-100.0, 100.0, "segment t0 (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "hist",
-            "legendTitle"       : " # hist per segment",
+            "legendTitle"       : "t0 segment",
             "caption"           : "DT SliceTest",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
