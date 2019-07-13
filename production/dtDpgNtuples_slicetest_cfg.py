@@ -99,6 +99,8 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load('Configuration.StandardSequences.RawToDigi_Data_cff')
 process.load('EventFilter.DTRawToDigi.dtab7unpacker_cfi')
 
+process.dtAB7unpacker.channelMapping = cms.untracked.string("july2019")
+
 process.load('RecoLocalMuon.Configuration.RecoLocalMuonCosmics_cff')
 
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_slicetest_cfi')
