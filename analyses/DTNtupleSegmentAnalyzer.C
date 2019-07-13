@@ -1,6 +1,7 @@
 #include "DTNtupleSegmentAnalyzer.h"
 #include "TCanvas.h"
 #include "TMath.h"
+#include "TF1.h"
 
 DTNtupleSegmentAnalyzer::DTNtupleSegmentAnalyzer(const TString & inFileName,
 						 const TString & outFileName) :
@@ -97,6 +98,15 @@ void DTNtupleSegmentAnalyzer::fill()
   for (uint iSeg=0; iSeg<seg_nSegments; iSeg++) {
 
     if(seg_sector->at(iSeg)!=12 || seg_wheel->at(iSeg)!=2) continue;    
+
+    //Chi2 cut if needed
+
+    //if(seg_hasPhi->at(iSeg)    && seg_phi_normChi2->at(iSeg) > 3.84) continue;
+    //if(seg_hasZed->at(iSeg) && seg_z_normChi2->at(iSeg) > 3.84) continue;
+
+    //Select segment with t0 < of a specific time  to avoid out of time events
+    //if(abs(seg_phi_t0->at(iSeg)) > 15) continue;
+
     
     int nHits = 0;
     if(seg_hasPhi->at(iSeg)){
@@ -126,6 +136,14 @@ void DTNtupleSegmentAnalyzer::fill()
 
 void DTNtupleSegmentAnalyzer::endJob()
 {
+
+
+  for (int st=1; st<5; st++){
+    TF1 *f1 = new TF1(Form("fgausSt%d",st),"gaus",m_plots[Form("hT0_st%d",st)]->GetBinCenter(m_plots[Form("hT0_st%d",st)]->GetMaximumBin())-1.2*m_plots[Form("hT0_st%d",st)]->GetStdDev(),m_plots[Form("hT0_st%d",st)]->GetBinCenter(m_plots[Form("hT0_st%d",st)]->GetMaximumBin())+1.2*m_plots[Form("hT0_st%d",st)]->GetStdDev());
+
+    m_plots[Form("hT0_st%d",st)]->Fit(Form("fgausSt%d",st),"R");
+
+  }
 
   m_outFile.cd();
   m_outFile.Write();
