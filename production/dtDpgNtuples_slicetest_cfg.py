@@ -63,7 +63,7 @@ options.register('vDriftFile',
                  "File with customised DT vDrifts, used only if non ''")
 
 options.register('ntupleName',
-                 './DTDPGNtuple_run329806.root', #default value
+                 '', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
@@ -154,8 +154,13 @@ else :
 
 print process.source.fileNames
 
+if options.ntupleName == '' :
+    ntupleName = "./DTDPGNtuple_run" + str(options.runNumber) + ".root"
+else :
+    ntupleName = options.ntupleName
+
 process.TFileService = cms.Service('TFileService',
-        fileName = cms.string(options.ntupleName)
+        fileName = cms.string(ntupleName)
     )
 
 process.load('Configuration/StandardSequences/GeometryRecoDB_cff')
