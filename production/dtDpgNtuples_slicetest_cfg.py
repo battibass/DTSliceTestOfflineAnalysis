@@ -37,8 +37,20 @@ options.register('tTrigFile',
                  VarParsing.VarParsing.varType.string,
                  "File with customised DT tTrigs, used only if non ''")
 
+options.register('t0File',
+                 '', #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 "File with customised DT t0is, used only if non ''")
+
+options.register('vDriftFile',
+                 '', #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 "File with customised DT vDrifts, used only if non ''")
+
 options.register('ntupleName',
-                 './DTDPGNtuple_10_6_0_SX5.root', #default value
+                 './DTDPGNtuple_run329614.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
@@ -59,15 +71,29 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 
 process.GlobalTag.globaltag = cms.string(options.globalTag)
 
-if options.tTrigFile != '' :
+if options.tTrigFile  != '' or \
+   options.vDriftFile != '' or \
+   options.t0File != '' :
+    process.GlobalTag.toGet = cms.VPSet()
 
-    process.GlobalTag.toGet = cms.VPSet(
-        cms.PSet(record = cms.string("DTTtrigRcd"),
-                 tag = cms.string("ttrig"),
-                 connect = cms.string("sqlite_file:" + options.tTrigFile),
-                 label = cms.untracked.string("cosmics")
-                 )
-        )
+if options.tTrigFile != '' :
+    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTTtrigRcd"),
+                                            tag = cms.string("ttrig"),
+                                            connect = cms.string("sqlite_file:" + options.tTrigFile),
+                                            label = cms.untracked.string("cosmics")
+                                        )
+
+if options.vDriftFile != '' :
+    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTMtimeRcd"),
+                                            tag = cms.string("vDrift"),
+                                            connect = cms.string("sqlite_file:" + options.vDriftFile)
+                                        )
+if options.t0File != '' :
+    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTT0Rcd"),
+                                            tag = cms.string("t0"),
+                                            connect = cms.string("sqlite_file:" + options.t0File)
+                                        )
+
 
 process.source = cms.Source("PoolSource",
                             
