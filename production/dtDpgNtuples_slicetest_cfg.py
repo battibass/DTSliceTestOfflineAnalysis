@@ -30,7 +30,7 @@ options.register('inputFile',
                  '', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
-                 "The input file to be processed, if non null overrides run number based input file selection")
+                 "The input file to be processed, if non null overrides runNumber based input file selection")
 
 options.register('inputFolderCentral',
                  '/eos/cms/store/data/Commissioning2019/MiniDaq/RAW/v1/', #default value
@@ -114,7 +114,7 @@ if options.t0File != '' :
 
 process.source = cms.Source("PoolSource",
                             
-        fileNames = cms.untracked.vstring(""),
+        fileNames = cms.untracked.vstring(),
         secondaryFileNames = cms.untracked.vstring()
 
 )
@@ -128,6 +128,8 @@ else :
 
     runStr = str(options.runNumber).zfill(9)
     runFolder = options.inputFolderCentral + "/" + runStr[0:3] + "/" + runStr[3:6] + "/" + runStr[6:] + "/00000"
+
+    print "[dtDpgNtuples_slicetest_cfg.py]: looking for files under:\n\t" + runFolder
     
     if os.path.exists(runFolder) :
         files = subprocess.check_output(["ls", runFolder])
