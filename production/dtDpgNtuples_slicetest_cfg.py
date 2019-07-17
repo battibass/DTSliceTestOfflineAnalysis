@@ -4,6 +4,7 @@ from Configuration.StandardSequences.Eras import eras
 
 import subprocess
 import sys
+import os
 
 options = VarParsing.VarParsing()
 
@@ -19,17 +20,29 @@ options.register('nEvents',
                  VarParsing.VarParsing.varType.int,
                  "Maximum number of processed events")
 
+options.register('runNumber',
+                 '329806', #default value
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.int,
+                 "Run number to be looked for in either inputFolderCentral or inputFolderDT folders")
+
 options.register('inputFile',
-                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/root/run329614_streamDQM_fu-c2f13-09-03.root', #default value
+                 '', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
-                 "The input file to be processed")
+                 "The input file to be processed, if non null overrides run number based input file selection")
 
-options.register('inputFolder',
-                 '', #default value
+options.register('inputFolderCentral',
+                 '/eos/cms/store/data/Commissioning2019/MiniDaq/RAW/v1/', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
-                 "EOS folder with input files")
+                 "Base EOS folder with input files from central tier0 transfer")
+
+options.register('inputFolderDT',
+                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/root/', #default value
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.string,
+                 "Base EOS folder with input files from DT 'private' tier0 transfer")
 
 options.register('tTrigFile',
                  '', #default value
@@ -50,7 +63,7 @@ options.register('vDriftFile',
                  "File with customised DT vDrifts, used only if non ''")
 
 options.register('ntupleName',
-                 './DTDPGNtuple_run329614.root', #default value
+                 './DTDPGNtuple_run329806.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
@@ -82,18 +95,22 @@ if options.tTrigFile != '' :
                                             connect = cms.string("sqlite_file:" + options.tTrigFile),
                                             label = cms.untracked.string("cosmics")
                                         )
+                               )
 
 if options.vDriftFile != '' :
     process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTMtimeRcd"),
                                             tag = cms.string("vDrift"),
                                             connect = cms.string("sqlite_file:" + options.vDriftFile)
                                         )
+                                   )
+
 if options.t0File != '' :
     process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTT0Rcd"),
                                             tag = cms.string("t0"),
                                             connect = cms.string("sqlite_file:" + options.t0File)
                                         )
-
+                                   )
+    
 
 process.source = cms.Source("PoolSource",
                             
@@ -102,18 +119,38 @@ process.source = cms.Source("PoolSource",
 
 )
 
-if (options.inputFile == '' and options.inputFolder == '') or \
-   (options.inputFile != '' and options.inputFolder != '') :
+if options.inputFile != '' :
 
-    print "[dtDpgNtuples_slicetest_cfg.py]: inputFile and inputFolder can be non-null only one at a time. quitting."
-    sys.exit(999)
-    
-if options.inputFile != "" :
+    print "[dtDpgNtuples_slicetest_cfg.py]: inputFile parameter is non-null running on file:\n\t" + options.inputFile
     process.source.fileNames = cms.untracked.vstring("file://" + options.inputFile)
 
-if options.inputFolder != "" :
-    files = subprocess.check_output(["ls", options.inputFolder])
-    process.source.fileNames = ["file://" + options.inputFolder + "/" + f for f in files.split()]
+else :
+
+    runStr = str(options.runNumber).zfill(9)
+    runFolder = options.inputFolderCentral + "/" + runStr[0:3] + "/" + runStr[3:6] + "/" + runStr[6:] + "/00000"
+    
+    if os.path.exists(runFolder) :
+        files = subprocess.check_output(["ls", runFolder])
+        process.source.fileNames = ["file://" + runFolder + "/" + f for f in files.split()]
+
+    else :
+        print "[dtDpgNtuples_slicetest_cfg.py]: files not found there, looking under:\n\t" + options.inputFolderDT
+
+        files = subprocess.check_output(["ls", options.inputFolderDT])
+        filesFromRun = []
+
+        for f in files.split() :
+            if f.find(runStr[3:]) > -1 :
+                filesFromRun.append(f)
+
+        if len(filesFromRun) == 1 :
+            process.source.fileNames.append("file://" + options.inputFolderDT + "/" + filesFromRun[0])
+
+        else :
+            print "[dtDpgNtuples_slicetest_cfg.py]: " + str(len(filesFromRun)) + " files found, can't run!"
+            sys.exit(999)
+
+print process.source.fileNames
 
 process.TFileService = cms.Service('TFileService',
         fileName = cms.string(options.ntupleName)
