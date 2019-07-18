@@ -7,7 +7,10 @@ git clone https://github.com/battibass/DTSliceTestOfflineAnalysis.git
 
 cd DTSliceTestOfflineAnalysis
 
-# For BASH:
+# For bash:
+. configForSlcieTestAnalysis.sh
+
+# For (t)csh:
 . configForSlcieTestAnalysis.sh
 ```
 
