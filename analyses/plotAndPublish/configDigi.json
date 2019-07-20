@@ -100,7 +100,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 2000.0, "digi time (ns)"],
+            "x"                 : [0.0, 5000.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "",
             "legendTitle"       : "Phase-1 MB2 SL1",
@@ -153,7 +153,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 2000.0, "digi time (ns)"],
+            "x"                 : [0.0, 5000.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "",
             "legendTitle"       : "Phase-1 MB2 SL2",
@@ -206,7 +206,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 2000.0, "digi time (ns)"],
+            "x"                 : [0.0, 5000.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "",
             "legendTitle"       : "Phase-1 MB2 SL3",
@@ -259,7 +259,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 2000.0, "digi time (ns)"],
+            "x"                 : [0.0, 5000.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "",
             "legendTitle"       : "Phase-2 MB2 SL1",
@@ -312,7 +312,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 2000.0, "digi time (ns)"],
+            "x"                 : [0.0, 5000.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "",
             "legendTitle"       : "Phase-2 MB2 SL2",
@@ -365,7 +365,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 2000.0, "digi time (ns)"],
+            "x"                 : [0.0, 5000.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "",
             "legendTitle"       : "Phase-2 MB2 SL3",
