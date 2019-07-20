@@ -30,13 +30,13 @@ class DTNtupleTriggerAnalyzer : public DTNtupleBaseAnalyzer
 
   ~DTNtupleTriggerAnalyzer();
   
-  void virtual Loop() override;
+  virtual void Loop() override;
 
  protected:
 
-  void book();
-  void fill();
-  void endJob();
+  virtual void book() override;
+  virtual void fill() override;
+  virtual void endJob() override;
   
   TFile m_outFile;
 

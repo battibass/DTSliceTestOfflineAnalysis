@@ -133,6 +133,8 @@ void DTNtupleDigiAnalyzer::fill()
       m_plots[("hTimeBox"+ layerTag).c_str()]->Fill(timeInRange);
     }
 
+  std::map<std::vector<int>,int> ph2DigiPerWire;
+
   for (std::size_t iDigi = 0; iDigi < ph2Digi_nDigis; ++iDigi)
     {
       int st  = ph2Digi_station->at(iDigi);
@@ -141,7 +143,14 @@ void DTNtupleDigiAnalyzer::fill()
       
       int wire = ph2Digi_wire->at(iDigi);
       int slAndLay = (lay - 1) + (sl - 1) * 4;
+
+      std::vector wireId = {sl, lay, wire};
+
+      if (ph2DigiPerWire.find(wireId) == ph2DigiPerWire.end())
+	  ph2DigiPerWire[wireId] = 0;
       
+      ph2DigiPerWire[wireId]++;
+	  
       double time = ph2Digi_time->at(iDigi) - ph2DigiPedestal;
       double timeInRange = std::max(0.5,std::min(4999.5,time));
       
@@ -163,6 +172,23 @@ void DTNtupleDigiAnalyzer::fill()
       
       m_plots[("hTimeBox"+ layerTag).c_str()]->Fill(timeInRange);
     }
+
+  // if (ph2Digi_nDigis > 100) 
+  //   {  
+
+  //     std::cout << "event number : " << event_eventNumber << std::endl;
+
+  //     for (const auto & nDigiPerWire : ph2DigiPerWire)
+  //     	{
+  //     	  std::cout << "SL : "    << nDigiPerWire.first.at(0)
+  //     		    << "  layer : " << nDigiPerWire.first.at(1)
+  //     		    << "  wire : "  << nDigiPerWire.first.at(2)
+  //     		    << "  # digis : " << nDigiPerWire.second
+  //     		    << std::endl;
+  //     	}
+  //   }
+
+  // std::cout << std::endl << std::endl;
   
 }
 
