@@ -31,6 +31,8 @@ protected:
   virtual void endJob() override;
 
   TFile m_outFile;
+  std::map<std::string, TH1*> m_plots;
+  std::map<std::string, TH2*> m_2Dplots;
 
 };
 
