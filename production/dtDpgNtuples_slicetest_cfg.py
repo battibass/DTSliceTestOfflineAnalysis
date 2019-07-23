@@ -177,8 +177,7 @@ process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_slicetest_cfi')
 
 process.p = cms.Path(process.muonDTDigis
                      + process.dtAB7unpacker
+                     + process.twinMuxStage2Digis
+                     + process.bmtfDigis
                      + process.dtlocalrecoT0Seg
                      + process.dtNtupleProducer)
-
-
-
