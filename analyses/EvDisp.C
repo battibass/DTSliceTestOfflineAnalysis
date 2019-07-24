@@ -55,12 +55,12 @@ void EvDisp::book()
 void EvDisp::fill()
 {
 
-  for (int idigi=0; idigi<digi_nDigis; idigi++) {
+  for (unsigned int idigi=0; idigi<digi_nDigis; idigi++) {
     float x=digi_wire->at(idigi);
     float y=digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
     m_2Dplots["display1"]->Fill(x,y);
 
-    for (int idigi2=0; idigi2<ph2Digi_nDigis; idigi2++) {
+    for (unsigned int idigi2=0; idigi2<ph2Digi_nDigis; idigi2++) {
       if (ph2Digi_superLayer->at(idigi2)==digi_superLayer->at(idigi) &&
           ph2Digi_layer->at(idigi2)==digi_layer->at(idigi) &&
           ph2Digi_wire->at(idigi2)==digi_wire->at(idigi) )
@@ -70,7 +70,7 @@ void EvDisp::fill()
     }
   }
 
-  for (int idigi=0; idigi<ph2Digi_nDigis; idigi++) {
+  for (unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++) {
     float x=ph2Digi_wire->at(idigi);
     float y=ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
     m_2Dplots["display2"]->Fill(x,y);
