@@ -1,3 +1,14 @@
+//////////////////////////////////
+// TO COMPILE (in root shell)
+// .L DTNtupleBaseAnalyzer.C++ 
+// .L EvDisp.C++ 
+//
+// TO RUN (in root shell)
+// auto evtDisplay = EvDisp(inputFile, outFile);
+// evtDisplay.Loop();
+//////////////////////////////////
+
+
 #include "EvDisp.h"
 
 EvDisp::EvDisp(const TString & inFileName, const TString & outFileName) :
@@ -80,6 +91,25 @@ void EvDisp::fill()
 
 void EvDisp::endJob()
 {
+
+  TCanvas* c1 = new TCanvas();
+  c1->Divide(2,1);
+  gStyle->SetOptStat(0);
+  gStyle->SetPalette(1);
+  c1->cd(1);
+  m_2Dplots["display1"]->Draw("colz");
+  c1->cd(2);
+  m_2Dplots["display2"]->Draw("colz");
+  c1->Update();
+  c1->Print("digi.png");
+
+  TCanvas* c2 = new TCanvas();
+  gStyle->SetOptStat(0);
+  gStyle->SetPalette(1);
+  m_2Dplots["timecomp"]->Draw("colz");
+  c2->Update();
+  c2->Print("time.png");
+
 
   m_outFile.cd();
   m_outFile.Write();
