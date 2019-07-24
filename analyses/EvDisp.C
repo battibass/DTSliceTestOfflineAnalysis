@@ -52,6 +52,53 @@ void EvDisp::Loop()
 
 }
 
+void EvDisp::Loop(Long64_t entry)
+{
+
+  book();
+  if (fChain == 0) return;
+  Long64_t nentries = fChain->GetEntries();
+  Long64_t nbytes = 0, nb = 0;
+  if(entry>=nentries) entry = nentries -1;
+  Long64_t ientry = LoadTree(entry);
+  if (ientry < 0) return;
+  nb = fChain->GetEvent(entry);
+  nbytes += nb;
+  std::cout << "[EvDisp::Loop] processing : "<< entry << "\r" << std::flush;
+  fill();
+  std::cout << std::endl; 
+  endJob();
+
+}
+
+void EvDisp::Loop(Long64_t start, Long64_t stop)
+{
+
+  book();
+  if (fChain == 0) return;
+  Long64_t nentries = fChain->GetEntries();
+  if(stop>=nentries) stop = nentries -1;
+  if(start>=nentries) start = nentries -2;
+
+  Long64_t nbytes = 0, nb = 0;
+  for (Long64_t jentry=start; jentry<stop;jentry++) 
+  {
+    Long64_t ientry = LoadTree(jentry);
+    if (ientry < 0) break;
+    nb = fChain->GetEvent(jentry);
+    nbytes += nb;
+
+    if(jentry % 100 == 0) 
+      std::cout << "[EvDisp::Loop] processed : "<< jentry << " entries\r" << std::flush;
+
+    fill();
+  }
+
+  std::cout << std::endl; 
+  endJob();
+
+}
+
 void EvDisp::book()
 {
 
