@@ -8,7 +8,10 @@ DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer(const TString & inFileName,
   // The list of chambers to monitor
   // just MB2 for SX5, it ill be MB1 - MB4 
   // for the slice test
+  m_stations.push_back(1);
   m_stations.push_back(2);
+  m_stations.push_back(3);
+  m_stations.push_back(4);
 
   // The time pedestal to subtract from
   // phase-2 digis
