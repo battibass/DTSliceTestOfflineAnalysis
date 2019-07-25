@@ -138,12 +138,12 @@ void DTNtupleSegmentAnalyzer::endJob()
 {
 
 
-  for (int st=1; st<5; st++){
-    TF1 *f1 = new TF1(Form("fgausSt%d",st),"gaus",m_plots[Form("hT0_st%d",st)]->GetBinCenter(m_plots[Form("hT0_st%d",st)]->GetMaximumBin())-1.2*m_plots[Form("hT0_st%d",st)]->GetStdDev(),m_plots[Form("hT0_st%d",st)]->GetBinCenter(m_plots[Form("hT0_st%d",st)]->GetMaximumBin())+1.2*m_plots[Form("hT0_st%d",st)]->GetStdDev());
+  // for (int st=1; st<5; st++){
+  //   TF1 *f1 = new TF1(Form("fgausSt%d",st),"gaus",m_plots[Form("hT0_st%d",st)]->GetBinCenter(m_plots[Form("hT0_st%d",st)]->GetMaximumBin())-1.2*m_plots[Form("hT0_st%d",st)]->GetStdDev(),m_plots[Form("hT0_st%d",st)]->GetBinCenter(m_plots[Form("hT0_st%d",st)]->GetMaximumBin())+1.2*m_plots[Form("hT0_st%d",st)]->GetStdDev());
 
-    m_plots[Form("hT0_st%d",st)]->Fit(Form("fgausSt%d",st),"R");
+  //   m_plots[Form("hT0_st%d",st)]->Fit(Form("fgausSt%d",st),"R");
 
-  }
+  // }
 
   m_outFile.cd();
   m_outFile.Write();
