@@ -34,7 +34,7 @@ protected:
   virtual void fill() override;
   virtual void endJob() override;
 
-  float computeX(float x);
+  float computeX(float x, int y);
   float computeY(float y);
 
   TFile m_outFile;

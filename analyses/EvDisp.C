@@ -115,7 +115,7 @@ void EvDisp::book()
 
   for (unsigned int i=1; i<=60; i++) {
     for (unsigned int j=1; j<=12; j++){
-      xStruct.push_back(computeX(i));
+      xStruct.push_back(computeX(i,j));
       yStruct.push_back(computeY(j));
       exStruct.push_back(cellSizeX/2);
       eyStruct.push_back(cellSizeY/2); 
@@ -138,10 +138,10 @@ void EvDisp::fill()
     m_2Dplots["display1"]->Fill(x,y);
 
     if(digi_superLayer->at(idigi) == 2){
-      xEtaLeg.push_back(computeX(x));
+      xEtaLeg.push_back(computeX(x,y));
       yEtaLeg.push_back(computeY(y));
     }else{
-      xPhiLeg.push_back(computeX(x));
+      xPhiLeg.push_back(computeX(x,y));
       yPhiLeg.push_back(computeY(y));
     }
 
@@ -161,10 +161,10 @@ void EvDisp::fill()
     m_2Dplots["display2"]->Fill(x,y);
 
     if(ph2Digi_superLayer->at(idigi)== 2){
-      xEtaPh2.push_back(computeX(x));
+      xEtaPh2.push_back(computeX(x,y));
       yEtaPh2.push_back(computeY(y));
     }else{
-      xPhiPh2.push_back(computeX(x));
+      xPhiPh2.push_back(computeX(x,y));
       yPhiPh2.push_back(computeY(y));
     }
   }
@@ -244,11 +244,10 @@ void EvDisp::endJob()
 }
 
 
-float EvDisp::computeX(float x)
+float EvDisp::computeX(float x, int y)
 {
-  // if((int)x%2 == 0) x = cellSizeX*x;
-  // else x = cellSizeX/2+cellSizeX*x;
-  x = cellSizeX/2+cellSizeX*x;
+  if(y%2 == 0) x = cellSizeX*x;
+  else x = cellSizeX/2+cellSizeX*x;
   return x;
 }
 
