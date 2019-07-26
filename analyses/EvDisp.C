@@ -27,12 +27,10 @@ void EvDisp::Loop()
 {
 
   book();
-
   if (fChain == 0) return;
-
   Long64_t nentries = fChain->GetEntries();
-
   Long64_t nbytes = 0, nb = 0;
+
   for(Long64_t jentry=0; jentry<nentries;jentry++) 
   {
     Long64_t ientry = LoadTree(jentry);
@@ -44,11 +42,9 @@ void EvDisp::Loop()
       std::cout << "[EvDisp::Loop] processed : "<< jentry << " entries\r" << std::flush;
 
     fill();
-
   }
 
-  std::cout << std::endl; 
-
+  std::cout << std::endl;
   endJob();
 
 }
@@ -78,8 +74,8 @@ void EvDisp::Loop(Long64_t start, Long64_t stop)
   book();
   if (fChain == 0) return;
   Long64_t nentries = fChain->GetEntries();
+  if(start>=nentries) {std::cout<<"start>=nentries"<<endl; return;}
   if(stop>=nentries) stop = nentries -1;
-  if(start>=nentries) start = nentries -2;
 
   Long64_t nbytes = 0, nb = 0;
   for(Long64_t jentry=start; jentry<stop;jentry++) 
@@ -95,18 +91,16 @@ void EvDisp::Loop(Long64_t start, Long64_t stop)
     fill();
   }
 
-  std::cout << std::endl; 
+  std::cout << std::endl;
   endJob();
 
 }
 
 void EvDisp::book()
 {
+  cout<<"[EvDisp::book] start"<<endl;
 
   m_outFile.cd();
-
-  m_2Dplots["display1"] = new TH2F("display1","digi display legacy",60,0.5,60.5,12,0.5,12.5);
-  m_2Dplots["display2"] = new TH2F("display2","digi display Phase2",60,0.5,60.5,12,0.5,12.5);
   m_2Dplots["timecomp"] = new TH2F("timecomp","ph2 time vs legacy",500,2200,3200,500,82000,83000);
 
   zSL1 = computeY(2.5);
@@ -126,6 +120,8 @@ void EvDisp::book()
 
   graphStruct = new TGraphErrors(xStruct.size(),&xStruct[0],&yStruct[0],&exStruct[0],&eyStruct[0]);
 
+  cout<<"[EvDisp::book] end"<<endl;
+
 }
 
 void EvDisp::fill()
@@ -139,9 +135,6 @@ void EvDisp::fill()
     if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue; 
     float x=digi_wire->at(idigi);
     float y=digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
-    m_2Dplots["display1"]->Fill(x,y);
-
-    // cout<<x<<"   "<<y<<endl;
 
     if(digi_superLayer->at(idigi) == 2){
       xEtaLeg.push_back(computeX(x,y));
@@ -165,7 +158,6 @@ void EvDisp::fill()
     if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue; 
     float x=ph2Digi_wire->at(idigi);
     float y=ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
-    m_2Dplots["display2"]->Fill(x,y);
 
     if(ph2Digi_superLayer->at(idigi)== 2){
       xEtaPh2.push_back(computeX(x,y));
@@ -179,12 +171,13 @@ void EvDisp::fill()
   // SEGMENTS
   //Legacy
   int nSegLeg = 0;
-  TF1 **segments_Leg = new TF1*[seg_nSegments];
+  TF1 **segments_LegSL1 = new TF1*[seg_nSegments];
+  TF1 **segments_LegSL3 = new TF1*[seg_nSegments];
 
   for(unsigned int iSeg=0; iSeg<seg_nSegments; iSeg++){
     if(seg_sector->at(iSeg)!=12 || seg_wheel->at(iSeg)!=2) continue;
     if(!seg_hasPhi->at(iSeg)) continue;
-    nSegLeg += 2;
+    nSegLeg++;
 
     double x11 = x0chamber + seg_posLoc_x_SL1->at(iSeg);
     double z11 = zSL1;
@@ -204,46 +197,47 @@ void EvDisp::fill()
     double q3 = computeQ(x31, x32, z31, z32);
     double range3 = 2*cellSizeY/m3;
 
-    segments_Leg[iSeg] = new TF1(Form("segLeg1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
-    segments_Leg[iSeg]->SetParameters(q1,m1);
+    segments_LegSL1[iSeg] = new TF1(Form("segLegSL1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
+    segments_LegSL1[iSeg]->SetParameters(q1,m1);
 
-    segments_Leg[iSeg+1] = new TF1(Form("segLeg3%i",iSeg),"[0]+[1]*x", x31-range3, x31+range3);
-    segments_Leg[iSeg+1]->SetParameters(q3,m3);
+    segments_LegSL3[iSeg] = new TF1(Form("segLegSL3%i",iSeg),"[0]+[1]*x", x31-range3, x31+range3);
+    segments_LegSL3[iSeg]->SetParameters(q3,m3);
   }
 
   //Phase 2
-  int nSegPh2 = 0;
-  TF1 **segments_Ph2 = new TF1*[ph2Seg_nSegments];
+  // int nSegPh2 = 0;
+  // TF1 **segments_Ph2SL1 = new TF1*[ph2Seg_nSegments];
+  // TF1 **segments_Ph2Sl3 = new TF1*[ph2Seg_nSegments];
 
-  for(unsigned int iSeg=0; iSeg<ph2Seg_nSegments; iSeg++){
-    if(ph2Seg_sector->at(iSeg)!=12 || ph2Seg_wheel->at(iSeg)!=2) continue;
-    if(!ph2Seg_hasPhi->at(iSeg)) continue;
-    nSegPh2 += 2;
+  // for(unsigned int iSeg=0; iSeg<ph2Seg_nSegments; iSeg++){
+  //   if(ph2Seg_sector->at(iSeg)!=12 || ph2Seg_wheel->at(iSeg)!=2) continue;
+  //   if(!ph2Seg_hasPhi->at(iSeg)) continue;
+  //   nSegPh2++;
 
-    double x11 = x0chamber + ph2Seg_posLoc_x_SL1->at(iSeg);
-    double z11 = zSL1;
-    double x12 = x11 + ph2Seg_dirLoc_x->at(iSeg);
-    double z12 = z11 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
+  //   double x11 = x0chamber + ph2Seg_posLoc_x_SL1->at(iSeg);
+  //   double z11 = zSL1;
+  //   double x12 = x11 + ph2Seg_dirLoc_x->at(iSeg);
+  //   double z12 = z11 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
 
-    double m1 = computeM(x11, x12, z11, z12);
-    double q1 = computeQ(x11, x12, z11, z12);
-    double range1 = 2*cellSizeY/m1;
+  //   double m1 = computeM(x11, x12, z11, z12);
+  //   double q1 = computeQ(x11, x12, z11, z12);
+  //   double range1 = 2*cellSizeY/m1;
 
-    double x31 = x0chamber + ph2Seg_posLoc_x_SL3->at(iSeg);
-    double z31 = zSL3;
-    double x32 = x31 + ph2Seg_dirLoc_x->at(iSeg);
-    double z32 = z31 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
+  //   double x31 = x0chamber + ph2Seg_posLoc_x_SL3->at(iSeg);
+  //   double z31 = zSL3;
+  //   double x32 = x31 + ph2Seg_dirLoc_x->at(iSeg);
+  //   double z32 = z31 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
 
-    double m3 = computeM(x31, x32, z31, z32);
-    double q3 = computeQ(x31, x32, z31, z32);
-    double range3 = 2*cellSizeY/m3;
+  //   double m3 = computeM(x31, x32, z31, z32);
+  //   double q3 = computeQ(x31, x32, z31, z32);
+  //   double range3 = 2*cellSizeY/m3;
 
-    segments_Ph2[iSeg] = new TF1(Form("segPh21%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
-    segments_Ph2[iSeg]->SetParameters(q1,m1);
+  //   segments_Ph2SL1[iSeg] = new TF1(Form("segPh2SL1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
+  //   segments_Ph2SL1[iSeg]->SetParameters(q1,m1);
 
-    segments_Ph2[iSeg+1] = new TF1(Form("segPh23%i",iSeg),"[0]+[1]*x", x31-range3, x31+range3);
-    segments_Ph2[iSeg+1]->SetParameters(q3,m3);
-  }
+  //   segments_Ph2SL3[iSeg] = new TF1(Form("segPh2SL3%i",iSeg),"[0]+[1]*x", x31-range3, x31+range3);
+  //   segments_Ph2SL3[iSeg]->SetParameters(q3,m3);
+  // }
 
   // PLOTTING
   TCanvas* c3 = new TCanvas();
@@ -269,7 +263,8 @@ void EvDisp::fill()
   }
 
   for(int i=0;i<nSegLeg;i++){
-    segments_Leg[i]->Draw("SAME");
+    segments_LegSL1[i]->Draw("SAME");
+    segments_LegSL3[i]->Draw("SAME");
   }
 
   c3->cd(2);
@@ -292,10 +287,12 @@ void EvDisp::fill()
     graphEta_Ph2->Draw("PSAME");
   }
 
-  for(int i=0;i<nSegPh2;i++){
-    segments_Ph2[i]->SetLineColor(kBlue);
-    segments_Ph2[i]->Draw("SAME");
-  }
+  // for(int i=0;i<nSegPh2;i++){
+  //   segments_Ph2SL1[i]->SetLineColor(kBlue);
+  //   segments_Ph2SL3[i]->SetLineColor(kBlue);
+  //   segments_Ph2SL1[i]->Draw("SAME");
+  //   segments_Ph2SL3[i]->Draw("SAME");
+  // }
 
   c3->Update();
   c3->Print(Form("evDisplPlot/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
@@ -304,17 +301,7 @@ void EvDisp::fill()
 
 void EvDisp::endJob()
 {
-
-  TCanvas* c1 = new TCanvas();
-  c1->Divide(2,1);
-  gStyle->SetOptStat(0);
-  gStyle->SetPalette(1);
-  c1->cd(1);
-  m_2Dplots["display1"]->Draw("colz");
-  c1->cd(2);
-  m_2Dplots["display2"]->Draw("colz");
-  c1->Update();
-  c1->Print("evDisplPlot/digi.png");
+  cout<<"[EvDisp::endJob] start"<<endl;
 
   TCanvas* c2 = new TCanvas();
   gStyle->SetOptStat(0);
@@ -327,6 +314,7 @@ void EvDisp::endJob()
   m_outFile.Write();
   m_outFile.Close();
 
+  cout<<"[EvDisp::endJob] end"<<endl;
 }
 
 
