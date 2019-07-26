@@ -7,6 +7,7 @@
 #include <TH2.h>
 #include "TH1F.h"
 #include "TH2F.h"
+#include "TF1.h"
 #include "TGraphErrors.h"
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -36,13 +37,19 @@ protected:
 
   float computeX(float x, int y);
   float computeY(float y);
+  double computeQ(double x1, double x2, double y1, double y2);
+  double computeM(double x1, double x2, double y1, double y2);
 
   TFile m_outFile;
   std::map<std::string, TH1*> m_plots;
   std::map<std::string, TH2*> m_2Dplots;
 
   TGraphErrors* graphStruct;
-  float cellSizeX, cellSizeY, honeySize;
+  float cellSizeX = 4.2;
+  float cellSizeY = 1.3;
+  float honeySize = 12.8;
+  float x0chamber = 134.65;
+  float zSL1, zSL3;
 
 };
 
