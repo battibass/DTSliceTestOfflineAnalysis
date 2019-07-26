@@ -74,7 +74,7 @@ void EvDisp::Loop(Long64_t start, Long64_t stop)
   book();
   if (fChain == 0) return;
   Long64_t nentries = fChain->GetEntries();
-  if(start>=nentries) {std::cout<<"start>=nentries"<<endl; return;}
+  if(start>=nentries) {std::cout<<"start>=nentries"<<std::endl; return;}
   if(stop>=nentries) stop = nentries -1;
 
   Long64_t nbytes = 0, nb = 0;
@@ -98,7 +98,7 @@ void EvDisp::Loop(Long64_t start, Long64_t stop)
 
 void EvDisp::book()
 {
-  cout<<"[EvDisp::book] start"<<endl;
+  std::cout<<"[EvDisp::book] start"<<std::endl;
 
   m_outFile.cd();
   m_2Dplots["timecomp"] = new TH2F("timecomp","ph2 time vs legacy",500,2200,3200,500,82000,83000);
@@ -120,13 +120,15 @@ void EvDisp::book()
 
   graphStruct = new TGraphErrors(xStruct.size(),&xStruct[0],&yStruct[0],&exStruct[0],&eyStruct[0]);
 
-  cout<<"[EvDisp::book] end"<<endl;
+  std::cout<<"[EvDisp::book] end"<<std::endl;
 
 }
 
 void EvDisp::fill()
 {
-
+  bool debug = false;
+  if(debug) std::cout<<std::endl;
+  if(debug) std::cout<<"digi"<<std::endl;
   // DIGI
   std::vector<float> xPhiLeg, yPhiLeg, xPhiPh2, yPhiPh2;
   std::vector<float> xEtaLeg, yEtaLeg, xEtaPh2, yEtaPh2;
@@ -155,7 +157,7 @@ void EvDisp::fill()
   }
 
   for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++) {
-    if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue; 
+    if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2) continue;
     float x=ph2Digi_wire->at(idigi);
     float y=ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
 
@@ -168,6 +170,7 @@ void EvDisp::fill()
     }
   }
 
+  if(debug) std::cout<<"segment"<<std::endl;
   // SEGMENTS
   //Legacy
   int nSegLeg = 0;
@@ -240,6 +243,7 @@ void EvDisp::fill()
   // }
 
   // PLOTTING
+  if(debug) std::cout<<"plotting"<<std::endl;
   TCanvas* c3 = new TCanvas();
   c3->Divide(1,2);
   c3->cd(1);
@@ -301,7 +305,7 @@ void EvDisp::fill()
 
 void EvDisp::endJob()
 {
-  cout<<"[EvDisp::endJob] start"<<endl;
+  std::cout<<"[EvDisp::endJob] start"<<std::endl;
 
   TCanvas* c2 = new TCanvas();
   gStyle->SetOptStat(0);
@@ -314,7 +318,7 @@ void EvDisp::endJob()
   m_outFile.Write();
   m_outFile.Close();
 
-  cout<<"[EvDisp::endJob] end"<<endl;
+  std::cout<<"[EvDisp::endJob] end"<<std::endl;
 }
 
 
