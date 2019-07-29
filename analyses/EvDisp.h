@@ -22,11 +22,12 @@ class EvDisp : public DTNtupleBaseAnalyzer
 
 public:
 
-  EvDisp(const TString & inFileName, const TString & outFileName);
+  EvDisp(const TString & inFileName);
   ~EvDisp();
 
   virtual void Loop() override;
-  virtual void Loop(Long64_t entry);
+  virtual void Loop(Long64_t evt);
+  virtual void LoopEntry(Long64_t entry);
   virtual void Loop(Long64_t start, Long64_t stop);
 
 protected:
@@ -40,8 +41,6 @@ protected:
   double computeQ(double x1, double x2, double y1, double y2);
   double computeM(double x1, double x2, double y1, double y2);
 
-  TFile m_outFile;
-  std::map<std::string, TH1*> m_plots;
   std::map<std::string, TH2*> m_2Dplots;
 
   TGraphErrors* graphStruct;

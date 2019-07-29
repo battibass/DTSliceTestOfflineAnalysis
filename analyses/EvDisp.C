@@ -4,9 +4,10 @@
 // .L EvDisp.C++ 
 //
 // TO RUN (in root shell)
-// auto evtDisplay = EvDisp(inputFile, outFile);
+// auto evtDisplay = EvDisp(inputFile);
 // evtDisplay.Loop(); // all events 
 // evtDisplay.Loop(evt_number); // one event 
+// evtDisplay.LoopEntry(entry); // one entry 
 // evtDisplay.Loop(start, stop); // evt range 
 // E.G.:
 // auto evtDisplay = EvDisp("/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/ntuples/DTDPGNtuple_run329806.root", "out.root");
@@ -16,8 +17,8 @@
 
 #include "EvDisp.h"
 
-EvDisp::EvDisp(const TString & inFileName, const TString & outFileName) :
-  m_outFile(outFileName,"RECREATE"), DTNtupleBaseAnalyzer(inFileName)
+EvDisp::EvDisp(const TString & inFileName) :
+  DTNtupleBaseAnalyzer(inFileName)
   {
 
   }
@@ -34,26 +35,48 @@ void EvDisp::Loop()
   if (fChain == 0) return;
   Long64_t nentries = fChain->GetEntries();
   Long64_t nbytes = 0, nb = 0;
-
   for(Long64_t jentry=0; jentry<nentries;jentry++) 
   {
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     nb = fChain->GetEvent(jentry);
     nbytes += nb;
-
     if(jentry % 100 == 0) 
       std::cout << "[EvDisp::Loop] processed : "<< jentry << " entries\r" << std::flush;
 
     fill();
   }
-
   std::cout << std::endl;
   endJob();
 
 }
 
-void EvDisp::Loop(Long64_t entry)
+void EvDisp::Loop(Long64_t evt)
+{
+
+  book();
+  if (fChain == 0) return;
+  Long64_t nentries = fChain->GetEntries();
+  Long64_t nbytes = 0, nb = 0;
+  for(Long64_t jentry=0; jentry<nentries;jentry++) 
+  {
+    Long64_t ientry = LoadTree(jentry);
+    if (ientry < 0) break;
+    nb = fChain->GetEvent(jentry);
+    nbytes += nb;
+    if(event_eventNumber != evt){
+      continue;
+    }else{
+      std::cout << "[EvDisp::Loop] processing event  : "<< evt << "\r";
+      fill();
+    }
+  }
+  std::cout << std::endl;
+  endJob();
+
+}
+
+void EvDisp::LoopEntry(Long64_t entry)
 {
 
   book();
@@ -65,7 +88,7 @@ void EvDisp::Loop(Long64_t entry)
   if (ientry < 0) return;
   nb = fChain->GetEvent(entry);
   nbytes += nb;
-  std::cout << "[EvDisp::Loop] processing : "<< entry << "\r" << std::flush;
+  std::cout << "[EvDisp::Loop] processing entry : "<< entry << "\r";
   fill();
   std::cout << std::endl; 
   endJob();
@@ -92,7 +115,6 @@ void EvDisp::Loop(Long64_t start, Long64_t stop)
 
     if(jentry % 100 == 0) 
       std::cout << "[EvDisp::Loop] processed : "<< jentry << " entries\r" << std::flush;
-
     fill();
   }
 
@@ -105,7 +127,6 @@ void EvDisp::book()
 {
   std::cout<<"[EvDisp::book] start"<<std::endl;
 
-  m_outFile.cd();
   m_2Dplots["timecomp"] = new TH2F("timecomp","ph2 time vs legacy",500,2200,3200,500,82000,83000);
 
   zSL1 = computeY(2.5);   // middle of SL1
@@ -332,10 +353,6 @@ void EvDisp::endJob()
   m_2Dplots["timecomp"]->Draw("colz");
   c2->Update();
   c2->Print("evDisplPlot/time.png");
-
-  m_outFile.cd();
-  m_outFile.Write();
-  m_outFile.Close();
 
   std::cout<<"[EvDisp::endJob] end"<<std::endl;
 }
