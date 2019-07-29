@@ -130,6 +130,7 @@ void EvDisp::book()
   std::cout<<"[EvDisp::book] start"<<std::endl;
 
   // m_2Dplots["timecomp"] = new TH2F("timecomp","ph2 time vs legacy",500,2200,3200,500,82000,83000);
+  gSystem->Exec("mkdir -p ./evDispPlots");
 
   zSL1 = computeY(2.5);   // middle of SL1
   zSL3 = computeY(10.5);  // middle of SL3
