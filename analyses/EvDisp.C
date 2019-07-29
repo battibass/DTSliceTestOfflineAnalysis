@@ -1,4 +1,7 @@
 //////////////////////////////////
+//
+// Author: Alberto Bragagnolo alberto.bragagnolo@cern.ch
+//
 // TO COMPILE (in root shell)
 // .L DTNtupleBaseAnalyzer.C++ 
 // .L EvDisp.C++ 
@@ -9,6 +12,7 @@
 // evtDisplay.Loop(evt_number); // one event 
 // evtDisplay.LoopEntry(entry); // one entry 
 // evtDisplay.Loop(start, stop); // entries range 
+// evtDisplay.Loop(start, stop, evt); // one event, searched only in the entries range 
 // E.G.:
 // auto evtDisplay = EvDisp("/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/ntuples/DTDPGNtuple_run329806.root", "out.root");
 // evtDisplay.Loop(0, 10);
