@@ -27,9 +27,10 @@ public:
   ~EvDisp();
 
   virtual void Loop() override;
+  virtual void Loop(Long64_t start, Long64_t stop, Long64_t evt);
   virtual void Loop(Long64_t evt);
   virtual void LoopEntry(Long64_t entry);
-  virtual void Loop(Long64_t start, Long64_t stop);
+
 
 protected:
 

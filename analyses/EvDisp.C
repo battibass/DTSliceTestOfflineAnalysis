@@ -28,24 +28,41 @@ EvDisp::~EvDisp()
 
 }
 
-void EvDisp::Loop()
+void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
 {
 
   book();
   if (fChain == 0) return;
   Long64_t nentries = fChain->GetEntries();
+
+  if(start>=nentries) {std::cout<<"start>=nentries --> start = 0"<<std::endl; start = 0;}
+  if(stop>nentries) {std::cout<<"stop>nentries --> stop = nentries"<<std::endl; stop = nentries;}
+  if(start<0) start = 0;
+  if(stop<0) stop = nentries;
+
   Long64_t nbytes = 0, nb = 0;
-  for(Long64_t jentry=0; jentry<nentries;jentry++) 
+  for(Long64_t jentry=start; jentry<stop; jentry++) 
   {
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     nb = fChain->GetEvent(jentry);
     nbytes += nb;
-    if(jentry % 100 == 0) 
-      std::cout << "[EvDisp::Loop] processed : "<< jentry << " entries\r" << std::flush;
-
-    fill();
+    if(evt != -1){
+      if(event_eventNumber != evt){
+        continue;
+      }else{
+        std::cout << "[EvDisp::Loop] processing event  : "<< evt << "\r";
+        fill();
+        break;
+      }
+      std::cout << "[EvDisp::Loop] event  : "<< evt << "not found\r";
+    }else{
+      if(jentry % 100 == 0) 
+        std::cout << "[EvDisp::Loop] processed : "<< jentry << " entries\r";
+      fill();
+    }
   }
+
   std::cout << std::endl;
   endJob();
 
@@ -53,76 +70,18 @@ void EvDisp::Loop()
 
 void EvDisp::Loop(Long64_t evt)
 {
-
-  book();
-  if (fChain == 0) return;
-  Long64_t nentries = fChain->GetEntries();
-  Long64_t nbytes = 0, nb = 0;
-  for(Long64_t jentry=0; jentry<nentries;jentry++) 
-  {
-    Long64_t ientry = LoadTree(jentry);
-    if (ientry < 0) break;
-    nb = fChain->GetEvent(jentry);
-    nbytes += nb;
-    if(event_eventNumber != evt){
-      continue;
-    }else{
-      std::cout << "[EvDisp::Loop] processing event  : "<< evt << "\r";
-      fill();
-      break;
-    }
-    std::cout << "[EvDisp::Loop] event  : "<< evt << "not found\r";
-  }
-  std::cout << std::endl;
-  endJob();
-
+  Loop(-1, -1, evt);
 }
 
 void EvDisp::LoopEntry(Long64_t entry)
 {
-
-  book();
-  if (fChain == 0) return;
-  Long64_t nentries = fChain->GetEntries();
-  Long64_t nbytes = 0, nb = 0;
-  if(entry>=nentries) entry = nentries -1;
-  Long64_t ientry = LoadTree(entry);
-  if (ientry < 0) return;
-  nb = fChain->GetEvent(entry);
-  nbytes += nb;
   std::cout << "[EvDisp::Loop] processing entry : "<< entry << "\r";
-  fill();
-  std::cout << std::endl; 
-  endJob();
-
+  Loop(entry, entry+1);
 }
 
-void EvDisp::Loop(Long64_t start, Long64_t stop)
+void EvDisp::Loop()
 {
-
-  book();
-  if (fChain == 0) return;
-  Long64_t nentries = fChain->GetEntries();
-  if(start>=nentries) {std::cout<<"start>=nentries"<<std::endl; return;}
-  if(start<0) start = 0;
-  if(stop>=nentries) stop = nentries -1;
-
-  Long64_t nbytes = 0, nb = 0;
-  for(Long64_t jentry=start; jentry<stop;jentry++) 
-  {
-    Long64_t ientry = LoadTree(jentry);
-    if (ientry < 0) break;
-    nb = fChain->GetEvent(jentry);
-    nbytes += nb;
-
-    if(jentry % 100 == 0) 
-      std::cout << "[EvDisp::Loop] processed : "<< jentry << " entries\r" << std::flush;
-    fill();
-  }
-
-  std::cout << std::endl;
-  endJob();
-
+  Loop(-1,-1,-1);
 }
 
 void EvDisp::book()
