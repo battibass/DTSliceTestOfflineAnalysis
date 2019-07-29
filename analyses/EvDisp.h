@@ -48,8 +48,7 @@ protected:
   float cellSizeX = 4.2;
   float cellSizeY = 1.3;
   float honeySize = 12.8;
-  float x0chamberSL1 = 132.55;
-  float x0chamberSL3 = 128.35;
+  float x0chamber = 132.55;
   float zSL1, zSL3;
 
 };

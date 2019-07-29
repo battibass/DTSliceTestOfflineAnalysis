@@ -104,8 +104,8 @@ void EvDisp::book()
   m_outFile.cd();
   m_2Dplots["timecomp"] = new TH2F("timecomp","ph2 time vs legacy",500,2200,3200,500,82000,83000);
 
-  zSL1 = computeY(2.5);
-  zSL3 = computeY(10.5);
+  zSL1 = computeY(2.5);   // middle of SL1
+  zSL3 = computeY(10.5);  // middle of SL3
 
   std::vector<float> xStruct, yStruct;
   std::vector<float> exStruct, eyStruct;
@@ -197,7 +197,7 @@ void EvDisp::fill()
       }
     }
 
-    double x11 = x0chamberSL1 + seg_posLoc_x_SL1->at(iSeg);
+    double x11 = x0chamber + seg_posLoc_x_SL1->at(iSeg);
     double z11 = zSL1;
     double x12 = x11 + seg_dirLoc_x->at(iSeg);
     double z12 = z11 - seg_dirLoc_z->at(iSeg); //z is pointed downwards
@@ -206,7 +206,7 @@ void EvDisp::fill()
     double q1 = computeQ(x11, x12, z11, z12);
     double range1 = 2*cellSizeY/m1;
 
-    double x31 = x0chamberSL3 + seg_posLoc_x_SL3->at(iSeg);
+    double x31 = x0chamber + seg_posLoc_x_SL3->at(iSeg);
     double z31 = zSL3;
     double x32 = x31 + seg_dirLoc_x->at(iSeg);
     double z32 = z31 - seg_dirLoc_z->at(iSeg); //z is pointed downwards
@@ -232,7 +232,7 @@ void EvDisp::fill()
   //   if(!ph2Seg_hasPhi->at(iSeg)) continue;
   //   nSegPh2++;
 
-  //   double x11 = x0chamberSL1 + ph2Seg_posLoc_x_SL1->at(iSeg);
+  //   double x11 = x0chamber + ph2Seg_posLoc_x_SL1->at(iSeg);
   //   double z11 = zSL1;
   //   double x12 = x11 + ph2Seg_dirLoc_x->at(iSeg);
   //   double z12 = z11 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
@@ -241,7 +241,7 @@ void EvDisp::fill()
   //   double q1 = computeQ(x11, x12, z11, z12);
   //   double range1 = 2*cellSizeY/m1;
 
-  //   double x31 = x0chamberSL3 + ph2Seg_posLoc_x_SL3->at(iSeg);
+  //   double x31 = x0chamber + ph2Seg_posLoc_x_SL3->at(iSeg);
   //   double z31 = zSL3;
   //   double x32 = x31 + ph2Seg_dirLoc_x->at(iSeg);
   //   double z32 = z31 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
@@ -314,7 +314,7 @@ void EvDisp::fill()
   // }
 
   c3->Update();
-  c3->Print(Form("evDisplPlot/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
+  c3->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
 }
 
@@ -339,8 +339,9 @@ void EvDisp::endJob()
 
 float EvDisp::computeX(float x, int y)
 {
-  if(y%2 == 0) x = cellSizeX*x;
-  else x = cellSizeX/2+cellSizeX*x;
+  x = cellSizeX*x;
+  if(y%2 == 1) x += cellSizeX/2;  // Layer stagger
+  if(y >= 9) x += cellSizeX;      // SL3 Stagger (station dependend)
   return x;
 }
 
