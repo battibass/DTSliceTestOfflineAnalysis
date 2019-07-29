@@ -75,6 +75,7 @@ void EvDisp::Loop(Long64_t start, Long64_t stop)
   if (fChain == 0) return;
   Long64_t nentries = fChain->GetEntries();
   if(start>=nentries) {std::cout<<"start>=nentries"<<std::endl; return;}
+  if(start<0) start = 0;
   if(stop>=nentries) stop = nentries -1;
 
   Long64_t nbytes = 0, nb = 0;
@@ -182,7 +183,21 @@ void EvDisp::fill()
     if(!seg_hasPhi->at(iSeg)) continue;
     nSegLeg++;
 
-    double x11 = x0chamber + seg_posLoc_x_SL1->at(iSeg);
+    if(debug){
+      std::cout<<std::endl;
+      std::cout<<"iSeg "<<iSeg<<std::endl;
+      for(int iHit=0; iHit<seg_phi_nHits->at(iSeg); iHit++){
+        std::cout<<getXY<float>(seg_phiHits_pos,iSeg,iHit)<<" ";
+        std::cout<<getXY<float>(seg_phiHits_posCh,iSeg,iHit)<<" ";
+        std::cout<<getXY<float>(seg_phiHits_wire,iSeg,iHit)<<" ";
+        std::cout<<getXY<float>(seg_phiHits_wirePos,iSeg,iHit)<<" ";
+        std::cout<<getXY<float>(seg_phiHits_layer,iSeg,iHit)<<" ";
+        std::cout<<getXY<float>(seg_phiHits_superLayer,iSeg,iHit)<<" ";
+        std::cout<<std::endl;
+      }
+    }
+
+    double x11 = x0chamberSL1 + seg_posLoc_x_SL1->at(iSeg);
     double z11 = zSL1;
     double x12 = x11 + seg_dirLoc_x->at(iSeg);
     double z12 = z11 - seg_dirLoc_z->at(iSeg); //z is pointed downwards
@@ -191,7 +206,7 @@ void EvDisp::fill()
     double q1 = computeQ(x11, x12, z11, z12);
     double range1 = 2*cellSizeY/m1;
 
-    double x31 = x0chamber + seg_posLoc_x_SL3->at(iSeg);
+    double x31 = x0chamberSL3 + seg_posLoc_x_SL3->at(iSeg);
     double z31 = zSL3;
     double x32 = x31 + seg_dirLoc_x->at(iSeg);
     double z32 = z31 - seg_dirLoc_z->at(iSeg); //z is pointed downwards
@@ -217,7 +232,7 @@ void EvDisp::fill()
   //   if(!ph2Seg_hasPhi->at(iSeg)) continue;
   //   nSegPh2++;
 
-  //   double x11 = x0chamber + ph2Seg_posLoc_x_SL1->at(iSeg);
+  //   double x11 = x0chamberSL1 + ph2Seg_posLoc_x_SL1->at(iSeg);
   //   double z11 = zSL1;
   //   double x12 = x11 + ph2Seg_dirLoc_x->at(iSeg);
   //   double z12 = z11 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
@@ -226,7 +241,7 @@ void EvDisp::fill()
   //   double q1 = computeQ(x11, x12, z11, z12);
   //   double range1 = 2*cellSizeY/m1;
 
-  //   double x31 = x0chamber + ph2Seg_posLoc_x_SL3->at(iSeg);
+  //   double x31 = x0chamberSL3 + ph2Seg_posLoc_x_SL3->at(iSeg);
   //   double z31 = zSL3;
   //   double x32 = x31 + ph2Seg_dirLoc_x->at(iSeg);
   //   double z32 = z31 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
