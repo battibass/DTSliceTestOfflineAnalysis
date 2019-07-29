@@ -5,8 +5,12 @@
 //
 // TO RUN (in root shell)
 // auto evtDisplay = EvDisp(inputFile, outFile);
+// evtDisplay.Loop(); // all events 
+// evtDisplay.Loop(evt_number); // one event 
+// evtDisplay.Loop(start, stop); // evt range 
+// E.G.:
 // auto evtDisplay = EvDisp("/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/ntuples/DTDPGNtuple_run329806.root", "out.root");
-// evtDisplay.Loop();
+// evtDisplay.Loop(0, 10);
 //////////////////////////////////
 
 
