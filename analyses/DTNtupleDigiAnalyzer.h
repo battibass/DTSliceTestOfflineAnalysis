@@ -4,6 +4,7 @@
 #include "DTNtupleBaseAnalyzer.h"
 
 #include "TFile.h"
+#include "TEfficiency.h"
 #include "TH1F.h"
 #include "TH2F.h"
 
@@ -37,6 +38,7 @@ class DTNtupleDigiAnalyzer : public DTNtupleBaseAnalyzer
   float ph2DigiPedestal;
 
   std::map<std::string, TH1*> m_plots;
+  std::map<std::string, TEfficiency*> m_effs;
   
 };
 
