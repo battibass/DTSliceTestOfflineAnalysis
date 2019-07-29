@@ -69,7 +69,9 @@ void EvDisp::Loop(Long64_t evt)
     }else{
       std::cout << "[EvDisp::Loop] processing event  : "<< evt << "\r";
       fill();
+      break;
     }
+    std::cout << "[EvDisp::Loop] event  : "<< evt << "not found\r";
   }
   std::cout << std::endl;
   endJob();
@@ -127,7 +129,7 @@ void EvDisp::book()
 {
   std::cout<<"[EvDisp::book] start"<<std::endl;
 
-  m_2Dplots["timecomp"] = new TH2F("timecomp","ph2 time vs legacy",500,2200,3200,500,82000,83000);
+  // m_2Dplots["timecomp"] = new TH2F("timecomp","ph2 time vs legacy",500,2200,3200,500,82000,83000);
 
   zSL1 = computeY(2.5);   // middle of SL1
   zSL3 = computeY(10.5);  // middle of SL3
@@ -172,14 +174,14 @@ void EvDisp::fill()
       yPhiLeg.push_back(computeY(y));
     }
 
-    for(unsigned int idigi2=0; idigi2<ph2Digi_nDigis; idigi2++) {
-      if (ph2Digi_superLayer->at(idigi2)==digi_superLayer->at(idigi) &&
-          ph2Digi_layer->at(idigi2)==digi_layer->at(idigi) &&
-          ph2Digi_wire->at(idigi2)==digi_wire->at(idigi) )
-      {
-        m_2Dplots["timecomp"]->Fill(digi_time->at(idigi),ph2Digi_time->at(idigi2));
-      }
-    }
+    // for(unsigned int idigi2=0; idigi2<ph2Digi_nDigis; idigi2++) {
+    //   if (ph2Digi_superLayer->at(idigi2)==digi_superLayer->at(idigi) &&
+    //       ph2Digi_layer->at(idigi2)==digi_layer->at(idigi) &&
+    //       ph2Digi_wire->at(idigi2)==digi_wire->at(idigi) )
+    //   {
+    //     m_2Dplots["timecomp"]->Fill(digi_time->at(idigi),ph2Digi_time->at(idigi2));
+    //   }
+    // }
   }
 
   for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++) {
@@ -347,12 +349,12 @@ void EvDisp::endJob()
 {
   std::cout<<"[EvDisp::endJob] start"<<std::endl;
 
-  TCanvas* c2 = new TCanvas();
-  gStyle->SetOptStat(0);
-  gStyle->SetPalette(1);
-  m_2Dplots["timecomp"]->Draw("colz");
-  c2->Update();
-  c2->Print("evDisplPlot/time.png");
+  // TCanvas* c2 = new TCanvas();
+  // gStyle->SetOptStat(0);
+  // gStyle->SetPalette(1);
+  // m_2Dplots["timecomp"]->Draw("colz");
+  // c2->Update();
+  // c2->Print("evDisplPlot/time.png");
 
   std::cout<<"[EvDisp::endJob] end"<<std::endl;
 }
