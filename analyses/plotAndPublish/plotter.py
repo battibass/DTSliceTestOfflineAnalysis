@@ -133,24 +133,20 @@ for keyPlot in config:
     canvas = TCanvas('canvas', 'canvas', 800, 800)
     
     pad = TPad('pad', 'pad', 0.01, 0.00, 1.00, 1.00)
+
+    option = config[keyPlot]['plot']['option']
+             
+    hasLogY = option.find("logY") > -1
+    if hasLogY :
+        option = option.replace("logY","")
     
     pad.SetGrid()
     pad.Draw()
-    pad.cd()
 
-    option = config[keyPlot]['plot']['option']
- 
-    hasGridByWheel  = option.find("gridByWheel") > -1
-    if hasGridByWheel :
-        option = option.replace("gridByWheel","")
-            
-    hasGridBySector = option.find("gridBySector") > -1
-    if hasGridBySector :
-        option = option.replace("gridBySector","")
-            
-    hasGrid = option.find("grid") > -1
-    if hasGrid :
-        option = option.replace("grid","")
+    if hasLogY :
+        pad.SetLogy()
+
+    pad.cd()
 
     plotX  = config[keyPlot]['plot']['x']
     plotY  = config[keyPlot]['plot']['y']
@@ -159,6 +155,20 @@ for keyPlot in config:
         
     if config[keyPlot]['plot'].has_key("z") :
         plotZ = config[keyPlot]['plot']['z']
+
+    rangeY = plotY[:2]
+
+    for iHisto in range(len(inputHistos)):
+
+        if inputHistos[iHisto].ClassName() == "TH1F" :
+
+            if not hasLogY :
+                rangeY[0] = 0.0
+
+            rangeYFromHisto = inputHistos[iHisto].GetMaximum() * 1.5
+
+            if rangeY[1] < rangeYFromHisto:
+                rangeY[1] = rangeYFromHisto
     
     for iHisto in range(len(inputHistos)):
         
@@ -185,65 +195,23 @@ for keyPlot in config:
             histo = inputHistos[iHisto]
             
         histo.GetXaxis().SetRangeUser(plotX[0], plotX[1])
+        histo.GetYaxis().SetRangeUser(rangeY[0], rangeY[1])
 
-        if histoClass == "TEfficiency" and histoDim == 1 :
-            histo.GetYaxis().SetRangeUser(plotY[0], plotY[1])
-        #    inputHistos[iHisto].SetTitle(";"+plotX[2]+";"+plotY[2])
-        elif histoClass == "TEfficiency" and histoDim == 2 : 
+        if histoClass == "TEfficiency" and histoDim == 2 : 
             palette = efficiencyPalette()
             nBins = len(palette)
             gStyle.SetPalette(nBins,array('i',palette))
-            histo.GetYaxis().SetRangeUser(plotY[0], plotY[1])
             histo.SetMinimum(plotZ[0])
             histo.SetMaximum(plotZ[1])
             histo.SetContour(nBins)
             histo.Draw(option)
-            
-            if hasGridBySector :
-                histo.GetXaxis().SetNdivisions(histo.GetNbinsX() / 2,True)
-                line = TLine();
-                for x in range(1,12) :
-                    line.DrawLine(x+0.5, -2.5, x+0.5, 2.5);
-
-                histo.GetYaxis().SetNdivisions(histo.GetNbinsY() / 2,True)
-                for y in range(-2,2) :
-                    line.DrawLine(0.5, y+0.5, 12.5, y+0.5);
-                    
-            if hasGridByWheel :
-                histo.GetXaxis().SetNdivisions(histo.GetNbinsX() / 4,True)
-                line = TLine();
-                for x in range(1,4) :
-                    line.DrawLine((x*5)+1.0, 1.0, (x*5)+1.0, 13.0);
-                for x in range(0,20) :
-                    histo.GetXaxis().SetBinLabel(x+1,"YB"+str(x%5 - 2))
-                histo.GetXaxis().LabelsOption("v")
-                latex = TLatex()
-                latex.SetNDC()
-                latex.SetTextFont(62)
-                latex.SetTextSize(0.028)
-                latex.SetTextAlign(11);
-                latex.DrawLatex(0.19, 0.01, "MB1")
-                latex.DrawLatex(0.39, 0.01, "MB2")
-                latex.DrawLatex(0.59, 0.01, "MB3")
-                latex.DrawLatex(0.79, 0.01, "MB4")
-                histo.GetYaxis().SetNdivisions(histo.GetNbinsY(),True)
-                for x in range(1,13) :
-                    histo.GetYaxis().SetBinLabel(x,str(x))
-                    
-            if hasGrid or hasGridBySector or hasGridByWheel :
-                histoClone = histo.Clone()
-                histoClone.GetXaxis().SetNdivisions(histo.GetNbinsX(),True)
-                histoClone.GetYaxis().SetNdivisions(histo.GetNbinsY(),True)
-                histoClone.GetXaxis().SetTickLength(0.01)
-                histoClone.GetYaxis().SetTickLength(0.01)
-                histoClone.Draw("same axig")
+                                
         elif histoClass == "TH2F" :
             gStyle.SetPalette(1)
-            histo.GetYaxis().SetRangeUser(plotY[0], plotY[1])
             histo.Draw(option)
-        else:
+
+        else :
             histo.SetLineWidth(2)
-            histo.GetYaxis().SetRangeUser(0.0, histo.GetMaximum() * 1.5)
             histo.GetXaxis().SetTitle(plotX[2])
             histo.GetYaxis().SetTitle(plotY[2])
             
