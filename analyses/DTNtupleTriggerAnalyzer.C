@@ -11,9 +11,9 @@ DTNtupleTriggerAnalyzer::DTNtupleTriggerAnalyzer(const TString & inFileName,
   m_ph2TpgPhiHw = true;
   m_ph2TpgPhiEmuAm = false;
   m_ph2TpgPhiEmuHb = false;
-  m_segments = false;
+  m_segments = true;
 
-  nMaxEvents = 999999; // maximum number of events to be processed
+  nMaxEvents = 99999999999; // maximum number of events to be processed
 
   iWh = 2;
   iSec = 12;
@@ -26,7 +26,8 @@ DTNtupleTriggerAnalyzer::DTNtupleTriggerAnalyzer(const TString & inFileName,
   phiB_Ph2_conv = 1/4096.; // to transform in radians
 
   BXOK_TwinMuxOut = 0;
-  BXOK_ph2Hw = 3295; // From ntuple based on run 329705
+  // BXOK_ph2Hw = 3295; // From ntuple based on SX5 run 329705
+  BXOK_ph2Hw = 3392; // From ntuple based on global run 330163
   BXOK_ph2EmuHb = 0; // to be properly set
   BXOK_ph2EmuAm = 0; // to be properly set
 
