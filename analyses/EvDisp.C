@@ -8,7 +8,7 @@
 // evtDisplay.Loop(); // all events 
 // evtDisplay.Loop(evt_number); // one event 
 // evtDisplay.LoopEntry(entry); // one entry 
-// evtDisplay.Loop(start, stop); // evt range 
+// evtDisplay.Loop(start, stop); // entries range 
 // E.G.:
 // auto evtDisplay = EvDisp("/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/ntuples/DTDPGNtuple_run329806.root", "out.root");
 // evtDisplay.Loop(0, 10);
@@ -19,9 +19,9 @@
 
 EvDisp::EvDisp(const TString & inFileName) :
   DTNtupleBaseAnalyzer(inFileName)
-  {
+{
 
-  }
+}
 
 EvDisp::~EvDisp() 
 { 
@@ -31,12 +31,19 @@ EvDisp::~EvDisp()
 void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
 {
 
+  std::cout<<"[EvDisp::Loop] start"<<std::endl;
   book();
   if (fChain == 0) return;
   Long64_t nentries = fChain->GetEntries();
 
-  if(start>=nentries) {std::cout<<"start>=nentries --> start = 0"<<std::endl; start = 0;}
-  if(stop>nentries) {std::cout<<"stop>nentries --> stop = nentries"<<std::endl; stop = nentries;}
+  if(start>=nentries){
+    std::cout<<"[EvDisp::Loop] start>=nentries --> start = 0"<<std::endl;
+    start = 0;
+  }
+  if(stop>nentries){
+    std::cout<<"[EvDisp::Loop] stop>nentries --> stop = nentries"<<std::endl;
+    stop = nentries;
+  }
   if(start<0) start = 0;
   if(stop<0) stop = nentries;
 
@@ -51,19 +58,18 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
       if(event_eventNumber != evt){
         continue;
       }else{
-        std::cout << "[EvDisp::Loop] processing event  : "<< evt << "\r";
+        std::cout << "[EvDisp::Loop] processing event  : "<< evt << std::endl;
         fill();
         break;
       }
-      std::cout << "[EvDisp::Loop] event  : "<< evt << "not found\r";
+      std::cout << "[EvDisp::Loop] event  : "<< evt << "not found";
     }else{
-      if(jentry % 100 == 0) 
-        std::cout << "[EvDisp::Loop] processed : "<< jentry << " entries\r";
+      std::cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << std::endl;
       fill();
     }
   }
 
-  std::cout << std::endl;
+  std::cout<<"[EvDisp::Loop] end"<<std::endl;
   endJob();
 
 }
@@ -75,7 +81,7 @@ void EvDisp::Loop(Long64_t evt)
 
 void EvDisp::LoopEntry(Long64_t entry)
 {
-  std::cout << "[EvDisp::Loop] processing entry : "<< entry << "\r";
+  std::cout << "[EvDisp::Loop] processing entry : "<< entry;
   Loop(entry, entry+1);
 }
 
@@ -246,9 +252,9 @@ void EvDisp::fill()
 
   // PLOTTING
   if(debug) std::cout<<"plotting"<<std::endl;
-  TCanvas* c3 = new TCanvas();
-  c3->Divide(1,2);
-  c3->cd(1);
+  TCanvas* c1 = new TCanvas();
+  c1->Divide(1,2);
+  c1->cd(1);
   graphStruct->SetMarkerStyle(1);
   graphStruct->SetTitle("Legacy");
   graphStruct->Draw("AP||");
@@ -273,7 +279,7 @@ void EvDisp::fill()
     segments_LegSL3[i]->Draw("SAME");
   }
 
-  c3->cd(2);
+  c1->cd(2);
   TGraphErrors *graphStruct_ = (TGraphErrors*)graphStruct->Clone();
   graphStruct_->SetTitle("Phase2");
   graphStruct_->Draw("AP||");
@@ -300,8 +306,8 @@ void EvDisp::fill()
   //   segments_Ph2SL3[i]->Draw("SAME");
   // }
 
-  c3->Update();
-  c3->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
+  c1->Update();
+  c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
 }
 

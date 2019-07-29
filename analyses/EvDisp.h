@@ -43,7 +43,7 @@ protected:
   double computeQ(double x1, double x2, double y1, double y2);
   double computeM(double x1, double x2, double y1, double y2);
 
-  std::map<std::string, TH2*> m_2Dplots;
+  // std::map<std::string, TH2*> m_2Dplots;
 
   TGraphErrors* graphStruct;
   float cellSizeX = 4.2;
