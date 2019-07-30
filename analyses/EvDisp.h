@@ -30,8 +30,14 @@ public:
   void Loop(Long64_t start, Long64_t stop, Long64_t evt);
   void Loop(Long64_t evt);
   void LoopEntry(Long64_t entry);
+
   void DumpOn(){ dumpFlag = true; }
   void DumpOff(){ dumpFlag = false; }
+  void SaveDisplayOn(){ saveDispFlag = 1; }
+  void SaveDisplayPromt(){ saveDispFlag = 0; }
+  void SaveDisplayOff(){ saveDispFlag = -1; }
+  void AskContinueOn(){ askContinueFlag = true; }
+  void AskContinueOff(){ askContinueFlag = false; }
 
 
 protected:
@@ -55,6 +61,8 @@ protected:
   float zSL1, zSL3;
 
   bool dumpFlag;
+  short int saveDispFlag;
+  bool askContinueFlag;
 
 };
 

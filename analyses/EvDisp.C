@@ -8,17 +8,24 @@
 //
 // TO RUN (in root shell)
 // auto evtDisplay = EvDisp(inputFile);
-// evtDisplay.Loop(); // all events 
-// evtDisplay.Loop(evt_number); // one event 
-// evtDisplay.LoopEntry(entry); // one entry 
-// evtDisplay.Loop(start, stop); // entries range 
-// evtDisplay.Loop(start, stop, evt); // one event, searched only in the entries range 
+// EvDisp::Loop(); // all events 
+// EvDisp::Loop(evt_number); // one event 
+// EvDisp::LoopEntry(entry); // one entry 
+// EvDisp::Loop(start, stop); // entries range 
+// EvDisp::Loop(start, stop, evt); // one event, searched only in the entries range 
 // E.G.:
 // auto evtDisplay = EvDisp("/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/ntuples/DTDPGNtuple_run329806.root", "out.root");
-// evtDisplay.Loop(0, 10);
+// EvDisp::Loop(0, 10);
 //
-// evtDisplay.DumpOn() abilitate digi dump output (default is disabilitate)
-// evtDisplay.DumpOff() disabilitate digi dump output 
+// EvDisp::DumpOn() digi dump output on 
+// EvDisp::DumpOff() digi dump output off (default)
+//
+// EvDisp::SaveDisplayOn(); // save all .png (no promt) 
+// EvDisp::SaveDisplayPromt(); // ask to save at every .png (default)
+// EvDisp::SaveDisplayOff(); // do not save any .png (no promt) 
+//
+// EvDisp::AskContinueOn() ask if continue at every event ON (default)
+// EvDisp::AskContinueOff() ask if continue at every event OFF
 //
 //////////////////////////////////
 
@@ -26,19 +33,29 @@
 #include "EvDisp.h"
 
 EvDisp::EvDisp(const TString & inFileName) :
-  DTNtupleBaseAnalyzer(inFileName), dumpFlag(0)
+  DTNtupleBaseAnalyzer(inFileName)
+  , dumpFlag(false)
+  , saveDispFlag(0)
+  , askContinueFlag(true)
 {
   cout<<endl;
   cout<<"INSTRUCTIONS"<<endl;
   cout<<endl;
-  cout<<"evtDisplay.Loop(); // all events "<<endl;
-  cout<<"evtDisplay.Loop(evt_number); // one event"<<endl;
-  cout<<"evtDisplay.LoopEntry(entry); // one entry"<<endl;
-  cout<<"evtDisplay.Loop(start, stop); // entries range"<<endl;
-  cout<<"evtDisplay.Loop(start, stop, evt); // one event, searched only in the entries range"<<endl;
+  cout<<"EvDisp::Loop(); // all events "<<endl;
+  cout<<"EvDisp::Loop(evt_number); // one event"<<endl;
+  cout<<"EvDisp::LoopEntry(entry); // one entry"<<endl;
+  cout<<"EvDisp::Loop(start, stop); // entries range"<<endl;
+  cout<<"EvDisp::Loop(start, stop, evt); // one event, searched only in the entries range"<<endl;
   cout<<endl;
-  cout<<"evtDisplay.DumpOn(); // abilitate dump to screen digi information "<<endl;
-  cout<<"evtDisplay.DumpOff(); // disabilitate dump to screen digi information (default)"<<endl;
+  cout<<"EvDisp::DumpOn(); // digi dump to screen ON "<<endl;
+  cout<<"EvDisp::DumpOff(); // digi dump to screen OFF (default)"<<endl;
+  cout<<endl;
+  cout<<"EvDisp::SaveDisplayOn(); // save all .png (no promt) "<<endl;
+  cout<<"EvDisp::SaveDisplayPromt(); // ask to save at every .png (default)"<<endl;
+  cout<<"EvDisp::SaveDisplayOff(); // do not save any .png (no promt) "<<endl;
+  cout<<endl; 
+  cout<<"EvDisp::AskContinueOn(); // ask if continue at every event ON (default) "<<endl;
+  cout<<"EvDisp::AskContinueOff(); // ask if continue at every event OFF"<<endl;
   cout<<endl;
 }
 
@@ -87,11 +104,15 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
       fill();
 
       TString continueFlag = "n";
-      do{
-        if(continueFlag != "n") cout<<"[EvDisp::Loop] Invalid choice"<<endl;
-        cout<<"[EvDisp::Loop] Do you want to go to the next event? y/n(exit)"<<endl;
-        cin>>continueFlag;
-      }while(continueFlag != "y" && continueFlag != "n");
+      if(askContinueFlag){
+        do{
+          if(continueFlag != "n") cout<<"[EvDisp::Loop] Invalid choice"<<endl;
+          cout<<"[EvDisp::Loop] Do you want to go to the next event? y/n(exit)"<<endl;
+          cin>>continueFlag;
+        }while(continueFlag != "y" && continueFlag != "n");
+      }else{
+        continueFlag = "y";
+      }
 
       if(continueFlag == "n") break;
     }
@@ -358,11 +379,17 @@ void EvDisp::fill()
   c1->Update();
 
   TString saveFlag = "n";
-  do{
-    if(saveFlag != "n") cout<<"[EvDisp::fill] Invalid choice"<<endl;
-    cout<<"[EvDisp::fill] Do you want to save the current event display? y/n"<<endl;
-    cin>>saveFlag;
-  }while(saveFlag != "y" && saveFlag != "n");
+  if(saveDispFlag == 1){
+    saveFlag = "y";
+  }else if(saveDispFlag == -1){
+    saveFlag = "n";
+  }else{
+    do{
+      if(saveFlag != "n") cout<<"[EvDisp::fill] Invalid choice"<<endl;
+      cout<<"[EvDisp::fill] Do you want to save the current event display? y/n"<<endl;
+      cin>>saveFlag;
+    }while(saveFlag != "y" && saveFlag != "n");
+  }
 
   if(saveFlag == "y") c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
