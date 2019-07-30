@@ -9,24 +9,8 @@
 // TO RUN (in root shell)
 //
 // auto evtDisplay = EvDisp(inputFile);
-// EvDisp::Loop(); // all events 
-// EvDisp::Loop(evt_number); // one event 
-// EvDisp::LoopEntry(entry); // one entry 
-// EvDisp::Loop(start, stop); // entries range 
-// EvDisp::Loop(start, stop, evt); // one event, searched only in the entries range 
-// E.G.:
-// auto evtDisplay = EvDisp("/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/ntuples/DTDPGNtuple_run329806.root", "out.root");
-// EvDisp::Loop(0, 10);
 //
-// EvDisp::DumpOn() digi dump output on 
-// EvDisp::DumpOff() digi dump output off (default)
-//
-// EvDisp::SaveDisplayOn(); // save all .png (no promt) 
-// EvDisp::SaveDisplayPromt(); // ask to save at every .png (default)
-// EvDisp::SaveDisplayOff(); // do not save any .png (no promt) 
-//
-// EvDisp::AskContinueOn() ask if continue at every event ON (default)
-// EvDisp::AskContinueOff() ask if continue at every event OFF
+// See instruction in constuctor
 //
 //////////////////////////////////
 
@@ -38,6 +22,7 @@ EvDisp::EvDisp(const TString & inFileName) :
 , dumpFlag(false)
 , saveDispFlag(0)
 , askContinueFlag(true)
+, runOnlyIfOneEmptyFlag(false)
 {
   cout<<endl;
   cout<<"INSTRUCTIONS"<<endl;
@@ -48,15 +33,18 @@ EvDisp::EvDisp(const TString & inFileName) :
   cout<<"EvDisp::Loop(start, stop); // entries range"<<endl;
   cout<<"EvDisp::Loop(start, stop, evt); // one event, searched only in the entries range"<<endl;
   cout<<endl;
-  cout<<"EvDisp::DumpOn(); // digi dump to screen ON "<<endl;
-  cout<<"EvDisp::DumpOff(); // digi dump to screen OFF (default)"<<endl;
+  cout<<"EvDisp::DumpON(); // digi dump to screen ON "<<endl;
+  cout<<"EvDisp::DumpOFF(); // digi dump to screen OFF (default)"<<endl;
   cout<<endl;
-  cout<<"EvDisp::SaveDisplayOn(); // save all .png (no promt) "<<endl;
-  cout<<"EvDisp::SaveDisplayPromt(); // ask to save at every .png (default)"<<endl;
-  cout<<"EvDisp::SaveDisplayOff(); // do not save any .png (no promt) "<<endl;
+  cout<<"EvDisp::SaveDisplayON(); // save all .png (no promt) "<<endl;
+  cout<<"EvDisp::SaveDisplayPROMT(); // ask to save at every .png (default)"<<endl;
+  cout<<"EvDisp::SaveDisplayOFF(); // do not save any .png (no promt) "<<endl;
   cout<<endl; 
-  cout<<"EvDisp::AskContinueOn(); // ask if continue at every event ON (default) "<<endl;
-  cout<<"EvDisp::AskContinueOff(); // ask if continue at every event OFF"<<endl;
+  cout<<"EvDisp::AskContinueON(); // ask if continue at every event ON (default) "<<endl;
+  cout<<"EvDisp::AskContinueOFF(); // ask if continue at every event OFF"<<endl;
+  cout<<endl;
+  cout<<"EvDisp::RunOnlyIfOneEmptyON(); // run only on events where one of the two Phases has no hits "<<endl;
+  cout<<"EvDisp::RunOnlyIfOneEmptyOFF(); // disable RunOnlyIfOneEmpty (default)"<<endl;
   cout<<endl;
 }
 
@@ -102,7 +90,7 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
       }
       cout << "[EvDisp::Loop] event  : "<< evt << "not found";
     }else{
-      cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << endl;
+      if(!runOnlyIfOneEmptyFlag) cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << endl;
       fill();
 
       TString continueFlag = "n";
@@ -180,14 +168,39 @@ void EvDisp::fill()
 
   // DIGI
   if(debug) cout<<"digi"<<endl;
+
+  if(runOnlyIfOneEmptyFlag){
+    unsigned int nDigiLegacy = 0, nDigiPh2 = 0;
+    for(unsigned int idigi=0; idigi<digi_nDigis; idigi++){
+      if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue;
+      if(digi_superLayer->at(idigi)==2) continue;
+      nDigiLegacy++;
+    }
+    for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++){
+      if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2) continue;
+      if(ph2Digi_superLayer->at(idigi)==2) continue;
+      nDigiPh2++;
+    }
+    bool onlyLegacy = false, onlyPh2 = false;
+    if((nDigiLegacy == 0) && (nDigiPh2 !=0 )){
+      onlyLegacy = true;
+      cout<<"[EvDisp::fill] Only Legacy hits"<<endl;
+    }
+    if((nDigiLegacy != 0) && (nDigiPh2 ==0 )){
+      onlyPh2 = true;
+      cout<<"[EvDisp::fill] Only Phase2 hits"<<endl;
+    }
+    if(!(onlyLegacy || onlyPh2)) return;
+  }
+  
   if(dumpFlag) cout<<"digi L SL wire time"<<endl;
 
   // 5-dimensional arrays of vector<float> to allocate multiple digit up to 5
   vector<float> xPhiLeg[5], yPhiLeg[5];
   vector<float> xEtaLeg[5], yEtaLeg[5];
 
-  for(unsigned int idigi=0; idigi<digi_nDigis; idigi++) {
-    if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue; 
+  for(unsigned int idigi=0; idigi<digi_nDigis; idigi++){
+    if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue;
     float wire = digi_wire->at(idigi);
     float layer = digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
 
@@ -224,7 +237,7 @@ void EvDisp::fill()
   vector<float> xPhiPh2[5], yPhiPh2[5];
   vector<float> xEtaPh2[5], yEtaPh2[5];
 
-  for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++) {
+  for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++){
     if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2) continue;
     float wire = ph2Digi_wire->at(idigi);
     float layer = ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
@@ -359,7 +372,6 @@ void EvDisp::fill()
       grPhi_Legacy[i] = new TGraph(xPhiLeg[i].size(),&xPhiLeg[i][0],&yPhiLeg[i][0]);
       setGraphColor(grPhi_Legacy[i], i);
       grPhi_Legacy[i]->Draw("PSAME");
-      if(i>0) cout<<"----- "<<i<<" ----"<<endl;
     }
     if(xEtaLeg[i].size()>0){
       grEta_Legacy[i] = new TGraph(xEtaLeg[i].size(),&xEtaLeg[i][0],&yEtaLeg[i][0]);
@@ -437,6 +449,7 @@ void EvDisp::fillDigiVectors(vector<float> vX[], vector<float> vY[], float x, fl
   for(int i=5-1;i>0;i--){
     for(unsigned int j=0;j<vX[i].size();j++){
       if((vX[i-1][j]==x) && (vY[i-1][j]==y)){
+        cout<<"----- "<<i<<" ----"<<endl;
         vX[i].push_back(x);
         vY[i].push_back(y);
         break;

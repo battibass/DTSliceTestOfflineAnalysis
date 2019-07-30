@@ -32,13 +32,15 @@ public:
   void Loop(Long64_t evt);
   void LoopEntry(Long64_t entry);
 
-  void DumpOn(){ dumpFlag = true; }
-  void DumpOff(){ dumpFlag = false; }
-  void SaveDisplayOn(){ saveDispFlag = 1; }
-  void SaveDisplayPromt(){ saveDispFlag = 0; }
-  void SaveDisplayOff(){ saveDispFlag = -1; }
-  void AskContinueOn(){ askContinueFlag = true; }
-  void AskContinueOff(){ askContinueFlag = false; }
+  void DumpON(){ dumpFlag = true; }
+  void DumpOFF(){ dumpFlag = false; }
+  void SaveDisplayON(){ saveDispFlag = 1; }
+  void SaveDisplayPROMT(){ saveDispFlag = 0; }
+  void SaveDisplayOFF(){ saveDispFlag = -1; }
+  void AskContinueON(){ askContinueFlag = true; }
+  void AskContinueOFF(){ askContinueFlag = false; }
+  void RunOnlyIfOneEmptyON(){ runOnlyIfOneEmptyFlag = true; }
+  void RunOnlyIfOneEmptyOFF(){ runOnlyIfOneEmptyFlag = false; }
 
 
 protected:
@@ -66,10 +68,11 @@ protected:
   float zSL1, zSL3;
 
   TCanvas *c1;
-  
+
   bool dumpFlag;
   short int saveDispFlag;
   bool askContinueFlag;
+  bool runOnlyIfOneEmptyFlag;
 
 };
 
