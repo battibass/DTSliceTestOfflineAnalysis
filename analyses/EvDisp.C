@@ -16,21 +16,29 @@
 // E.G.:
 // auto evtDisplay = EvDisp("/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/ntuples/DTDPGNtuple_run329806.root", "out.root");
 // evtDisplay.Loop(0, 10);
+//
+// evtDisplay.DumpOn() abilitate digi dump output (default is disabilitate)
+// evtDisplay.DumpOff() disabilitate digi dump output 
+//
 //////////////////////////////////
 
 
 #include "EvDisp.h"
 
 EvDisp::EvDisp(const TString & inFileName) :
-  DTNtupleBaseAnalyzer(inFileName)
+  DTNtupleBaseAnalyzer(inFileName), dumpFlag(0)
 {
   cout<<endl;
   cout<<"INSTRUCTIONS"<<endl;
+  cout<<endl;
   cout<<"evtDisplay.Loop(); // all events "<<endl;
   cout<<"evtDisplay.Loop(evt_number); // one event"<<endl;
   cout<<"evtDisplay.LoopEntry(entry); // one entry"<<endl;
   cout<<"evtDisplay.Loop(start, stop); // entries range"<<endl;
   cout<<"evtDisplay.Loop(start, stop, evt); // one event, searched only in the entries range"<<endl;
+  cout<<endl;
+  cout<<"evtDisplay.DumpOn(); // abilitate dump to screen digi information "<<endl;
+  cout<<"evtDisplay.DumpOff(); // disabilitate dump to screen digi information (default)"<<endl;
   cout<<endl;
 }
 
@@ -161,6 +169,14 @@ void EvDisp::fill()
       yPhiLeg.push_back(computeY(y));
     }
 
+    if(dumpFlag){
+      cout<<"digi "<<idigi<<", L = "<<digi_layer->at(idigi);
+      cout<<", SL = "<<digi_superLayer->at(idigi);
+      cout<<", wire = "<<digi_wire->at(idigi);      
+      cout<<", time = "<<digi_time->at(idigi);      
+      cout<<endl;
+    }
+
     // for(unsigned int idigi2=0; idigi2<ph2Digi_nDigis; idigi2++) {
     //   if (ph2Digi_superLayer->at(idigi2)==digi_superLayer->at(idigi) &&
     //       ph2Digi_layer->at(idigi2)==digi_layer->at(idigi) &&
@@ -170,6 +186,8 @@ void EvDisp::fill()
     //   }
     // }
   }
+
+  if(dumpFlag) cout<<endl;
 
   for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++) {
     if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2) continue;
@@ -183,7 +201,17 @@ void EvDisp::fill()
       xPhiPh2.push_back(computeX(x,y));
       yPhiPh2.push_back(computeY(y));
     }
+
+    if(dumpFlag){
+      cout<<"Ph2Digi "<<idigi<<", L = "<<ph2Digi_layer->at(idigi);
+      cout<<", SL = "<<ph2Digi_superLayer->at(idigi);
+      cout<<", wire = "<<ph2Digi_wire->at(idigi);      
+      cout<<", time = "<<ph2Digi_time->at(idigi);      
+      cout<<endl;
+    }
   }
+
+  if(dumpFlag) cout<<endl;
 
   // SEGMENTS
   if(debug) cout<<"segment"<<endl;

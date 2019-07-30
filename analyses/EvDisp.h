@@ -27,9 +27,11 @@ public:
   ~EvDisp();
 
   virtual void Loop() override;
-  virtual void Loop(Long64_t start, Long64_t stop, Long64_t evt);
-  virtual void Loop(Long64_t evt);
-  virtual void LoopEntry(Long64_t entry);
+  void Loop(Long64_t start, Long64_t stop, Long64_t evt);
+  void Loop(Long64_t evt);
+  void LoopEntry(Long64_t entry);
+  void DumpOn(){ dumpFlag = true; }
+  void DumpOff(){ dumpFlag = false; }
 
 
 protected:
@@ -51,6 +53,8 @@ protected:
   float honeySize = 12.8;
   float x0chamber = 132.55;
   float zSL1, zSL3;
+
+  bool dumpFlag;
 
 };
 
