@@ -77,6 +77,15 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
     }else{
       cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << endl;
       fill();
+
+      TString continueFlag = "n";
+      do{
+        if(continueFlag != "n") cout<<"[EvDisp::Loop] Invalid choice"<<endl;
+        cout<<"[EvDisp::Loop] Do you want to go to the next event? y/n(exit)"<<endl;
+        cin>>continueFlag;
+      }while(continueFlag != "y" && continueFlag != "n");
+
+      if(continueFlag == "n") break;
     }
   }
 
@@ -133,8 +142,9 @@ void EvDisp::fill()
 {
   bool debug = false;
   if(debug) cout<<endl;
-  if(debug) cout<<"digi"<<endl;
+
   // DIGI
+  if(debug) cout<<"digi"<<endl;
   vector<float> xPhiLeg, yPhiLeg, xPhiPh2, yPhiPh2;
   vector<float> xEtaLeg, yEtaLeg, xEtaPh2, yEtaPh2;
 
@@ -175,8 +185,8 @@ void EvDisp::fill()
     }
   }
 
-  if(debug) cout<<"segment"<<endl;
   // SEGMENTS
+  if(debug) cout<<"segment"<<endl;
   //Legacy
   int nSegLeg = 0;
   TF1 **segments_LegSL1 = new TF1*[seg_nSegments];
@@ -281,7 +291,7 @@ void EvDisp::fill()
     TGraph* graphEta_Legacy = new TGraph(xEtaLeg.size(),&xEtaLeg[0],&yEtaLeg[0]);
     graphEta_Legacy->SetMarkerStyle(20);
     graphEta_Legacy->SetMarkerSize(0.5);
-    graphEta_Legacy->SetMarkerColor(kOrange);
+    graphEta_Legacy->SetMarkerColor(kRed);
     graphEta_Legacy->Draw("PSAME");
   }
 
@@ -299,34 +309,32 @@ void EvDisp::fill()
     TGraph* graphPhi_Ph2 = new TGraph(xPhiPh2.size(),&xPhiPh2[0],&yPhiPh2[0]);
     graphPhi_Ph2->SetMarkerStyle(20);
     graphPhi_Ph2->SetMarkerSize(0.5);
-    graphPhi_Ph2->SetMarkerColor(kBlue);
+    graphPhi_Ph2->SetMarkerColor(kRed);
     graphPhi_Ph2->Draw("PSAME");
   }
   if(xEtaPh2.size()>0){
     TGraph* graphEta_Ph2 = new TGraph(xEtaPh2.size(),&xEtaPh2[0],&yEtaPh2[0]);
     graphEta_Ph2->SetMarkerStyle(20);
     graphEta_Ph2->SetMarkerSize(0.5);
-    graphEta_Ph2->SetMarkerColor(kAzure);
+    graphEta_Ph2->SetMarkerColor(kRed);
     graphEta_Ph2->Draw("PSAME");
   }
 
   // for(int i=0;i<nSegPh2;i++){
-  //   segments_Ph2SL1[i]->SetLineColor(kBlue);
-  //   segments_Ph2SL3[i]->SetLineColor(kBlue);
+  //   segments_Ph2SL1[i]->SetLineColor(kRed);
+  //   segments_Ph2SL3[i]->SetLineColor(kRed);
   //   segments_Ph2SL1[i]->Draw("SAME");
   //   segments_Ph2SL3[i]->Draw("SAME");
   // }
 
   c1->Update();
 
-  TString saveFlag;
-  cout<<"[EvDisp::fill] Do you want to save the current event display? y/n"<<endl;
-  cin>>saveFlag;
-  while(saveFlag != "y" && saveFlag != "n"){
-    cout<<"[EvDisp::fill] Invalid choice"<<endl;
+  TString saveFlag = "n";
+  do{
+    if(saveFlag != "n") cout<<"[EvDisp::fill] Invalid choice"<<endl;
     cout<<"[EvDisp::fill] Do you want to save the current event display? y/n"<<endl;
     cin>>saveFlag;
-  }
+  }while(saveFlag != "y" && saveFlag != "n");
 
   if(saveFlag == "y") c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
