@@ -91,6 +91,8 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
       cout << "[EvDisp::Loop] event  : "<< evt << "not found";
     }else{
       if(!runOnlyIfOneEmptyFlag) cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << endl;
+      else if(jentry%1000 == 0)  cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << endl;
+
       fill();
 
       TString continueFlag = "n";
@@ -384,6 +386,12 @@ void EvDisp::fill()
     segments_LegSL1[i]->Draw("SAME");
     segments_LegSL3[i]->Draw("SAME");
   }
+
+  //LEGEND
+  auto legend = new TLegend(0.85,0.8,0.99,1.0);
+  legend->AddEntry((TObject*)0, Form("Run %i",event_runNumber), "");
+  legend->AddEntry((TObject*)0, Form("Event %i",(int)event_eventNumber), "");
+  legend->Draw();
 
   c1->cd(2);
   TGraphErrors *graphStruct_ = (TGraphErrors*)graphStruct->Clone();
