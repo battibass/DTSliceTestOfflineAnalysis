@@ -53,6 +53,8 @@ protected:
 
   // std::map<std::string, TH2*> m_2Dplots;
 
+  TCanvas *c1;
+
   TGraphErrors* graphStruct;
   float cellSizeX = 4.2;
   float cellSizeY = 1.3;

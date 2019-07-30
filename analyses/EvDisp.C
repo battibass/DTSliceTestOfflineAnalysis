@@ -7,6 +7,7 @@
 // .L EvDisp.C++ 
 //
 // TO RUN (in root shell)
+//
 // auto evtDisplay = EvDisp(inputFile);
 // EvDisp::Loop(); // all events 
 // EvDisp::Loop(evt_number); // one event 
@@ -34,9 +35,9 @@
 
 EvDisp::EvDisp(const TString & inFileName) :
   DTNtupleBaseAnalyzer(inFileName)
-  , dumpFlag(false)
-  , saveDispFlag(0)
-  , askContinueFlag(true)
+, dumpFlag(false)
+, saveDispFlag(0)
+, askContinueFlag(true)
 {
   cout<<endl;
   cout<<"INSTRUCTIONS"<<endl;
@@ -86,6 +87,7 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
   Long64_t nbytes = 0, nb = 0;
   for(Long64_t jentry=start; jentry<stop; jentry++) 
   {
+
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     nb = fChain->GetEvent(jentry);
@@ -114,7 +116,11 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
         continueFlag = "y";
       }
 
+      //Memory Cleaning
+      delete c1;
+
       if(continueFlag == "n") break;
+
     }
   }
 
@@ -177,6 +183,8 @@ void EvDisp::fill()
   vector<float> xPhiLeg, yPhiLeg, xPhiPh2, yPhiPh2;
   vector<float> xEtaLeg, yEtaLeg, xEtaPh2, yEtaPh2;
 
+  if(dumpFlag) cout<<"digi L SL wire time"<<endl;
+
   for(unsigned int idigi=0; idigi<digi_nDigis; idigi++) {
     if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue; 
     float x=digi_wire->at(idigi);
@@ -191,10 +199,11 @@ void EvDisp::fill()
     }
 
     if(dumpFlag){
-      cout<<"digi "<<idigi<<", L = "<<digi_layer->at(idigi);
-      cout<<", SL = "<<digi_superLayer->at(idigi);
-      cout<<", wire = "<<digi_wire->at(idigi);      
-      cout<<", time = "<<digi_time->at(idigi);      
+      cout<<idigi;
+      cout<<" "<<digi_layer->at(idigi);
+      cout<<" "<<digi_superLayer->at(idigi);
+      cout<<" "<<digi_wire->at(idigi);      
+      cout<<" "<<digi_time->at(idigi);      
       cout<<endl;
     }
 
@@ -208,7 +217,7 @@ void EvDisp::fill()
     // }
   }
 
-  if(dumpFlag) cout<<endl;
+  if(dumpFlag) cout<<endl<<"ph2Digi L SL wire time"<<endl;
 
   for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++) {
     if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2) continue;
@@ -224,10 +233,11 @@ void EvDisp::fill()
     }
 
     if(dumpFlag){
-      cout<<"Ph2Digi "<<idigi<<", L = "<<ph2Digi_layer->at(idigi);
-      cout<<", SL = "<<ph2Digi_superLayer->at(idigi);
-      cout<<", wire = "<<ph2Digi_wire->at(idigi);      
-      cout<<", time = "<<ph2Digi_time->at(idigi);      
+      cout<<" "<<idigi;
+      cout<<" "<<ph2Digi_layer->at(idigi);
+      cout<<" "<<ph2Digi_superLayer->at(idigi);
+      cout<<" "<<ph2Digi_wire->at(idigi);      
+      cout<<" "<<ph2Digi_time->at(idigi);      
       cout<<endl;
     }
   }
@@ -322,7 +332,7 @@ void EvDisp::fill()
 
   // PLOTTING
   if(debug) cout<<"plotting"<<endl;
-  TCanvas* c1 = new TCanvas();
+  c1 = new TCanvas();
   c1->Divide(1,2);
   c1->cd(1);
   graphStruct->SetMarkerStyle(1);
