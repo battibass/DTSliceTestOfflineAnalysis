@@ -24,7 +24,14 @@
 EvDisp::EvDisp(const TString & inFileName) :
   DTNtupleBaseAnalyzer(inFileName)
 {
-
+  cout<<endl;
+  cout<<"INSTRUCTIONS"<<endl;
+  cout<<"evtDisplay.Loop(); // all events "<<endl;
+  cout<<"evtDisplay.Loop(evt_number); // one event"<<endl;
+  cout<<"evtDisplay.LoopEntry(entry); // one entry"<<endl;
+  cout<<"evtDisplay.Loop(start, stop); // entries range"<<endl;
+  cout<<"evtDisplay.Loop(start, stop, evt); // one event, searched only in the entries range"<<endl;
+  cout<<endl;
 }
 
 EvDisp::~EvDisp() 
@@ -35,17 +42,17 @@ EvDisp::~EvDisp()
 void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
 {
 
-  std::cout<<"[EvDisp::Loop] start"<<std::endl;
+  cout<<"[EvDisp::Loop] start"<<endl;
   book();
   if (fChain == 0) return;
   Long64_t nentries = fChain->GetEntries();
 
   if(start>=nentries){
-    std::cout<<"[EvDisp::Loop] start>=nentries --> start = 0"<<std::endl;
+    cout<<"[EvDisp::Loop] start>=nentries --> start = 0"<<endl;
     start = 0;
   }
   if(stop>nentries){
-    std::cout<<"[EvDisp::Loop] stop>nentries --> stop = nentries"<<std::endl;
+    cout<<"[EvDisp::Loop] stop>nentries --> stop = nentries"<<endl;
     stop = nentries;
   }
   if(start<0) start = 0;
@@ -62,18 +69,18 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
       if(event_eventNumber != evt){
         continue;
       }else{
-        std::cout << "[EvDisp::Loop] processing event  : "<< evt << std::endl;
+        cout << "[EvDisp::Loop] processing event  : "<< evt << endl;
         fill();
         break;
       }
-      std::cout << "[EvDisp::Loop] event  : "<< evt << "not found";
+      cout << "[EvDisp::Loop] event  : "<< evt << "not found";
     }else{
-      std::cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << std::endl;
+      cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << endl;
       fill();
     }
   }
 
-  std::cout<<"[EvDisp::Loop] end"<<std::endl;
+  cout<<"[EvDisp::Loop] end"<<endl;
   endJob();
 
 }
@@ -85,7 +92,7 @@ void EvDisp::Loop(Long64_t evt)
 
 void EvDisp::LoopEntry(Long64_t entry)
 {
-  std::cout << "[EvDisp::Loop] processing entry : "<< entry;
+  cout << "[EvDisp::Loop] processing entry : "<< entry;
   Loop(entry, entry+1);
 }
 
@@ -96,7 +103,7 @@ void EvDisp::Loop()
 
 void EvDisp::book()
 {
-  std::cout<<"[EvDisp::book] start"<<std::endl;
+  cout<<"[EvDisp::book] start"<<endl;
 
   // m_2Dplots["timecomp"] = new TH2F("timecomp","ph2 time vs legacy",500,2200,3200,500,82000,83000);
   gSystem->Exec("mkdir -p ./evDispPlots");
@@ -104,8 +111,8 @@ void EvDisp::book()
   zSL1 = computeY(2.5);   // middle of SL1
   zSL3 = computeY(10.5);  // middle of SL3
 
-  std::vector<float> xStruct, yStruct;
-  std::vector<float> exStruct, eyStruct;
+  vector<float> xStruct, yStruct;
+  vector<float> exStruct, eyStruct;
 
   for(unsigned int i=1; i<=60; i++) {
     for(unsigned int j=1; j<=12; j++){
@@ -118,18 +125,18 @@ void EvDisp::book()
 
   graphStruct = new TGraphErrors(xStruct.size(),&xStruct[0],&yStruct[0],&exStruct[0],&eyStruct[0]);
 
-  std::cout<<"[EvDisp::book] end"<<std::endl;
+  cout<<"[EvDisp::book] end"<<endl;
 
 }
 
 void EvDisp::fill()
 {
   bool debug = false;
-  if(debug) std::cout<<std::endl;
-  if(debug) std::cout<<"digi"<<std::endl;
+  if(debug) cout<<endl;
+  if(debug) cout<<"digi"<<endl;
   // DIGI
-  std::vector<float> xPhiLeg, yPhiLeg, xPhiPh2, yPhiPh2;
-  std::vector<float> xEtaLeg, yEtaLeg, xEtaPh2, yEtaPh2;
+  vector<float> xPhiLeg, yPhiLeg, xPhiPh2, yPhiPh2;
+  vector<float> xEtaLeg, yEtaLeg, xEtaPh2, yEtaPh2;
 
   for(unsigned int idigi=0; idigi<digi_nDigis; idigi++) {
     if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue; 
@@ -168,7 +175,7 @@ void EvDisp::fill()
     }
   }
 
-  if(debug) std::cout<<"segment"<<std::endl;
+  if(debug) cout<<"segment"<<endl;
   // SEGMENTS
   //Legacy
   int nSegLeg = 0;
@@ -181,16 +188,16 @@ void EvDisp::fill()
     nSegLeg++;
 
     if(debug){
-      std::cout<<std::endl;
-      std::cout<<"iSeg "<<iSeg<<std::endl;
+      cout<<endl;
+      cout<<"iSeg "<<iSeg<<endl;
       for(int iHit=0; iHit<seg_phi_nHits->at(iSeg); iHit++){
-        std::cout<<getXY<float>(seg_phiHits_pos,iSeg,iHit)<<" ";
-        std::cout<<getXY<float>(seg_phiHits_posCh,iSeg,iHit)<<" ";
-        std::cout<<getXY<float>(seg_phiHits_wire,iSeg,iHit)<<" ";
-        std::cout<<getXY<float>(seg_phiHits_wirePos,iSeg,iHit)<<" ";
-        std::cout<<getXY<float>(seg_phiHits_layer,iSeg,iHit)<<" ";
-        std::cout<<getXY<float>(seg_phiHits_superLayer,iSeg,iHit)<<" ";
-        std::cout<<std::endl;
+        cout<<getXY<float>(seg_phiHits_pos,iSeg,iHit)<<" ";
+        cout<<getXY<float>(seg_phiHits_posCh,iSeg,iHit)<<" ";
+        cout<<getXY<float>(seg_phiHits_wire,iSeg,iHit)<<" ";
+        cout<<getXY<float>(seg_phiHits_wirePos,iSeg,iHit)<<" ";
+        cout<<getXY<float>(seg_phiHits_layer,iSeg,iHit)<<" ";
+        cout<<getXY<float>(seg_phiHits_superLayer,iSeg,iHit)<<" ";
+        cout<<endl;
       }
     }
 
@@ -255,7 +262,7 @@ void EvDisp::fill()
   // }
 
   // PLOTTING
-  if(debug) std::cout<<"plotting"<<std::endl;
+  if(debug) cout<<"plotting"<<endl;
   TCanvas* c1 = new TCanvas();
   c1->Divide(1,2);
   c1->cd(1);
@@ -311,13 +318,23 @@ void EvDisp::fill()
   // }
 
   c1->Update();
-  c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
+
+  TString saveFlag;
+  cout<<"[EvDisp::fill] Do you want to save the current event display? y/n"<<endl;
+  cin>>saveFlag;
+  while(saveFlag != "y" && saveFlag != "n"){
+    cout<<"[EvDisp::fill] Invalid choice"<<endl;
+    cout<<"[EvDisp::fill] Do you want to save the current event display? y/n"<<endl;
+    cin>>saveFlag;
+  }
+
+  if(saveFlag == "y") c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
 }
 
 void EvDisp::endJob()
 {
-  std::cout<<"[EvDisp::endJob] start"<<std::endl;
+  cout<<"[EvDisp::endJob] start"<<endl;
 
   // TCanvas* c2 = new TCanvas();
   // gStyle->SetOptStat(0);
@@ -326,7 +343,7 @@ void EvDisp::endJob()
   // c2->Update();
   // c2->Print("evDisplPlot/time.png");
 
-  std::cout<<"[EvDisp::endJob] end"<<std::endl;
+  cout<<"[EvDisp::endJob] end"<<endl;
 }
 
 
