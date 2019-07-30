@@ -180,22 +180,24 @@ void EvDisp::fill()
 
   // DIGI
   if(debug) cout<<"digi"<<endl;
-  vector<float> xPhiLeg, yPhiLeg, xPhiPh2, yPhiPh2;
-  vector<float> xEtaLeg, yEtaLeg, xEtaPh2, yEtaPh2;
-
   if(dumpFlag) cout<<"digi L SL wire time"<<endl;
+
+  // 5-dimensional arrays of vector<float> to allocate multiple digit up to 5
+  vector<float> xPhiLeg[5], yPhiLeg[5];
+  vector<float> xEtaLeg[5], yEtaLeg[5];
 
   for(unsigned int idigi=0; idigi<digi_nDigis; idigi++) {
     if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue; 
-    float x=digi_wire->at(idigi);
-    float y=digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
+    float wire = digi_wire->at(idigi);
+    float layer = digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
+
+    float x = computeX(wire,layer);
+    float y = computeY(layer);
 
     if(digi_superLayer->at(idigi) == 2){
-      xEtaLeg.push_back(computeX(x,y));
-      yEtaLeg.push_back(computeY(y));
+      fillDigiVectors(xEtaLeg, yEtaLeg, x, y);
     }else{
-      xPhiLeg.push_back(computeX(x,y));
-      yPhiLeg.push_back(computeY(y));
+      fillDigiVectors(xPhiLeg, yPhiLeg, x, y);
     }
 
     if(dumpFlag){
@@ -219,17 +221,21 @@ void EvDisp::fill()
 
   if(dumpFlag) cout<<endl<<"ph2Digi L SL wire time"<<endl;
 
+  vector<float> xPhiPh2[5], yPhiPh2[5];
+  vector<float> xEtaPh2[5], yEtaPh2[5];
+
   for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++) {
     if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2) continue;
-    float x=ph2Digi_wire->at(idigi);
-    float y=ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
+    float wire = ph2Digi_wire->at(idigi);
+    float layer = ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
+
+    float x = computeX(wire,layer);
+    float y = computeY(layer);
 
     if(ph2Digi_superLayer->at(idigi)== 2){
-      xEtaPh2.push_back(computeX(x,y));
-      yEtaPh2.push_back(computeY(y));
+      fillDigiVectors(xEtaPh2, yEtaPh2, x, y);
     }else{
-      xPhiPh2.push_back(computeX(x,y));
-      yPhiPh2.push_back(computeY(y));
+      fillDigiVectors(xPhiPh2, yPhiPh2, x, y);
     }
 
     if(dumpFlag){
@@ -277,7 +283,7 @@ void EvDisp::fill()
 
     double m1 = computeM(x11, x12, z11, z12);
     double q1 = computeQ(x11, x12, z11, z12);
-    double range1 = 2*cellSizeY/m1;
+    double range1 = 3*cellSizeY/m1;
 
     double x31 = x0chamber + seg_posLoc_x_SL3->at(iSeg);
     double z31 = zSL3;
@@ -286,13 +292,15 @@ void EvDisp::fill()
 
     double m3 = computeM(x31, x32, z31, z32);
     double q3 = computeQ(x31, x32, z31, z32);
-    double range3 = 2*cellSizeY/m3;
+    double range3 = 3*cellSizeY/m3;
 
     segments_LegSL1[iSeg] = new TF1(Form("segLegSL1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
     segments_LegSL1[iSeg]->SetParameters(q1,m1);
+    segments_LegSL1[iSeg]->SetLineWidth(1);
 
     segments_LegSL3[iSeg] = new TF1(Form("segLegSL3%i",iSeg),"[0]+[1]*x", x31-range3, x31+range3);
     segments_LegSL3[iSeg]->SetParameters(q3,m3);
+    segments_LegSL3[iSeg]->SetLineWidth(1);
   }
 
   //Phase 2
@@ -332,26 +340,32 @@ void EvDisp::fill()
 
   // PLOTTING
   if(debug) cout<<"plotting"<<endl;
-  c1 = new TCanvas();
+
+  TGraph **grPhi_Legacy = new TGraph*[5];
+  TGraph **grEta_Legacy = new TGraph*[5];
+  TGraph **grPhi_Ph2    = new TGraph*[5];
+  TGraph **grEta_Ph2    = new TGraph*[5];
+
+  // STRUCT
+  c1 = new TCanvas("c1","c1",800,600);
   c1->Divide(1,2);
   c1->cd(1);
   graphStruct->SetMarkerStyle(1);
   graphStruct->SetTitle("Legacy");
   graphStruct->Draw("AP||");
 
-  if(xPhiLeg.size()>0){
-    TGraph* graphPhi_Legacy = new TGraph(xPhiLeg.size(),&xPhiLeg[0],&yPhiLeg[0]);
-    graphPhi_Legacy->SetMarkerStyle(20);
-    graphPhi_Legacy->SetMarkerSize(0.5);
-    graphPhi_Legacy->SetMarkerColor(kRed);
-    graphPhi_Legacy->Draw("PSAME");
-  } 
-  if(xEtaLeg.size()>0){
-    TGraph* graphEta_Legacy = new TGraph(xEtaLeg.size(),&xEtaLeg[0],&yEtaLeg[0]);
-    graphEta_Legacy->SetMarkerStyle(20);
-    graphEta_Legacy->SetMarkerSize(0.5);
-    graphEta_Legacy->SetMarkerColor(kRed);
-    graphEta_Legacy->Draw("PSAME");
+  for(int i=0;i<5;i++){
+    if(xPhiLeg[i].size()>0){
+      grPhi_Legacy[i] = new TGraph(xPhiLeg[i].size(),&xPhiLeg[i][0],&yPhiLeg[i][0]);
+      setGraphColor(grPhi_Legacy[i], i);
+      grPhi_Legacy[i]->Draw("PSAME");
+      if(i>0) cout<<"----- "<<i<<" ----"<<endl;
+    }
+    if(xEtaLeg[i].size()>0){
+      grEta_Legacy[i] = new TGraph(xEtaLeg[i].size(),&xEtaLeg[i][0],&yEtaLeg[i][0]);
+      setGraphColor(grEta_Legacy[i], i);
+      grEta_Legacy[i]->Draw("PSAME");
+    }
   }
 
   for(int i=0;i<nSegLeg;i++){
@@ -364,21 +378,20 @@ void EvDisp::fill()
   graphStruct_->SetTitle("Phase2");
   graphStruct_->Draw("AP||");
 
-  if(xPhiPh2.size()>0){
-    TGraph* graphPhi_Ph2 = new TGraph(xPhiPh2.size(),&xPhiPh2[0],&yPhiPh2[0]);
-    graphPhi_Ph2->SetMarkerStyle(20);
-    graphPhi_Ph2->SetMarkerSize(0.5);
-    graphPhi_Ph2->SetMarkerColor(kRed);
-    graphPhi_Ph2->Draw("PSAME");
-  }
-  if(xEtaPh2.size()>0){
-    TGraph* graphEta_Ph2 = new TGraph(xEtaPh2.size(),&xEtaPh2[0],&yEtaPh2[0]);
-    graphEta_Ph2->SetMarkerStyle(20);
-    graphEta_Ph2->SetMarkerSize(0.5);
-    graphEta_Ph2->SetMarkerColor(kRed);
-    graphEta_Ph2->Draw("PSAME");
+  for(int i=0;i<5;i++){
+    if(xPhiPh2[i].size()>0){
+      grPhi_Ph2[i] = new TGraph(xPhiPh2[i].size(),&xPhiPh2[i][0],&yPhiPh2[i][0]);
+      setGraphColor(grPhi_Ph2[i], i);
+      grPhi_Ph2[i]->Draw("PSAME");
+    }
+    if(xEtaPh2[i].size()>0){
+      grEta_Ph2[i] = new TGraph(xEtaPh2[i].size(),&xEtaPh2[i][0],&yEtaPh2[i][0]);
+      setGraphColor(grEta_Ph2[i], i);
+      grEta_Ph2[i]->Draw("PSAME");
+    }
   }
 
+  // PHASE 2 segment disabled for now
   // for(int i=0;i<nSegPh2;i++){
   //   segments_Ph2SL1[i]->SetLineColor(kRed);
   //   segments_Ph2SL3[i]->SetLineColor(kRed);
@@ -419,6 +432,20 @@ void EvDisp::endJob()
   cout<<"[EvDisp::endJob] end"<<endl;
 }
 
+void EvDisp::fillDigiVectors(vector<float> vX[], vector<float> vY[], float x, float y)
+{
+  for(int i=5-1;i>0;i--){
+    for(unsigned int j=0;j<vX[i].size();j++){
+      if((vX[i-1][j]==x) && (vY[i-1][j]==y)){
+        vX[i].push_back(x);
+        vY[i].push_back(y);
+        break;
+      }
+    }
+  }
+  vX[0].push_back(x);
+  vY[0].push_back(y);
+}
 
 float EvDisp::computeX(float x, int y)
 {
@@ -444,4 +471,17 @@ double EvDisp::computeQ(double x1, double x2, double y1, double y2)
 double EvDisp::computeM(double x1, double x2, double y1, double y2)
 {
   return (y1-y2)/(x1-x2);
+}
+
+void EvDisp::setGraphColor(TGraph *gr, int i)
+{
+  gr->SetMarkerStyle(20);
+  gr->SetMarkerSize(0.75);
+  switch (i){
+    case 0: gr->SetMarkerColor(kRed); break;
+    case 1: gr->SetMarkerColor(kMagenta); break;
+    case 2: gr->SetMarkerColor(kBlue); break;
+    case 3: gr->SetMarkerColor(kCyan); break;
+    case 4: gr->SetMarkerColor(kGreen); break;
+  }
 }

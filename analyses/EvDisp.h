@@ -16,6 +16,7 @@
 #include <sstream>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 
 class EvDisp : public DTNtupleBaseAnalyzer
@@ -51,9 +52,11 @@ protected:
   double computeQ(double x1, double x2, double y1, double y2);
   double computeM(double x1, double x2, double y1, double y2);
 
+  void fillDigiVectors(vector<float> vX[], vector<float> vY[], float x, float y);
+  void setGraphColor(TGraph *gr, int i);
+
   // std::map<std::string, TH2*> m_2Dplots;
 
-  TCanvas *c1;
 
   TGraphErrors* graphStruct;
   float cellSizeX = 4.2;
@@ -62,6 +65,8 @@ protected:
   float x0chamber = 132.55;
   float zSL1, zSL3;
 
+  TCanvas *c1;
+  
   bool dumpFlag;
   short int saveDispFlag;
   bool askContinueFlag;
