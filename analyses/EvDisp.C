@@ -106,8 +106,7 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
         continueFlag = "y";
       }
 
-      //Memory Cleaning
-      delete c1;
+      
 
       if(continueFlag == "n") break;
 
@@ -362,7 +361,7 @@ void EvDisp::fill()
   TGraph **grEta_Ph2    = new TGraph*[5];
 
   // STRUCT
-  c1 = new TCanvas("c1","c1",800,600);
+  auto c1 = new TCanvas("c1","c1",800,600);
   c1->Divide(1,2);
   c1->cd(1);
   graphStruct->SetMarkerStyle(1);
@@ -374,12 +373,12 @@ void EvDisp::fill()
       grPhi_Legacy[i] = new TGraph(xPhiLeg[i].size(),&xPhiLeg[i][0],&yPhiLeg[i][0]);
       setGraphColor(grPhi_Legacy[i], i);
       grPhi_Legacy[i]->Draw("PSAME");
-    }
+    }else{ grPhi_Legacy[i]=nullptr; }
     if(xEtaLeg[i].size()>0){
       grEta_Legacy[i] = new TGraph(xEtaLeg[i].size(),&xEtaLeg[i][0],&yEtaLeg[i][0]);
       setGraphColor(grEta_Legacy[i], i);
       grEta_Legacy[i]->Draw("PSAME");
-    }
+    }else{ grEta_Legacy[i]=nullptr; }
   }
 
   for(int i=0;i<nSegLeg;i++){
@@ -403,12 +402,12 @@ void EvDisp::fill()
       grPhi_Ph2[i] = new TGraph(xPhiPh2[i].size(),&xPhiPh2[i][0],&yPhiPh2[i][0]);
       setGraphColor(grPhi_Ph2[i], i);
       grPhi_Ph2[i]->Draw("PSAME");
-    }
+    }else{ grPhi_Ph2[i]=nullptr; }
     if(xEtaPh2[i].size()>0){
       grEta_Ph2[i] = new TGraph(xEtaPh2[i].size(),&xEtaPh2[i][0],&yEtaPh2[i][0]);
       setGraphColor(grEta_Ph2[i], i);
       grEta_Ph2[i]->Draw("PSAME");
-    }
+    }else{ grEta_Ph2[i]=nullptr; }
   }
 
   // PHASE 2 segment disabled for now
@@ -436,18 +435,36 @@ void EvDisp::fill()
 
   if(saveFlag == "y") c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
+  //Memory Cleaning
+  delete c1;
+  delete legend;
+  for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL1[i];
+  for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL3[i];
+  delete[] segments_LegSL1;
+  delete[] segments_LegSL3;
+  for(int i=0;i<5;i++) delete grPhi_Legacy[i];
+  for(int i=0;i<5;i++) delete grEta_Legacy[i];
+  for(int i=0;i<5;i++) delete grPhi_Ph2[i];
+  for(int i=0;i<5;i++) delete grEta_Ph2[i];
+  delete[] grPhi_Legacy;
+  delete[] grEta_Legacy;
+  delete[] grPhi_Ph2;
+  delete[] grEta_Ph2;
+
 }
 
 void EvDisp::endJob()
 {
   cout<<"[EvDisp::endJob] start"<<endl;
 
-  // TCanvas* c2 = new TCanvas();
+  // auto c2 = new TCanvas();
   // gStyle->SetOptStat(0);
   // gStyle->SetPalette(1);
   // m_2Dplots["timecomp"]->Draw("colz");
   // c2->Update();
   // c2->Print("evDisplPlot/time.png");
+
+  delete graphStruct;
 
   cout<<"[EvDisp::endJob] end"<<endl;
 }

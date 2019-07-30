@@ -69,8 +69,6 @@ protected:
   float x0chamber = 132.55;
   float zSL1, zSL3;
 
-  TCanvas *c1;
-
   bool dumpFlag;
   short int saveDispFlag;
   bool askContinueFlag;
