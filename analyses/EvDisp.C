@@ -138,7 +138,6 @@ void EvDisp::book()
 {
   cout<<"[EvDisp::book] start"<<endl;
 
-  // m_2Dplots["timecomp"] = new TH2F("timecomp","ph2 time vs legacy",500,2200,3200,500,82000,83000);
   gSystem->Exec("mkdir -p ./evDispPlots");
 
   zSL1 = computeY(2.5);   // middle of SL1
@@ -202,6 +201,7 @@ void EvDisp::fill()
 
   for(unsigned int idigi=0; idigi<digi_nDigis; idigi++){
     if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue;
+
     float wire = digi_wire->at(idigi);
     float layer = digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
 
@@ -223,14 +223,6 @@ void EvDisp::fill()
       cout<<endl;
     }
 
-    // for(unsigned int idigi2=0; idigi2<ph2Digi_nDigis; idigi2++) {
-    //   if (ph2Digi_superLayer->at(idigi2)==digi_superLayer->at(idigi) &&
-    //       ph2Digi_layer->at(idigi2)==digi_layer->at(idigi) &&
-    //       ph2Digi_wire->at(idigi2)==digi_wire->at(idigi) )
-    //   {
-    //     m_2Dplots["timecomp"]->Fill(digi_time->at(idigi),ph2Digi_time->at(idigi2));
-    //   }
-    // }
   }
 
   if(dumpFlag) cout<<endl<<"ph2Digi SL L wire time"<<endl;
@@ -240,6 +232,7 @@ void EvDisp::fill()
 
   for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++){
     if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2) continue;
+
     float wire = ph2Digi_wire->at(idigi);
     float layer = ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
 
@@ -247,7 +240,7 @@ void EvDisp::fill()
     float y = computeY(layer);
 
     if(ph2Digi_superLayer->at(idigi) == 2){
-//      fillDigiVectors(xEtaPh2, yEtaPh2, x, y);
+      fillDigiVectors(xEtaPh2, yEtaPh2, x, y);
     }else{
       fillDigiVectors(xPhiPh2, yPhiPh2, x, y);
     }
@@ -266,6 +259,7 @@ void EvDisp::fill()
 
   // SEGMENTS
   if(debug) cout<<"segment"<<endl;
+
   //Legacy
   int nSegLeg = 0;
   TF1 **segments_LegSL1 = new TF1*[seg_nSegments];
@@ -297,7 +291,7 @@ void EvDisp::fill()
 
     double m1 = computeM(x11, x12, z11, z12);
     double q1 = computeQ(x11, x12, z11, z12);
-    double range1 = 3*cellSizeY/m1;
+    double range1 = computeSegRange(m1);
 
     double x31 = x0chamber + seg_posLoc_x_SL3->at(iSeg);
     double z31 = zSL3;
@@ -306,7 +300,7 @@ void EvDisp::fill()
 
     double m3 = computeM(x31, x32, z31, z32);
     double q3 = computeQ(x31, x32, z31, z32);
-    double range3 = 3*cellSizeY/m3;
+    double range3 = computeSegRange(m3);
 
     segments_LegSL1[iSeg] = new TF1(Form("segLegSL1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
     segments_LegSL1[iSeg]->SetParameters(q1,m1);
@@ -334,7 +328,7 @@ void EvDisp::fill()
 
   //   double m1 = computeM(x11, x12, z11, z12);
   //   double q1 = computeQ(x11, x12, z11, z12);
-  //   double range1 = 2*cellSizeY/m1;
+  //   double range1 = computeSegRange(m1);
 
   //   double x31 = x0chamber + ph2Seg_posLoc_x_SL3->at(iSeg);
   //   double z31 = zSL3;
@@ -343,7 +337,7 @@ void EvDisp::fill()
 
   //   double m3 = computeM(x31, x32, z31, z32);
   //   double q3 = computeQ(x31, x32, z31, z32);
-  //   double range3 = 2*cellSizeY/m3;
+  //   double range3 = computeSegRange(m3);
 
   //   segments_Ph2SL1[iSeg] = new TF1(Form("segPh2SL1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
   //   segments_Ph2SL1[iSeg]->SetParameters(q1,m1);
@@ -361,7 +355,7 @@ void EvDisp::fill()
   TGraph **grEta_Ph2    = new TGraph*[5];
 
   // STRUCT
-  auto c1 = new TCanvas("c1","c1",800,600);
+  auto c1 = new TCanvas(); //TCanvas("c1","c1",800,600);
   c1->Divide(1,2);
   c1->cd(1);
   graphStruct->SetMarkerStyle(1);
@@ -412,7 +406,7 @@ void EvDisp::fill()
     }else{ grEta_Ph2[i]=nullptr; }
   }
 
-  // PHASE 2 segment disabled for now
+  // PHASE 2 segment not present for now
   // for(int i=0;i<nSegPh2;i++){
   //   segments_Ph2SL1[i]->SetLineColor(kRed);
   //   segments_Ph2SL3[i]->SetLineColor(kRed);
@@ -422,6 +416,7 @@ void EvDisp::fill()
 
   c1->Update();
 
+  // PRINTING
   TString saveFlag = "n";
   if(saveDispFlag == 1){
     saveFlag = "y";
@@ -437,7 +432,7 @@ void EvDisp::fill()
 
   if(saveFlag == "y") c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
-  //Memory Cleaning
+  // MEMORY CLEANING
   delete c1;
   delete legend;
   for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL1[i];
@@ -459,17 +454,14 @@ void EvDisp::endJob()
 {
   cout<<"[EvDisp::endJob] start"<<endl;
 
-  // auto c2 = new TCanvas();
-  // gStyle->SetOptStat(0);
-  // gStyle->SetPalette(1);
-  // m_2Dplots["timecomp"]->Draw("colz");
-  // c2->Update();
-  // c2->Print("evDisplPlot/time.png");
-
   delete graphStruct;
 
   cout<<"[EvDisp::endJob] end"<<endl;
 }
+
+// --------------------------------------------------------------------------------------
+//---------------------------------------FUNCTIONS---------------------------------------
+// --------------------------------------------------------------------------------------
 
 void EvDisp::fillDigiVectors(vector<float> vX[], vector<float> vY[], float x, float y)
 {
@@ -511,6 +503,11 @@ double EvDisp::computeQ(double x1, double x2, double y1, double y2)
 double EvDisp::computeM(double x1, double x2, double y1, double y2)
 {
   return (y1-y2)/(x1-x2);
+}
+
+double EvDisp::computeSegRange(double m)
+{
+  return 3*cellSizeY/m;
 }
 
 void EvDisp::setGraphColor(TGraph *gr, int i)

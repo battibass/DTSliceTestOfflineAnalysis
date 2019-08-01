@@ -55,6 +55,7 @@ protected:
   float computeY(float y);
   double computeQ(double x1, double x2, double y1, double y2);
   double computeM(double x1, double x2, double y1, double y2);
+  double computeSegRange(double m);
 
   void fillDigiVectors(vector<float> vX[], vector<float> vY[], float x, float y);
   void setGraphColor(TGraph *gr, int i);
@@ -66,7 +67,9 @@ protected:
   float cellSizeX = 4.2;
   float cellSizeY = 1.3;
   float honeySize = 12.8;
+  float chamberSeparation;
   float x0chamber = 132.55;
+
   float zSL1, zSL3;
 
   bool dumpFlag;
