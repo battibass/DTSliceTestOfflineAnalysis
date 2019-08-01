@@ -77,6 +77,13 @@ protected:
   bool askContinueFlag;
   bool runOnlyIfOneEmptyFlag;
 
+  bool vetoMB1;
+  bool vetoMB2;
+  bool vetoMB3;
+  bool vetoMB4;
+
+  bool debug;
+
 };
 
 #endif

@@ -23,6 +23,11 @@ EvDisp::EvDisp(const TString & inFileName) :
 , saveDispFlag(0)
 , askContinueFlag(true)
 , runOnlyIfOneEmptyFlag(false)
+, vetoMB1(true)
+, vetoMB2(false)
+, vetoMB3(true)
+, vetoMB4(true)
+, debug(false)
 {
   cout<<endl;
   cout<<"INSTRUCTIONS"<<endl;
@@ -80,7 +85,8 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
     if (ientry < 0) break;
     nb = fChain->GetEvent(jentry);
     nbytes += nb;
-    if(evt != -1){
+    if(evt > 0){
+      if(jentry%1000 == 0)  cout << "[EvDisp::Loop] at entry "<< jentry << " still not found" << endl;
       if(event_eventNumber != evt){
         continue;
       }else{
@@ -88,7 +94,10 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
         fill();
         break;
       }
-      cout << "[EvDisp::Loop] event  : "<< evt << "not found";
+      cout << "[EvDisp::Loop] event  : "<< evt << "not found"<< endl;
+    }else if(evt == 0 || evt < -1){
+      cout << "[EvDisp::Loop] Invalid evt number"<< endl;
+      break;
     }else{
       if(!runOnlyIfOneEmptyFlag) cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << endl;
       else if(jentry%1000 == 0)  cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << endl;
@@ -156,6 +165,7 @@ void EvDisp::book()
   }
 
   graphStruct = new TGraphErrors(xStruct.size(),&xStruct[0],&yStruct[0],&exStruct[0],&eyStruct[0]);
+  graphStruct->SetMarkerStyle(1);
 
   cout<<"[EvDisp::book] end"<<endl;
 
@@ -163,256 +173,287 @@ void EvDisp::book()
 
 void EvDisp::fill()
 {
-  bool debug = false;
-  if(debug) cout<<endl;
 
-  // DIGI
-  if(debug) cout<<"digi"<<endl;
+  // STRUCT DRAWING
+  auto c1 = new TCanvas("c1","c1",1500,1000);
+  c1->Divide(2,2);
+  for(int i=1;i<=4;i++){
+    c1->cd(i);
+    gPad->Divide(1,2);
+    gPad->cd(1);
+    graphStruct->SetTitle(Form("MB%i Legacy", i ));
+    graphStruct->DrawClone("AP||");
 
-  if(runOnlyIfOneEmptyFlag){
-    unsigned int nDigiLegacy = 0, nDigiPh2 = 0;
+    c1->cd(i);
+    gPad->cd(2);
+    graphStruct->SetTitle(Form("MB%i Phase 2", i));
+    graphStruct->DrawClone("AP||");
+  }
+
+  // Station loop
+  for(int iMB=1; iMB<=4; iMB++){
+
+    if(vetoMB1 && iMB == 1) continue;
+    if(vetoMB2 && iMB == 2) continue;
+    if(vetoMB3 && iMB == 3) continue;
+    if(vetoMB4 && iMB == 4) continue;
+
+    // DIGI
+    if(debug) cout<<endl;
+    if(debug) cout<<"digi"<<endl;
+
+    // RUN ONLY IF ONE PHASE EMPTY
+    if(runOnlyIfOneEmptyFlag){
+      unsigned int nDigiLegacy = 0, nDigiPh2 = 0;
+      for(unsigned int idigi=0; idigi<digi_nDigis; idigi++){
+        if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2 || digi_station->at(idigi)!=iMB) continue;
+        if(digi_superLayer->at(idigi)==2) continue;
+        nDigiLegacy++;
+      }
+      for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++){
+        if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2 || ph2Digi_station->at(idigi)!=iMB) continue;
+        if(ph2Digi_superLayer->at(idigi)==2) continue;
+        nDigiPh2++;
+      }
+      bool onlyLegacy = false, onlyPh2 = false;
+      if((nDigiLegacy == 0) && (nDigiPh2 !=0 )){
+        onlyLegacy = true;
+        cout<<"[EvDisp::fill] Only Legacy hits for station MB"<<iMB<<endl;
+      }
+      if((nDigiLegacy != 0) && (nDigiPh2 ==0 )){
+        onlyPh2 = true;
+        cout<<"[EvDisp::fill] Only Phase2 hits for station MB"<<iMB<<endl;
+      }
+      if(!(onlyLegacy || onlyPh2)) break;
+    }
+
+    if(dumpFlag) cout<<"digi MB SL L wire time"<<endl;
+
+    // 5-dimensional arrays of vector<float> to allocate multiple digit up to 5
+    vector<float> xPhiLeg[5], yPhiLeg[5];
+    vector<float> xEtaLeg[5], yEtaLeg[5];
+
     for(unsigned int idigi=0; idigi<digi_nDigis; idigi++){
-      if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue;
-      if(digi_superLayer->at(idigi)==2) continue;
-      nDigiLegacy++;
+      if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2 || digi_station->at(idigi)!=iMB) continue;
+
+      float wire = digi_wire->at(idigi);
+      float layer = digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
+
+      float x = computeX(wire,layer);
+      float y = computeY(layer);
+
+      if(digi_superLayer->at(idigi) == 2){
+        fillDigiVectors(xEtaLeg, yEtaLeg, x, y);
+      }else{
+        fillDigiVectors(xPhiLeg, yPhiLeg, x, y);
+      }
+
+      if(dumpFlag){
+        cout<<idigi;
+        cout<<" "<<digi_superLayer->at(idigi);
+        cout<<" "<<digi_station->at(idigi);
+        cout<<" "<<digi_layer->at(idigi);
+        cout<<" "<<digi_wire->at(idigi);      
+        cout<<" "<<digi_time->at(idigi);      
+        cout<<endl;
+      }
+
     }
+
+    if(dumpFlag) cout<<endl<<"ph2Digi MB SL L wire time"<<endl;
+
+    vector<float> xPhiPh2[5], yPhiPh2[5];
+    vector<float> xEtaPh2[5], yEtaPh2[5];
+
     for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++){
-      if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2) continue;
-      if(ph2Digi_superLayer->at(idigi)==2) continue;
-      nDigiPh2++;
-    }
-    bool onlyLegacy = false, onlyPh2 = false;
-    if((nDigiLegacy == 0) && (nDigiPh2 !=0 )){
-      onlyLegacy = true;
-      cout<<"[EvDisp::fill] Only Legacy hits"<<endl;
-    }
-    if((nDigiLegacy != 0) && (nDigiPh2 ==0 )){
-      onlyPh2 = true;
-      cout<<"[EvDisp::fill] Only Phase2 hits"<<endl;
-    }
-    if(!(onlyLegacy || onlyPh2)) return;
-  }
-  
-  if(dumpFlag) cout<<"digi SL L wire time"<<endl;
+      if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2 || ph2Digi_station->at(idigi)!=iMB) continue;
 
-  // 5-dimensional arrays of vector<float> to allocate multiple digit up to 5
-  vector<float> xPhiLeg[5], yPhiLeg[5];
-  vector<float> xEtaLeg[5], yEtaLeg[5];
+      float wire = ph2Digi_wire->at(idigi);
+      float layer = ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
 
-  for(unsigned int idigi=0; idigi<digi_nDigis; idigi++){
-    if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2) continue;
+      float x = computeX(wire,layer);
+      float y = computeY(layer);
 
-    float wire = digi_wire->at(idigi);
-    float layer = digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
+      if(ph2Digi_superLayer->at(idigi) == 2){
+        fillDigiVectors(xEtaPh2, yEtaPh2, x, y);
+      }else{
+        fillDigiVectors(xPhiPh2, yPhiPh2, x, y);
+      }
 
-    float x = computeX(wire,layer);
-    float y = computeY(layer);
-
-    if(digi_superLayer->at(idigi) == 2){
-      fillDigiVectors(xEtaLeg, yEtaLeg, x, y);
-    }else{
-      fillDigiVectors(xPhiLeg, yPhiLeg, x, y);
-    }
-
-    if(dumpFlag){
-      cout<<idigi;
-      cout<<" "<<digi_superLayer->at(idigi);
-      cout<<" "<<digi_layer->at(idigi);
-      cout<<" "<<digi_wire->at(idigi);      
-      cout<<" "<<digi_time->at(idigi);      
-      cout<<endl;
-    }
-
-  }
-
-  if(dumpFlag) cout<<endl<<"ph2Digi SL L wire time"<<endl;
-
-  vector<float> xPhiPh2[5], yPhiPh2[5];
-  vector<float> xEtaPh2[5], yEtaPh2[5];
-
-  for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++){
-    if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2) continue;
-
-    float wire = ph2Digi_wire->at(idigi);
-    float layer = ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
-
-    float x = computeX(wire,layer);
-    float y = computeY(layer);
-
-    if(ph2Digi_superLayer->at(idigi) == 2){
-      fillDigiVectors(xEtaPh2, yEtaPh2, x, y);
-    }else{
-      fillDigiVectors(xPhiPh2, yPhiPh2, x, y);
-    }
-
-    if(dumpFlag){
-      cout<<" "<<idigi;
-      cout<<" "<<ph2Digi_superLayer->at(idigi);
-      cout<<" "<<ph2Digi_layer->at(idigi);
-      cout<<" "<<ph2Digi_wire->at(idigi);      
-      cout<<" "<<ph2Digi_time->at(idigi);      
-      cout<<endl;
-    }
-  }
-
-  if(dumpFlag) cout<<endl;
-
-  // SEGMENTS
-  if(debug) cout<<"segment"<<endl;
-
-  //Legacy
-  int nSegLeg = 0;
-  TF1 **segments_LegSL1 = new TF1*[seg_nSegments];
-  TF1 **segments_LegSL3 = new TF1*[seg_nSegments];
-
-  for(unsigned int iSeg=0; iSeg<seg_nSegments; iSeg++){
-    if(seg_sector->at(iSeg)!=12 || seg_wheel->at(iSeg)!=2) continue;
-    if(!seg_hasPhi->at(iSeg)) continue;
-    nSegLeg++;
-
-    if(debug){
-      cout<<endl;
-      cout<<"iSeg "<<iSeg<<endl;
-      for(int iHit=0; iHit<seg_phi_nHits->at(iSeg); iHit++){
-        cout<<getXY<float>(seg_phiHits_pos,iSeg,iHit)<<" ";
-        cout<<getXY<float>(seg_phiHits_posCh,iSeg,iHit)<<" ";
-        cout<<getXY<float>(seg_phiHits_wire,iSeg,iHit)<<" ";
-        cout<<getXY<float>(seg_phiHits_wirePos,iSeg,iHit)<<" ";
-        cout<<getXY<float>(seg_phiHits_layer,iSeg,iHit)<<" ";
-        cout<<getXY<float>(seg_phiHits_superLayer,iSeg,iHit)<<" ";
+      if(dumpFlag){
+        cout<<" "<<idigi;
+        cout<<" "<<ph2Digi_station->at(idigi);
+        cout<<" "<<ph2Digi_superLayer->at(idigi);
+        cout<<" "<<ph2Digi_layer->at(idigi);
+        cout<<" "<<ph2Digi_wire->at(idigi);      
+        cout<<" "<<ph2Digi_time->at(idigi);      
         cout<<endl;
       }
     }
 
-    double x11 = x0chamber + seg_posLoc_x_SL1->at(iSeg);
-    double z11 = zSL1;
-    double x12 = x11 + seg_dirLoc_x->at(iSeg);
-    double z12 = z11 - seg_dirLoc_z->at(iSeg); //z is pointed downwards
+    if(dumpFlag) cout<<endl;
 
-    double m1 = computeM(x11, x12, z11, z12);
-    double q1 = computeQ(x11, x12, z11, z12);
-    double range1 = computeSegRange(m1);
+    // SEGMENTS
+    if(debug) cout<<"segment"<<endl;
 
-    double x31 = x0chamber + seg_posLoc_x_SL3->at(iSeg);
-    double z31 = zSL3;
-    double x32 = x31 + seg_dirLoc_x->at(iSeg);
-    double z32 = z31 - seg_dirLoc_z->at(iSeg); //z is pointed downwards
+    //Legacy
+    int nSegLeg = 0;
+    TF1 **segments_LegSL1 = new TF1*[seg_nSegments];
+    TF1 **segments_LegSL3 = new TF1*[seg_nSegments];
 
-    double m3 = computeM(x31, x32, z31, z32);
-    double q3 = computeQ(x31, x32, z31, z32);
-    double range3 = computeSegRange(m3);
+    for(unsigned int iSeg=0; iSeg<seg_nSegments; iSeg++){
+      if(seg_sector->at(iSeg)!=12 || seg_wheel->at(iSeg)!=2 || seg_station->at(iSeg)!=iMB) continue;
+      if(!seg_hasPhi->at(iSeg)) continue;
+      nSegLeg++;
 
-    segments_LegSL1[iSeg] = new TF1(Form("segLegSL1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
-    segments_LegSL1[iSeg]->SetParameters(q1,m1);
-    segments_LegSL1[iSeg]->SetLineWidth(1);
+      if(debug){
+        cout<<endl;
+        cout<<"iSeg "<<iSeg<<endl;
+        for(int iHit=0; iHit<seg_phi_nHits->at(iSeg); iHit++){
+          cout<<getXY<float>(seg_phiHits_pos,iSeg,iHit)<<" ";
+          cout<<getXY<float>(seg_phiHits_posCh,iSeg,iHit)<<" ";
+          cout<<getXY<float>(seg_phiHits_wire,iSeg,iHit)<<" ";
+          cout<<getXY<float>(seg_phiHits_wirePos,iSeg,iHit)<<" ";
+          cout<<getXY<float>(seg_phiHits_layer,iSeg,iHit)<<" ";
+          cout<<getXY<float>(seg_phiHits_superLayer,iSeg,iHit)<<" ";
+          cout<<endl;
+        }
+      }
 
-    segments_LegSL3[iSeg] = new TF1(Form("segLegSL3%i",iSeg),"[0]+[1]*x", x31-range3, x31+range3);
-    segments_LegSL3[iSeg]->SetParameters(q3,m3);
-    segments_LegSL3[iSeg]->SetLineWidth(1);
+      double x11 = x0chamber + seg_posLoc_x_SL1->at(iSeg);
+      double z11 = zSL1;
+      double x12 = x11 + seg_dirLoc_x->at(iSeg);
+      double z12 = z11 - seg_dirLoc_z->at(iSeg); //z is pointed downwards
+
+      double m1 = computeM(x11, x12, z11, z12);
+      double q1 = computeQ(x11, x12, z11, z12);
+      double range1 = computeSegRange(m1);
+
+      double x31 = x0chamber + seg_posLoc_x_SL3->at(iSeg);
+      double z31 = zSL3;
+      double x32 = x31 + seg_dirLoc_x->at(iSeg);
+      double z32 = z31 - seg_dirLoc_z->at(iSeg); //z is pointed downwards
+
+      double m3 = computeM(x31, x32, z31, z32);
+      double q3 = computeQ(x31, x32, z31, z32);
+      double range3 = computeSegRange(m3);
+
+      segments_LegSL1[iSeg] = new TF1(Form("segLegSL1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
+      segments_LegSL1[iSeg]->SetParameters(q1,m1);
+      segments_LegSL1[iSeg]->SetLineWidth(1);
+
+      segments_LegSL3[iSeg] = new TF1(Form("segLegSL3%i",iSeg),"[0]+[1]*x", x31-range3, x31+range3);
+      segments_LegSL3[iSeg]->SetParameters(q3,m3);
+      segments_LegSL3[iSeg]->SetLineWidth(1);
+    }
+
+    //Phase 2
+    // int nSegPh2 = 0;
+    // TF1 **segments_Ph2SL1 = new TF1*[ph2Seg_nSegments];
+    // TF1 **segments_Ph2Sl3 = new TF1*[ph2Seg_nSegments];
+
+    // for(unsigned int iSeg=0; iSeg<ph2Seg_nSegments; iSeg++){
+    //   if(ph2Seg_sector->at(iSeg)!=12 || ph2Seg_wheel->at(iSeg)!=2 || ph2Seg_station->at(iSeg)!=iMB) continue;
+    //   if(!ph2Seg_hasPhi->at(iSeg)) continue;
+    //   nSegPh2++;
+
+    //   double x11 = x0chamber + ph2Seg_posLoc_x_SL1->at(iSeg);
+    //   double z11 = zSL1;
+    //   double x12 = x11 + ph2Seg_dirLoc_x->at(iSeg);
+    //   double z12 = z11 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
+
+    //   double m1 = computeM(x11, x12, z11, z12);
+    //   double q1 = computeQ(x11, x12, z11, z12);
+    //   double range1 = computeSegRange(m1);
+
+    //   double x31 = x0chamber + ph2Seg_posLoc_x_SL3->at(iSeg);
+    //   double z31 = zSL3;
+    //   double x32 = x31 + ph2Seg_dirLoc_x->at(iSeg);
+    //   double z32 = z31 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
+
+    //   double m3 = computeM(x31, x32, z31, z32);
+    //   double q3 = computeQ(x31, x32, z31, z32);
+    //   double range3 = computeSegRange(m3);
+
+    //   segments_Ph2SL1[iSeg] = new TF1(Form("segPh2SL1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
+    //   segments_Ph2SL1[iSeg]->SetParameters(q1,m1);
+
+    //   segments_Ph2SL3[iSeg] = new TF1(Form("segPh2SL3%i",iSeg),"[0]+[1]*x", x31-range3, x31+range3);
+    //   segments_Ph2SL3[iSeg]->SetParameters(q3,m3);
+    // }
+
+    // PLOTTING
+    if(debug) cout<<"plotting"<<endl;
+
+    TGraph **grPhi_Legacy = new TGraph*[5];
+    TGraph **grEta_Legacy = new TGraph*[5];
+    TGraph **grPhi_Ph2    = new TGraph*[5];
+    TGraph **grEta_Ph2    = new TGraph*[5];
+
+    // LEGACY
+    c1->cd(iMB);
+    gPad->cd(1);
+
+    for(int i=0;i<5;i++){
+      if(xPhiLeg[i].size()>0){
+        grPhi_Legacy[i] = new TGraph(xPhiLeg[i].size(),&xPhiLeg[i][0],&yPhiLeg[i][0]);
+        setGraphColor(grPhi_Legacy[i], i);
+        grPhi_Legacy[i]->Draw("PSAME");
+      }else{ grPhi_Legacy[i]=nullptr; }
+      if(xEtaLeg[i].size()>0){
+        grEta_Legacy[i] = new TGraph(xEtaLeg[i].size(),&xEtaLeg[i][0],&yEtaLeg[i][0]);
+        setGraphColor(grEta_Legacy[i], i);
+        grEta_Legacy[i]->Draw("PSAME");
+      }else{ grEta_Legacy[i]=nullptr; }
+    }
+
+    for(int i=0;i<nSegLeg;i++){
+      segments_LegSL1[i]->Draw("SAME");
+      segments_LegSL3[i]->Draw("SAME");
+    }
+
+    // PHASE 2
+    c1->cd(iMB);
+    gPad->cd(2);
+
+    TGraphErrors *graphStruct_ = (TGraphErrors*)graphStruct->Clone();
+    graphStruct_->SetTitle("Phase2");
+    graphStruct_->Draw("AP||");
+
+    for(int i=0;i<5;i++){
+      if(xPhiPh2[i].size()>0){
+        grPhi_Ph2[i] = new TGraph(xPhiPh2[i].size(),&xPhiPh2[i][0],&yPhiPh2[i][0]);
+        setGraphColor(grPhi_Ph2[i], i);
+        grPhi_Ph2[i]->Draw("PSAME");
+      }else{ grPhi_Ph2[i]=nullptr; }
+      if(xEtaPh2[i].size()>0){
+        grEta_Ph2[i] = new TGraph(xEtaPh2[i].size(),&xEtaPh2[i][0],&yEtaPh2[i][0]);
+        setGraphColor(grEta_Ph2[i], i);
+        grEta_Ph2[i]->Draw("PSAME");
+      }else{ grEta_Ph2[i]=nullptr; }
+    }
+
+    // PHASE 2 segment not present for now
+    // for(int i=0;i<nSegPh2;i++){
+    //   segments_Ph2SL1[i]->SetLineColor(kRed);
+    //   segments_Ph2SL3[i]->SetLineColor(kRed);
+    //   segments_Ph2SL1[i]->Draw("SAME");
+    //   segments_Ph2SL3[i]->Draw("SAME");
+    // }
+
+    c1->Update();
+
   }
 
-  //Phase 2
-  // int nSegPh2 = 0;
-  // TF1 **segments_Ph2SL1 = new TF1*[ph2Seg_nSegments];
-  // TF1 **segments_Ph2Sl3 = new TF1*[ph2Seg_nSegments];
-
-  // for(unsigned int iSeg=0; iSeg<ph2Seg_nSegments; iSeg++){
-  //   if(ph2Seg_sector->at(iSeg)!=12 || ph2Seg_wheel->at(iSeg)!=2) continue;
-  //   if(!ph2Seg_hasPhi->at(iSeg)) continue;
-  //   nSegPh2++;
-
-  //   double x11 = x0chamber + ph2Seg_posLoc_x_SL1->at(iSeg);
-  //   double z11 = zSL1;
-  //   double x12 = x11 + ph2Seg_dirLoc_x->at(iSeg);
-  //   double z12 = z11 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
-
-  //   double m1 = computeM(x11, x12, z11, z12);
-  //   double q1 = computeQ(x11, x12, z11, z12);
-  //   double range1 = computeSegRange(m1);
-
-  //   double x31 = x0chamber + ph2Seg_posLoc_x_SL3->at(iSeg);
-  //   double z31 = zSL3;
-  //   double x32 = x31 + ph2Seg_dirLoc_x->at(iSeg);
-  //   double z32 = z31 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
-
-  //   double m3 = computeM(x31, x32, z31, z32);
-  //   double q3 = computeQ(x31, x32, z31, z32);
-  //   double range3 = computeSegRange(m3);
-
-  //   segments_Ph2SL1[iSeg] = new TF1(Form("segPh2SL1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
-  //   segments_Ph2SL1[iSeg]->SetParameters(q1,m1);
-
-  //   segments_Ph2SL3[iSeg] = new TF1(Form("segPh2SL3%i",iSeg),"[0]+[1]*x", x31-range3, x31+range3);
-  //   segments_Ph2SL3[iSeg]->SetParameters(q3,m3);
-  // }
-
-  // PLOTTING
-  if(debug) cout<<"plotting"<<endl;
-
-  TGraph **grPhi_Legacy = new TGraph*[5];
-  TGraph **grEta_Legacy = new TGraph*[5];
-  TGraph **grPhi_Ph2    = new TGraph*[5];
-  TGraph **grEta_Ph2    = new TGraph*[5];
-
-  // STRUCT
-  auto c1 = new TCanvas(); //TCanvas("c1","c1",800,600);
-  c1->Divide(1,2);
-  c1->cd(1);
-  graphStruct->SetMarkerStyle(1);
-  graphStruct->SetTitle("Legacy");
-  graphStruct->Draw("AP||");
-
-  // LEGACY 2
-  for(int i=0;i<5;i++){
-    if(xPhiLeg[i].size()>0){
-      grPhi_Legacy[i] = new TGraph(xPhiLeg[i].size(),&xPhiLeg[i][0],&yPhiLeg[i][0]);
-      setGraphColor(grPhi_Legacy[i], i);
-      grPhi_Legacy[i]->Draw("PSAME");
-    }else{ grPhi_Legacy[i]=nullptr; }
-    if(xEtaLeg[i].size()>0){
-      grEta_Legacy[i] = new TGraph(xEtaLeg[i].size(),&xEtaLeg[i][0],&yEtaLeg[i][0]);
-      setGraphColor(grEta_Legacy[i], i);
-      grEta_Legacy[i]->Draw("PSAME");
-    }else{ grEta_Legacy[i]=nullptr; }
-  }
-
-  for(int i=0;i<nSegLeg;i++){
-    segments_LegSL1[i]->Draw("SAME");
-    segments_LegSL3[i]->Draw("SAME");
-  }
-
-  //LEGEND
-  auto legend = new TLegend(0.85,0.8,0.99,1.0);
+  c1->cd();
+  auto legendPad = new TPad("legendPad","legendPad",.45,.9,.55,.99);
+  legendPad->Draw();
+  legendPad->cd();
+  auto legend = new TLegend(.01,.01,.99,.99);
   legend->AddEntry((TObject*)0, Form("Run %i",event_runNumber), "");
   legend->AddEntry((TObject*)0, Form("Event %i",(int)event_eventNumber), "");
   legend->Draw();
-
-  // PHASE 2
-  c1->cd(2);
-  TGraphErrors *graphStruct_ = (TGraphErrors*)graphStruct->Clone();
-  graphStruct_->SetTitle("Phase2");
-  graphStruct_->Draw("AP||");
-
-  for(int i=0;i<5;i++){
-    if(xPhiPh2[i].size()>0){
-      grPhi_Ph2[i] = new TGraph(xPhiPh2[i].size(),&xPhiPh2[i][0],&yPhiPh2[i][0]);
-      setGraphColor(grPhi_Ph2[i], i);
-      grPhi_Ph2[i]->Draw("PSAME");
-    }else{ grPhi_Ph2[i]=nullptr; }
-    if(xEtaPh2[i].size()>0){
-      grEta_Ph2[i] = new TGraph(xEtaPh2[i].size(),&xEtaPh2[i][0],&yEtaPh2[i][0]);
-      setGraphColor(grEta_Ph2[i], i);
-      grEta_Ph2[i]->Draw("PSAME");
-    }else{ grEta_Ph2[i]=nullptr; }
-  }
-
-  // PHASE 2 segment not present for now
-  // for(int i=0;i<nSegPh2;i++){
-  //   segments_Ph2SL1[i]->SetLineColor(kRed);
-  //   segments_Ph2SL3[i]->SetLineColor(kRed);
-  //   segments_Ph2SL1[i]->Draw("SAME");
-  //   segments_Ph2SL3[i]->Draw("SAME");
-  // }
+  legendPad->Update();
 
   c1->Update();
 
@@ -433,20 +474,22 @@ void EvDisp::fill()
   if(saveFlag == "y") c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
   // MEMORY CLEANING
-  delete c1;
-  delete legend;
-  for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL1[i];
-  for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL3[i];
-  delete[] segments_LegSL1;
-  delete[] segments_LegSL3;
-  for(int i=0;i<5;i++) delete grPhi_Legacy[i];
-  for(int i=0;i<5;i++) delete grEta_Legacy[i];
-  for(int i=0;i<5;i++) delete grPhi_Ph2[i];
-  for(int i=0;i<5;i++) delete grEta_Ph2[i];
-  delete[] grPhi_Legacy;
-  delete[] grEta_Legacy;
-  delete[] grPhi_Ph2;
-  delete[] grEta_Ph2;
+  // delete c1;
+  // delete legendPad;
+  // delete legend;
+  // for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL1[i];
+  // for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL3[i];
+  // delete[] segments_LegSL1;
+  // delete[] segments_LegSL3;
+  // for(int i=0;i<5;i++) delete grPhi_Legacy[i];
+  // for(int i=0;i<5;i++) delete grEta_Legacy[i];
+  // for(int i=0;i<5;i++) delete grPhi_Ph2[i];
+  // for(int i=0;i<5;i++) delete grEta_Ph2[i];
+  // delete[] grPhi_Legacy;
+  // delete[] grEta_Legacy;
+  // delete[] grPhi_Ph2;
+  // delete[] grEta_Ph2;
+
 
 }
 
