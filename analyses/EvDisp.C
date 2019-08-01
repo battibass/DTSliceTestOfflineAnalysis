@@ -194,7 +194,7 @@ void EvDisp::fill()
     if(!(onlyLegacy || onlyPh2)) return;
   }
   
-  if(dumpFlag) cout<<"digi L SL wire time"<<endl;
+  if(dumpFlag) cout<<"digi SL L wire time"<<endl;
 
   // 5-dimensional arrays of vector<float> to allocate multiple digit up to 5
   vector<float> xPhiLeg[5], yPhiLeg[5];
@@ -216,8 +216,8 @@ void EvDisp::fill()
 
     if(dumpFlag){
       cout<<idigi;
-      cout<<" "<<digi_layer->at(idigi);
       cout<<" "<<digi_superLayer->at(idigi);
+      cout<<" "<<digi_layer->at(idigi);
       cout<<" "<<digi_wire->at(idigi);      
       cout<<" "<<digi_time->at(idigi);      
       cout<<endl;
@@ -233,7 +233,7 @@ void EvDisp::fill()
     // }
   }
 
-  if(dumpFlag) cout<<endl<<"ph2Digi L SL wire time"<<endl;
+  if(dumpFlag) cout<<endl<<"ph2Digi SL L wire time"<<endl;
 
   vector<float> xPhiPh2[5], yPhiPh2[5];
   vector<float> xEtaPh2[5], yEtaPh2[5];
@@ -246,16 +246,16 @@ void EvDisp::fill()
     float x = computeX(wire,layer);
     float y = computeY(layer);
 
-    if(ph2Digi_superLayer->at(idigi)== 2){
-      fillDigiVectors(xEtaPh2, yEtaPh2, x, y);
+    if(ph2Digi_superLayer->at(idigi) == 2){
+//      fillDigiVectors(xEtaPh2, yEtaPh2, x, y);
     }else{
       fillDigiVectors(xPhiPh2, yPhiPh2, x, y);
     }
 
     if(dumpFlag){
       cout<<" "<<idigi;
-      cout<<" "<<ph2Digi_layer->at(idigi);
       cout<<" "<<ph2Digi_superLayer->at(idigi);
+      cout<<" "<<ph2Digi_layer->at(idigi);
       cout<<" "<<ph2Digi_wire->at(idigi);      
       cout<<" "<<ph2Digi_time->at(idigi);      
       cout<<endl;
@@ -368,6 +368,7 @@ void EvDisp::fill()
   graphStruct->SetTitle("Legacy");
   graphStruct->Draw("AP||");
 
+  // LEGACY 2
   for(int i=0;i<5;i++){
     if(xPhiLeg[i].size()>0){
       grPhi_Legacy[i] = new TGraph(xPhiLeg[i].size(),&xPhiLeg[i][0],&yPhiLeg[i][0]);
@@ -392,6 +393,7 @@ void EvDisp::fill()
   legend->AddEntry((TObject*)0, Form("Event %i",(int)event_eventNumber), "");
   legend->Draw();
 
+  // PHASE 2
   c1->cd(2);
   TGraphErrors *graphStruct_ = (TGraphErrors*)graphStruct->Clone();
   graphStruct_->SetTitle("Phase2");
@@ -473,7 +475,7 @@ void EvDisp::fillDigiVectors(vector<float> vX[], vector<float> vY[], float x, fl
 {
   for(int i=5-1;i>0;i--){
     for(unsigned int j=0;j<vX[i].size();j++){
-      if((vX[i-1][j]==x) && (vY[i-1][j]==y)){
+      if((abs(vX[i-1][j]-x) < cellSizeX/2) && (abs(vY[i-1][j] - y) < cellSizeY/2)){
         cout<<"----- "<<i<<" ----"<<endl;
         vX[i].push_back(x);
         vY[i].push_back(y);
@@ -485,7 +487,7 @@ void EvDisp::fillDigiVectors(vector<float> vX[], vector<float> vY[], float x, fl
   vY[0].push_back(y);
 }
 
-float EvDisp::computeX(float x, int y)
+float EvDisp::computeX(float x, int y) // x = wire, y = layer
 {
   x = cellSizeX*x;
   if(y%2 == 1) x += cellSizeX/2;  // Layer stagger
@@ -493,7 +495,7 @@ float EvDisp::computeX(float x, int y)
   return x;
 }
 
-float EvDisp::computeY(float y)
+float EvDisp::computeY(float y) // x = wire, y = layer
 {
   if(y>4 && y<9) y = cellSizeY/2+cellSizeY*y + honeySize/2;
   else if (y>=9) y = cellSizeY/2+cellSizeY*y + honeySize;
