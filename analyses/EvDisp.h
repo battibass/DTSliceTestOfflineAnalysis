@@ -52,7 +52,7 @@ protected:
   virtual void fill() override;
   virtual void endJob() override;
 
-  float computeX(float x, int y);
+  float computeX(float x, int y, int iMB);
   float computeY(float y);
   double computeQ(double x1, double x2, double y1, double y2);
   double computeM(double x1, double x2, double y1, double y2);
@@ -63,8 +63,7 @@ protected:
 
   // std::map<std::string, TH2*> m_2Dplots;
 
-
-  TGraphErrors* graphStruct;
+  TGraphErrors **graphStruct;
   float cellSizeX = 4.2;
   float cellSizeY = 1.3;
   float honeySize = 12.8;

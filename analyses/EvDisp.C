@@ -151,21 +151,27 @@ void EvDisp::book()
   zSL1 = computeY(2.5);   // middle of SL1
   zSL3 = computeY(10.5);  // middle of SL3
 
-  vector<float> xStruct, yStruct;
-  vector<float> exStruct, eyStruct;
+  vector<float> xStruct[4], yStruct[4];
+  vector<float> exStruct[4], eyStruct[4];
 
-  for(unsigned int i=1; i<=60; i++) {
-    for(unsigned int j=1; j<=12; j++){
-      xStruct.push_back(computeX(i,j));
-      yStruct.push_back(computeY(j));
-      exStruct.push_back(cellSizeX/2);
-      eyStruct.push_back(cellSizeY/2); 
+  for(unsigned int iMB=1; iMB<=4; iMB++){
+    for(unsigned int iWire=1; iWire<=60; iWire++) {
+      for(unsigned int iLayer=1; iLayer<=12; iLayer++){
+        xStruct[iMB-1].push_back(computeX(iWire,iLayer,iMB));
+        yStruct[iMB-1].push_back(computeY(iLayer));
+        exStruct[iMB-1].push_back(cellSizeX/2);
+        eyStruct[iMB-1].push_back(cellSizeY/2); 
+      }
     }
   }
 
-  graphStruct = new TGraphErrors(xStruct.size(),&xStruct[0],&yStruct[0],&exStruct[0],&eyStruct[0]);
-  graphStruct->SetMarkerStyle(1);
-  graphStruct->SetName("graphStruct");
+  graphStruct = new TGraphErrors*[4];
+  for(int i=0;i<4;i++){
+    cout<<i<<endl;
+    graphStruct[i] = new TGraphErrors(xStruct[i].size(),&xStruct[i][0],&yStruct[i][0],&exStruct[i][0],&eyStruct[i][0]); 
+    graphStruct[i]->SetMarkerStyle(1);
+    graphStruct[i]->SetName("graphStruct");
+  }
 
   cout<<"[EvDisp::book] end"<<endl;
 
@@ -181,13 +187,13 @@ void EvDisp::fill()
     c1->cd(i);
     gPad->Divide(1,2);
     gPad->cd(1);
-    graphStruct->SetTitle(Form("MB%i Legacy;x[cm];z[cm]", i ));
-    graphStruct->DrawClone("AP||");
+    graphStruct[i-1]->SetTitle(Form("MB%i Legacy;x[cm];z[cm]", i));
+    graphStruct[i-1]->DrawClone("AP||");
 
     c1->cd(i);
     gPad->cd(2);
-    graphStruct->SetTitle(Form("MB%i Phase 2;x[cm];z[cm]", i));
-    graphStruct->DrawClone("AP||");
+    graphStruct[i-1]->SetTitle(Form("MB%i Phase 2;x[cm];z[cm]", i));
+    graphStruct[i-1]->DrawClone("AP||");
   }
 
   // Station loop
@@ -239,7 +245,7 @@ void EvDisp::fill()
       float wire = digi_wire->at(idigi);
       float layer = digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
 
-      float x = computeX(wire,layer);
+      float x = computeX(wire,layer,iMB);
       float y = computeY(layer);
 
       if(digi_superLayer->at(idigi) == 2){
@@ -271,7 +277,7 @@ void EvDisp::fill()
       float wire = ph2Digi_wire->at(idigi);
       float layer = ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
 
-      float x = computeX(wire,layer);
+      float x = computeX(wire,layer,iMB);
       float y = computeY(layer);
 
       if(ph2Digi_superLayer->at(idigi) == 2){
@@ -417,10 +423,6 @@ void EvDisp::fill()
     c1->cd(iMB);
     gPad->cd(2);
 
-    TGraphErrors *graphStruct_ = (TGraphErrors*)graphStruct->Clone();
-    graphStruct_->SetTitle("Phase2");
-    graphStruct_->Draw("AP||");
-
     for(int i=0;i<5;i++){
       if(xPhiPh2[i].size()>0){
         grPhi_Ph2[i] = new TGraph(xPhiPh2[i].size(),&xPhiPh2[i][0],&yPhiPh2[i][0]);
@@ -506,7 +508,8 @@ void EvDisp::endJob()
 
   cout<<"[EvDisp::endJob] Memory cleaning"<<endl;
 
-  delete graphStruct;
+  for(int i=0;i<4;i++) delete graphStruct[i];
+  delete[] graphStruct;
 
   cout<<"[EvDisp::endJob] end"<<endl;
 }
@@ -530,11 +533,30 @@ void EvDisp::fillDigiVectors(vector<float> vX[], vector<float> vY[], float x, fl
   vY[0].push_back(y);
 }
 
-float EvDisp::computeX(float x, int y) // x = wire, y = layer
+float EvDisp::computeX(float x, int y, int iMB) // x = wire, y = layer, MB = stat
 {
   x = cellSizeX*x;
   if(y%2 == 1) x += cellSizeX/2;  // Layer stagger
   if(y >= 9) x += cellSizeX;      // SL3 Stagger (station dependend)
+  switch(iMB)
+  {
+    case 1:
+    // do something
+    break;
+
+    case 2:
+    // do something
+    break;
+
+    case 3:
+    // do something
+    break;
+
+    case 4:
+    // do something
+    break;
+  }
+
   return x;
 }
 
