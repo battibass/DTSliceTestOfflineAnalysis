@@ -165,6 +165,7 @@ void EvDisp::book()
 
   graphStruct = new TGraphErrors(xStruct.size(),&xStruct[0],&yStruct[0],&exStruct[0],&eyStruct[0]);
   graphStruct->SetMarkerStyle(1);
+  graphStruct->SetName("graphStruct");
 
   cout<<"[EvDisp::book] end"<<endl;
 
@@ -226,7 +227,7 @@ void EvDisp::fill()
       if(!(onlyLegacy || onlyPh2)) break;
     }
 
-    if(dumpFlag) cout<<"digi MB SL  L wire     time"<<endl;
+    if(dumpFlag) cout<<"legDigi MB SL  L wire     time"<<endl;
 
     // 5-dimensional arrays of vector<float> to allocate multiple digit up to 5
     vector<float> xPhiLeg[5], yPhiLeg[5];
@@ -249,7 +250,7 @@ void EvDisp::fill()
 
       if(dumpFlag){
         cout<<idigi;
-        cout<<" "<<setw(5)<<digi_station->at(idigi);
+        cout<<" "<<setw(8)<<digi_station->at(idigi);
         cout<<" "<<setw(2)<<digi_superLayer->at(idigi);
         cout<<" "<<setw(2)<<digi_layer->at(idigi);
         cout<<" "<<setw(4)<<digi_wire->at(idigi);      
@@ -297,8 +298,9 @@ void EvDisp::fill()
 
     //Legacy
     int nSegLeg = 0;
-    segments_LegSL1 = new TF1*[seg_nSegments];
-    segments_LegSL3 = new TF1*[seg_nSegments];
+
+    TF1 **segments_LegSL1 = new TF1*[seg_nSegments];
+    TF1 **segments_LegSL3 = new TF1*[seg_nSegments];
 
     for(unsigned int iSeg=0; iSeg<seg_nSegments; iSeg++){
       if(seg_sector->at(iSeg)!=12 || seg_wheel->at(iSeg)!=2 || seg_station->at(iSeg)!=iMB) continue;
@@ -384,10 +386,10 @@ void EvDisp::fill()
     // PLOTTING
     if(debug) cout<<"plotting"<<endl;
 
-    grPhi_Legacy = new TGraph*[5];
-    grEta_Legacy = new TGraph*[5];
-    grPhi_Ph2    = new TGraph*[5];
-    grEta_Ph2    = new TGraph*[5];
+    TGraph **grPhi_Legacy = new TGraph*[5];
+    TGraph **grEta_Legacy = new TGraph*[5];
+    TGraph **grPhi_Ph2    = new TGraph*[5];
+    TGraph **grEta_Ph2    = new TGraph*[5];
 
     // LEGACY
     c1->cd(iMB);
@@ -397,18 +399,18 @@ void EvDisp::fill()
       if(xPhiLeg[i].size()>0){
         grPhi_Legacy[i] = new TGraph(xPhiLeg[i].size(),&xPhiLeg[i][0],&yPhiLeg[i][0]);
         setGraphColor(grPhi_Legacy[i], i);
-        grPhi_Legacy[i]->Draw("PSAME");
+        grPhi_Legacy[i]->DrawClone("PSAME");
       }else{ grPhi_Legacy[i]=nullptr; }
       if(xEtaLeg[i].size()>0){
         grEta_Legacy[i] = new TGraph(xEtaLeg[i].size(),&xEtaLeg[i][0],&yEtaLeg[i][0]);
         setGraphColor(grEta_Legacy[i], i);
-        grEta_Legacy[i]->Draw("PSAME");
+        grEta_Legacy[i]->DrawClone("PSAME");
       }else{ grEta_Legacy[i]=nullptr; }
     }
 
     for(int i=0;i<nSegLeg;i++){
-      segments_LegSL1[i]->Draw("SAME");
-      segments_LegSL3[i]->Draw("SAME");
+      segments_LegSL1[i]->DrawClone("SAME");
+      segments_LegSL3[i]->DrawClone("SAME");
     }
 
     // PHASE 2
@@ -423,12 +425,12 @@ void EvDisp::fill()
       if(xPhiPh2[i].size()>0){
         grPhi_Ph2[i] = new TGraph(xPhiPh2[i].size(),&xPhiPh2[i][0],&yPhiPh2[i][0]);
         setGraphColor(grPhi_Ph2[i], i);
-        grPhi_Ph2[i]->Draw("PSAME");
+        grPhi_Ph2[i]->DrawClone("PSAME");
       }else{ grPhi_Ph2[i]=nullptr; }
       if(xEtaPh2[i].size()>0){
         grEta_Ph2[i] = new TGraph(xEtaPh2[i].size(),&xEtaPh2[i][0],&yEtaPh2[i][0]);
         setGraphColor(grEta_Ph2[i], i);
-        grEta_Ph2[i]->Draw("PSAME");
+        grEta_Ph2[i]->DrawClone("PSAME");
       }else{ grEta_Ph2[i]=nullptr; }
     }
 
@@ -436,11 +438,28 @@ void EvDisp::fill()
     // for(int i=0;i<nSegPh2;i++){
     //   segments_Ph2SL1[i]->SetLineColor(kRed);
     //   segments_Ph2SL3[i]->SetLineColor(kRed);
-    //   segments_Ph2SL1[i]->Draw("SAME");
-    //   segments_Ph2SL3[i]->Draw("SAME");
+    //   segments_Ph2SL1[i]->DrawClone("SAME");
+    //   segments_Ph2SL3[i]->DrawClone("SAME");
     // }
 
     c1->Update();
+
+    // Memory Clenning
+    for(int i=0;i<5;i++) delete grPhi_Legacy[i];
+    for(int i=0;i<5;i++) delete grEta_Legacy[i];
+    for(int i=0;i<5;i++) delete grPhi_Ph2[i];
+    for(int i=0;i<5;i++) delete grEta_Ph2[i];
+
+    delete[] grPhi_Legacy;
+    delete[] grEta_Legacy;
+    delete[] grPhi_Ph2;
+    delete[] grEta_Ph2;
+
+    for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL1[i];
+    for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL3[i];
+
+    delete[] segments_LegSL1;
+    delete[] segments_LegSL3;
 
   }
 
@@ -477,13 +496,7 @@ void EvDisp::fill()
   delete legendPad;
   delete c1;
 
-  for(int i=0;i<5;i++) delete grPhi_Legacy[i];
-  for(int i=0;i<5;i++) delete grEta_Legacy[i];
-  for(int i=0;i<5;i++) delete grPhi_Ph2[i];
-  for(int i=0;i<5;i++) delete grEta_Ph2[i];
-
-  for(int i=0;i<seg_nSegments;i++) delete segments_LegSL1[i];
-  for(int i=0;i<seg_nSegments;i++) delete segments_LegSL3[i];
+  // Clones memory to be relased..not sure how.
 
 }
 
@@ -494,12 +507,6 @@ void EvDisp::endJob()
   cout<<"[EvDisp::endJob] Memory cleaning"<<endl;
 
   delete graphStruct;
-  delete[] segments_LegSL1;
-  delete[] segments_LegSL3;
-  delete[] grPhi_Legacy;
-  delete[] grEta_Legacy;
-  delete[] grPhi_Ph2;
-  delete[] grEta_Ph2;
 
   cout<<"[EvDisp::endJob] end"<<endl;
 }
@@ -511,9 +518,8 @@ void EvDisp::endJob()
 void EvDisp::fillDigiVectors(vector<float> vX[], vector<float> vY[], float x, float y)
 {
   for(int i=5-1;i>0;i--){
-    for(unsigned int j=0;j<vX[i].size();j++){
+    for(unsigned int j=0;j<vX[i-1].size();j++){
       if((abs(vX[i-1][j]-x) < cellSizeX/2) && (abs(vY[i-1][j] - y) < cellSizeY/2)){
-        cout<<"----- "<<i<<" ----"<<endl;
         vX[i].push_back(x);
         vY[i].push_back(y);
         break;
