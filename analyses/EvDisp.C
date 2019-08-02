@@ -85,6 +85,10 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
     fChain->GetEvent(jentry);
 
     if(evt > 0){
+      if(evt > event_eventNumber ){
+        cout << "[EvDisp::Loop] current evt number "<< event_eventNumber << " is higher than the requested one " << evt <<endl;
+        continue;
+      }
       if(jentry%1000 == 0)  cout << "[EvDisp::Loop] at entry "<< jentry << " still not found" << endl;
       if(event_eventNumber != evt){
         continue;
@@ -436,7 +440,7 @@ void EvDisp::fill()
 
     // PHASE 2
     c1->cd(iMB);
-    gPad->cd(1);
+    gPad->cd(2);
 
     for(int i=0;i<5;i++){
       if(xPhiPh2[i].size()>0){
