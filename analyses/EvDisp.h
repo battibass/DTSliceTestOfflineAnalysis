@@ -70,6 +70,9 @@ protected:
   float chamberSeparation;
   float x0chamber = 132.55;
 
+  unsigned int nWiresMaxPhi[4] = {49, 60, 72, 92};
+  unsigned int nWiresMaxEta = 57;
+
   float zSL1, zSL3;
 
   bool dumpFlag;

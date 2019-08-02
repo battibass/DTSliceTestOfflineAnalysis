@@ -154,22 +154,36 @@ void EvDisp::book()
   vector<float> xStruct[4], yStruct[4];
   vector<float> exStruct[4], eyStruct[4];
 
+  // LOOP SL 1-3
   for(unsigned int iMB=1; iMB<=4; iMB++){
-    for(unsigned int iWire=1; iWire<=60; iWire++) {
+    for(unsigned int iWire=1; iWire<=nWiresMaxPhi[iMB-1]; iWire++) {
       for(unsigned int iLayer=1; iLayer<=12; iLayer++){
+        if((iLayer > 4) && (iLayer < 9)) continue;
         xStruct[iMB-1].push_back(computeX(iWire,iLayer,iMB));
         yStruct[iMB-1].push_back(computeY(iLayer));
         exStruct[iMB-1].push_back(cellSizeX/2);
-        eyStruct[iMB-1].push_back(cellSizeY/2); 
+        eyStruct[iMB-1].push_back(cellSizeY/2);
+      }
+    }
+  }
+
+  // LOOP SL 2
+  for(unsigned int iMB=1; iMB<=3; iMB++){
+    for(unsigned int iWire=1; iWire<=nWiresMaxEta; iWire++) {
+      for(unsigned int iLayer=5; iLayer<=8; iLayer++){
+        xStruct[iMB-1].push_back(computeX(iWire,iLayer,iMB));
+        yStruct[iMB-1].push_back(computeY(iLayer));
+        exStruct[iMB-1].push_back(cellSizeX/2);
+        eyStruct[iMB-1].push_back(cellSizeY/2);
       }
     }
   }
 
   graphStruct = new TGraphErrors*[4];
   for(int i=0;i<4;i++){
-    cout<<i<<endl;
     graphStruct[i] = new TGraphErrors(xStruct[i].size(),&xStruct[i][0],&yStruct[i][0],&exStruct[i][0],&eyStruct[i][0]); 
     graphStruct[i]->SetMarkerStyle(1);
+    graphStruct[i]->GetXaxis()->SetLimits(0.,410.);
     graphStruct[i]->SetName("graphStruct");
   }
 
@@ -182,18 +196,19 @@ void EvDisp::fill()
 
   // STRUCT DRAWING
   auto c1 = new TCanvas("c1","c1",1500,1000);
-  c1->Divide(2,2);
-  for(int i=1;i<=4;i++){
-    c1->cd(i);
-    gPad->Divide(1,2);
-    gPad->cd(1);
-    graphStruct[i-1]->SetTitle(Form("MB%i Legacy;x[cm];z[cm]", i));
-    graphStruct[i-1]->DrawClone("AP||");
+  c1->Divide(1,4);
 
-    c1->cd(i);
+  for(int iMB=1;iMB<=4;iMB++){
+    c1->cd(iMB);
+    gPad->Divide(2,1);
+    gPad->cd(1);
+    graphStruct[iMB-1]->SetTitle(Form("MB%i Legacy;x[cm];z[cm]", iMB));
+    graphStruct[iMB-1]->DrawClone("AP||");
+
+    c1->cd(iMB);
     gPad->cd(2);
-    graphStruct[i-1]->SetTitle(Form("MB%i Phase 2;x[cm];z[cm]", i));
-    graphStruct[i-1]->DrawClone("AP||");
+    graphStruct[iMB-1]->SetTitle(Form("MB%i Phase2;x[cm];z[cm]", iMB));
+    graphStruct[iMB-1]->DrawClone("AP||");
   }
 
   // Station loop
@@ -255,8 +270,8 @@ void EvDisp::fill()
       }
 
       if(dumpFlag){
-        cout<<idigi;
-        cout<<" "<<setw(8)<<digi_station->at(idigi);
+        cout<<setw(7)<<idigi;
+        cout<<" "<<setw(2)<<digi_station->at(idigi);
         cout<<" "<<setw(2)<<digi_superLayer->at(idigi);
         cout<<" "<<setw(2)<<digi_layer->at(idigi);
         cout<<" "<<setw(4)<<digi_wire->at(idigi);      
@@ -287,8 +302,8 @@ void EvDisp::fill()
       }
 
       if(dumpFlag){
-        cout<<idigi;
-        cout<<" "<<setw(8)<<ph2Digi_station->at(idigi);
+        cout<<setw(7)<<idigi;
+        cout<<" "<<setw(2)<<ph2Digi_station->at(idigi);
         cout<<" "<<setw(2)<<ph2Digi_superLayer->at(idigi);
         cout<<" "<<setw(2)<<ph2Digi_layer->at(idigi);
         cout<<" "<<setw(4)<<ph2Digi_wire->at(idigi);      
@@ -421,7 +436,7 @@ void EvDisp::fill()
 
     // PHASE 2
     c1->cd(iMB);
-    gPad->cd(2);
+    gPad->cd(1);
 
     for(int i=0;i<5;i++){
       if(xPhiPh2[i].size()>0){
@@ -444,8 +459,6 @@ void EvDisp::fill()
     //   segments_Ph2SL3[i]->DrawClone("SAME");
     // }
 
-    c1->Update();
-
     // Memory Clenning
     for(int i=0;i<5;i++) delete grPhi_Legacy[i];
     for(int i=0;i<5;i++) delete grEta_Legacy[i];
@@ -466,7 +479,7 @@ void EvDisp::fill()
   }
 
   c1->cd();
-  auto legendPad = new TPad("legendPad","legendPad",.45,.9,.55,.99);
+  auto legendPad = new TPad("legendPad","legendPad",.46,.9,.54,.99);
   legendPad->Draw();
   legendPad->cd();
   auto legend = new TLegend(.01,.01,.99,.99);
@@ -474,7 +487,6 @@ void EvDisp::fill()
   legend->AddEntry((TObject*)0, Form("Event %i",(int)event_eventNumber), "");
   legend->Draw();
   legendPad->Update();
-
   c1->Update();
 
   // PRINTING
@@ -588,10 +600,10 @@ void EvDisp::setGraphColor(TGraph *gr, int i)
   gr->SetMarkerStyle(20);
   gr->SetMarkerSize(0.75);
   switch (i){
-    case 0: gr->SetMarkerColor(kRed); break;
-    case 1: gr->SetMarkerColor(kMagenta); break;
-    case 2: gr->SetMarkerColor(kBlue); break;
-    case 3: gr->SetMarkerColor(kCyan); break;
-    case 4: gr->SetMarkerColor(kGreen); break;
+    case 0: gr->SetMarkerColor(kGreen); break;
+    case 1: gr->SetMarkerColor(kYellow); break;
+    case 2: gr->SetMarkerColor(kOrange); break;
+    case 3: gr->SetMarkerColor(kRed); break;
+    case 4: gr->SetMarkerColor(kBlue); break;
   }
 }
