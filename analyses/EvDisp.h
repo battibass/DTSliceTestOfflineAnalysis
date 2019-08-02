@@ -15,6 +15,7 @@
 #include "TLegend.h"
 
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <map>
 #include <vector>
@@ -83,6 +84,14 @@ protected:
   bool vetoMB4;
 
   bool debug;
+
+  TF1 **segments_LegSL1;
+  TF1 **segments_LegSL3;
+
+  TGraph **grPhi_Legacy;
+  TGraph **grEta_Legacy;
+  TGraph **grPhi_Ph2;
+  TGraph **grEta_Ph2;
 
 };
 

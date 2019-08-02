@@ -77,14 +77,13 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
   if(start<0) start = 0;
   if(stop<0) stop = nentries;
 
-  Long64_t nbytes = 0, nb = 0;
   for(Long64_t jentry=start; jentry<stop; jentry++) 
   {
 
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
-    nb = fChain->GetEvent(jentry);
-    nbytes += nb;
+    fChain->GetEvent(jentry);
+
     if(evt > 0){
       if(jentry%1000 == 0)  cout << "[EvDisp::Loop] at entry "<< jentry << " still not found" << endl;
       if(event_eventNumber != evt){
@@ -181,12 +180,12 @@ void EvDisp::fill()
     c1->cd(i);
     gPad->Divide(1,2);
     gPad->cd(1);
-    graphStruct->SetTitle(Form("MB%i Legacy", i ));
+    graphStruct->SetTitle(Form("MB%i Legacy;x[cm];z[cm]", i ));
     graphStruct->DrawClone("AP||");
 
     c1->cd(i);
     gPad->cd(2);
-    graphStruct->SetTitle(Form("MB%i Phase 2", i));
+    graphStruct->SetTitle(Form("MB%i Phase 2;x[cm];z[cm]", i));
     graphStruct->DrawClone("AP||");
   }
 
@@ -227,7 +226,7 @@ void EvDisp::fill()
       if(!(onlyLegacy || onlyPh2)) break;
     }
 
-    if(dumpFlag) cout<<"digi MB SL L wire time"<<endl;
+    if(dumpFlag) cout<<"digi MB SL  L wire     time"<<endl;
 
     // 5-dimensional arrays of vector<float> to allocate multiple digit up to 5
     vector<float> xPhiLeg[5], yPhiLeg[5];
@@ -250,17 +249,17 @@ void EvDisp::fill()
 
       if(dumpFlag){
         cout<<idigi;
-        cout<<" "<<digi_superLayer->at(idigi);
-        cout<<" "<<digi_station->at(idigi);
-        cout<<" "<<digi_layer->at(idigi);
-        cout<<" "<<digi_wire->at(idigi);      
-        cout<<" "<<digi_time->at(idigi);      
+        cout<<" "<<setw(5)<<digi_station->at(idigi);
+        cout<<" "<<setw(2)<<digi_superLayer->at(idigi);
+        cout<<" "<<setw(2)<<digi_layer->at(idigi);
+        cout<<" "<<setw(4)<<digi_wire->at(idigi);      
+        cout<<" "<<setw(8)<<digi_time->at(idigi);      
         cout<<endl;
       }
 
     }
 
-    if(dumpFlag) cout<<endl<<"ph2Digi MB SL L wire time"<<endl;
+    if(dumpFlag) cout<<endl<<"ph2Digi MB SL  L wire     time"<<endl;
 
     vector<float> xPhiPh2[5], yPhiPh2[5];
     vector<float> xEtaPh2[5], yEtaPh2[5];
@@ -281,12 +280,12 @@ void EvDisp::fill()
       }
 
       if(dumpFlag){
-        cout<<" "<<idigi;
-        cout<<" "<<ph2Digi_station->at(idigi);
-        cout<<" "<<ph2Digi_superLayer->at(idigi);
-        cout<<" "<<ph2Digi_layer->at(idigi);
-        cout<<" "<<ph2Digi_wire->at(idigi);      
-        cout<<" "<<ph2Digi_time->at(idigi);      
+        cout<<idigi;
+        cout<<" "<<setw(8)<<ph2Digi_station->at(idigi);
+        cout<<" "<<setw(2)<<ph2Digi_superLayer->at(idigi);
+        cout<<" "<<setw(2)<<ph2Digi_layer->at(idigi);
+        cout<<" "<<setw(4)<<ph2Digi_wire->at(idigi);      
+        cout<<" "<<setw(8)<<ph2Digi_time->at(idigi);      
         cout<<endl;
       }
     }
@@ -298,8 +297,8 @@ void EvDisp::fill()
 
     //Legacy
     int nSegLeg = 0;
-    TF1 **segments_LegSL1 = new TF1*[seg_nSegments];
-    TF1 **segments_LegSL3 = new TF1*[seg_nSegments];
+    segments_LegSL1 = new TF1*[seg_nSegments];
+    segments_LegSL3 = new TF1*[seg_nSegments];
 
     for(unsigned int iSeg=0; iSeg<seg_nSegments; iSeg++){
       if(seg_sector->at(iSeg)!=12 || seg_wheel->at(iSeg)!=2 || seg_station->at(iSeg)!=iMB) continue;
@@ -385,10 +384,10 @@ void EvDisp::fill()
     // PLOTTING
     if(debug) cout<<"plotting"<<endl;
 
-    TGraph **grPhi_Legacy = new TGraph*[5];
-    TGraph **grEta_Legacy = new TGraph*[5];
-    TGraph **grPhi_Ph2    = new TGraph*[5];
-    TGraph **grEta_Ph2    = new TGraph*[5];
+    grPhi_Legacy = new TGraph*[5];
+    grEta_Legacy = new TGraph*[5];
+    grPhi_Ph2    = new TGraph*[5];
+    grEta_Ph2    = new TGraph*[5];
 
     // LEGACY
     c1->cd(iMB);
@@ -474,22 +473,17 @@ void EvDisp::fill()
   if(saveFlag == "y") c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
   // MEMORY CLEANING
-  // delete c1;
-  // delete legendPad;
-  // delete legend;
-  // for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL1[i];
-  // for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL3[i];
-  // delete[] segments_LegSL1;
-  // delete[] segments_LegSL3;
-  // for(int i=0;i<5;i++) delete grPhi_Legacy[i];
-  // for(int i=0;i<5;i++) delete grEta_Legacy[i];
-  // for(int i=0;i<5;i++) delete grPhi_Ph2[i];
-  // for(int i=0;i<5;i++) delete grEta_Ph2[i];
-  // delete[] grPhi_Legacy;
-  // delete[] grEta_Legacy;
-  // delete[] grPhi_Ph2;
-  // delete[] grEta_Ph2;
+  delete legend;
+  delete legendPad;
+  delete c1;
 
+  for(int i=0;i<5;i++) delete grPhi_Legacy[i];
+  for(int i=0;i<5;i++) delete grEta_Legacy[i];
+  for(int i=0;i<5;i++) delete grPhi_Ph2[i];
+  for(int i=0;i<5;i++) delete grEta_Ph2[i];
+
+  for(int i=0;i<seg_nSegments;i++) delete segments_LegSL1[i];
+  for(int i=0;i<seg_nSegments;i++) delete segments_LegSL3[i];
 
 }
 
@@ -497,7 +491,15 @@ void EvDisp::endJob()
 {
   cout<<"[EvDisp::endJob] start"<<endl;
 
+  cout<<"[EvDisp::endJob] Memory cleaning"<<endl;
+
   delete graphStruct;
+  delete[] segments_LegSL1;
+  delete[] segments_LegSL3;
+  delete[] grPhi_Legacy;
+  delete[] grEta_Legacy;
+  delete[] grPhi_Ph2;
+  delete[] grEta_Ph2;
 
   cout<<"[EvDisp::endJob] end"<<endl;
 }
