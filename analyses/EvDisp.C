@@ -26,7 +26,7 @@ EvDisp::EvDisp(const TString & inFileName) :
 , vetoMB1(true)
 , vetoMB2(false)
 , vetoMB3(true)
-, vetoMB4(true)
+, vetoMB4(false)
 , debug(false)
 {
   cout<<endl;
@@ -328,8 +328,15 @@ void EvDisp::fill()
     TF1 **segments_LegSL3 = new TF1*[seg_nSegments];
 
     for(unsigned int iSeg=0; iSeg<seg_nSegments; iSeg++){
-      if(seg_sector->at(iSeg)!=12 || seg_wheel->at(iSeg)!=2 || seg_station->at(iSeg)!=iMB) continue;
-      if(!seg_hasPhi->at(iSeg)) continue;
+      bool skipSeg = false;
+      if(seg_sector->at(iSeg)!=12 || seg_wheel->at(iSeg)!=2 || seg_station->at(iSeg)!=iMB) skipSeg = true;
+      if(!seg_hasPhi->at(iSeg)) skipSeg = true;
+      if(skipSeg){
+        segments_LegSL1[iSeg] = nullptr;
+        segments_LegSL3[iSeg] = nullptr;
+        continue;
+      }
+
       nSegLeg++;
 
       if(debug){
@@ -409,7 +416,7 @@ void EvDisp::fill()
     // }
 
     // PLOTTING
-    if(debug) cout<<"plotting"<<endl;
+    
 
     TGraph **grPhi_Legacy = new TGraph*[5];
     TGraph **grEta_Legacy = new TGraph*[5];
@@ -417,6 +424,7 @@ void EvDisp::fill()
     TGraph **grEta_Ph2    = new TGraph*[5];
 
     // LEGACY
+    if(debug) cout<<"plotting legacy"<<endl;
     c1->cd(iMB);
     gPad->cd(1);
 
@@ -439,6 +447,7 @@ void EvDisp::fill()
     }
 
     // PHASE 2
+    if(debug) cout<<"plotting phase2"<<endl;
     c1->cd(iMB);
     gPad->cd(2);
 
@@ -464,24 +473,30 @@ void EvDisp::fill()
     // }
 
     // Memory Clenning
+    if(debug) cout<<"memory cleaning 1"<<endl;
     for(int i=0;i<5;i++) delete grPhi_Legacy[i];
     for(int i=0;i<5;i++) delete grEta_Legacy[i];
     for(int i=0;i<5;i++) delete grPhi_Ph2[i];
     for(int i=0;i<5;i++) delete grEta_Ph2[i];
+    if(debug) cout<<"memory cleaning 2"<<endl;
 
     delete[] grPhi_Legacy;
     delete[] grEta_Legacy;
     delete[] grPhi_Ph2;
     delete[] grEta_Ph2;
+    if(debug) cout<<"memory cleaning 3"<<endl;
 
     for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL1[i];
     for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL3[i];
+
+    if(debug) cout<<"memory cleaning 4"<<endl;
 
     delete[] segments_LegSL1;
     delete[] segments_LegSL3;
 
   }
 
+  if(debug) cout<<"printing"<<endl;
   c1->cd();
   auto legendPad = new TPad("legendPad","legendPad",.46,.9,.54,.99);
   legendPad->Draw();
