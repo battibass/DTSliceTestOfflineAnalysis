@@ -1,5 +1,7 @@
 #include "DTNtupleDigiAnalyzer.h"
 
+#include <set>
+
 DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer(const TString & inFileName,
 						 const TString & outFileName) :
   m_outFile(outFileName,"RECREATE"), DTNtupleBaseAnalyzer(inFileName)  
@@ -109,56 +111,36 @@ void DTNtupleDigiAnalyzer::book()
 void DTNtupleDigiAnalyzer::fill()
 {
 
+  std::set<WireId> wireIds;
+  std::set<WireId> ph2WireIds;
+
   for (std::size_t iDigi = 0; iDigi < digi_nDigis; ++iDigi)
     {
       
       if(digi_sector->at(iDigi) != 12 || digi_wheel->at(iDigi) != 2) continue;    
-
+      
       int st  = digi_station->at(iDigi);
       int sl  = digi_superLayer->at(iDigi);
       int lay = digi_layer->at(iDigi);
-
+      
       int wire = digi_wire->at(iDigi);
       int slAndLay = (lay - 1) + (sl - 1) * 4;
-
+      
       double time = digi_time->at(iDigi);
       double timeInRange = std::max(0.5,std::min(4999.5,time));
-
+      
       stringstream stTagS;
       stTagS << "Ph1"
 	     << "St" << st;
-
+      
       string stTag = stTagS.str();
       
       m_plots[("hOccupancy" + stTag).c_str()]->Fill(wire,slAndLay);
-
+      
       if ( time > 0 && time < 5000)
 	{
-	  bool hasWireMatch = false;
-
-	  for (std::size_t iDigi = 0; iDigi < ph2Digi_nDigis; ++iDigi)
-	    {
-	      
-	      if(ph2Digi_sector->at(iDigi) != 12 || ph2Digi_wheel->at(iDigi) != 2) continue;
-	      
-	      int ph2St  = ph2Digi_station->at(iDigi);
-	      int ph2SL  = ph2Digi_superLayer->at(iDigi);
-	      int ph2Lay = ph2Digi_layer->at(iDigi);
-	      
-	      int ph2Wire = ph2Digi_wire->at(iDigi);
-	      double ph2Time = ph2Digi_time->at(iDigi) - ph2DigiPedestal;
-	      
-	      if ( st == ph2St && sl == ph2SL && lay == ph2Lay && 
-		   wire == ph2Wire && ph2Time > 0 && ph2Time < 5000)
-		{
-		  hasWireMatch = true;
-		  break;
-		}
-	      
-	    }
-	  
-	  m_effs[("hWireByWireMatch" + stTag).c_str()]->Fill(hasWireMatch,wire,slAndLay);
-
+	  WireId wireId(st,sl,lay,wire);
+	  wireIds.insert(wireId);
 	}
 
       stringstream layerTagS;
@@ -171,9 +153,7 @@ void DTNtupleDigiAnalyzer::fill()
 
       m_plots[("hTimeBox"+ layerTag).c_str()]->Fill(timeInRange);
     }
-
-  std::map<std::vector<int>,int> ph2DigiPerWire;
-
+  
   for (std::size_t iDigi = 0; iDigi < ph2Digi_nDigis; ++iDigi)
     {
 
@@ -188,11 +168,6 @@ void DTNtupleDigiAnalyzer::fill()
 
       std::vector wireId = {sl, lay, wire};
 
-      if (ph2DigiPerWire.find(wireId) == ph2DigiPerWire.end())
-	  ph2DigiPerWire[wireId] = 0;
-      
-      ph2DigiPerWire[wireId]++;
-	  
       double time = ph2Digi_time->at(iDigi) - ph2DigiPedestal;
       double timeInRange = std::max(0.5,std::min(4999.5,time));
       
@@ -206,31 +181,8 @@ void DTNtupleDigiAnalyzer::fill()
       
       if ( time > 0 && time < 5000)
 	{
-	  bool hasWireMatch = false;
-
-	  for (std::size_t iDigi = 0; iDigi < digi_nDigis; ++iDigi)
-	    {
-	      
-	      if(digi_sector->at(iDigi) != 12 || digi_wheel->at(iDigi) != 2) continue;
-	      
-	      int ph1St  = digi_station->at(iDigi);
-	      int ph1SL  = digi_superLayer->at(iDigi);
-	      int ph1Lay = digi_layer->at(iDigi);
-	      
-	      int ph1Wire = digi_wire->at(iDigi);
-	      double ph1Time = digi_time->at(iDigi);
-
-	      if ( st == ph1St && sl == ph1SL && lay == ph1Lay && 
-		   wire == ph1Wire && ph1Time > 0 && ph1Time < 5000)
-		{
-		  hasWireMatch = true;
-		  break;
-		}
-	  
-	    }
-
-	  m_effs[("hWireByWireMatch" + stTag).c_str()]->Fill(hasWireMatch,wire,slAndLay);
-
+	  WireId ph2WireId(st,sl,lay,wire);
+	  ph2WireIds.insert(ph2WireId);
 	}
 
       stringstream layerTagS;
@@ -244,23 +196,54 @@ void DTNtupleDigiAnalyzer::fill()
       m_plots[("hTimeBox"+ layerTag).c_str()]->Fill(timeInRange);
     }
 
-  // if (ph2Digi_nDigis > 100) 
-  //   {  
+  for (const auto & wireId : wireIds)
+    {
+      stringstream stTagS;
+      stTagS << "Ph1"
+             << "St" << wireId.m_chamb;
 
-  //     std::cout << "event number : " << event_eventNumber << std::endl;
+      string stTag = stTagS.str();
 
-  //     for (const auto & nDigiPerWire : ph2DigiPerWire)
-  //     	{
-  //     	  std::cout << "SL : "    << nDigiPerWire.first.at(0)
-  //     		    << "  layer : " << nDigiPerWire.first.at(1)
-  //     		    << "  wire : "  << nDigiPerWire.first.at(2)
-  //     		    << "  # digis : " << nDigiPerWire.second
-  //     		    << std::endl;
-  //     	}
-  //   }
+      bool hasWireMatch = false;
 
-  // std::cout << std::endl << std::endl;
-  
+      for (const auto & ph2WireId : ph2WireIds)
+	{
+	  if (wireId == ph2WireId)
+	    {
+	      hasWireMatch = true;
+	      break;
+	    }
+	}
+
+      int slAndLay = (wireId.m_layer - 1) + (wireId.m_sl - 1) * 4;
+      m_effs[("hWireByWireMatch" + stTag).c_str()]->Fill(hasWireMatch,wireId.m_wire,slAndLay);
+      
+    } 
+
+  for (const auto & ph2WireId : ph2WireIds)
+    {
+      stringstream stTagS;
+      stTagS << "Ph2"
+             << "St" << ph2WireId.m_chamb;
+
+      string stTag = stTagS.str();
+
+      bool hasWireMatch = false;
+
+      for (const auto & wireId : wireIds)
+	{
+	  if (wireId == ph2WireId)
+	    {
+	      hasWireMatch = true;
+	      break;
+	    }
+	}
+
+      int slAndLay = (ph2WireId.m_layer - 1) + (ph2WireId.m_sl - 1) * 4;
+      m_effs[("hWireByWireMatch" + stTag).c_str()]->Fill(hasWireMatch,ph2WireId.m_wire,slAndLay);
+      
+    } 
+
 }
 
 void DTNtupleDigiAnalyzer::endJob()

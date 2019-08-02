@@ -12,7 +12,38 @@
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
+#include <tuple>
 #include <map>
+
+class WireId
+{
+
+ public:
+
+ WireId(int chamb, int sl, int layer, int wire) : 
+  m_chamb(chamb), m_sl(sl), m_layer(layer), m_wire(wire) { };
+
+  int m_chamb;
+  int m_sl;
+  int m_layer;
+  int m_wire;
+
+  bool operator<(const WireId& rhs) const
+  {
+    return 
+      std::tie(m_chamb, m_sl, m_layer, m_wire) < 
+      std::tie(rhs.m_chamb, rhs.m_sl, rhs.m_layer, rhs.m_wire);
+  };
+
+  bool operator==(const WireId& rhs) const
+  {
+    return 
+      std::tie(m_chamb, m_sl, m_layer, m_wire) == 
+      std::tie(rhs.m_chamb, rhs.m_sl, rhs.m_layer, rhs.m_wire);
+  };
+
+
+};
 
 class DTNtupleDigiAnalyzer : public DTNtupleBaseAnalyzer 
 {
