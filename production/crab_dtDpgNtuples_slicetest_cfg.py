@@ -3,7 +3,7 @@ config = Configuration()
 
 ##### Configuration parameters ################################
 
-runNumber = 330161
+runNumber = 330160
 inputDataset = "/Cosmics/Commissioning2019-v1/RAW"
 
 # These are the cfg parameters used to configure the 
@@ -37,7 +37,8 @@ config.section_('Data')
 config.Data.inputDataset = inputDataset
 
 config.Data.splitting    = 'LumiBased'
-config.Data.unitsPerJob  = 50  
+config.Data.unitsPerJob  = 10  
+config.Data.runRange     = str(runNumber)
 config.Data.inputDBS     = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader/'
 config.Data.outLFNDirBase  = '/store/group/dpg_dt/comm_dt/commissioning_2019_data/crab/'
 

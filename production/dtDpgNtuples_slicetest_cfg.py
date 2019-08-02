@@ -62,6 +62,12 @@ options.register('vDriftFile',
                  VarParsing.VarParsing.varType.string,
                  "File with customised DT vDrifts, used only if non ''")
 
+options.register('runOnDat',
+                 False, #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.bool,
+                 "If set to True switches source from 'PoolSource' to 'NewEventStreamFileReader'")
+
 options.register('ntupleName',
                  '', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
@@ -70,6 +76,11 @@ options.register('ntupleName',
 
 
 options.parseArguments()
+
+if options.runOnDat :
+    inputSourceType = "NewEventStreamFileReader"
+else:
+    inputSourceType = "PoolSource"
 
 process = cms.Process("DTNTUPLES",eras.Run2_2018)
 
@@ -112,10 +123,9 @@ if options.t0File != '' :
                                    )
     
 
-process.source = cms.Source("PoolSource",
+process.source = cms.Source(inputSourceType,
                             
         fileNames = cms.untracked.vstring(),
-        secondaryFileNames = cms.untracked.vstring()
 
 )
 
@@ -127,7 +137,9 @@ if options.inputFile != '' :
 else :
 
     runStr = str(options.runNumber).zfill(9)
-    runFolder = options.inputFolderCentral + "/" + runStr[0:3] + "/" + runStr[3:6] + "/" + runStr[6:] + "/00000"
+    runFolder = options.inputFolderCentral + "/" + runStr[0:3] + "/" + runStr[3:6] + "/" + runStr[6:] 
+    if not options.runOnDat:
+        runFolder = runFolder + "/00000"
 
     print "[dtDpgNtuples_slicetest_cfg.py]: looking for files under:\n\t\t\t" + runFolder
     
