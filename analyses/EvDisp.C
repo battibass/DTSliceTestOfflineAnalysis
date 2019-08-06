@@ -27,7 +27,7 @@ EvDisp::EvDisp(const TString & inFileName) :
 , vetoMB2(false)
 , vetoMB3(true)
 , vetoMB4(false)
-, debug(false)
+, debug(true)
 {
   cout<<endl;
   cout<<"INSTRUCTIONS"<<endl;
@@ -85,11 +85,11 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
     fChain->GetEvent(jentry);
 
     if(evt > 0){
-      if(evt > event_eventNumber ){
+      if(event_eventNumber > evt ){
         cout << "[EvDisp::Loop] current evt number "<< event_eventNumber << " is higher than the requested one " << evt <<endl;
         continue;
       }
-      if(jentry%1000 == 0)  cout << "[EvDisp::Loop] at entry "<< jentry << " still not found" << endl;
+      if(jentry%1000 == 0)  cout << "[EvDisp::Loop] at entry "<< jentry << " evt "<<evt<<" still not found" << endl;
       if(event_eventNumber != evt){
         continue;
       }else{
@@ -183,14 +183,31 @@ void EvDisp::book()
     }
   }
 
-  graphStruct = new TGraphErrors*[4];
+  graphStruct = new TGraphErrors**[4]; // [station][phase]
   for(int i=0;i<4;i++){
-    graphStruct[i] = new TGraphErrors(xStruct[i].size(),&xStruct[i][0],&yStruct[i][0],&exStruct[i][0],&eyStruct[i][0]); 
-    graphStruct[i]->SetMarkerStyle(1);
-    graphStruct[i]->GetXaxis()->SetLimits(0.,410.);
-    graphStruct[i]->SetName("graphStruct");
+    graphStruct[i] = new TGraphErrors*[2];
+    for(int j=0;j<2;j++){
+      graphStruct[i][j] = new TGraphErrors(xStruct[i].size(),&xStruct[i][0],&yStruct[i][0],&exStruct[i][0],&eyStruct[i][0]); 
+      if(j==0) graphStruct[i][j]->SetTitle(Form("MB %i LEGACY;x[cm];z[cm]",i+1));
+      if(j==1) graphStruct[i][j]->SetTitle(Form("MB %i PHASE2;x[cm];z[cm]",i+1));
+      graphStruct[i][j]->SetMarkerStyle(1);
+      graphStruct[i][j]->GetXaxis()->SetLimits(0.,410.);
+    }
   }
 
+  // STRUCT DRAWING
+  c1 = new TCanvas("c1","c1",1200,800);
+  c1->Divide(1,4);
+  for(int iMB=1;iMB<=4;iMB++){
+    c1->cd(iMB);
+    gPad->Divide(2,1);
+    gPad->cd(1);
+    graphStruct[iMB-1][0]->Draw("AP||");
+
+    c1->cd(iMB);
+    gPad->cd(2);
+    graphStruct[iMB-1][1]->Draw("AP||");
+  }
   cout<<"[EvDisp::book] end"<<endl;
 
 }
@@ -198,22 +215,51 @@ void EvDisp::book()
 void EvDisp::fill()
 {
 
-  // STRUCT DRAWING
-  auto c1 = new TCanvas("c1","c1",1500,1000);
-  c1->Divide(1,4);
+  if(debug) cout<<endl;
+  if(debug) cout<<"start fill"<<endl;
 
-  for(int iMB=1;iMB<=4;iMB++){
-    c1->cd(iMB);
-    gPad->Divide(2,1);
-    gPad->cd(1);
-    graphStruct[iMB-1]->SetTitle(Form("MB%i Legacy;x[cm];z[cm]", iMB));
-    graphStruct[iMB-1]->DrawClone("AP||");
+  auto segments_LegSL1 = new TF1**[seg_nSegments]; // [segments][station]
+  auto segments_LegSL3 = new TF1**[seg_nSegments];
 
-    c1->cd(iMB);
-    gPad->cd(2);
-    graphStruct[iMB-1]->SetTitle(Form("MB%i Phase2;x[cm];z[cm]", iMB));
-    graphStruct[iMB-1]->DrawClone("AP||");
+  for (unsigned int i=0;i<seg_nSegments;i++){
+    segments_LegSL1[i] = new TF1*[4];
+    segments_LegSL3[i] = new TF1*[4];
+    for(int j=0;j<4;j++){
+      segments_LegSL1[i][j] = nullptr;
+      segments_LegSL3[i][j] = nullptr;
+    }
   }
+
+  // auto segments_Ph2SL1 = new TF1**[ph2Seg_nSegments]; // [segments][station]
+  // auto segments_Ph2SL3 = new TF1**[ph2Seg_nSegments];
+
+  // for (unsigned int i=0;i<ph2Seg_nSegments;i++){
+  //   segments_Ph2SL1[i] = new TF1*[4];
+  //   segments_Ph2SL3[i] = new TF1*[4];
+    // for(int j=0;j<4;j++){
+    //   segments_Ph2SL1[i][j] = nullptr;
+    //   segments_Ph2SL3[i][j] = nullptr;
+    // }
+  // }
+
+    auto grPhi_Legacy = new TGraph**[5]; // [nHits][iMB]
+    auto grEta_Legacy = new TGraph**[5];
+    auto grPhi_Ph2    = new TGraph**[5];
+    auto grEta_Ph2    = new TGraph**[5];
+
+    for(int i=0;i<5;i++){
+      grPhi_Legacy[i] = new TGraph*[4];
+      grEta_Legacy[i] = new TGraph*[4];
+      grPhi_Ph2[i]    = new TGraph*[4];
+      grEta_Ph2[i]    = new TGraph*[4];
+      for(int j=0;j<4;j++){
+        grPhi_Legacy[i][j] = nullptr;
+        grEta_Legacy[i][j] = nullptr;
+        grPhi_Ph2[i][j] = nullptr;
+        grEta_Ph2[i][j] = nullptr;
+      }
+    }
+
 
   // Station loop
   for(int iMB=1; iMB<=4; iMB++){
@@ -224,7 +270,6 @@ void EvDisp::fill()
     if(vetoMB4 && iMB == 4) continue;
 
     // DIGI
-    if(debug) cout<<endl;
     if(debug) cout<<"digi"<<endl;
 
     // RUN ONLY IF ONE PHASE EMPTY
@@ -324,34 +369,31 @@ void EvDisp::fill()
     //Legacy
     int nSegLeg = 0;
 
-    TF1 **segments_LegSL1 = new TF1*[seg_nSegments];
-    TF1 **segments_LegSL3 = new TF1*[seg_nSegments];
-
     for(unsigned int iSeg=0; iSeg<seg_nSegments; iSeg++){
       bool skipSeg = false;
       if(seg_sector->at(iSeg)!=12 || seg_wheel->at(iSeg)!=2 || seg_station->at(iSeg)!=iMB) skipSeg = true;
       if(!seg_hasPhi->at(iSeg)) skipSeg = true;
       if(skipSeg){
-        segments_LegSL1[iSeg] = nullptr;
-        segments_LegSL3[iSeg] = nullptr;
+        segments_LegSL1[iSeg][iMB-1] = nullptr;
+        segments_LegSL3[iSeg][iMB-1] = nullptr;
         continue;
       }
 
       nSegLeg++;
 
-      if(debug){
-        cout<<endl;
-        cout<<"iSeg "<<iSeg<<endl;
-        for(int iHit=0; iHit<seg_phi_nHits->at(iSeg); iHit++){
-          cout<<getXY<float>(seg_phiHits_pos,iSeg,iHit)<<" ";
-          cout<<getXY<float>(seg_phiHits_posCh,iSeg,iHit)<<" ";
-          cout<<getXY<float>(seg_phiHits_wire,iSeg,iHit)<<" ";
-          cout<<getXY<float>(seg_phiHits_wirePos,iSeg,iHit)<<" ";
-          cout<<getXY<float>(seg_phiHits_layer,iSeg,iHit)<<" ";
-          cout<<getXY<float>(seg_phiHits_superLayer,iSeg,iHit)<<" ";
-          cout<<endl;
-        }
-      }
+      // if(debug){
+      //   cout<<endl;
+      //   cout<<"iSeg "<<iSeg<<endl;
+      //   for(int iHit=0; iHit<seg_phi_nHits->at(iSeg); iHit++){
+      //     cout<<getXY<float>(seg_phiHits_pos,iSeg,iHit)<<" ";
+      //     cout<<getXY<float>(seg_phiHits_posCh,iSeg,iHit)<<" ";
+      //     cout<<getXY<float>(seg_phiHits_wire,iSeg,iHit)<<" ";
+      //     cout<<getXY<float>(seg_phiHits_wirePos,iSeg,iHit)<<" ";
+      //     cout<<getXY<float>(seg_phiHits_layer,iSeg,iHit)<<" ";
+      //     cout<<getXY<float>(seg_phiHits_superLayer,iSeg,iHit)<<" ";
+      //     cout<<endl;
+      //   }
+      // }
 
       double x11 = x0chamber + seg_posLoc_x_SL1->at(iSeg);
       double z11 = zSL1;
@@ -371,24 +413,27 @@ void EvDisp::fill()
       double q3 = computeQ(x31, x32, z31, z32);
       double range3 = computeSegRange(m3);
 
-      segments_LegSL1[iSeg] = new TF1(Form("segLegSL1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
-      segments_LegSL1[iSeg]->SetParameters(q1,m1);
-      segments_LegSL1[iSeg]->SetLineWidth(1);
+      segments_LegSL1[iSeg][iMB-1] = new TF1(Form("segLegSL1%i_%i",iSeg,iMB),"[0]+[1]*x", x11-range1, x11+range1);
+      segments_LegSL1[iSeg][iMB-1]->SetParameters(q1,m1);
+      segments_LegSL1[iSeg][iMB-1]->SetLineWidth(1);
 
-      segments_LegSL3[iSeg] = new TF1(Form("segLegSL3%i",iSeg),"[0]+[1]*x", x31-range3, x31+range3);
-      segments_LegSL3[iSeg]->SetParameters(q3,m3);
-      segments_LegSL3[iSeg]->SetLineWidth(1);
+      segments_LegSL3[iSeg][iMB-1] = new TF1(Form("segLegSL3%i_%i",iSeg,iMB),"[0]+[1]*x", x31-range3, x31+range3);
+      segments_LegSL3[iSeg][iMB-1]->SetParameters(q3,m3);
+      segments_LegSL3[iSeg][iMB-1]->SetLineWidth(1);
     }
 
-    //Phase 2
+    //Phase 2  // TO CHECK
     // int nSegPh2 = 0;
-    // TF1 **segments_Ph2SL1 = new TF1*[ph2Seg_nSegments];
-    // TF1 **segments_Ph2Sl3 = new TF1*[ph2Seg_nSegments];
 
     // for(unsigned int iSeg=0; iSeg<ph2Seg_nSegments; iSeg++){
-    //   if(ph2Seg_sector->at(iSeg)!=12 || ph2Seg_wheel->at(iSeg)!=2 || ph2Seg_station->at(iSeg)!=iMB) continue;
-    //   if(!ph2Seg_hasPhi->at(iSeg)) continue;
-    //   nSegPh2++;
+      // bool skipSeg = false;
+      // if(ph2Seg_sector->at(iSeg)!=12 || ph2Seg_wheel->at(iSeg)!=2 || ph2Seg_station->at(iSeg)!=iMB) skipSeg = true;
+      // if(!ph2Seg_hasPhi->at(iSeg)) skipSeg = true;
+      // if(skipSeg){
+      //   segments_Ph2SL1[iSeg][iMB-1] = nullptr;
+      //   segments_Ph2SL3[iSeg][iMB-1] = nullptr;
+      //   continue;
+      // }
 
     //   double x11 = x0chamber + ph2Seg_posLoc_x_SL1->at(iSeg);
     //   double z11 = zSL1;
@@ -408,21 +453,15 @@ void EvDisp::fill()
     //   double q3 = computeQ(x31, x32, z31, z32);
     //   double range3 = computeSegRange(m3);
 
-    //   segments_Ph2SL1[iSeg] = new TF1(Form("segPh2SL1%i",iSeg),"[0]+[1]*x", x11-range1, x11+range1);
-    //   segments_Ph2SL1[iSeg]->SetParameters(q1,m1);
+    //   segments_Ph2SL1[iSeg][iMB-1] = new TF1(Form("segPh2SL1%i_%i",iSeg,iMB),"[0]+[1]*x", x11-range1, x11+range1);
+    //   segments_Ph2SL1[iSeg][iMB-1]->SetParameters(q1,m1);
 
-    //   segments_Ph2SL3[iSeg] = new TF1(Form("segPh2SL3%i",iSeg),"[0]+[1]*x", x31-range3, x31+range3);
-    //   segments_Ph2SL3[iSeg]->SetParameters(q3,m3);
+    //   segments_Ph2SL3[iSeg][iMB-1] = new TF1(Form("segPh2SL3%i_%i",iSeg,iMB),"[0]+[1]*x", x31-range3, x31+range3);
+    //   segments_Ph2SL3[iSeg][iMB-1]->SetParameters(q3,m3);
     // }
 
     // PLOTTING
     
-
-    TGraph **grPhi_Legacy = new TGraph*[5];
-    TGraph **grEta_Legacy = new TGraph*[5];
-    TGraph **grPhi_Ph2    = new TGraph*[5];
-    TGraph **grEta_Ph2    = new TGraph*[5];
-
     // LEGACY
     if(debug) cout<<"plotting legacy"<<endl;
     c1->cd(iMB);
@@ -430,20 +469,21 @@ void EvDisp::fill()
 
     for(int i=0;i<5;i++){
       if(xPhiLeg[i].size()>0){
-        grPhi_Legacy[i] = new TGraph(xPhiLeg[i].size(),&xPhiLeg[i][0],&yPhiLeg[i][0]);
-        setGraphColor(grPhi_Legacy[i], i);
-        grPhi_Legacy[i]->DrawClone("PSAME");
-      }else{ grPhi_Legacy[i]=nullptr; }
+        grPhi_Legacy[i][iMB-1] = new TGraph(xPhiLeg[i].size(),&xPhiLeg[i][0],&yPhiLeg[i][0]);
+        setGraphColor(grPhi_Legacy[i][iMB-1], i);
+        grPhi_Legacy[i][iMB-1]->Draw("PSAME");
+      }else{ grPhi_Legacy[i][iMB-1]=nullptr; }
+
       if(xEtaLeg[i].size()>0){
-        grEta_Legacy[i] = new TGraph(xEtaLeg[i].size(),&xEtaLeg[i][0],&yEtaLeg[i][0]);
-        setGraphColor(grEta_Legacy[i], i);
-        grEta_Legacy[i]->DrawClone("PSAME");
-      }else{ grEta_Legacy[i]=nullptr; }
+        grEta_Legacy[i][iMB-1] = new TGraph(xEtaLeg[i].size(),&xEtaLeg[i][0],&yEtaLeg[i][0]);
+        setGraphColor(grEta_Legacy[i][iMB-1], i);
+        grEta_Legacy[i][iMB-1]->Draw("PSAME");
+      }else{ grEta_Legacy[i][iMB-1]=nullptr; }
     }
 
     for(int i=0;i<nSegLeg;i++){
-      segments_LegSL1[i]->DrawClone("SAME");
-      segments_LegSL3[i]->DrawClone("SAME");
+      segments_LegSL1[i][iMB-1]->Draw("SAME");
+      segments_LegSL3[i][iMB-1]->Draw("SAME");
     }
 
     // PHASE 2
@@ -453,46 +493,23 @@ void EvDisp::fill()
 
     for(int i=0;i<5;i++){
       if(xPhiPh2[i].size()>0){
-        grPhi_Ph2[i] = new TGraph(xPhiPh2[i].size(),&xPhiPh2[i][0],&yPhiPh2[i][0]);
-        setGraphColor(grPhi_Ph2[i], i);
-        grPhi_Ph2[i]->DrawClone("PSAME");
-      }else{ grPhi_Ph2[i]=nullptr; }
+        grPhi_Ph2[i][iMB-1] = new TGraph(xPhiPh2[i].size(),&xPhiPh2[i][0],&yPhiPh2[i][0]);
+        setGraphColor(grPhi_Ph2[i][iMB-1], i);
+        grPhi_Ph2[i][iMB-1]->Draw("PSAME");
+      }else{ grPhi_Ph2[i][iMB-1]=nullptr; }
+
       if(xEtaPh2[i].size()>0){
-        grEta_Ph2[i] = new TGraph(xEtaPh2[i].size(),&xEtaPh2[i][0],&yEtaPh2[i][0]);
-        setGraphColor(grEta_Ph2[i], i);
-        grEta_Ph2[i]->DrawClone("PSAME");
-      }else{ grEta_Ph2[i]=nullptr; }
+        grEta_Ph2[i][iMB-1] = new TGraph(xEtaPh2[i].size(),&xEtaPh2[i][0],&yEtaPh2[i][0]);
+        setGraphColor(grEta_Ph2[i][iMB-1], i);
+        grEta_Ph2[i][iMB-1]->Draw("PSAME");
+      }else{ grEta_Ph2[i][iMB-1]=nullptr; }
     }
 
     // PHASE 2 segment not present for now
     // for(int i=0;i<nSegPh2;i++){
-    //   segments_Ph2SL1[i]->SetLineColor(kRed);
-    //   segments_Ph2SL3[i]->SetLineColor(kRed);
-    //   segments_Ph2SL1[i]->DrawClone("SAME");
-    //   segments_Ph2SL3[i]->DrawClone("SAME");
+    //   segments_Ph2SL1[i][iMB-1]->Draw("SAME");
+    //   segments_Ph2SL3[i][iMB-1]->Draw("SAME");
     // }
-
-    // Memory Clenning
-    if(debug) cout<<"memory cleaning 1"<<endl;
-    for(int i=0;i<5;i++) delete grPhi_Legacy[i];
-    for(int i=0;i<5;i++) delete grEta_Legacy[i];
-    for(int i=0;i<5;i++) delete grPhi_Ph2[i];
-    for(int i=0;i<5;i++) delete grEta_Ph2[i];
-    if(debug) cout<<"memory cleaning 2"<<endl;
-
-    delete[] grPhi_Legacy;
-    delete[] grEta_Legacy;
-    delete[] grPhi_Ph2;
-    delete[] grEta_Ph2;
-    if(debug) cout<<"memory cleaning 3"<<endl;
-
-    for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL1[i];
-    for(unsigned int i=0;i<seg_nSegments;i++) delete segments_LegSL3[i];
-
-    if(debug) cout<<"memory cleaning 4"<<endl;
-
-    delete[] segments_LegSL1;
-    delete[] segments_LegSL3;
 
   }
 
@@ -501,12 +518,15 @@ void EvDisp::fill()
   auto legendPad = new TPad("legendPad","legendPad",.46,.9,.54,.99);
   legendPad->Draw();
   legendPad->cd();
+  if(debug) cout<<"legendPad drawn"<<endl;
+
   auto legend = new TLegend(.01,.01,.99,.99);
   legend->AddEntry((TObject*)0, Form("Run %i",event_runNumber), "");
   legend->AddEntry((TObject*)0, Form("Event %i",(int)event_eventNumber), "");
   legend->Draw();
   legendPad->Update();
   c1->Update();
+  if(debug) cout<<"legend drawn"<<endl;
 
   // PRINTING
   TString saveFlag = "n";
@@ -525,11 +545,53 @@ void EvDisp::fill()
   if(saveFlag == "y") c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
   // MEMORY CLEANING
+
+  // Memory Clenning
+  if(debug) cout<<"memory cleaning 1"<<endl;
+  for(int i=0;i<5;i++){
+    for(int j=0;j<4;j++){
+      delete grPhi_Legacy[i][j];
+      delete grEta_Legacy[i][j];
+      delete grPhi_Ph2[i][j];
+      delete grEta_Ph2[i][j];
+    }
+  }
+
+  if(debug) cout<<"memory cleaning 2"<<endl;
+  for(int i=0;i<5;i++){
+    delete[] grPhi_Legacy[i];
+    delete[] grEta_Legacy[i];
+    delete[] grPhi_Ph2[i];
+    delete[] grEta_Ph2[i];
+  }
+
+  if(debug) cout<<"memory cleaning 3"<<endl;
+  delete[] grPhi_Legacy;
+  delete[] grEta_Legacy;
+  delete[] grPhi_Ph2;
+  delete[] grEta_Ph2;
+  
+  if(debug) cout<<"memory cleaning 4"<<endl;
+  for(unsigned int i=0;i<seg_nSegments;i++){
+    for(int j=0;j<4;j++){
+      delete segments_LegSL1[i][j];
+      delete segments_LegSL3[i][j];
+    }
+  }
+
+  if(debug) cout<<"memory cleaning 5"<<endl;
+  for(unsigned int i=0;i<seg_nSegments;i++){
+    delete[] segments_LegSL1[i];
+    delete[] segments_LegSL3[i];
+  }
+
+  if(debug) cout<<"memory cleaning 6"<<endl;
+  delete[] segments_LegSL1;
+  delete[] segments_LegSL3;
+
+  if(debug) cout<<"memory cleaning 7"<<endl;
   delete legend;
   delete legendPad;
-  delete c1;
-
-  // Clones memory to be relased..not sure how.
 
 }
 
@@ -539,8 +601,14 @@ void EvDisp::endJob()
 
   cout<<"[EvDisp::endJob] Memory cleaning"<<endl;
 
-  for(int i=0;i<4;i++) delete graphStruct[i];
+  for(int i=0;i<4;i++){
+    for(int j=0;j<2;j++){
+      delete graphStruct[i][j];
+    }
+  }
+  for(int i=0;i<4;i++) delete[] graphStruct[i];
   delete[] graphStruct;
+  delete c1;
 
   cout<<"[EvDisp::endJob] end"<<endl;
 }

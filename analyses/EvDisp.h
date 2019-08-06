@@ -61,13 +61,12 @@ protected:
   void fillDigiVectors(vector<float> vX[], vector<float> vY[], float x, float y);
   void setGraphColor(TGraph *gr, int i);
 
-  // std::map<std::string, TH2*> m_2Dplots;
+  TCanvas *c1;
 
-  TGraphErrors **graphStruct;
+  TGraphErrors ***graphStruct;
   float cellSizeX = 4.2;
   float cellSizeY = 1.3;
   float honeySize = 12.8;
-  float chamberSeparation;
   float x0chamber = 132.55;
 
   unsigned int nWiresMaxPhi[4] = {49, 60, 72, 92};
