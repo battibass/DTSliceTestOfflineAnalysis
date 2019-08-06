@@ -85,15 +85,16 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
     fChain->GetEvent(jentry);
 
     if(evt > 0){
-      if(event_eventNumber > evt ){
-        cout << "[EvDisp::Loop] current evt number "<< event_eventNumber << " is higher than the requested one " << evt <<endl;
-        continue;
-      }
-      if(jentry%1000 == 0)  cout << "[EvDisp::Loop] at entry "<< jentry << " evt "<<evt<<" still not found" << endl;
+      if(jentry%1000 == 0){
+        cout << "[EvDisp::Loop] at entry "<< jentry << " evt "<<evt<<" still not found" << endl;
+        if(event_eventNumber > evt ){
+          cout << "[EvDisp::Loop] current evt number "<< event_eventNumber << " is higher than the requested one " << evt << ", is this normal?" <<endl;
+        }
+      }  
       if(event_eventNumber != evt){
         continue;
       }else{
-        cout << "[EvDisp::Loop] processing event  : "<< evt << endl;
+        cout << "[EvDisp::Loop] processing event  : "<< event_eventNumber << endl;
         fill();
         break;
       }
@@ -269,6 +270,7 @@ void EvDisp::fill()
     if(vetoMB3 && iMB == 3) continue;
     if(vetoMB4 && iMB == 4) continue;
 
+    if(debug) cout<<"station "<<iMB<<endl;
     // DIGI
     if(debug) cout<<"digi"<<endl;
 
@@ -367,19 +369,13 @@ void EvDisp::fill()
     if(debug) cout<<"segment"<<endl;
 
     //Legacy
-    int nSegLeg = 0;
+    int nSegLeg = 0; // number of segment to draw
 
     for(unsigned int iSeg=0; iSeg<seg_nSegments; iSeg++){
       bool skipSeg = false;
       if(seg_sector->at(iSeg)!=12 || seg_wheel->at(iSeg)!=2 || seg_station->at(iSeg)!=iMB) skipSeg = true;
       if(!seg_hasPhi->at(iSeg)) skipSeg = true;
-      if(skipSeg){
-        segments_LegSL1[iSeg][iMB-1] = nullptr;
-        segments_LegSL3[iSeg][iMB-1] = nullptr;
-        continue;
-      }
-
-      nSegLeg++;
+      if(skipSeg) continue;
 
       // if(debug){
       //   cout<<endl;
@@ -413,13 +409,15 @@ void EvDisp::fill()
       double q3 = computeQ(x31, x32, z31, z32);
       double range3 = computeSegRange(m3);
 
-      segments_LegSL1[iSeg][iMB-1] = new TF1(Form("segLegSL1%i_%i",iSeg,iMB),"[0]+[1]*x", x11-range1, x11+range1);
-      segments_LegSL1[iSeg][iMB-1]->SetParameters(q1,m1);
-      segments_LegSL1[iSeg][iMB-1]->SetLineWidth(1);
+      segments_LegSL1[nSegLeg][iMB-1] = new TF1(Form("segLegSL1%i_%i",iSeg,iMB),"[0]+[1]*x", x11-range1, x11+range1);
+      segments_LegSL1[nSegLeg][iMB-1]->SetParameters(q1,m1);
+      segments_LegSL1[nSegLeg][iMB-1]->SetLineWidth(1);
 
-      segments_LegSL3[iSeg][iMB-1] = new TF1(Form("segLegSL3%i_%i",iSeg,iMB),"[0]+[1]*x", x31-range3, x31+range3);
-      segments_LegSL3[iSeg][iMB-1]->SetParameters(q3,m3);
-      segments_LegSL3[iSeg][iMB-1]->SetLineWidth(1);
+      segments_LegSL3[nSegLeg][iMB-1] = new TF1(Form("segLegSL3%i_%i",iSeg,iMB),"[0]+[1]*x", x31-range3, x31+range3);
+      segments_LegSL3[nSegLeg][iMB-1]->SetParameters(q3,m3);
+      segments_LegSL3[nSegLeg][iMB-1]->SetLineWidth(1);
+
+      nSegLeg++;
     }
 
     //Phase 2  // TO CHECK
@@ -429,11 +427,7 @@ void EvDisp::fill()
       // bool skipSeg = false;
       // if(ph2Seg_sector->at(iSeg)!=12 || ph2Seg_wheel->at(iSeg)!=2 || ph2Seg_station->at(iSeg)!=iMB) skipSeg = true;
       // if(!ph2Seg_hasPhi->at(iSeg)) skipSeg = true;
-      // if(skipSeg){
-      //   segments_Ph2SL1[iSeg][iMB-1] = nullptr;
-      //   segments_Ph2SL3[iSeg][iMB-1] = nullptr;
-      //   continue;
-      // }
+      // if(skipSeg) continue;
 
     //   double x11 = x0chamber + ph2Seg_posLoc_x_SL1->at(iSeg);
     //   double z11 = zSL1;
@@ -453,17 +447,18 @@ void EvDisp::fill()
     //   double q3 = computeQ(x31, x32, z31, z32);
     //   double range3 = computeSegRange(m3);
 
-    //   segments_Ph2SL1[iSeg][iMB-1] = new TF1(Form("segPh2SL1%i_%i",iSeg,iMB),"[0]+[1]*x", x11-range1, x11+range1);
-    //   segments_Ph2SL1[iSeg][iMB-1]->SetParameters(q1,m1);
+    //   segments_Ph2SL1[nSegPh2][iMB-1] = new TF1(Form("segPh2SL1%i_%i",iSeg,iMB),"[0]+[1]*x", x11-range1, x11+range1);
+    //   segments_Ph2SL1[nSegPh2][iMB-1]->SetParameters(q1,m1);
 
-    //   segments_Ph2SL3[iSeg][iMB-1] = new TF1(Form("segPh2SL3%i_%i",iSeg,iMB),"[0]+[1]*x", x31-range3, x31+range3);
-    //   segments_Ph2SL3[iSeg][iMB-1]->SetParameters(q3,m3);
+    //   segments_Ph2SL3[nSegPh2][iMB-1] = new TF1(Form("segPh2SL3%i_%i",iSeg,iMB),"[0]+[1]*x", x31-range3, x31+range3);
+    //   segments_Ph2SL3[nSegPh2][iMB-1]->SetParameters(q3,m3);
+    //   nSegPh2 ++;
     // }
 
     // PLOTTING
     
     // LEGACY
-    if(debug) cout<<"plotting legacy"<<endl;
+    if(debug) cout<<"plotting legacy digi"<<endl;
     c1->cd(iMB);
     gPad->cd(1);
 
@@ -481,13 +476,14 @@ void EvDisp::fill()
       }else{ grEta_Legacy[i][iMB-1]=nullptr; }
     }
 
+    if(debug) cout<<"plotting legacy segments "<<nSegLeg<<endl;
     for(int i=0;i<nSegLeg;i++){
       segments_LegSL1[i][iMB-1]->Draw("SAME");
       segments_LegSL3[i][iMB-1]->Draw("SAME");
     }
 
     // PHASE 2
-    if(debug) cout<<"plotting phase2"<<endl;
+    if(debug) cout<<"plotting phase2 digi "<<endl;
     c1->cd(iMB);
     gPad->cd(2);
 
@@ -506,6 +502,7 @@ void EvDisp::fill()
     }
 
     // PHASE 2 segment not present for now
+    // if(debug) cout<<"plotting phase2 segments"<<endl;
     // for(int i=0;i<nSegPh2;i++){
     //   segments_Ph2SL1[i][iMB-1]->Draw("SAME");
     //   segments_Ph2SL3[i][iMB-1]->Draw("SAME");
