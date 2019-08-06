@@ -103,8 +103,8 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
       cout << "[EvDisp::Loop] Invalid evt number"<< endl;
       break;
     }else{
-      if(!runOnlyIfOneEmptyFlag) cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << endl;
-      else if(jentry%1000 == 0)  cout << "[EvDisp::Loop] processing : "<< jentry << " entry" << endl;
+      if(!runOnlyIfOneEmptyFlag) cout << "[EvDisp::Loop] processing entry : "<< jentry << endl;
+      else if(jentry%1000 == 0)  cout << "[EvDisp::Loop] processing entry : "<< jentry << endl;
 
       fill();
 
