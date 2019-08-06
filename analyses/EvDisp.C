@@ -27,7 +27,7 @@ EvDisp::EvDisp(const TString & inFileName) :
 , vetoMB2(false)
 , vetoMB3(true)
 , vetoMB4(false)
-, debug(true)
+, debug(false)
 {
   cout<<endl;
   cout<<"INSTRUCTIONS"<<endl;
