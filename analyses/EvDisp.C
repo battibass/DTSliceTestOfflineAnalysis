@@ -191,8 +191,16 @@ void EvDisp::book()
       graphStruct[i][j] = new TGraphErrors(xStruct[i].size(),&xStruct[i][0],&yStruct[i][0],&exStruct[i][0],&eyStruct[i][0]); 
       if(j==0) graphStruct[i][j]->SetTitle(Form("MB %i LEGACY;x[cm];z[cm]",i+1));
       if(j==1) graphStruct[i][j]->SetTitle(Form("MB %i PHASE2;x[cm];z[cm]",i+1));
+
+      gStyle->SetTitleSize(0.1,"t");
       graphStruct[i][j]->SetMarkerStyle(1);
       graphStruct[i][j]->GetXaxis()->SetLimits(0.,410.);
+      graphStruct[i][j]->GetXaxis()->SetTitleSize(.1);
+      graphStruct[i][j]->GetYaxis()->SetTitleSize(.1);
+      graphStruct[i][j]->GetXaxis()->SetTitleOffset(-0.5);
+      graphStruct[i][j]->GetYaxis()->SetTitleOffset(0.4);
+      graphStruct[i][j]->GetXaxis()->SetLabelSize(.1);
+      graphStruct[i][j]->GetYaxis()->SetLabelSize(.1);
     }
   }
 
@@ -537,6 +545,8 @@ void EvDisp::fill()
       cin>>saveFlag;
     }while(saveFlag != "y" && saveFlag != "n");
   }
+
+  c1->Update();
 
   if(saveFlag == "y") c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
