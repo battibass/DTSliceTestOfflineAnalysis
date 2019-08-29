@@ -108,6 +108,8 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
 
       fill();
 
+      if(jentry == stop - 1) break;
+
       TString continueFlag = "n";
       if(askContinueFlag){
         do{
@@ -138,7 +140,7 @@ void EvDisp::Loop(Long64_t evt)
 
 void EvDisp::LoopEntry(Long64_t entry)
 {
-  cout << "[EvDisp::Loop] processing entry : "<< entry;
+  cout << "[EvDisp::Loop] processing entry : "<< entry << endl;
   Loop(entry, entry+1);
 }
 
