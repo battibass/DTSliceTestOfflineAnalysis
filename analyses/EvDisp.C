@@ -316,28 +316,30 @@ void EvDisp::fill()
     vector<float> xEtaLeg[5], yEtaLeg[5];
 
     for(unsigned int idigi=0; idigi<digi_nDigis; idigi++){
-      if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2 || digi_station->at(idigi)!=iMB) continue;
+//      if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2 || digi_station->at(idigi)!=iMB) continue;
+        if(digi_sector->at(idigi)==12 && digi_wheel->at(idigi)==2  && digi_station->at(idigi)==iMB){
 
-      float wire = digi_wire->at(idigi);
-      float layer = digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
+        float wire = digi_wire->at(idigi);
+        float layer = digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
 
-      float x = computeX(wire,layer,iMB);
-      float y = computeY(layer);
+        float x = computeX(wire,layer,iMB);
+        float y = computeY(layer);
 
-      if(digi_superLayer->at(idigi) == 2){
-        fillDigiVectors(xEtaLeg, yEtaLeg, x, y);
-      }else{
-        fillDigiVectors(xPhiLeg, yPhiLeg, x, y);
-      }
+        if(digi_superLayer->at(idigi) == 2){
+          fillDigiVectors(xEtaLeg, yEtaLeg, x, y);
+        }else{
+          fillDigiVectors(xPhiLeg, yPhiLeg, x, y);
+        }
 
-      if(dumpFlag){
-        cout<<setw(7)<<idigi;
-        cout<<" "<<setw(2)<<digi_station->at(idigi);
-        cout<<" "<<setw(2)<<digi_superLayer->at(idigi);
-        cout<<" "<<setw(2)<<digi_layer->at(idigi);
-        cout<<" "<<setw(4)<<digi_wire->at(idigi);      
-        cout<<" "<<setw(8)<<digi_time->at(idigi);      
-        cout<<endl;
+        if(dumpFlag){
+          cout<<setw(7)<<idigi;
+          cout<<" "<<setw(2)<<digi_station->at(idigi);
+          cout<<" "<<setw(2)<<digi_superLayer->at(idigi);
+          cout<<" "<<setw(2)<<digi_layer->at(idigi);
+          cout<<" "<<setw(4)<<digi_wire->at(idigi);      
+          cout<<" "<<setw(8)<<digi_time->at(idigi);      
+          cout<<endl;
+        }
       }
 
     }
@@ -348,28 +350,30 @@ void EvDisp::fill()
     vector<float> xEtaPh2[5], yEtaPh2[5];
 
     for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++){
-      if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2 || ph2Digi_station->at(idigi)!=iMB) continue;
+//      if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2 || ph2Digi_station->at(idigi)!=iMB) continue;
+      if(ph2Digi_sector->at(idigi)==12 && ph2Digi_wheel->at(idigi)==2  && ph2Digi_station->at(idigi)==iMB){
 
-      float wire = ph2Digi_wire->at(idigi);
-      float layer = ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
+        float wire = ph2Digi_wire->at(idigi);
+        float layer = ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
 
-      float x = computeX(wire,layer,iMB);
-      float y = computeY(layer);
+        float x = computeX(wire,layer,iMB);
+        float y = computeY(layer);
 
-      if(ph2Digi_superLayer->at(idigi) == 2){
-        fillDigiVectors(xEtaPh2, yEtaPh2, x, y);
-      }else{
-        fillDigiVectors(xPhiPh2, yPhiPh2, x, y);
-      }
+        if(ph2Digi_superLayer->at(idigi) == 2){
+          fillDigiVectors(xEtaPh2, yEtaPh2, x, y);
+        }else{
+          fillDigiVectors(xPhiPh2, yPhiPh2, x, y);
+        }
 
-      if(dumpFlag){
-        cout<<setw(7)<<idigi;
-        cout<<" "<<setw(2)<<ph2Digi_station->at(idigi);
-        cout<<" "<<setw(2)<<ph2Digi_superLayer->at(idigi);
-        cout<<" "<<setw(2)<<ph2Digi_layer->at(idigi);
-        cout<<" "<<setw(4)<<ph2Digi_wire->at(idigi);      
-        cout<<" "<<setw(8)<<ph2Digi_time->at(idigi);      
-        cout<<endl;
+        if(dumpFlag){
+          cout<<setw(7)<<idigi;
+          cout<<" "<<setw(2)<<ph2Digi_station->at(idigi);
+          cout<<" "<<setw(2)<<ph2Digi_superLayer->at(idigi);
+          cout<<" "<<setw(2)<<ph2Digi_layer->at(idigi);
+          cout<<" "<<setw(4)<<ph2Digi_wire->at(idigi);      
+          cout<<" "<<setw(8)<<ph2Digi_time->at(idigi);      
+          cout<<endl;
+        }
       }
     }
 
