@@ -8,10 +8,10 @@ git clone https://github.com/battibass/DTSliceTestOfflineAnalysis.git
 cd DTSliceTestOfflineAnalysis
 
 # For bash:
-. configForSlcieTestAnalysis.sh
+. configForSliceTestAnalysis.sh
 
 # For (t)csh:
-. configForSlcieTestAnalysis.sh
+. configForSliceTestAnalysis.sh
 ```
 
 ## Running ntuple production and analyses
