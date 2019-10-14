@@ -108,6 +108,8 @@ void EvDisp::Loop(Long64_t start, Long64_t stop, Long64_t evt = -1)
 
       fill();
 
+      if(jentry == stop - 1) break;
+
       TString continueFlag = "n";
       if(askContinueFlag){
         do{
@@ -138,7 +140,7 @@ void EvDisp::Loop(Long64_t evt)
 
 void EvDisp::LoopEntry(Long64_t entry)
 {
-  cout << "[EvDisp::Loop] processing entry : "<< entry;
+  cout << "[EvDisp::Loop] processing entry : "<< entry << endl;
   Loop(entry, entry+1);
 }
 
@@ -191,8 +193,16 @@ void EvDisp::book()
       graphStruct[i][j] = new TGraphErrors(xStruct[i].size(),&xStruct[i][0],&yStruct[i][0],&exStruct[i][0],&eyStruct[i][0]); 
       if(j==0) graphStruct[i][j]->SetTitle(Form("MB %i LEGACY;x[cm];z[cm]",i+1));
       if(j==1) graphStruct[i][j]->SetTitle(Form("MB %i PHASE2;x[cm];z[cm]",i+1));
+
+      gStyle->SetTitleSize(0.1,"t");
       graphStruct[i][j]->SetMarkerStyle(1);
       graphStruct[i][j]->GetXaxis()->SetLimits(0.,410.);
+      graphStruct[i][j]->GetXaxis()->SetTitleSize(.1);
+      graphStruct[i][j]->GetYaxis()->SetTitleSize(.1);
+      graphStruct[i][j]->GetXaxis()->SetTitleOffset(-0.5);
+      graphStruct[i][j]->GetYaxis()->SetTitleOffset(0.4);
+      graphStruct[i][j]->GetXaxis()->SetLabelSize(.1);
+      graphStruct[i][j]->GetYaxis()->SetLabelSize(.1);
     }
   }
 
@@ -306,28 +316,30 @@ void EvDisp::fill()
     vector<float> xEtaLeg[5], yEtaLeg[5];
 
     for(unsigned int idigi=0; idigi<digi_nDigis; idigi++){
-      if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2 || digi_station->at(idigi)!=iMB) continue;
+//      if(digi_sector->at(idigi)!=12 || digi_wheel->at(idigi)!=2 || digi_station->at(idigi)!=iMB) continue;
+        if(digi_sector->at(idigi)==12 && digi_wheel->at(idigi)==2  && digi_station->at(idigi)==iMB){
 
-      float wire = digi_wire->at(idigi);
-      float layer = digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
+        float wire = digi_wire->at(idigi);
+        float layer = digi_layer->at(idigi) + 4*(digi_superLayer->at(idigi)-1);
 
-      float x = computeX(wire,layer,iMB);
-      float y = computeY(layer);
+        float x = computeX(wire,layer,iMB);
+        float y = computeY(layer);
 
-      if(digi_superLayer->at(idigi) == 2){
-        fillDigiVectors(xEtaLeg, yEtaLeg, x, y);
-      }else{
-        fillDigiVectors(xPhiLeg, yPhiLeg, x, y);
-      }
+        if(digi_superLayer->at(idigi) == 2){
+          fillDigiVectors(xEtaLeg, yEtaLeg, x, y);
+        }else{
+          fillDigiVectors(xPhiLeg, yPhiLeg, x, y);
+        }
 
-      if(dumpFlag){
-        cout<<setw(7)<<idigi;
-        cout<<" "<<setw(2)<<digi_station->at(idigi);
-        cout<<" "<<setw(2)<<digi_superLayer->at(idigi);
-        cout<<" "<<setw(2)<<digi_layer->at(idigi);
-        cout<<" "<<setw(4)<<digi_wire->at(idigi);      
-        cout<<" "<<setw(8)<<digi_time->at(idigi);      
-        cout<<endl;
+        if(dumpFlag){
+          cout<<setw(7)<<idigi;
+          cout<<" "<<setw(2)<<digi_station->at(idigi);
+          cout<<" "<<setw(2)<<digi_superLayer->at(idigi);
+          cout<<" "<<setw(2)<<digi_layer->at(idigi);
+          cout<<" "<<setw(4)<<digi_wire->at(idigi);      
+          cout<<" "<<setw(8)<<digi_time->at(idigi);      
+          cout<<endl;
+        }
       }
 
     }
@@ -338,28 +350,30 @@ void EvDisp::fill()
     vector<float> xEtaPh2[5], yEtaPh2[5];
 
     for(unsigned int idigi=0; idigi<ph2Digi_nDigis; idigi++){
-      if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2 || ph2Digi_station->at(idigi)!=iMB) continue;
+//      if(ph2Digi_sector->at(idigi)!=12 || ph2Digi_wheel->at(idigi)!=2 || ph2Digi_station->at(idigi)!=iMB) continue;
+      if(ph2Digi_sector->at(idigi)==12 && ph2Digi_wheel->at(idigi)==2  && ph2Digi_station->at(idigi)==iMB){
 
-      float wire = ph2Digi_wire->at(idigi);
-      float layer = ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
+        float wire = ph2Digi_wire->at(idigi);
+        float layer = ph2Digi_layer->at(idigi) + 4*(ph2Digi_superLayer->at(idigi)-1);
 
-      float x = computeX(wire,layer,iMB);
-      float y = computeY(layer);
+        float x = computeX(wire,layer,iMB);
+        float y = computeY(layer);
 
-      if(ph2Digi_superLayer->at(idigi) == 2){
-        fillDigiVectors(xEtaPh2, yEtaPh2, x, y);
-      }else{
-        fillDigiVectors(xPhiPh2, yPhiPh2, x, y);
-      }
+        if(ph2Digi_superLayer->at(idigi) == 2){
+          fillDigiVectors(xEtaPh2, yEtaPh2, x, y);
+        }else{
+          fillDigiVectors(xPhiPh2, yPhiPh2, x, y);
+        }
 
-      if(dumpFlag){
-        cout<<setw(7)<<idigi;
-        cout<<" "<<setw(2)<<ph2Digi_station->at(idigi);
-        cout<<" "<<setw(2)<<ph2Digi_superLayer->at(idigi);
-        cout<<" "<<setw(2)<<ph2Digi_layer->at(idigi);
-        cout<<" "<<setw(4)<<ph2Digi_wire->at(idigi);      
-        cout<<" "<<setw(8)<<ph2Digi_time->at(idigi);      
-        cout<<endl;
+        if(dumpFlag){
+          cout<<setw(7)<<idigi;
+          cout<<" "<<setw(2)<<ph2Digi_station->at(idigi);
+          cout<<" "<<setw(2)<<ph2Digi_superLayer->at(idigi);
+          cout<<" "<<setw(2)<<ph2Digi_layer->at(idigi);
+          cout<<" "<<setw(4)<<ph2Digi_wire->at(idigi);      
+          cout<<" "<<setw(8)<<ph2Digi_time->at(idigi);      
+          cout<<endl;
+        }
       }
     }
 
@@ -377,21 +391,20 @@ void EvDisp::fill()
       if(!seg_hasPhi->at(iSeg)) skipSeg = true;
       if(skipSeg) continue;
 
-      // if(debug){
+      // cout<<endl;
+      // cout<<"iMB "<<iMB<<endl;
+      // cout<<"iSeg "<<iSeg<<endl;
+      // for(int iHit=0; iHit<seg_phi_nHits->at(iSeg); iHit++){
+      //   cout<<getXY<float>(seg_phiHits_pos,iSeg,iHit)<<" ";
+      //   cout<<getXY<float>(seg_phiHits_posCh,iSeg,iHit)<<" ";
+      //   cout<<getXY<float>(seg_phiHits_wire,iSeg,iHit)<<" ";
+      //   cout<<getXY<float>(seg_phiHits_wirePos,iSeg,iHit)<<" ";
+      //   cout<<getXY<float>(seg_phiHits_layer,iSeg,iHit)<<" ";
+      //   cout<<getXY<float>(seg_phiHits_superLayer,iSeg,iHit)<<" ";
       //   cout<<endl;
-      //   cout<<"iSeg "<<iSeg<<endl;
-      //   for(int iHit=0; iHit<seg_phi_nHits->at(iSeg); iHit++){
-      //     cout<<getXY<float>(seg_phiHits_pos,iSeg,iHit)<<" ";
-      //     cout<<getXY<float>(seg_phiHits_posCh,iSeg,iHit)<<" ";
-      //     cout<<getXY<float>(seg_phiHits_wire,iSeg,iHit)<<" ";
-      //     cout<<getXY<float>(seg_phiHits_wirePos,iSeg,iHit)<<" ";
-      //     cout<<getXY<float>(seg_phiHits_layer,iSeg,iHit)<<" ";
-      //     cout<<getXY<float>(seg_phiHits_superLayer,iSeg,iHit)<<" ";
-      //     cout<<endl;
-      //   }
       // }
 
-      double x11 = x0chamber + seg_posLoc_x_SL1->at(iSeg);
+      double x11 = x0station[iMB-1] + seg_posLoc_x_SL1->at(iSeg);
       double z11 = zSL1;
       double x12 = x11 + seg_dirLoc_x->at(iSeg);
       double z12 = z11 - seg_dirLoc_z->at(iSeg); //z is pointed downwards
@@ -400,7 +413,7 @@ void EvDisp::fill()
       double q1 = computeQ(x11, x12, z11, z12);
       double range1 = computeSegRange(m1);
 
-      double x31 = x0chamber + seg_posLoc_x_SL3->at(iSeg);
+      double x31 = x0station[iMB-1] + seg_posLoc_x_SL3->at(iSeg);
       double z31 = zSL3;
       double x32 = x31 + seg_dirLoc_x->at(iSeg);
       double z32 = z31 - seg_dirLoc_z->at(iSeg); //z is pointed downwards
@@ -429,7 +442,7 @@ void EvDisp::fill()
       // if(!ph2Seg_hasPhi->at(iSeg)) skipSeg = true;
       // if(skipSeg) continue;
 
-    //   double x11 = x0chamber + ph2Seg_posLoc_x_SL1->at(iSeg);
+    //   double x11 = x0station[iMB-1] + ph2Seg_posLoc_x_SL1->at(iSeg);
     //   double z11 = zSL1;
     //   double x12 = x11 + ph2Seg_dirLoc_x->at(iSeg);
     //   double z12 = z11 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
@@ -438,7 +451,7 @@ void EvDisp::fill()
     //   double q1 = computeQ(x11, x12, z11, z12);
     //   double range1 = computeSegRange(m1);
 
-    //   double x31 = x0chamber + ph2Seg_posLoc_x_SL3->at(iSeg);
+    //   double x31 = x0station[iMB-1] + ph2Seg_posLoc_x_SL3->at(iSeg);
     //   double z31 = zSL3;
     //   double x32 = x31 + ph2Seg_dirLoc_x->at(iSeg);
     //   double z32 = z31 - ph2Seg_dirLoc_z->at(iSeg); //z is pointed downwards
@@ -539,6 +552,8 @@ void EvDisp::fill()
     }while(saveFlag != "y" && saveFlag != "n");
   }
 
+  c1->Update();
+
   if(saveFlag == "y") c1->Print(Form("evDispPlots/display_run%i_evt%i.png", event_runNumber, (int)event_eventNumber));
 
   // MEMORY CLEANING
@@ -633,25 +648,26 @@ float EvDisp::computeX(float x, int y, int iMB) // x = wire, y = layer, MB = sta
 {
   x = cellSizeX*x;
   if(y%2 == 1) x += cellSizeX/2;  // Layer stagger
-  if(y >= 9) x += cellSizeX;      // SL3 Stagger (station dependend)
-  switch(iMB)
-  {
-    case 1:
-    // do something
-    break;
+  if(y >= 9){ // SL3 Stagger (station dependend)
+    switch(iMB)
+    {
+      case 1:
+      // do something
+      break;
 
-    case 2:
-    // do something
-    break;
+      case 2:
+      x += cellSizeX;
+      break;
 
-    case 3:
-    // do something
-    break;
+      case 3:
+      // do something
+      break;
 
-    case 4:
-    // do something
-    break;
-  }
+      case 4:
+      x += 2*cellSizeX;
+      break;
+    }
+  }  
 
   return x;
 }
