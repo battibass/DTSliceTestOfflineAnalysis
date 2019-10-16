@@ -25,7 +25,7 @@ EvDisp::EvDisp(const TString & inFileName) :
 , runOnlyIfOneEmptyFlag(false)
 , vetoMB1(true)
 , vetoMB2(false)
-, vetoMB3(true)
+, vetoMB3(false)
 , vetoMB4(false)
 , debug(false)
 {
@@ -660,7 +660,7 @@ float EvDisp::computeX(float x, int y, int iMB) // x = wire, y = layer, MB = sta
       break;
 
       case 3:
-      // do something
+      // no stagger needed
       break;
 
       case 4:
