@@ -67,7 +67,7 @@ protected:
   float cellSizeX = 4.2;
   float cellSizeY = 1.3;
   float honeySize = 12.8;
-  float x0station[4] = {0, 132.55, 0, 200.55};
+  float x0station[4] = {0, 132.55, 152.85, 200.55};
 
   unsigned int nWiresMaxPhi[4] = {49, 60, 72, 92};
   unsigned int nWiresMaxEta = 57;
