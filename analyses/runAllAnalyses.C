@@ -22,6 +22,8 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
   triggerAnalysis.Loop();
 
   auto segmentAnalysis = DTNtupleSegmentAnalyzer(inputFile, runName + "/segment/results_segment.root");
+  segmentAnalysis.PreLoop("Ph1");
+  segmentAnalysis.PreLoop("Ph2");
   segmentAnalysis.Loop();
 
   gSystem->Exec("rm *d *pcm *so");
