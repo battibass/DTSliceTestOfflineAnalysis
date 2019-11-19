@@ -153,7 +153,7 @@ if options.vDriftFile != '' :
                                         )
                                    )
 
-process.source = cms.Source("inputSourceType",
+process.source = cms.Source(inputSourceType,
                             
         fileNames = cms.untracked.vstring()
 )
