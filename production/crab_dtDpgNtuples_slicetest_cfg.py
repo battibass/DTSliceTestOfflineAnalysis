@@ -3,7 +3,7 @@ config = Configuration()
 
 ##### Configuration parameters ################################
 
-runNumber = 330160
+runNumber = 333369
 inputDataset = "/Cosmics/Commissioning2019-v1/RAW"
 
 # These are the cfg parameters used to configure the 
@@ -15,7 +15,10 @@ configParams = ['ntupleName=DTDPGNtuple.root']
 
 # These are the additional input files (e.g. sqlite .db) 
 # needed by dtDpgNtuples_slicetest_cfg.py to run
-inputFiles = [] 
+inputFiles = [
+    '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/calib/ttrig_phase2_Run333369.db',
+    '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/calib/t0_phase2_Run333364.db'
+] 
 # E.g. use dedicated tTrigs
 # inputFiles = ['./calib/TTrigDB_cosmics_ttrig.db'] 
 
