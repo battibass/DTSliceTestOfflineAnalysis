@@ -166,8 +166,6 @@ void DTNtupleDigiAnalyzer::fill()
       int wire = ph2Digi_wire->at(iDigi);
       int slAndLay = (lay - 1) + (sl - 1) * 4;
 
-      std::vector wireId = {sl, lay, wire};
-
       double time = ph2Digi_time->at(iDigi) - ph2DigiPedestal;
       double timeInRange = std::max(0.5,std::min(4999.5,time));
       
