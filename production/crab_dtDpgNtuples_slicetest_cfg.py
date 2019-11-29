@@ -3,8 +3,8 @@ config = Configuration()
 
 ##### Configuration parameters ################################
 
-runNumber = 333369
-inputDataset = "/Cosmics/Commissioning2019-v1/RAW"
+runNumber = 333510
+inputDataset = "/MiniDaq/Commissioning2019-v1/RAW"
 
 # These are the cfg parameters used to configure the 
 # dtDpgNtuples_slicetest_cfg.py configuration file
@@ -15,10 +15,7 @@ configParams = ['ntupleName=DTDPGNtuple.root']
 
 # These are the additional input files (e.g. sqlite .db) 
 # needed by dtDpgNtuples_slicetest_cfg.py to run
-inputFiles = [
-    '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/calib/ttrig_phase2_Run333369.db',
-    '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/calib/t0_phase2_Run333364.db'
-] 
+inputFiles = [] 
 # E.g. use dedicated tTrigs
 # inputFiles = ['./calib/TTrigDB_cosmics_ttrig.db'] 
 
@@ -43,7 +40,7 @@ config.Data.splitting    = 'LumiBased'
 config.Data.unitsPerJob  = 10  
 config.Data.runRange     = str(runNumber)
 config.Data.inputDBS     = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader/'
-config.Data.outLFNDirBase  = '/store/group/dpg_dt/comm_dt/commissioning_2019_data/crab/'
+config.Data.outLFNDirBase  = '/store/group/dpg_dt/comm_dt/commissioning_2019_data/crab/carlo'
 
 config.section_('Site')
 config.Site.storageSite = 'T2_CH_CERN'
