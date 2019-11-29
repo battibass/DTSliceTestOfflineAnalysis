@@ -40,7 +40,7 @@ config.Data.splitting    = 'LumiBased'
 config.Data.unitsPerJob  = 10  
 config.Data.runRange     = str(runNumber)
 config.Data.inputDBS     = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader/'
-config.Data.outLFNDirBase  = '/store/group/dpg_dt/comm_dt/commissioning_2019_data/crab/carlo'
+config.Data.outLFNDirBase  = '/store/group/dpg_dt/comm_dt/commissioning_2019_data/crab/'
 
 config.section_('Site')
 config.Site.storageSite = 'T2_CH_CERN'
