@@ -3,8 +3,8 @@ config = Configuration()
 
 ##### Configuration parameters ################################
 
-runNumber = 330160
-inputDataset = "/Cosmics/Commissioning2019-v1/RAW"
+runNumber = 333510
+inputDataset = "/MiniDaq/Commissioning2019-v1/RAW"
 
 # These are the cfg parameters used to configure the 
 # dtDpgNtuples_slicetest_cfg.py configuration file

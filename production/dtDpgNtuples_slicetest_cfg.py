@@ -21,7 +21,7 @@ options.register('nEvents',
                  "Maximum number of processed events")
 
 options.register('runNumber',
-                 '329806', #default value
+                 '333510', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                  "Run number to be looked for in either 'inputFolderCentral' or 'inputFolderDT' folders")
@@ -48,13 +48,26 @@ options.register('tTrigFile',
                  '', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
-                 "File with customised DT tTrigs, used only if non ''")
+                 "File with customised DT legacy tTrigs, used only if non ''")
 
 options.register('t0File',
                  '', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
-                 "File with customised DT t0is, used only if non ''")
+                 "File with customised DT legacy t0is, used only if non ''")
+
+options.register('tTrigFilePh2',
+                 '', #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 "File with customised DT phase-2 tTrigs, used only if non ''")
+
+options.register('t0FilePh2',
+                 '', #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 "File with customised DT phase-2 t0is, used only if non ''")
+
 
 options.register('vDriftFile',
                  '', #default value
@@ -95,9 +108,11 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 
 process.GlobalTag.globaltag = cms.string(options.globalTag)
 
-if options.tTrigFile  != '' or \
-   options.vDriftFile != '' or \
-   options.t0File != '' :
+if options.tTrigFile    != '' or \
+   options.t0File       != '' or \
+   options.tTrigFilePh2 != '' or \
+   options.t0FilePh2    != '' or \
+   options.vDriftFile   != '' :
     process.GlobalTag.toGet = cms.VPSet()
 
 if options.tTrigFile != '' :
@@ -108,6 +123,29 @@ if options.tTrigFile != '' :
                                         )
                                )
 
+if options.t0File != '' :
+    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTT0Rcd"),
+                                            tag = cms.string("t0"),
+                                            connect = cms.string("sqlite_file:" + options.t0File)
+                                        )
+                                   )
+
+if options.tTrigFilePh2 != '' :
+    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTTtrigRcd"),
+                                            tag = cms.string("ttrig"),
+                                            connect = cms.string("sqlite_file:" + options.tTrigFilePh2),
+                                            label = cms.untracked.string("cosmics_ph2")
+                                        )
+                               )
+
+if options.t0FilePh2 != '' :
+    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTT0Rcd"),
+                                            tag = cms.string("t0"),
+                                            connect = cms.string("sqlite_file:" + options.t0FilePh2),
+                                            label = cms.untracked.string("ph2")
+                                        )
+                                   )
+
 if options.vDriftFile != '' :
     process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTMtimeRcd"),
                                             tag = cms.string("vDrift"),
@@ -115,18 +153,9 @@ if options.vDriftFile != '' :
                                         )
                                    )
 
-if options.t0File != '' :
-    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTT0Rcd"),
-                                            tag = cms.string("t0"),
-                                            connect = cms.string("sqlite_file:" + options.t0File)
-                                        )
-                                   )
-    
-
 process.source = cms.Source(inputSourceType,
                             
-        fileNames = cms.untracked.vstring(),
-
+        fileNames = cms.untracked.vstring()
 )
 
 if options.inputFile != '' :
@@ -140,7 +169,7 @@ else :
     runFolder = options.inputFolderCentral + "/" + runStr[0:3] + "/" + runStr[3:6] + "/" + runStr[6:] 
     if not options.runOnDat:
         runFolder = runFolder + "/00000"
-
+    
     print "[dtDpgNtuples_slicetest_cfg.py]: looking for files under:\n\t\t\t" + runFolder
     
     if os.path.exists(runFolder) :
@@ -193,3 +222,7 @@ process.p = cms.Path(process.muonDTDigis
                      + process.bmtfDigis
                      + process.dtlocalrecoT0Seg
                      + process.dtNtupleProducer)
+
+if options.tTrigFilePh2 != '' and options.t0FilePh2 != '' :
+    from DTDPGAnalysis.DTNtuples.customiseDtPhase2Reco_cff import customiseForPhase2Reco
+    process = customiseForPhase2Reco(process,"p", options.tTrigFilePh2, options.t0FilePh2)
