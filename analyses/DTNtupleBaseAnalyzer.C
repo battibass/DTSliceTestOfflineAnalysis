@@ -481,6 +481,13 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_BX", &ph2TpgPhiEmuAm_BX, &b_ph2TpgPhiEmuAm_BX);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_t0", &ph2TpgPhiEmuAm_t0, &b_ph2TpgPhiEmuAm_t0);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_index", &ph2TpgPhiEmuAm_index, &b_ph2TpgPhiEmuAm_index);
+
+   digiObjs["Ph1"] = DTNtupleDigi(digi_nDigis, digi_wheel, digi_sector, digi_station,
+				  digi_superLayer, digi_layer, digi_wire, digi_time  );
+
+   digiObjs["Ph2"] = DTNtupleDigi(ph2Digi_nDigis, ph2Digi_wheel, ph2Digi_sector, ph2Digi_station,
+				  ph2Digi_superLayer, ph2Digi_layer, ph2Digi_wire, ph2Digi_time  );
+
    Notify();
 }
 

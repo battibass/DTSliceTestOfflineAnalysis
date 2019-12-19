@@ -62,14 +62,22 @@ class DTNtupleDigiAnalyzer : public DTNtupleBaseAnalyzer
   virtual void book() override;
   virtual void fill() override;
   virtual void endJob() override;
-  
+
+ private:
+
+  void fillBasic(std::string typeTag, std::set<WireId> & wireIds);
+  void fillEff(std::string typeTag, std::set<WireId> & wireIdProbes, std::set<WireId> & wireIdRefs);
+
   TFile m_outFile;
 
-  std::vector<int> m_stations;
-  float ph2DigiPedestal;
+  std::map<std::string,std::vector<int>> m_stations;
 
-  std::map<std::string, TH1*> m_plots;
-  std::map<std::string, TEfficiency*> m_effs;
+  std::map<std::string,float> m_timeBoxMin;
+  std::map<std::string,float> m_timeBoxMax;
+  std::map<std::string,int>   m_timeBoxBins;
+
+  std::map<TString, TH1*> m_plots;
+  std::map<TString, TEfficiency*> m_effs;
   
 };
 

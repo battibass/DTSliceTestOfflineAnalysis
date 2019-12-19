@@ -17,11 +17,55 @@
 #include "vector"
 #include "TClonesArray.h"
 
+class DTNtupleDigi
+{
+
+ public:
+
+  DTNtupleDigi ()
+    {
+      nDigis = nullptr;
+      wheel  = nullptr;
+      sector = nullptr;
+      station = nullptr;
+      superLayer = nullptr;
+      layer = nullptr;
+      wire = nullptr;
+      time = nullptr;
+    };
+
+  DTNtupleDigi (UInt_t & nDigis,
+	  vector<short> * wheel,
+	  vector<short> * sector,
+	  vector<short> * station,
+	  vector<short> * superLayer,
+	  vector<short> * layer,
+	  vector<short> * wire,
+	  vector<float> * time) :
+  nDigis(&nDigis), wheel(wheel), sector(sector), station(station),
+    superLayer(superLayer), layer(layer), wire(wire), time(time)
+  { };
+
+  ~DTNtupleDigi() { };
+
+  UInt_t * nDigis;
+  vector<short> * wheel;
+  vector<short> * sector;
+  vector<short> * station;
+  vector<short> * superLayer;
+  vector<short> * layer;
+  vector<short> * wire;
+  vector<float> * time;
+
+};
+
 class DTNtupleBaseAnalyzer {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
    TFile m_inFile;
+
+   std::map<std::string, DTNtupleDigi> digiObjs;
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 

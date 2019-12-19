@@ -18,13 +18,13 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
   auto digiAnalysis = DTNtupleDigiAnalyzer(inputFile, runName + "/digi/results_digi.root");
   digiAnalysis.Loop();
 
-  auto triggerAnalysis = DTNtupleTriggerAnalyzer(inputFile, runName + "/trigger/results_trigger.root");
-  triggerAnalysis.Loop();
-
   auto segmentAnalysis = DTNtupleSegmentAnalyzer(inputFile, runName + "/segment/results_segment.root");
   segmentAnalysis.PreLoop("Ph1");
   segmentAnalysis.PreLoop("Ph2");
   segmentAnalysis.Loop();
+
+  auto triggerAnalysis = DTNtupleTriggerAnalyzer(inputFile, runName + "/trigger/results_trigger.root");
+  triggerAnalysis.Loop();
 
   gSystem->Exec("rm *d *pcm *so");
 
