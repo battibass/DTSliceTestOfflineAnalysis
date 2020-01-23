@@ -10,7 +10,6 @@ DTNtupleSegmentAnalyzer::DTNtupleSegmentAnalyzer(const TString & inFileName,
   m_outFile(outFileName,"RECREATE"), DTNtupleBaseAnalyzer(inFileName)  
 { 
 
-
   TObjArray *tx = outFileName.Tokenize("/");
   m_deadFileName = (((TObjString *)(tx->At(0)))->String()).Data();
   cout<<"m_deadFileName "<<m_deadFileName<<endl;
@@ -475,8 +474,11 @@ void DTNtupleSegmentAnalyzer::book()
 
 	m_plots[Form("%shResPerSl_st%d",typeTag.c_str(),st)] = new TH1F(Form("%shResPerSl_st%d",typeTag.c_str(),st),
 									     Form("Residual per Sl st%d; Sl ; Residual [#mu m]",st),
-									     3,0.5,3.5);
+									3,0.5,3.5);
 
+	m_effs[Form("%seffPhiByWire_st%d",typeTag.c_str(),st)] = new TEfficiency(Form("%seffPhiByWire_st%d",typeTag.c_str(),st),
+										 "Wire by wire efficiency; wire; layer / superlayer",
+										 100,0.5,100.5, 12, -0.5, 11.5);
       }
     
     
@@ -833,7 +835,7 @@ void DTNtupleSegmentAnalyzer::MeasureEfficiency(string Tag,Long64_t jEntry,
     // In chambers 1,2,3 select only segments with also Z (theta) contribution.
     if(sector->at(iseg) != 12 || wheel->at(iseg) != 2) continue;     
     
-    if (station->at(iseg)!=4 && !hasZed->at(iseg)) continue;
+    // if (station->at(iseg)!=4 && !hasZed->at(iseg)) continue;
     
     int seg_phinhits = phi_nHits->at(iseg);
     
@@ -923,7 +925,12 @@ void DTNtupleSegmentAnalyzer::MeasureEfficiency(string Tag,Long64_t jEntry,
       for (int sl=0; sl<2; sl++) for (int lay=0; lay<4; lay++) {
 	  //variables, points, stations, wheels 
 	  m_effs[(Tag+"effPhi_station").c_str()]->Fill(1,station->at(iseg)-0.5);    
-	}
+
+	  int slAndLay = (lay) + (sl * 2) * 4;
+	  //int layExp   = sl == 0 ? lay : lay + 4;
+	  Float_t expW = (*expWire)(slAndLay);
+	  m_effs[Form("%seffPhiByWire_st%d",Tag.c_str(),station->at(iseg))]->Fill(1,expW,slAndLay);
+	  }
     }
     else { // let's see how to treat missing layers
       for (int imiss=0; imiss<nmissing; imiss++) {
@@ -938,7 +945,7 @@ void DTNtupleSegmentAnalyzer::MeasureEfficiency(string Tag,Long64_t jEntry,
 	   
 	for (uint idigi=0; idigi<Digi_nDigis; idigi++) {
 	     
-	  if (Digi_time->at(idigi)<320 || Digi_time->at(idigi)>700)  continue; //require only digis time inside time box
+	  /*if (Digi_time->at(idigi)<320 || Digi_time->at(idigi)>700)  continue; */ //require only digis time inside time box
 	  if (Digi_wheel->at(idigi)   != wheel->at(iseg))   continue;
 	  if (Digi_sector->at(idigi)  != sector->at(iseg))  continue;
 	  if (Digi_station->at(idigi) != station->at(iseg)) continue;
@@ -962,7 +969,12 @@ void DTNtupleSegmentAnalyzer::MeasureEfficiency(string Tag,Long64_t jEntry,
 	for (int imiss=0; imiss<nmissing; imiss++) {
 	  int sl = missingLayer[imiss][0] < 5 ? 0 : 1;
 	  int lay = sl==0 ? missingLayer[imiss][0]-1 : missingLayer[imiss][0]-5;
-	  m_effs[(Tag+"effPhi_station").c_str()]->Fill(missingLayer[imiss][1],station->at(iseg)-0.5); 
+	  m_effs[(Tag+"effPhi_station").c_str()]->Fill(missingLayer[imiss][1],station->at(iseg)-0.5);
+
+	  int slAndLay = (lay) + (sl*2) * 4;
+	  //int iex      = sl == 0 ? lay : lay + 4;
+	  Float_t expW = (*expWire)(slAndLay);
+	  m_effs[Form("%seffPhiByWire_st%d",Tag.c_str(),station->at(iseg))]->Fill(missingLayer[imiss][1],expW,slAndLay); 
 	}
       }
 	 
@@ -976,6 +988,12 @@ void DTNtupleSegmentAnalyzer::MeasureEfficiency(string Tag,Long64_t jEntry,
 	      }
 	    }
 	    m_effs[(Tag+"effPhi_station").c_str()]->Fill(!(missAss&&missDigi),station->at(iseg)-0.5);
+
+	    int slAndLay = (lay) + (sl * 2) * 4;
+	    //int iex      = sl == 0 ? lay : lay + 4;
+	    Float_t expW = (*expWire)(slAndLay);
+	    m_effs[Form("%seffPhiByWire_st%d",Tag.c_str(),station->at(iseg))]->Fill(!(missAss&&missDigi),expW,slAndLay);
+
 	  }
       }
     }
@@ -1064,7 +1082,7 @@ void DTNtupleSegmentAnalyzer::MeasureEfficiency(string Tag,Long64_t jEntry,
       Float_t expW = (*expWire)(iex); 
       for (uint idigi=0; idigi<Digi_nDigis; idigi++) {
 	   
-	if (Digi_time->at(idigi)<320 || Digi_time->at(idigi)>700)  continue;
+	// if (Digi_time->at(idigi)<320 || Digi_time->at(idigi)>700)  continue;
 	if (Digi_wheel->at(idigi)   != wheel->at(iseg))   continue;
 	if (Digi_sector->at(idigi)  != sector->at(iseg))  continue;
 	if (Digi_station->at(idigi) != station->at(iseg)) continue;
