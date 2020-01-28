@@ -173,28 +173,12 @@ process.dtTPmonitorTest = cms.EDProducer("DTOccupancyTest",
 )
 
 
-process.dtunpacker = cms.EDProducer("OglezDTAB7RawToDigi",
-    DTAB7_FED_Source = cms.InputTag("rawDataCollector"),
-    channelMapping = cms.untracked.string('july2019'),
-    debug = cms.untracked.bool(False),
-    doHexDumping = cms.untracked.bool(False),
-    feds = cms.untracked.vint32(1368),
-    rawTPVars = cms.untracked.bool(False),
-    xShiftFilename = cms.string('/afs/cern.ch/user/j/joroemer/private/dtcalib/slice_test/CMSSW_10_6_1_patch2/src/L1Trigger/DTPhase2Trigger/data/wire_rawId_x.txt'),
-    zShiftFilename = cms.string('/afs/cern.ch/user/j/joroemer/private/dtcalib/slice_test/CMSSW_10_6_1_patch2/src/L1Trigger/DTPhase2Trigger/data/wire_rawId_z.txt')
-)
+process.load('EventFilter.DTRawToDigi.dtab7unpacker_cfi')
+
+process.dtunpacker = process.dtAB7unpacker.clone()
 
 
-process.dtunpackerPhase2 = cms.EDProducer("OglezDTAB7RawToDigi",
-    DTAB7_FED_Source = cms.InputTag("rawDataCollector"),
-    channelMapping = cms.untracked.string('july2019'),
-    debug = cms.untracked.bool(False),
-    doHexDumping = cms.untracked.bool(False),
-    feds = cms.untracked.vint32(1368),
-    rawTPVars = cms.untracked.bool(False),
-    xShiftFilename = cms.string('/afs/cern.ch/user/j/joroemer/private/dtcalib/slice_test/CMSSW_10_6_1_patch2/src/L1Trigger/DTPhase2Trigger/data/wire_rawId_x.txt'),
-    zShiftFilename = cms.string('/afs/cern.ch/user/j/joroemer/private/dtcalib/slice_test/CMSSW_10_6_1_patch2/src/L1Trigger/DTPhase2Trigger/data/wire_rawId_z.txt')
-)
+process.dtunpackerPhase2 = process.dtAB7unpacker.clone()
 
 
 process.eventInfoProvider = cms.EDFilter("EventCoordinatesSource",
