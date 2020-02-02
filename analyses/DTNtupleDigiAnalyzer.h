@@ -51,7 +51,8 @@ class DTNtupleDigiAnalyzer : public DTNtupleBaseAnalyzer
  public:
   
   DTNtupleDigiAnalyzer(const TString & inFileName,
-		       const TString & outFileName);
+		       const TString & outFileName,
+		       std::string outFolder);
 
   ~DTNtupleDigiAnalyzer();
 
@@ -69,6 +70,8 @@ class DTNtupleDigiAnalyzer : public DTNtupleBaseAnalyzer
   void fillEff(std::string typeTag, std::set<WireId> & wireIdProbes, std::set<WireId> & wireIdRefs);
 
   TFile m_outFile;
+
+  std::string m_outFolder;
 
   std::map<std::string,std::vector<int>> m_stations;
 

@@ -1,10 +1,13 @@
 #include "DTNtupleDigiAnalyzer.h"
 
 #include <set>
+#include <fstream>
+#include <iomanip>
 
 DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer(const TString & inFileName,
-						 const TString & outFileName) :
-  m_outFile(outFileName,"RECREATE"), DTNtupleBaseAnalyzer(inFileName)  
+					   const TString & outFileName,
+					   std::string outFolder) :
+m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(inFileName)  
 { 
 
   // The list of chambers to monitor
@@ -54,6 +57,8 @@ void DTNtupleDigiAnalyzer::Loop()
 	std::cout << "[DTNtupleDigiAnalyzer::Loop] processed : " 
 		  << jentry << " entries\r" << std::flush;
 
+      DTNtupleBaseAnalyzer::LoadObjs();
+
       fill();
 
     }
@@ -71,7 +76,7 @@ void DTNtupleDigiAnalyzer::book()
 
   std::vector<std::string> typeTags = { "Ph1", "Ph2" };
 
-  for (const auto typeTag : typeTags)
+  for (const auto & typeTag : typeTags)
     {
   
       for (const auto iSt : m_stations[typeTag])
@@ -218,7 +223,13 @@ void DTNtupleDigiAnalyzer::endJob()
       for (const auto & iSt : m_stations[typeTag])
 	{
 
+	  ofstream outTxtFile;
+
 	  std::string tag = typeTag + "St" + std::to_string(iSt);
+
+	  outTxtFile.open(m_outFolder + "/" + "ineffCh" + tag + ".txt");
+	  outTxtFile << "+--------------------------------+\n"; 
+	  outTxtFile << "| SL | layer | wire | efficiency |\n"; 
 
 	  int nBinsX = m_effs[("hWireByWireEff" + tag).c_str()]->GetTotalHistogram()->GetNbinsX();
 	  int nBinsY = m_effs[("hWireByWireEff" + tag).c_str()]->GetTotalHistogram()->GetNbinsY();
@@ -234,9 +245,20 @@ void DTNtupleDigiAnalyzer::endJob()
 		    {
 		      m_plots[("hEffSummary" + tag).c_str()]->Fill(eff);
 		      m_effs[("hFracEffWires" + typeTag).c_str()]->Fill(eff >= 0.9,iSt);
+		      if (eff < 0.9)
+			{
+			  outTxtFile << "| "  << std::setw(2)  << (iBinY/4+1)
+				     << " | " << std::setw(5)  << (iBinY%4)
+				     << " | " << std::setw(4)  << iBinX
+				     << " | " << std::setw(10) << std::setprecision(3) << eff
+				     << " |\n";
+			}
 		    }			
 		}
 	    }
+	  
+	  outTxtFile.close();
+	  
 	}
     }
   
