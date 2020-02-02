@@ -59,13 +59,205 @@ class DTNtupleDigi
 
 };
 
+class DTNtupleSegment
+{
+
+ public:
+
+  DTNtupleSegment ()
+    {
+      wheel = nullptr;
+      sector = nullptr;
+      station = nullptr;
+      hasPhi = nullptr;
+      hasZed = nullptr;
+      
+      posLoc_x = nullptr;
+      posLoc_y = nullptr;
+      posLoc_z = nullptr;
+      dirLoc_x = nullptr;
+      dirLoc_y = nullptr;
+      dirLoc_z = nullptr;
+      posLoc_x_SL1 = nullptr;
+      posLoc_x_SL3 = nullptr;
+      posLoc_x_midPlane = nullptr;
+      posGlb_phi = nullptr;
+      posGlb_eta = nullptr;
+      dirGlb_phi = nullptr;
+      dirGlb_eta = nullptr;
+      
+      hitsExpPos = nullptr;
+      hitsExpPosCh = nullptr;
+      hitsExpWire = nullptr;
+      
+      phi_t0 = nullptr;
+      phi_vDrift = nullptr;
+      phi_normChi2 = nullptr;
+      phi_nHits = nullptr;
+      
+      phiHits_pos = nullptr;
+      phiHits_posCh = nullptr;
+      phiHits_posErr = nullptr;
+      phiHits_side = nullptr;
+      phiHits_wire = nullptr;
+      phiHits_wirePos = nullptr;
+      phiHits_layer = nullptr;
+      phiHits_superLayer = nullptr;
+      phiHits_time = nullptr;
+      phiHits_timeCali = nullptr;
+      
+      z_normChi2 = nullptr;
+      z_nHits = nullptr;
+      
+      zHits_pos = nullptr;
+      zHits_posCh = nullptr;
+      zHits_posErr = nullptr;
+      zHits_side = nullptr;
+      zHits_wire = nullptr;
+      zHits_wirePos = nullptr;
+      zHits_layer = nullptr;
+      zHits_time = nullptr;
+      zHits_timeCali = nullptr;
+
+    };
+  
+  DTNtupleSegment (UInt_t & nSegments,  
+		   vector<short>   *wheel,
+		   vector<short>   *sector,
+		   vector<short>   *station,
+		   vector<short>   *hasPhi,
+		   vector<short>   *hasZed,
+		   
+		   vector<float>   *posLoc_x,
+		   vector<float>   *posLoc_y,
+		   vector<float>   *posLoc_z,
+		   vector<float>   *dirLoc_x,
+		   vector<float>   *dirLoc_y,
+		   vector<float>   *dirLoc_z,
+		   vector<float>   *posLoc_x_SL1,
+		   vector<float>   *posLoc_x_SL3,
+		   vector<float>   *posLoc_x_midPlane,
+		   vector<float>   *posGlb_phi,
+		   vector<float>   *posGlb_eta,
+		   vector<float>   *dirGlb_phi,
+		   vector<float>   *dirGlb_eta,
+		   
+		   TClonesArray    *hitsExpPos,
+		   TClonesArray    *hitsExpPosCh,
+		   TClonesArray    *hitsExpWire,
+		   
+		   vector<float>   *phi_t0,
+		   vector<float>   *phi_vDrift,
+		   vector<float>   *phi_normChi2,
+		   vector<short>   *phi_nHits,
+		   
+		   TClonesArray    *phiHits_pos,
+		   TClonesArray    *phiHits_posCh,
+		   TClonesArray    *phiHits_posErr,
+		   TClonesArray    *phiHits_side,
+		   TClonesArray    *phiHits_wire,
+		   TClonesArray    *phiHits_wirePos,
+		   TClonesArray    *phiHits_layer,
+		   TClonesArray    *phiHits_superLayer,
+		   TClonesArray    *phiHits_time,
+		   TClonesArray    *phiHits_timeCali,
+		   
+		   vector<float>   *z_normChi2,
+		   vector<short>   *z_nHits,
+		   
+		   TClonesArray    *zHits_pos,
+		   TClonesArray    *zHits_posCh,
+		   TClonesArray    *zHits_posErr,
+		   TClonesArray    *zHits_side,
+		   TClonesArray    *zHits_wire,
+		   TClonesArray    *zHits_wirePos,
+		   TClonesArray    *zHits_layer,
+		   TClonesArray    *zHits_time,
+		   TClonesArray    *zHits_timeCali) :
+    nSegments(&nSegments), wheel(wheel), sector(sector), station(station), hasPhi(hasPhi),
+    hasZed(hasZed), posLoc_x(posLoc_x), posLoc_y(posLoc_y), posLoc_z(posLoc_z), dirLoc_x(dirLoc_x),
+    dirLoc_y(dirLoc_y), dirLoc_z(dirLoc_z), posLoc_x_SL1(posLoc_x_SL1), posLoc_x_SL3(posLoc_x_SL3),
+    posLoc_x_midPlane(posLoc_x_midPlane), posGlb_phi(posGlb_phi), posGlb_eta(posGlb_eta),
+    dirGlb_phi(dirGlb_phi), dirGlb_eta(dirGlb_eta), hitsExpPos(hitsExpPos),
+    hitsExpPosCh(hitsExpPosCh), hitsExpWire(hitsExpWire), phi_t0(phi_t0), phi_vDrift(phi_vDrift),
+    phi_normChi2(phi_normChi2), phi_nHits(phi_nHits), phiHits_pos(phiHits_pos),
+    phiHits_posCh(phiHits_posCh), phiHits_posErr(phiHits_posErr), phiHits_side(phiHits_side),
+    phiHits_wire(phiHits_wire), phiHits_wirePos(phiHits_wirePos), phiHits_layer(phiHits_layer),
+    phiHits_superLayer(phiHits_superLayer), phiHits_time(phiHits_time),
+    phiHits_timeCali(phiHits_timeCali), z_normChi2(z_normChi2), z_nHits(z_nHits),
+    zHits_pos(zHits_pos), zHits_posCh(zHits_posCh), zHits_posErr(zHits_posErr),
+    zHits_side(zHits_side), zHits_wire(zHits_wire), zHits_wirePos(zHits_wirePos),
+    zHits_layer(zHits_layer), zHits_time(zHits_time), zHits_timeCali(zHits_timeCali)
+  { };
+
+  ~DTNtupleSegment() { };
+
+  UInt_t * nSegments;
+  
+  vector<short>   *wheel;
+  vector<short>   *sector;
+  vector<short>   *station;
+  vector<short>   *hasPhi;
+  vector<short>   *hasZed;
+
+  vector<float>   *posLoc_x;
+  vector<float>   *posLoc_y;
+  vector<float>   *posLoc_z;
+  vector<float>   *dirLoc_x;
+  vector<float>   *dirLoc_y;
+  vector<float>   *dirLoc_z;
+  vector<float>   *posLoc_x_SL1;
+  vector<float>   *posLoc_x_SL3;
+  vector<float>   *posLoc_x_midPlane;
+  vector<float>   *posGlb_phi;
+  vector<float>   *posGlb_eta;
+  vector<float>   *dirGlb_phi;
+  vector<float>   *dirGlb_eta;
+  
+  TClonesArray    *hitsExpPos;
+  TClonesArray    *hitsExpPosCh;
+  TClonesArray    *hitsExpWire;
+  
+  vector<float>   *phi_t0;
+  vector<float>   *phi_vDrift;
+  vector<float>   *phi_normChi2;
+  vector<short>   *phi_nHits;
+  
+  TClonesArray    *phiHits_pos;
+  TClonesArray    *phiHits_posCh;
+  TClonesArray    *phiHits_posErr;
+  TClonesArray    *phiHits_side;
+  TClonesArray    *phiHits_wire;
+  TClonesArray    *phiHits_wirePos;
+  TClonesArray    *phiHits_layer;
+  TClonesArray    *phiHits_superLayer;
+  TClonesArray    *phiHits_time;
+  TClonesArray    *phiHits_timeCali;
+  
+  vector<float>   *z_normChi2;
+  vector<short>   *z_nHits;
+  
+  TClonesArray    *zHits_pos;
+  TClonesArray    *zHits_posCh;
+  TClonesArray    *zHits_posErr;
+  TClonesArray    *zHits_side;
+  TClonesArray    *zHits_wire;
+  TClonesArray    *zHits_wirePos;
+  TClonesArray    *zHits_layer;
+  TClonesArray    *zHits_time;
+  TClonesArray    *zHits_timeCali;
+
+};
+
 class DTNtupleBaseAnalyzer {
+
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
    TFile m_inFile;
 
-   std::map<std::string, DTNtupleDigi> digiObjs;
+   std::map<std::string, DTNtupleDigi>    digiObjs;
+   std::map<std::string, DTNtupleSegment> segmentObjs;
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
@@ -531,6 +723,7 @@ public :
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
    virtual void     Loop();
+   virtual void     LoadObjs();
    virtual Bool_t   Notify();
 
  protected:

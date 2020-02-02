@@ -482,12 +482,6 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_t0", &ph2TpgPhiEmuAm_t0, &b_ph2TpgPhiEmuAm_t0);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_index", &ph2TpgPhiEmuAm_index, &b_ph2TpgPhiEmuAm_index);
 
-   digiObjs["Ph1"] = DTNtupleDigi(digi_nDigis, digi_wheel, digi_sector, digi_station,
-				  digi_superLayer, digi_layer, digi_wire, digi_time  );
-
-   digiObjs["Ph2"] = DTNtupleDigi(ph2Digi_nDigis, ph2Digi_wheel, ph2Digi_sector, ph2Digi_station,
-				  ph2Digi_superLayer, ph2Digi_layer, ph2Digi_wire, ph2Digi_time  );
-
    Notify();
 }
 
@@ -514,4 +508,138 @@ void DTNtupleBaseAnalyzer::Loop()
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
    }
+}
+
+void DTNtupleBaseAnalyzer::LoadObjs()
+{
+
+  digiObjs.clear();
+  segmentObjs.clear();
+  
+  digiObjs["Ph1"] = DTNtupleDigi(digi_nDigis,
+				 digi_wheel,
+				 digi_sector,
+				 digi_station,
+				 digi_superLayer,
+				 digi_layer,
+				 digi_wire,
+				 digi_time);
+  
+  digiObjs["Ph2"] = DTNtupleDigi(ph2Digi_nDigis,
+				 ph2Digi_wheel,
+				 ph2Digi_sector,
+				 ph2Digi_station,
+				 ph2Digi_superLayer,
+				 ph2Digi_layer,
+				 ph2Digi_wire,
+				 ph2Digi_time);
+
+  segmentObjs["Ph1"] = DTNtupleSegment (seg_nSegments,  
+					seg_wheel,
+					seg_sector,
+					seg_station,
+					seg_hasPhi,
+					seg_hasZed,
+					
+					seg_posLoc_x,
+					seg_posLoc_y,
+					seg_posLoc_z,
+					seg_dirLoc_x,
+					seg_dirLoc_y,
+					seg_dirLoc_z,
+					seg_posLoc_x_SL1,
+					seg_posLoc_x_SL3,
+					seg_posLoc_x_midPlane,
+					seg_posGlb_phi,
+					seg_posGlb_eta,
+					seg_dirGlb_phi,
+					seg_dirGlb_eta,
+					
+					seg_hitsExpPos,
+					seg_hitsExpPosCh,
+					seg_hitsExpWire,
+					
+					seg_phi_t0,
+					seg_phi_vDrift,
+					seg_phi_normChi2,
+					seg_phi_nHits,
+					
+					seg_phiHits_pos,
+					seg_phiHits_posCh,
+					seg_phiHits_posErr,
+					seg_phiHits_side,
+					seg_phiHits_wire,
+					seg_phiHits_wirePos,
+					seg_phiHits_layer,
+					seg_phiHits_superLayer,
+					seg_phiHits_time,
+					seg_phiHits_timeCali,
+					
+					seg_z_normChi2,
+					seg_z_nHits,
+					
+					seg_zHits_pos,
+					seg_zHits_posCh,
+					seg_zHits_posErr,
+					seg_zHits_side,
+					seg_zHits_wire,
+					seg_zHits_wirePos,
+					seg_zHits_layer,
+					seg_zHits_time,
+					seg_zHits_timeCali);
+  
+  segmentObjs["Ph2"] = DTNtupleSegment (ph2Seg_nSegments,  
+					ph2Seg_wheel,
+					ph2Seg_sector,
+					ph2Seg_station,
+					ph2Seg_hasPhi,
+					ph2Seg_hasZed,
+					
+					ph2Seg_posLoc_x,
+					ph2Seg_posLoc_y,
+					ph2Seg_posLoc_z,
+					ph2Seg_dirLoc_x,
+					ph2Seg_dirLoc_y,
+					ph2Seg_dirLoc_z,
+					ph2Seg_posLoc_x_SL1,
+					ph2Seg_posLoc_x_SL3,
+					ph2Seg_posLoc_x_midPlane,
+					ph2Seg_posGlb_phi,
+					ph2Seg_posGlb_eta,
+					ph2Seg_dirGlb_phi,
+					ph2Seg_dirGlb_eta,
+					
+					ph2Seg_hitsExpPos,
+					ph2Seg_hitsExpPosCh,
+					ph2Seg_hitsExpWire,
+					
+					ph2Seg_phi_t0,
+					ph2Seg_phi_vDrift,
+					ph2Seg_phi_normChi2,
+					ph2Seg_phi_nHits,
+					
+					ph2Seg_phiHits_pos,
+					ph2Seg_phiHits_posCh,
+					ph2Seg_phiHits_posErr,
+					ph2Seg_phiHits_side,
+					ph2Seg_phiHits_wire,
+					ph2Seg_phiHits_wirePos,
+					ph2Seg_phiHits_layer,
+					ph2Seg_phiHits_superLayer,
+					ph2Seg_phiHits_time,
+					ph2Seg_phiHits_timeCali,
+					
+					ph2Seg_z_normChi2,
+					ph2Seg_z_nHits,
+					
+					ph2Seg_zHits_pos,
+					ph2Seg_zHits_posCh,
+					ph2Seg_zHits_posErr,
+					ph2Seg_zHits_side,
+					ph2Seg_zHits_wire,
+					ph2Seg_zHits_wirePos,
+					ph2Seg_zHits_layer,
+					ph2Seg_zHits_time,
+					ph2Seg_zHits_timeCali);
+  
 }
