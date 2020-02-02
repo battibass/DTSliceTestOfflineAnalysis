@@ -258,157 +258,9 @@ void DTNtupleSegmentAnalyzer::Loop()
 	std::cout << "[DTNtupleSegmentAnalyzer::Loop] processed : " 
 		  << jentry << " entries\r" << std::flush;
 
+      DTNtupleBaseAnalyzer::LoadObjs();
 
-
-      //-----------------------------------------------------------//
-      //-----------------------Efficiency--------------------------//
-      //-----------------------------------------------------------//
-
-
-
-      MeasureEfficiency("Ph1",jentry,
-			NdeadPh1,
-			deadPh1,
-			seg_nSegments,seg_hasPhi, 
-			seg_station, 
-			seg_wheel, 
-			seg_sector,  
-			seg_hasZed,  
-			seg_phi_nHits, 
-			seg_z_nHits,
-			seg_dirLoc_x, 
-			seg_hitsExpWire,
-			seg_phiHits_pos,
-			seg_phiHits_posCh,
-			seg_phiHits_posErr,
-			seg_phiHits_side,
-			seg_phiHits_wire,
-			seg_phiHits_wirePos,
-			seg_phiHits_layer,
-			seg_phiHits_superLayer,
-			seg_zHits_pos,
-			seg_zHits_posCh,
-			seg_zHits_posErr,
-			seg_zHits_side,
-			seg_zHits_wire,
-			seg_zHits_wirePos,
-			seg_zHits_layer,
-			digi_nDigis,
-			digi_wheel,
-			digi_sector,
-			digi_station,
-			digi_superLayer,
-			digi_layer,
-			digi_wire,
-			digi_time
-			);
-
-      MeasureEfficiency("Ph2",jentry,
-			NdeadPh2,
-			deadPh2,
-			ph2Seg_nSegments,ph2Seg_hasPhi, 
-			ph2Seg_station, 
-			ph2Seg_wheel, 
-			ph2Seg_sector,  
-			ph2Seg_hasZed,  
-			ph2Seg_phi_nHits, 
-			ph2Seg_z_nHits,
-			ph2Seg_dirLoc_x, 
-			ph2Seg_hitsExpWire,
-			ph2Seg_phiHits_pos,
-			ph2Seg_phiHits_posCh,
-			ph2Seg_phiHits_posErr,
-			ph2Seg_phiHits_side,
-			ph2Seg_phiHits_wire,
-			ph2Seg_phiHits_wirePos,
-			ph2Seg_phiHits_layer,
-			ph2Seg_phiHits_superLayer,
-			ph2Seg_zHits_pos,
-			ph2Seg_zHits_posCh,
-			ph2Seg_zHits_posErr,
-			ph2Seg_zHits_side,
-			ph2Seg_zHits_wire,
-			ph2Seg_zHits_wirePos,
-			ph2Seg_zHits_layer,
-			ph2Digi_nDigis,
-			ph2Digi_wheel,
-			ph2Digi_sector,
-			ph2Digi_station,
-			ph2Digi_superLayer,
-			ph2Digi_layer,
-			ph2Digi_wire,
-			ph2Digi_time
-			);
-     
-      //-----------------------------------------------------------//
-      //------------------------Residual---------------------------//
-      //-----------------------------------------------------------//
-
-
-      ComputeResidual("Ph1",jentry, 
-		      seg_nSegments,
-		      seg_hasPhi, 
-		      seg_station, 
-		      seg_wheel, 
-		      seg_sector,  
-		      seg_hasZed,  
-		      seg_phi_nHits, 
-		      seg_z_nHits,
-		      seg_phi_normChi2,
-		      seg_z_normChi2,
-		      seg_hitsExpWire,
-		      seg_hitsExpPos,
-		      seg_hitsExpPosCh,
-		      seg_phiHits_pos,
-		      seg_phiHits_posCh,
-		      seg_phiHits_posErr,
-		      seg_phiHits_side,
-		      seg_phiHits_wire,
-		      seg_phiHits_wirePos,
-		      seg_phiHits_layer,
-		      seg_phiHits_superLayer,
-		      seg_zHits_pos,
-		      seg_zHits_posCh,
-		      seg_zHits_posErr,
-		      seg_zHits_side,
-		      seg_zHits_wire,
-		      seg_zHits_wirePos,
-		      seg_zHits_layer
-		      );
-
-
-      ComputeResidual("Ph2",jentry, 
-		      ph2Seg_nSegments,
-		      ph2Seg_hasPhi, 
-		      ph2Seg_station, 
-		      ph2Seg_wheel, 
-		      ph2Seg_sector,  
-		      ph2Seg_hasZed,  
-		      ph2Seg_phi_nHits, 
-		      ph2Seg_z_nHits,
-		      ph2Seg_phi_normChi2,
-		      ph2Seg_z_normChi2,
-		      ph2Seg_hitsExpWire,
-		      ph2Seg_hitsExpPos,
-		      ph2Seg_hitsExpPosCh,
-		      ph2Seg_phiHits_pos,
-		      ph2Seg_phiHits_posCh,
-		      ph2Seg_phiHits_posErr,
-		      ph2Seg_phiHits_side,
-		      ph2Seg_phiHits_wire,
-		      ph2Seg_phiHits_wirePos,
-		      ph2Seg_phiHits_layer,
-		      ph2Seg_phiHits_superLayer,
-		      ph2Seg_zHits_pos,
-		      ph2Seg_zHits_posCh,
-		      ph2Seg_zHits_posErr,
-		      ph2Seg_zHits_side,
-		      ph2Seg_zHits_wire,
-		      ph2Seg_zHits_wirePos,
-		      ph2Seg_zHits_layer
-		      );
-          
-     fill();
+      fill();
      
     }
 
@@ -423,28 +275,28 @@ void DTNtupleSegmentAnalyzer::book()
 
   std::vector<std::string> typeTags = { "Ph1", "Ph2" };
 
-  for (const auto typeTag : typeTags){
+  for (const auto & typeTag : typeTags){
     
     m_plots[(typeTag+"hNsegment").c_str()] = new TH1F((typeTag+"hNsegment").c_str(),
 							 "# segments;# segments; entries",
-							 20,0.,20.); 
+							 21,-0.5,20.5); 
     
     for (int st=1; st<5; st++)
       {
 
 	m_plots[Form("%shPhiNhits_st%d",typeTag.c_str(),st)] = new TH1F(Form("%shPhiNhits_st%d",typeTag.c_str(),st),
 							 "# hits;# hits; entries",
-							 8,1,9); 
+							 8,0.5,8.5); 
 	
 
 	m_plots[Form("%shThetaNhits_st%d",typeTag.c_str(),st)] = new TH1F(Form("%shThetaNhits_st%d",typeTag.c_str(),st),
 							 "# hits;# hits; entries",
-							 4,1,5); 
+							 4,0.5,4.5); 
 	
 		
 	m_plots[Form("%shNhits_st%d",typeTag.c_str(),st)] = new TH1F(Form("%shNhits_st%d",typeTag.c_str(),st),
 						   "# hits;# hits; entries",
-						   12,1,13);  
+						   12,0.5,12.5);  
 	
 	m_plots[Form("%shT0_st%d",typeTag.c_str(),st)] = new TH1F(Form("%shT0_st%d",typeTag.c_str(),st),
 						"Segment t0;t0 (ns); entries",
@@ -466,11 +318,6 @@ void DTNtupleSegmentAnalyzer::book()
 						       Form("Segment #theta #chi^2 st%d; #chi^2/ndof; entries",st), 
 						       100,0.,50.);
 
-	m_effs[Form("%shEffHitVsX_st%d",typeTag.c_str(),st)] = new TEfficiency(Form("%shEffHitVsX_st%d",typeTag.c_str(),st), 
-							     Form("Fraction of hits in layer st%d; x (cm); SL / layer",st), 
-									       100,-250.,250., 12, 0.5,12.5);
-
-
 
 	m_plots[Form("%shResPerSl_st%d",typeTag.c_str(),st)] = new TH1F(Form("%shResPerSl_st%d",typeTag.c_str(),st),
 									     Form("Residual per Sl st%d; Sl ; Residual [#mu m]",st),
@@ -483,6 +330,7 @@ void DTNtupleSegmentAnalyzer::book()
     
     
     m_effs[(typeTag+"effPhi_station").c_str()]   = new TEfficiency((typeTag+"effPhi").c_str(),"#phi efficiency per station;station;eff.",4,0.5,4.5);
+
     m_effs[(typeTag+"effTheta_station").c_str()] = new TEfficiency((typeTag+"effTheta").c_str(),"#theta efficiency per station;station;eff.",4,0.5,4.5);
     
     
@@ -511,257 +359,117 @@ void DTNtupleSegmentAnalyzer::book()
 	if(sl==2 && st!=4){
 	  m_plots[Form("%shitResZ_st%d",typeTag.c_str(),st)]  = new TH1F(Form("%shitResZ_st%d" ,typeTag.c_str(),st),
 									 "Hit residual #theta view;|d_hit|-|d_extr|(cm)",
-						       250,-.8,.8); 	
+									 250,-.8,.8); 	
 	  
 	  
 	  m_2Dplots[Form("%shitResZvsWireDist_st%d",typeTag.c_str(),st)]  = new TH2F(Form("%shitResZvsWireDist_st%d",typeTag.c_str(),st),
-								   "Hit residual #theta view;|d_wire|[cm];|d_hit|-|d_extr|(cm)",
-								     100,0,2.5,
-								     250,-.8,.8); 	
-	 }
-	 
-	 else {
+										     "Hit residual #theta view;|d_wire|[cm];|d_hit|-|d_extr|(cm)",
+										     100,0,2.5,
+										     250,-.8,.8); 	
+	}
+	
+	else {
 	   m_plots[Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl)]  = new TH1F(Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl),
-								"Hit residual #phi view;|d_hit|-|d_extr|(cm)",
-								250,-.8,.8); 
+										  "Hit residual #phi view;|d_hit|-|d_extr|(cm)",
+										  250,-.8,.8); 
 	   
 	   m_2Dplots[Form("%shitResXvsWireDist_st%d_sl%d",typeTag.c_str(),st,sl)]  = new TH2F(Form("%shitResXvsWireDist_st%d_sl%d",typeTag.c_str(),st,sl),
-									    "Hit residual #phi view;|d_wire|[cm];|d_hit|-|d_extr|(cm)",
-									    100,0,2.5,
-									    250,-.8,.8);
-	 }
+											      "Hit residual #phi view;|d_wire|[cm];|d_hit|-|d_extr|(cm)",
+											      100,0,2.5,
+											      250,-.8,.8);
+	}
 	
 	for (int l=1; l<5; l++){
 	  if(sl==2 && st!=4){
 	    m_plots[Form("%shitResZ_st%d_l%d",typeTag.c_str(),st,l)]  = new TH1F(Form("%shitResZ_st%d_l%d" ,typeTag.c_str(),st,l),
-							       "Hit residual #theta view;|d_hit|-|d_extr|(cm)",
-							       250,-.8,.8); 	
-
+										 "Hit residual #theta view;|d_hit|-|d_extr|(cm)",
+										 250,-.8,.8); 	
+	    
 	    
 	    m_2Dplots[Form("%shitResZvsWireDist_st%d_l%d",typeTag.c_str(),st,l)]  = new TH2F(Form("%shitResZvsWireDist_st%d_l%d",typeTag.c_str(),st,l),
-									   "Hit residual #theta view;|d_wire|[cm];|d_hit|-|d_extr|(cm)",
-									   100,0,2.5,
-									   250,-.8,.8); 	
+											     "Hit residual #theta view;|d_wire|[cm];|d_hit|-|d_extr|(cm)",
+											     100,0,2.5,
+											     250,-.8,.8); 	
 	  }
 	  
 	  else {
 	    m_plots[Form("%shitResX_st%d_sl%d_l%d",typeTag.c_str(),st,sl,l)]  = new TH1F(Form("%shitResX_st%d_sl%d_l%d",typeTag.c_str(),st,sl,l),
-								       "Hit residual #phi view;|d_hit|-|d_extr|(cm)",
-								       250,-.8,.8); 
+											 "Hit residual #phi view;|d_hit|-|d_extr|(cm)",
+											 250,-.8,.8); 
 	    
 	    m_2Dplots[Form("%shitResXvsWireDist_st%d_sl%d_l%d",typeTag.c_str(),st,sl,l)]  = new TH2F(Form("%shitResXvsWireDist_st%d_sl%d_l%d",typeTag.c_str(),st,sl,l),
-										   "Hit residual #phi view;|d_wire|[cm];|d_hit|-|d_extr|(cm)",
-										   100,0,2.5,
-										   250,-.8,.8);
+												     "Hit residual #phi view;|d_wire|[cm];|d_hit|-|d_extr|(cm)",
+												     100,0,2.5,
+												     250,-.8,.8);
 	  }
 	}
       } 
     }
     
-    }
-     
+  }  
     
 }
 
 void DTNtupleSegmentAnalyzer::fill()
 {
+
+  baseAnalysis();
+  comparisonAnalysis();
+
+  measureEfficiency("Ph1",
+		    NdeadPh1,
+		    deadPh1,
+		    seg_nSegments,seg_hasPhi, 
+		    seg_station, 
+		    seg_wheel, 
+		    seg_sector,  
+		    seg_hasZed,  
+		    seg_phi_nHits, 
+		    seg_z_nHits,
+		    seg_dirLoc_x, 
+		    seg_hitsExpWire,
+		    seg_phiHits_wire,
+		    seg_phiHits_layer,
+		    seg_phiHits_superLayer,
+		    seg_zHits_wire,
+		    seg_zHits_layer,
+		    digi_nDigis,
+		    digi_wheel,
+		    digi_sector,
+		    digi_station,
+		    digi_superLayer,
+		    digi_layer,
+		    digi_wire);
   
+  measureEfficiency("Ph2",
+		    NdeadPh2,
+		    deadPh2,
+		    ph2Seg_nSegments,ph2Seg_hasPhi, 
+		    ph2Seg_station, 
+		    ph2Seg_wheel, 
+		    ph2Seg_sector,  
+		    ph2Seg_hasZed,  
+		    ph2Seg_phi_nHits, 
+		    ph2Seg_z_nHits,
+		    ph2Seg_dirLoc_x, 
+		    ph2Seg_hitsExpWire,
+		    ph2Seg_phiHits_wire,
+		    ph2Seg_phiHits_layer,
+		    ph2Seg_phiHits_superLayer,
+		    ph2Seg_zHits_wire,
+		    ph2Seg_zHits_layer,
+		    ph2Digi_nDigis,
+		    ph2Digi_wheel,
+		    ph2Digi_sector,
+		    ph2Digi_station,
+		    ph2Digi_superLayer,
+		    ph2Digi_layer,
+		    ph2Digi_wire);
   
-  //Phase1
+  computeResidual("Ph1",segmentObjs["Ph1"]);
+  computeResidual("Ph2",segmentObjs["Ph2"]);
 
-
-  int nSegPh1 = 0;
-  
-  for (uint iSeg = 0; iSeg < seg_nSegments; ++iSeg) 
-    {
-
-      if(seg_sector->at(iSeg) != 12 || seg_wheel->at(iSeg) != 2) continue;    
-
-      ++nSegPh1;    
-
-      //Chi2 cut if needed
-
-      //if(seg_hasPhi->at(iSeg)    && seg_phi_normChi2->at(iSeg) > 3.84) continue;
-      //if(seg_hasZed->at(iSeg) && seg_z_normChi2->at(iSeg) > 3.84) continue;
-
-      //Select segment with t0 < of a specific time  to avoid out of time events
-      //if(abs(seg_phi_t0->at(iSeg)) > 15) continue;
-
-      int nHits = 0;
-      if(seg_hasPhi->at(iSeg))
-	{
-	  nHits += seg_phi_nHits->at(iSeg);
-	  m_plots[Form("Ph1hPhiNhits_st%d",seg_station->at(iSeg))]->Fill(seg_phi_nHits->at(iSeg));
-	  m_plots[Form("Ph1hPhiChi2_st%d",seg_station->at(iSeg))]->Fill(seg_phi_normChi2->at(iSeg));
-
-	  if(seg_phi_nHits->at(iSeg) == 8)
-	    m_plots[Form("Ph1hPhiProbChi2_st%d",seg_station->at(iSeg))]->Fill(TMath::Prob(seg_phi_normChi2->at(iSeg)*6,6));
-	  if (seg_phi_t0->at(iSeg) > -900)
-	    m_plots[Form("Ph1hT0_st%d",seg_station->at(iSeg))]->Fill(std::max(float(-99.9),(std::min(float(99.9),seg_phi_t0->at(iSeg)))));
-
-	  
-	  for (int iSL = 1; iSL <= 3; iSL+=2)
-	    {
-	      for (int iLayer = 1; iLayer <= 4; ++iLayer)
-		{
-
-		  bool hitInLayer = false;
-	  
-		  for (int iHit = 0; iHit < seg_phi_nHits->at(iSeg); ++iHit)
-		    {
-		      int layer = getXY<int>(seg_phiHits_layer,iSeg,iHit);	
-		      int superLayer = getXY<int>(seg_phiHits_superLayer,iSeg,iHit);	
-		  
-		      if (layer == iLayer && superLayer == iSL)
-			{
-			  hitInLayer = true;
-			  break;
-			}
-		    }
-		  m_effs[Form("Ph1hEffHitVsX_st%d",seg_station->at(iSeg))]->Fill(hitInLayer, seg_posLoc_x->at(iSeg), iLayer + 4*(iSL - 1));
-		}
-	    }
-
-	}
-
-      if(seg_hasZed->at(iSeg))
-	{
-
-	  nHits += seg_z_nHits->at(iSeg);
-	  m_plots[Form("Ph1hThetaNhits_st%d",seg_station->at(iSeg))]->Fill(seg_z_nHits->at(iSeg));
-
-	  m_plots[Form("Ph1hThetaChi2_st%d",seg_station->at(iSeg))]->Fill(seg_z_normChi2->at(iSeg));
-
-	  if(seg_z_nHits->at(iSeg) == 4)
-	    m_plots[Form("Ph1hThetaProbChi2_st%d",seg_station->at(iSeg))]->Fill(TMath::Prob(seg_z_normChi2->at(iSeg)*2,2));
-
-	  for (int iLayer = 1; iLayer <= 4; ++iLayer)
-	    {
-
-	      bool hitInLayer = false;
-	  
-	      for (int iHit = 0; iHit < seg_phi_nHits->at(iSeg); ++iHit)
-		{
-		  int layer = getXY<int>(seg_phiHits_layer,iSeg,iHit);	
-		  
-		  if (layer == iLayer)
-		    {
-		      hitInLayer = true;
-		      break;
-		    }
-		}
-		  
-	      m_effs[Form("Ph1hEffHitVsX_st%d",seg_station->at(iSeg))]->Fill(hitInLayer, seg_posLoc_y->at(iSeg), iLayer + 4);
-	      
-	    }
-
-	}
-      m_plots[Form("Ph1hNhits_st%d",seg_station->at(iSeg))]->Fill(nHits);
-    }
-
-  if (nSegPh1)
-    {
-      m_plots["Ph1hNsegment"] ->Fill(nSegPh1);
-    }
-
-
-  //Phase2
-
-
-  int nSegPh2 = 0;
-  
-  for (uint iSeg = 0; iSeg < ph2Seg_nSegments; ++iSeg) 
-    {
-
-      if(ph2Seg_sector->at(iSeg) != 12 || ph2Seg_wheel->at(iSeg) != 2) continue;    
-
-      ++nSegPh2;    
-
-      //Chi2 cut if needed
-
-      //if(ph2Seg_hasPhi->at(iSeg)    && ph2Seg_phi_normChi2->at(iSeg) > 3.84) continue;
-      //if(ph2Seg_hasZed->at(iSeg) && ph2Seg_z_normChi2->at(iSeg) > 3.84) continue;
-
-      //Select segment with t0 < of a specific time  to avoid out of time events
-      //if(abs(ph2Seg_phi_t0->at(iSeg)) > 15) continue;
-
-      int nHits = 0;
-      if(ph2Seg_hasPhi->at(iSeg))
-	{
-	  nHits += ph2Seg_phi_nHits->at(iSeg);
-	  m_plots[Form("Ph2hPhiNhits_st%d",ph2Seg_station->at(iSeg))]->Fill(ph2Seg_phi_nHits->at(iSeg));
-	  m_plots[Form("Ph2hPhiChi2_st%d",ph2Seg_station->at(iSeg))]->Fill(ph2Seg_phi_normChi2->at(iSeg));
-
-	  if(ph2Seg_phi_nHits->at(iSeg) == 8)
-	    m_plots[Form("Ph2hPhiProbChi2_st%d",ph2Seg_station->at(iSeg))]->Fill(TMath::Prob(ph2Seg_phi_normChi2->at(iSeg)*6,6));
-	  if (ph2Seg_phi_t0->at(iSeg) > -900)
-	    m_plots[Form("Ph2hT0_st%d",ph2Seg_station->at(iSeg))]->Fill(std::max(float(-99.9),(std::min(float(99.9),ph2Seg_phi_t0->at(iSeg)))));
-
-	  
-	  for (int iSL = 1; iSL <= 3; iSL+=2)
-	    {
-	      for (int iLayer = 1; iLayer <= 4; ++iLayer)
-		{
-
-		  bool hitInLayer = false;
-	  
-		  for (int iHit = 0; iHit < ph2Seg_phi_nHits->at(iSeg); ++iHit)
-		    {
-		      int layer = getXY<int>(ph2Seg_phiHits_layer,iSeg,iHit);	
-		      int superLayer = getXY<int>(ph2Seg_phiHits_superLayer,iSeg,iHit);	
-		  
-		      if (layer == iLayer && superLayer == iSL)
-			{
-			  hitInLayer = true;
-			  break;
-			}
-		    }
-		  m_effs[Form("Ph2hEffHitVsX_st%d",ph2Seg_station->at(iSeg))]->Fill(hitInLayer, ph2Seg_posLoc_x->at(iSeg), iLayer + 4*(iSL - 1));
-		}
-	    }
-
-	}
-
-      if(ph2Seg_hasZed->at(iSeg))
-	{
-
-	  nHits += ph2Seg_z_nHits->at(iSeg);
-	  m_plots[Form("Ph2hThetaNhits_st%d",ph2Seg_station->at(iSeg))]->Fill(ph2Seg_z_nHits->at(iSeg));
-
-	  m_plots[Form("Ph2hThetaChi2_st%d",ph2Seg_station->at(iSeg))]->Fill(ph2Seg_z_normChi2->at(iSeg));
-
-	  if(ph2Seg_z_nHits->at(iSeg) == 4)
-	    m_plots[Form("Ph2hThetaProbChi2_st%d",ph2Seg_station->at(iSeg))]->Fill(TMath::Prob(ph2Seg_z_normChi2->at(iSeg)*2,2));
-
-	  for (int iLayer = 1; iLayer <= 4; ++iLayer)
-	    {
-
-	      bool hitInLayer = false;
-	  
-	      for (int iHit = 0; iHit < ph2Seg_phi_nHits->at(iSeg); ++iHit)
-		{
-		  int layer = getXY<int>(ph2Seg_phiHits_layer,iSeg,iHit);	
-		  
-		  if (layer == iLayer)
-		    {
-		      hitInLayer = true;
-		      break;
-		    }
-		}
-		  
-	      m_effs[Form("Ph2hEffHitVsX_st%d",ph2Seg_station->at(iSeg))]->Fill(hitInLayer, ph2Seg_posLoc_y->at(iSeg), iLayer + 4);
-	      
-	    }
-
-	}
-      m_plots[Form("Ph2hNhits_st%d",ph2Seg_station->at(iSeg))]->Fill(nHits);
-    }
-
-  if (nSegPh2)
-    {
-      m_plots["Ph2hNsegment"] ->Fill(nSegPh2);
-    }
-  }
+}
 
 void DTNtupleSegmentAnalyzer::endJob()
 {
@@ -769,7 +477,7 @@ void DTNtupleSegmentAnalyzer::endJob()
   
   std::vector<std::string> typeTags = { "Ph1", "Ph2" };
   
-  for (const auto typeTag : typeTags){
+  for (const auto & typeTag : typeTags){
     for (int st=1; st<5; st++){
       for (int sl=1; sl<4; sl++){
 	
@@ -806,21 +514,155 @@ void DTNtupleSegmentAnalyzer::endJob()
   
 }
 
+void DTNtupleSegmentAnalyzer::baseAnalysis()
+{
 
+  //Phase1
 
-void DTNtupleSegmentAnalyzer::MeasureEfficiency(string Tag,Long64_t jEntry,
+  int nSegPh1 = 0;
+  
+  for (uint iSeg = 0; iSeg < seg_nSegments; ++iSeg) 
+    {
+
+      if(seg_sector->at(iSeg) != 12 || seg_wheel->at(iSeg) != 2) continue;    
+
+      ++nSegPh1;    
+
+      //Chi2 cut if needed
+      
+      //if(seg_hasPhi->at(iSeg)    && seg_phi_normChi2->at(iSeg) > 3.84) continue;
+      //if(seg_hasZed->at(iSeg) && seg_z_normChi2->at(iSeg) > 3.84) continue;
+
+      //Select segment with t0 < of a specific time  to avoid out of time events
+      //if(abs(seg_phi_t0->at(iSeg)) > 15) continue;
+
+      int nHits = 0;
+      if(seg_hasPhi->at(iSeg))
+	{
+	  
+	  nHits += seg_phi_nHits->at(iSeg);
+	  m_plots[Form("Ph1hPhiNhits_st%d",seg_station->at(iSeg))]->Fill(seg_phi_nHits->at(iSeg));
+	  m_plots[Form("Ph1hPhiChi2_st%d",seg_station->at(iSeg))]->Fill(seg_phi_normChi2->at(iSeg));
+
+	  if(seg_phi_nHits->at(iSeg) == 8)
+	    m_plots[Form("Ph1hPhiProbChi2_st%d",seg_station->at(iSeg))]->Fill(TMath::Prob(seg_phi_normChi2->at(iSeg)*6,6));
+
+	  if (seg_phi_t0->at(iSeg) > -900)
+	    m_plots[Form("Ph1hT0_st%d",seg_station->at(iSeg))]->Fill(std::max(float(-99.9),(std::min(float(99.9),seg_phi_t0->at(iSeg)))));
+	  
+	}
+
+      if(seg_hasZed->at(iSeg))
+	{
+
+	  nHits += seg_z_nHits->at(iSeg);
+	  m_plots[Form("Ph1hThetaNhits_st%d",seg_station->at(iSeg))]->Fill(seg_z_nHits->at(iSeg));
+
+	  m_plots[Form("Ph1hThetaChi2_st%d",seg_station->at(iSeg))]->Fill(seg_z_normChi2->at(iSeg));
+
+	  if(seg_z_nHits->at(iSeg) == 4)
+	    m_plots[Form("Ph1hThetaProbChi2_st%d",seg_station->at(iSeg))]->Fill(TMath::Prob(seg_z_normChi2->at(iSeg)*2,2));
+
+	}
+      
+      m_plots[Form("Ph1hNhits_st%d",seg_station->at(iSeg))]->Fill(nHits);
+
+    }
+
+  if (nSegPh1)
+    {
+      m_plots["Ph1hNsegment"] ->Fill(nSegPh1);
+    }
+
+  //Phase2
+
+  int nSegPh2 = 0;
+  
+  for (uint iSeg = 0; iSeg < ph2Seg_nSegments; ++iSeg) 
+    {
+      
+      if(ph2Seg_sector->at(iSeg) != 12 || ph2Seg_wheel->at(iSeg) != 2) continue;    
+
+      ++nSegPh2;    
+
+      //Chi2 cut if needed
+      
+      //if(ph2Seg_hasPhi->at(iSeg)    && ph2Seg_phi_normChi2->at(iSeg) > 3.84) continue;
+      //if(ph2Seg_hasZed->at(iSeg) && ph2Seg_z_normChi2->at(iSeg) > 3.84) continue;
+      
+      //Select segment with t0 < of a specific time  to avoid out of time events
+      //if(abs(ph2Seg_phi_t0->at(iSeg)) > 15) continue;
+      
+      int nHits = 0;
+      if(ph2Seg_hasPhi->at(iSeg))
+	{
+	  
+	  nHits += ph2Seg_phi_nHits->at(iSeg);
+	  m_plots[Form("Ph2hPhiNhits_st%d",ph2Seg_station->at(iSeg))]->Fill(ph2Seg_phi_nHits->at(iSeg));
+	  m_plots[Form("Ph2hPhiChi2_st%d",ph2Seg_station->at(iSeg))]->Fill(ph2Seg_phi_normChi2->at(iSeg));
+
+	  if(ph2Seg_phi_nHits->at(iSeg) == 8)
+	    m_plots[Form("Ph2hPhiProbChi2_st%d",ph2Seg_station->at(iSeg))]->Fill(TMath::Prob(ph2Seg_phi_normChi2->at(iSeg)*6,6));
+
+	  if (ph2Seg_phi_t0->at(iSeg) > -900)
+	    m_plots[Form("Ph2hT0_st%d",ph2Seg_station->at(iSeg))]->Fill(std::max(float(-99.9),(std::min(float(99.9),ph2Seg_phi_t0->at(iSeg)))));
+	  
+	}
+
+      if(ph2Seg_hasZed->at(iSeg))
+	{
+
+	  nHits += ph2Seg_z_nHits->at(iSeg);
+	  m_plots[Form("Ph2hThetaNhits_st%d",ph2Seg_station->at(iSeg))]->Fill(ph2Seg_z_nHits->at(iSeg));
+
+	  m_plots[Form("Ph2hThetaChi2_st%d",ph2Seg_station->at(iSeg))]->Fill(ph2Seg_z_normChi2->at(iSeg));
+
+	  if(ph2Seg_z_nHits->at(iSeg) == 4)
+	    m_plots[Form("Ph2hThetaProbChi2_st%d",ph2Seg_station->at(iSeg))]->Fill(TMath::Prob(ph2Seg_z_normChi2->at(iSeg)*2,2));
+
+	}
+
+      m_plots[Form("Ph2hNhits_st%d",ph2Seg_station->at(iSeg))]->Fill(nHits);
+
+    }
+
+  if (nSegPh2)
+    {
+      m_plots["Ph2hNsegment"] ->Fill(nSegPh2);
+    }
+
+}
+
+void DTNtupleSegmentAnalyzer::comparisonAnalysis()
+{
+
+}
+
+void DTNtupleSegmentAnalyzer::measureEfficiency(string Tag,
 						int Ndead,
 						int dead[][6],
-						 UInt_t nSegments,
-						vector<short> *hasPhi,vector<short> *station,vector<short> *wheel,vector<short> *sector, vector<short> *hasZed,
-						vector<short> *phi_nHits,vector<short> *z_nHits,vector<float> *dirLoc_x,
-						TClonesArray  *hitsExpWire, TClonesArray  *phiHits_pos,TClonesArray  *phiHits_posCh,TClonesArray  *phiHits_posErr,
-						TClonesArray  *phiHits_side,TClonesArray  *phiHits_wire,TClonesArray  *phiHits_wirePos,TClonesArray  *phiHits_layer,
-						TClonesArray  *phiHits_superLayer,
-						TClonesArray *zHits_pos, TClonesArray  *zHits_posCh,TClonesArray  *zHits_posErr,TClonesArray  *zHits_side,
-						TClonesArray  *zHits_wire,TClonesArray  *zHits_wirePos,TClonesArray  *zHits_layer,
-						UInt_t Digi_nDigis,vector<short> *Digi_wheel,vector<short> *Digi_sector,vector<short> *Digi_station,
-						vector<short> *Digi_superLayer,vector<short> *Digi_layer,vector<short> *Digi_wire,vector<float> *Digi_time){
+						UInt_t nSegments,
+						vector<short> *hasPhi,
+						vector<short> *station,
+						vector<short> *wheel,
+						vector<short> *sector,
+						vector<short> *hasZed,
+						vector<short> *phi_nHits,
+						vector<short> *z_nHits,
+						vector<float> *dirLoc_x,
+						TClonesArray *hitsExpWire,
+						TClonesArray *phiHits_wire,
+						TClonesArray *phiHits_layer,
+						TClonesArray *phiHits_superLayer,
+						TClonesArray *zHits_wire,
+						TClonesArray *zHits_layer,
+						UInt_t Digi_nDigis,
+						vector<short> *Digi_wheel,
+						vector<short> *Digi_sector,
+						vector<short> *Digi_station,
+						vector<short> *Digi_superLayer,
+						vector<short> *Digi_layer,
+						vector<short> *Digi_wire){
   
   
   int ChambCross[100][3];
@@ -1104,127 +946,110 @@ void DTNtupleSegmentAnalyzer::MeasureEfficiency(string Tag,Long64_t jEntry,
   }
 }
 
-void DTNtupleSegmentAnalyzer::ComputeResidual(string Tag,
-					      Long64_t jEntry, 
-					      UInt_t nSegments,
-					      vector<short> *hasPhi,
-					      vector<short> *station,
-					      vector<short> *wheel, 
-					      vector<short> *sector,  
-					      vector<short> *hasZed,  
-					      vector<short> *phi_nHits, 
-					      vector<short> *z_nHits,
-					      vector<float> *phi_normChi2,
-					      vector<float> *z_normChi2,
-					      TClonesArray  *hitsExpWire,
-					      TClonesArray  *hitsExpPos,
-					      TClonesArray  *hitsExpPosCh,				
-					      TClonesArray  *phiHits_pos,
-					      TClonesArray  *phiHits_posCh,
-					      TClonesArray  *phiHits_posErr,
-					      TClonesArray  *phiHits_side,
-					      TClonesArray  *phiHits_wire,
-					      TClonesArray  *phiHits_wirePos,
-					      TClonesArray  *phiHits_layer,
-					      TClonesArray  *phiHits_superLayer,
-					      TClonesArray  *zHits_pos,
-					      TClonesArray  *zHits_posCh,
-					      TClonesArray  *zHits_posErr,
-					      TClonesArray  *zHits_side,
-					      TClonesArray  *zHits_wire,
-					      TClonesArray  *zHits_wirePos,
-					      TClonesArray  *zHits_layer
-					      ){
-
+void DTNtupleSegmentAnalyzer::computeResidual(string Tag, DTNtupleSegment & seg)
+{
   
-  //Add whell and sector selection     
-  
-  int phiSeg = -1; int zSeg = -1;
-  
-  for (uint iseg=0; iseg<nSegments; iseg++) {
-    if(sector->at(iseg) != 12 || wheel->at(iseg) != 2) continue;     
-    int seg_phinhits = phi_nHits->at(iseg);
-    int seg_znhits = z_nHits->at(iseg);
-    if(hasPhi->at(iseg)) phiSeg++;
-    if(hasZed->at(iseg)) zSeg++;
+  for (std::size_t iSeg = 0; iSeg < (*seg.nSegments); ++iSeg)
+    {
 
-    if (seg_phinhits==8 && ( seg_znhits == 4 || station->at(iseg)==4 )){
-      // Select segment with Phi and also Theta if station is different from 4
-      if (!hasPhi->at(iseg) ||  (station->at(iseg)!=4 && !hasZed->at(iseg) ) ) continue;
+      if(seg.sector->at(iSeg) != 12 || seg.wheel->at(iSeg) != 2)
+	continue;
 
-      //cout<<"StationStep2 "<<station->at(iseg)<<" ";	//del
-      //Chi2 cut if needed
+      int stat = seg.station->at(iSeg);
 
-      if(phi_normChi2->at(phiSeg) > 3.84) continue;
-      if(hasZed->at(iseg) && z_normChi2->at(zSeg) > 3.84) continue;
+      int segPhiNHits = seg.phi_nHits->at(iSeg);
+      int segZNHits   = seg.z_nHits->at(iSeg);
 
-      //Select segment with t0 < 20 to avoid out of time events
-      //if(abs(phi_t0->at(phiSeg)) > 15) continue;
+      if (seg.hasPhi->at(iSeg) && segPhiNHits == 8)
+	{
 
-      TVectorF *hitSuperLayerPhi =(TVectorF*)phiHits_superLayer->At(iseg);
-      TVectorF *hitLayerPhi      =(TVectorF*)phiHits_layer->At(iseg);
-      TVectorF *hitWirePhi       =(TVectorF*)phiHits_wire->At(iseg);
-      TVectorF *hitPosPhi        =(TVectorF*)phiHits_pos->At(iseg);     
-      TVectorF *hitPosPhiCh      =(TVectorF*)phiHits_posCh->At(iseg);	 
-      TVectorF *hitPosPhiErr     =(TVectorF*)phiHits_posErr->At(iseg);	 
+	  if(seg.phi_normChi2->at(iSeg) > 3.84) continue;
 
-      TVectorF *hitPhiSide       =(TVectorF*)phiHits_side->At(iseg);	 
-      TVectorF *hitZSide         =(TVectorF*)zHits_side->At(iseg);	 
+	  auto hitSuperLayerPhi = (TVectorF*)seg.phiHits_superLayer->At(iSeg);
+	  auto hitLayerPhi      = (TVectorF*)seg.phiHits_layer->At(iSeg);
+	  auto hitWirePhi       = (TVectorF*)seg.phiHits_wire->At(iSeg);
+	  auto hitPosPhi        = (TVectorF*)seg.phiHits_pos->At(iSeg);     
+	  auto hitPosPhiCh      = (TVectorF*)seg.phiHits_posCh->At(iSeg);	 
+	  auto hitPosPhiErr     = (TVectorF*)seg.phiHits_posErr->At(iSeg);	 
 
-      TVectorF *hitExpPos        =(TVectorF*)hitsExpPos->At(iseg);     
-      TVectorF *hitExpPosCh      =(TVectorF*)hitsExpPosCh->At(iseg);     
-      TVectorF *hitExpWire       =(TVectorF*)hitsExpWire->At(iseg);     
+	  auto hitPhiSide       = (TVectorF*)seg.phiHits_side->At(iSeg);	 
+	  
+	  auto hitExpPos        = (TVectorF*)seg.hitsExpPos->At(iSeg);     
+	  auto hitExpPosCh      = (TVectorF*)seg.hitsExpPosCh->At(iSeg);     
+	  auto hitExpWire       = (TVectorF*)seg.hitsExpWire->At(iSeg);     
 
-      TVectorF *hitWirePosPhi    =(TVectorF*)phiHits_wirePos->At(iseg);
-      TVectorF *hitWirePosZ      =(TVectorF*)zHits_wirePos->At(iseg);
+	  auto hitWirePosPhi    = (TVectorF*)seg.phiHits_wirePos->At(iSeg);
+	  
+	  for (int iHit=0; iHit < segPhiNHits; ++iHit)
+	    {
 
-      TVectorF *hitLayerZ        =(TVectorF*)zHits_layer->At(iseg);
-      TVectorF *hitWireZ         =(TVectorF*)zHits_wire->At(iseg);
-      TVectorF *hitPosZ          =(TVectorF*)zHits_pos->At(iseg);     
-      TVectorF *hitPosZCh        =(TVectorF*)zHits_posCh->At(iseg);	 
-      TVectorF *hitPosZErr       =(TVectorF*)zHits_posErr->At(iseg);
-
-
-      for (int kk=0; kk<seg_phinhits; kk++) {
-
-	if(kk<4){
-	  // cout<<"k "<<kk<<" sl "<<(*hitSuperLayerPhi)(kk)<<" l  "<<(*hitLayerPhi)(kk)<<" w "<<(*hitWirePhi)(kk)<<" pos "<<(*hitPosPhi)(kk)<<" exp "<<(*hitExpPos)(kk)<<"  diff "<< (*hitPosPhi)(kk) - (*hitExpPos)(kk)<<endl;
+	      double wireDist = std::abs((*hitWirePosPhi)(iHit) - (*hitPosPhi)(iHit));
 	      
-	  m_plots[Form("%shitResX",Tag.c_str())]->Fill(( (*hitPosPhi)(kk) - (*hitExpPos)(kk) )*( (*hitPhiSide)(kk)==2? 1:-1) );
-	  m_plots[Form("%shitResX_st%d_sl%d",Tag.c_str(),station->at(iseg),1)]->Fill( ((*hitPosPhi)(kk) - (*hitExpPos)(kk) )*( (*hitPhiSide)(kk)==2? 1:-1));
-	  m_plots[Form("%shitResX_st%d_sl%d_l%d",Tag.c_str(),station->at(iseg),1,kk+1)]->Fill( ((*hitPosPhi)(kk) - (*hitExpPos)(kk) )*( (*hitPhiSide)(kk)==2? 1:-1));
-	      
-
-	  m_2Dplots[Form("%shitResX_vsWireDist",Tag.c_str())]->Fill(abs((*hitWirePosPhi)(kk)-(*hitPosPhi)(kk)),((*hitPosPhi)(kk) - (*hitExpPos)(kk) )*( (*hitPhiSide)(kk)==2? 1:-1));
-	  m_2Dplots[Form("%shitResXvsWireDist_st%d_sl%d",Tag.c_str(),station->at(iseg),1)]->Fill(abs((*hitWirePosPhi)(kk)-(*hitPosPhi)(kk)),
-											  ((*hitPosPhi)(kk) - (*hitExpPos)(kk))*( (*hitPhiSide)(kk)==2? 1:-1));
-	  m_2Dplots[Form("%shitResXvsWireDist_st%d_sl%d_l%d",Tag.c_str(),station->at(iseg),1,kk+1)]->Fill(abs((*hitWirePosPhi)(kk)-(*hitPosPhi)(kk)),
-												   ((*hitPosPhi)(kk) - (*hitExpPos)(kk))*( (*hitPhiSide)(kk)==2? 1:-1));
+	      if(iHit<4)
+		{
+		  
+ 		  double res = ((*hitPosPhi)(iHit) - (*hitExpPos)(iHit)) * ((*hitPhiSide)(iHit) == 2 ? 1 : -1);
+		  
+		  m_plots[Form("%shitResX",Tag.c_str())]->Fill(res);
+		  m_plots[Form("%shitResX_st%d_sl%d",Tag.c_str(),stat,1)]->Fill(res);
+		  m_plots[Form("%shitResX_st%d_sl%d_l%d",Tag.c_str(),stat,1,iHit+1)]->Fill(res);
+		  
+		  m_2Dplots[Form("%shitResX_vsWireDist",Tag.c_str())]->Fill(wireDist,res);
+		  m_2Dplots[Form("%shitResXvsWireDist_st%d_sl%d",Tag.c_str(),stat,1)]->Fill(wireDist,res);
+		  m_2Dplots[Form("%shitResXvsWireDist_st%d_sl%d_l%d",Tag.c_str(),stat,1,iHit+1)]->Fill(wireDist,res);
+		  
+		}
+	      else
+		{
+		  
+ 		  double res = ((*hitPosPhi)(iHit) - (*hitExpPos)(iHit+4)) * ((*hitPhiSide)(iHit) == 2 ? 1 : -1);
+	
+		  m_plots[Form("%shitResX",Tag.c_str())]->Fill(res);
+		  m_plots[Form("%shitResX_st%d_sl%d",Tag.c_str(),stat,3)]->Fill(res);
+		  m_plots[Form("%shitResX_st%d_sl%d_l%d",Tag.c_str(),stat,3,iHit-3)]->Fill(res);	      
+		  
+		  m_2Dplots[Form("%shitResX_vsWireDist",Tag.c_str())]->Fill(wireDist,res);
+		  m_2Dplots[Form("%shitResXvsWireDist_st%d_sl%d",Tag.c_str(),stat,3)]->Fill(wireDist,res);
+		  m_2Dplots[Form("%shitResXvsWireDist_st%d_sl%d_l%d",Tag.c_str(),stat,3,iHit-3)]->Fill(wireDist,res);
+		  
+		}
+	    }
 	}
-	else{
-	      
-	  m_plots[Form("%shitResX",Tag.c_str())]->Fill( ((*hitPosPhi)(kk) - (*hitExpPos)(kk+4))*( (*hitPhiSide)(kk)==2? 1:-1));
-	  m_plots[Form("%shitResX_st%d_sl%d",Tag.c_str(),station->at(iseg),3)]->Fill( ( (*hitPosPhi)(kk) - (*hitExpPos)(kk+4))*( (*hitPhiSide)(kk)==2? 1:-1));
-	  m_plots[Form("%shitResX_st%d_sl%d_l%d",Tag.c_str(),station->at(iseg),3,kk-3)]->Fill( ( (*hitPosPhi)(kk) - (*hitExpPos)(kk+4))*( (*hitPhiSide)(kk)==2? 1:-1));	      
+      
+      if (seg.hasZed->at(iSeg) && segZNHits == 4)
+	{
 
-	  m_2Dplots[Form("%shitResX_vsWireDist",Tag.c_str())]->Fill(abs((*hitWirePosPhi)(kk)-(*hitPosPhi)(kk)),((*hitPosPhi)(kk) - (*hitExpPos)(kk+4) )*( (*hitPhiSide)(kk)==2? 1:-1));
-	  m_2Dplots[Form("%shitResXvsWireDist_st%d_sl%d",Tag.c_str(),station->at(iseg),3)]->Fill(abs((*hitWirePosPhi)(kk)-(*hitPosPhi)(kk)), 
-											  ((*hitPosPhi)(kk) - (*hitExpPos)(kk+4))*( (*hitPhiSide)(kk)==2? 1:-1));
-	  m_2Dplots[Form("%shitResXvsWireDist_st%d_sl%d_l%d",Tag.c_str(),station->at(iseg),3,kk-3)]->Fill(abs((*hitWirePosPhi)(kk)-(*hitPosPhi)(kk)), 
-												   ((*hitPosPhi)(kk) - (*hitExpPos)(kk+4))*( (*hitPhiSide)(kk)==2? 1:-1));
+	  if(seg.z_normChi2->at(iSeg) > 3.84) continue;
+
+	  auto hitZSide    = (TVectorF*)seg.zHits_side->At(iSeg);	 
+
+	  auto hitExpPos   = (TVectorF*)seg.hitsExpPos->At(iSeg);     
+	  auto hitExpPosCh = (TVectorF*)seg.hitsExpPosCh->At(iSeg);     
+	  auto hitExpWire  = (TVectorF*)seg.hitsExpWire->At(iSeg);     
+
+	  auto hitWirePosZ = (TVectorF*)seg.zHits_wirePos->At(iSeg);
+
+	  auto hitLayerZ   = (TVectorF*)seg.zHits_layer->At(iSeg);
+	  auto hitWireZ    = (TVectorF*)seg.zHits_wire->At(iSeg);
+	  auto hitPosZ     = (TVectorF*)seg.zHits_pos->At(iSeg);     
+	  auto hitPosZCh   = (TVectorF*)seg.zHits_posCh->At(iSeg);	 
+	  auto hitPosZErr  = (TVectorF*)seg.zHits_posErr->At(iSeg);
+
+	  for (int iHit=0; iHit<segZNHits; ++iHit)
+	    {
+
+	      double wirePos = std::abs((*hitWirePosZ)(iHit) - (*hitPosZ)(iHit));
+	      double res     = ((*hitPosZ)(iHit) - (*hitExpPos)(iHit+4)) * ((*hitZSide)(iHit) == 2 ? 1 : -1);
 	      
+	      m_plots[Form("%shitResZ",Tag.c_str())]->Fill(res);
+	      m_plots[Form("%shitResZ_st%d",Tag.c_str(),stat)]->Fill(res);
+	      m_plots[Form("%shitResZ_st%d_l%d",Tag.c_str(),stat,iHit+1)]->Fill(res);	    
+	      
+	      m_2Dplots[Form("%shitResZ_vsWireDist",Tag.c_str())]->Fill(wirePos,res);
+	      m_2Dplots[Form("%shitResZvsWireDist_st%d",Tag.c_str(),stat)]->Fill(wirePos,res);
+	      m_2Dplots[Form("%shitResZvsWireDist_st%d_l%d",Tag.c_str(),stat,iHit+1)]->Fill(wirePos,res);
+	      
+	    }
 	}
-      }
- 
-      for (int kk=0; kk<seg_znhits; kk++) {
-	m_plots[Form("%shitResZ",Tag.c_str())]->Fill( ( (*hitPosZ)(kk) - (*hitExpPos)(kk+4) )*( (*hitZSide)(kk)==2? 1:-1));
-	m_plots[Form("%shitResZ_st%d",Tag.c_str(),station->at(iseg))]->Fill( ((*hitPosZ)(kk) - (*hitExpPos)(kk+4))*( (*hitZSide)(kk)==2? 1:-1));
-	m_plots[Form("%shitResZ_st%d_l%d",Tag.c_str(),station->at(iseg),kk+1)]->Fill( ((*hitPosZ)(kk) - (*hitExpPos)(kk+4))*( (*hitZSide)(kk)==2? 1:-1));	    
-
-	m_2Dplots[Form("%shitResZ_vsWireDist",Tag.c_str())]->Fill(abs((*hitWirePosZ)(kk)-(*hitPosZ)(kk)),((*hitPosZ)(kk) - (*hitExpPos)(kk+4) )*( (*hitZSide)(kk)==2? 1:-1));
-	m_2Dplots[Form("%shitResZvsWireDist_st%d",Tag.c_str(),station->at(iseg))]->Fill(abs((*hitWirePosZ)(kk)-(*hitPosZ)(kk)),((*hitPosZ)(kk) - (*hitExpPos)(kk+4))*( (*hitZSide)(kk)==2? 1:-1));
-	m_2Dplots[Form("%shitResZvsWireDist_st%d_l%d",Tag.c_str(),station->at(iseg),kk+1)]->Fill(abs((*hitWirePosZ)(kk)-(*hitPosZ)(kk)),((*hitPosZ)(kk) - (*hitExpPos)(kk+4))*( (*hitZSide)(kk)==2? 1:-1));
-      }
     }
-  }
 }

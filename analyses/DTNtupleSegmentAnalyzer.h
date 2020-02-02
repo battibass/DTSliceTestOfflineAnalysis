@@ -28,7 +28,15 @@ class DTNtupleSegmentAnalyzer : public DTNtupleBaseAnalyzer
 
   string m_deadFileName;
   
-  void MeasureEfficiency(string Tag,Long64_t jEntry,
+ protected:
+
+  virtual void book() override;
+  virtual void fill() override;
+  virtual void endJob() override;
+
+  void baseAnalysis();
+
+  void measureEfficiency(string tag,
 			 int Ndead,
 			 int dead[][6],
 			 UInt_t nSegments,
@@ -41,20 +49,10 @@ class DTNtupleSegmentAnalyzer : public DTNtupleBaseAnalyzer
 			 vector<short> *z_nHits,
 			 vector<float> *dirLoc_x, 
 			 TClonesArray  *hitsExpWire,
-			 TClonesArray  *phiHits_pos,
-			 TClonesArray  *phiHits_posCh,
-			 TClonesArray  *phiHits_posErr,
-			 TClonesArray  *phiHits_side,
 			 TClonesArray  *phiHits_wire,
-			 TClonesArray  *phiHits_wirePos,
 			 TClonesArray  *phiHits_layer,
 			 TClonesArray  *phiHits_superLayer,
-			 TClonesArray  *zHits_pos,
-			 TClonesArray  *zHits_posCh,
-			 TClonesArray  *zHits_posErr,
-			 TClonesArray  *zHits_side,
 			 TClonesArray  *zHits_wire,
-			 TClonesArray  *zHits_wirePos,
 			 TClonesArray  *zHits_layer,
 			 UInt_t         Digi_nDigis,
 			 vector<short> *Digi_wheel,
@@ -62,52 +60,12 @@ class DTNtupleSegmentAnalyzer : public DTNtupleBaseAnalyzer
 			 vector<short> *Digi_station,
 			 vector<short> *Digi_superLayer,
 			 vector<short> *Digi_layer,
-			 vector<short> *Digi_wire,
-			 vector<float> *Digi_time
-			 );
+			 vector<short> *Digi_wire);
 
+  void computeResidual(string tag, DTNtupleSegment & seg);
 
-  void ComputeResidual(string Tag,
-		       Long64_t jEntry, 
-		       UInt_t nSegments,
-		       vector<short> *hasPhi,
-		       vector<short> *station,
-		       vector<short> *wheel, 
-		       vector<short> *sector,  
-		       vector<short> *hasZed,  
-		       vector<short> *phi_nHits, 
-		       vector<short> *z_nHits,
-		       vector<float> *phi_normChi2,
-		       vector<float> *z_normChi2,
-		       TClonesArray  *hitsExpWire,
-		       TClonesArray  *hitsExpPos,
-		       TClonesArray  *hitsExpPosCh,
-		       TClonesArray  *phiHits_pos,
-		       TClonesArray  *phiHits_posCh,
-		       TClonesArray  *phiHits_posErr,
-		       TClonesArray  *phiHits_side,
-		       TClonesArray  *phiHits_wire,
-		       TClonesArray  *phiHits_wirePos,
-		       TClonesArray  *phiHits_layer,
-		       TClonesArray  *phiHits_superLayer,
-		       TClonesArray  *zHits_pos,
-		       TClonesArray  *zHits_posCh,
-		       TClonesArray  *zHits_posErr,
-		       TClonesArray  *zHits_side,
-		       TClonesArray  *zHits_wire,
-		       TClonesArray  *zHits_wirePos,
-		       TClonesArray  *zHits_layer
-		       );
+  void comparisonAnalysis();
 
-
-
-  
- protected:
-
-  virtual void book() override;
-  virtual void fill() override;
-  virtual void endJob() override;
-  
   TFile m_outFile;
   
   std::map<std::string, TH1*> m_plots;
