@@ -273,6 +273,18 @@ void DTNtupleSegmentAnalyzer::book()
   
   m_outFile.cd();
 
+  for (int st=1; st<5; st++)
+    {
+
+      m_plots[Form("NSegPh1VsPh2_st%d",st)] = new TH2F(Form("NSegPh1VsPh2_st%d",st),
+						       "# segment ph1 vs ph2;# seg (phase-1); # seg (phase-2)",
+						       10,-0.5,9.5,10,-0.5,9.5); 
+
+      m_plots[Form("NHitsPhiPh1VsPh2_st%d",st)] = new TH2F(Form("NHitsPhiPh1VsPh2_st%d",st),
+							   "# phi hits ph1 vs ph2;# phi hits (phase-1); # phi hits (phase-2)",
+							   10,-0.5,9.5,10,-0.5,9.5);
+    }
+	
   std::vector<std::string> typeTags = { "Ph1", "Ph2" };
 
   for (const auto & typeTag : typeTags){
@@ -635,6 +647,77 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
 
 void DTNtupleSegmentAnalyzer::comparisonAnalysis()
 {
+
+  std::array<int, 4> nSegPerStPh1 = {0, 0, 0, 0};
+  std::array<int, 4> nSegPerStPh2 = {0, 0, 0, 0};
+
+  std::array<int, 4> iBestSegPerStPh1 = {-1, -1, -1, -1};
+  std::array<int, 4> iBestSegPerStPh2 = {-1, -1, -1, -1};
+
+  for (std::size_t iSeg = 0; iSeg < seg_nSegments; ++iSeg) 
+    {
+
+      if(seg_sector->at(iSeg) != 12 || seg_wheel->at(iSeg) != 2) continue;    
+
+      if(seg_hasPhi->at(iSeg))
+	{
+	  
+	  int stat  = seg_station->at(iSeg);
+	  int nHits = seg_phi_nHits->at(iSeg);
+	  int iBestSeg = iBestSegPerStPh1[stat - 1];
+	  int nHitsBestSeg = iBestSeg > -1 ? seg_phi_nHits->at(iBestSeg) : 0;
+	  
+	  nSegPerStPh1[stat - 1]++;
+	  
+	  if (nHits > nHitsBestSeg)
+	    iBestSegPerStPh1[stat - 1] = iSeg;
+
+	}
+
+    }
+
+    for (std::size_t iSeg = 0; iSeg < ph2Seg_nSegments; ++iSeg) 
+    {
+
+      if(ph2Seg_sector->at(iSeg) != 12 || ph2Seg_wheel->at(iSeg) != 2) continue;    
+
+      if(ph2Seg_hasPhi->at(iSeg))
+	{
+	  
+	  int stat  = ph2Seg_station->at(iSeg);
+	  int nHits = ph2Seg_phi_nHits->at(iSeg);
+	  int iBestSeg = iBestSegPerStPh2[stat - 1];
+	  int nHitsBestSeg = iBestSeg > -1 ? ph2Seg_phi_nHits->at(iBestSeg) : 0;
+	  
+	  nSegPerStPh2[stat - 1]++;
+	  
+	  if (nHits > nHitsBestSeg)
+	    iBestSegPerStPh2[stat - 1] = iSeg;
+
+	}
+      
+    }
+
+    for (int iSt = 1; iSt <= 4; ++iSt)
+      {
+
+	int nSegPh1 = nSegPerStPh1[iSt -1];
+	int nSegPh2 = nSegPerStPh2[iSt -1];
+	
+	if (nSegPh1 > 0 || nSegPh2 > 0)
+	  {
+	    m_plots[Form("NSegPh1VsPh2_st%d",iSt)]->Fill(nSegPh1,nSegPh2);
+
+	    if (nSegPh1 > 0 && nSegPh2 > 0)
+	      {
+		int nHitsPh1 = seg_phi_nHits->at(iBestSegPerStPh1[iSt - 1]);
+		int nHitsPh2 = ph2Seg_phi_nHits->at(iBestSegPerStPh2[iSt - 1]);
+		
+		m_plots[Form("NHitsPhiPh1VsPh2_st%d",iSt)]->Fill(nHitsPh1,nHitsPh2);
+	      }
+	  }
+	
+      }
 
 }
 
