@@ -182,9 +182,6 @@ for keyPlot in config:
         inputHistos[iHisto].SetTitle(";"+plotX[2]+";"+plotY[2])
             
         if iHisto == 0 :
-            if histoDim == 2 :
-                inputHistos[iHisto].Draw(option)
-            else :
                 inputHistos[iHisto].Draw(option)
         else :
             inputHistos[iHisto].Draw('same' + option)
@@ -198,7 +195,11 @@ for keyPlot in config:
         else :
             histo = inputHistos[iHisto]
             
-        histo.GetXaxis().SetRangeUser(plotX[0], plotX[1])
+        if histoClass == "TEfficiency" and histoDim == 1 :
+            histo.GetXaxis().SetLimits(plotX[0], plotX[1])
+        else :
+            histo.GetXaxis().SetRangeUser(plotX[0], plotX[1])
+            
         histo.GetYaxis().SetRangeUser(rangeY[0], rangeY[1])
 
         if histoClass == "TEfficiency" and histoDim == 2 : 

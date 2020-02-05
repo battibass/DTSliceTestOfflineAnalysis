@@ -1,37 +1,5 @@
 {
  
-    "Phase-1 phi n Segments"   :
-    {
-        "inputs"    :
-        {
-            "nsegments"   :
-            {
-                "label"             : "nseg",
-                "legendEntry"       : "nseg",
-                "folder"            : "",
-                "plot"		    : "Ph1hNsegment"
-	    }
-	    
-        },
-        "plot"      :
-        {
-            "x"                 : [20.0, 20.0, "# segments"],
-            "y"                 : [0.5, 12.5, "entries"],
-            "option"            : "hist",
-            "legendTitle"       : "Phase-1 n segments",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "00_Phase1_nSegmens",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
     "Phase-1 n #phi hits per segment"   :
     {
         "inputs"    :
@@ -83,7 +51,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase1_PhiNhits",
+            "filenamePlot"      : "02_Phase1_PhiNhits",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -182,7 +150,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "03_Phase1_PhiChi2",
+            "filenamePlot"      : "05_Phase1_PhiChi2",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -234,7 +202,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "04_Phase1_PhiProbChi2",
+            "filenamePlot"      : "05_Phase1_PhiProbChi2",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -338,139 +306,11 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "06_Phase1_t0",
+            "filenamePlot"      : "01_Phase1_t0",
             "fileType"          : ["png", "pdf"]
         }
     },
 
-    "Phase-1 fraction of hits per layer / segment MB1"   :
-    {
-        "inputs"    :
-        {
-            "MB1"   :
-            {
-                "label"             : "MB1",
-                "legendEntry"       : "MB1",
-                "folder"            : "",
-                "plot"		    : "Ph1hEffHitVsX_st1"
-	    }
-        },
-        "plot"      :
-        {
-            "x"                 : [-250.0, 250.0, "segment layer x (cm)"],
-            "y"                 : [0.5, 12.5, "superlayer / layer"],
-            "z"                 : [0.0, 1.0, "fraction of hits"],
-            "option"            : "colz",
-            "legendTitle"       : "hit efficiency MB1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "07_Phase1_FracHitsLayer_MB1",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
-    "Phase-1 fraction of hits per layer / segment MB2"   :
-    {
-        "inputs"    :
-        {
-            "MB2"   :
-            {
-                "label"             : "MB2",
-                "legendEntry"       : "MB2",
-                "folder"            : "",
-                "plot"		    : "Ph1hEffHitVsX_st2"
-	    }
-        },
-        "plot"      :
-        {
-            "x"                 : [-250.0, 250.0, "segment layer x (cm)"],
-            "y"                 : [0.5, 12.5, "superlayer / layer"],
-            "z"                 : [0.0, 1.0, "fraction of hits"],
-            "option"            : "colz",
-            "legendTitle"       : "hit efficiency MB2",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "07_Phase1_FracHitsLayer_MB2",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
-    "Phase-1 fraction of hits per layer / segment MB3"   :
-    {
-        "inputs"    :
-        {
-            "MB3"   :
-            {
-                "label"             : "MB3",
-                "legendEntry"       : "MB3",
-                "folder"            : "",
-                "plot"		    : "Ph1hEffHitVsX_st3"
-	    }
-        },
-        "plot"      :
-        {
-            "x"                 : [-250.0, 250.0, "segment layer x (cm)"],
-            "y"                 : [0.5, 12.5, "superlayer / layer"],
-            "z"                 : [0.0, 1.0, "fraction of hits"],
-            "option"            : "colz",
-            "legendTitle"       : "hit efficiency MB3",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "07_Phase1_FracHitsLayer_MB3",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
-    "Phase-1 fraction of hits per layer / segment MB4"   :
-    {
-        "inputs"    :
-        {
-            "MB4"   :
-            {
-                "label"             : "MB4",
-                "legendEntry"       : "MB4",
-                "folder"            : "",
-                "plot"		    : "Ph1hEffHitVsX_st4"
-	    }
-        },
-        "plot"      :
-        {
-            "x"                 : [-250.0, 250.0, "segment layer x (cm)"],
-            "y"                 : [0.5, 12.5, "superlayer / layer"],
-            "z"                 : [0.0, 1.0, "fraction of hits"],
-            "option"            : "colz",
-            "legendTitle"       : "hit efficiency MB4",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "07_Phase1_FracHitsLayer_MB4",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-    
     "Phase-1 hit residual"   :
     {
         "inputs"    :
@@ -523,102 +363,6 @@
         }
     },
 
-    "Phase-1 phi Efficiency"   :
-    {
-        "inputs"    :
-        {
-            "nsegments"   :
-            {
-                "label"             : "Hit Efficiency",
-                "legendEntry"       : "Hit Efficiency",
-                "folder"            : "",
-                "plot"		    : "Ph1effPhi"
-	    }
-	    
-        },
-        "plot"      :
-        {
-            "x"                 : [0.5, 4.5, "Station"],
-            "y"                 : [0.8, 1.05, "#epsilon"],
-            "option"            : "",
-            "legendTitle"       : "Phase-1 phi Efficiency",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "00_Phase1_PhiHitEfficiency",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
-    "Phase-1 hit efficiency MB1"   :
-    {
-        "inputs"    :
-        {
-            "MB1"   :
-            {
-                "label"             : "MB1",
-                "legendEntry"       : "MB1",
-                "folder"            : "",
-                "plot"		    : "Ph1effPhiByWire_st1"
-	    }
-        },
-        "plot"      :
-        {
-            "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
-            "z"                 : [0.0, 1.0, "hit efficiency"],
-            "option"            : "colz",
-            "legendTitle"       : "ph2 hit efficiency MB1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "00_PhiHitEfficiency_MB1_Phase1",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
-    "Phase-1 hit efficiency MB2"   :
-    {
-        "inputs"    :
-        {
-            "MB2"   :
-            {
-                "label"             : "MB2",
-                "legendEntry"       : "MB2",
-                "folder"            : "",
-                "plot"		    : "Ph1effPhiByWire_st2"
-	    }
-        },
-        "plot"      :
-        {
-            "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
-            "z"                 : [0.0, 1.0, "hit efficiency"],
-            "option"            : "colz",
-            "legendTitle"       : "ph2 hit efficiency MB2",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "00_PhiHitEfficiency_MB2_Phase1",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
     "Phase-1 hit efficiency MB3"   :
     {
         "inputs"    :
@@ -637,16 +381,16 @@
             "y"                 : [-0.5, 12.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "hit efficiency"],
             "option"            : "colz",
-            "legendTitle"       : "ph2 hit efficiency MB3",
+            "legendTitle"       : "ph1 hit efficiency MB3",
             "caption"           : "DT SliceTest",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.49, 0.70, 0.85, 0.83]
         },
         "output"    :
         {
-            "filenamePlot"      : "00_PhiHitEfficiency_MB3_Phase1",
+            "filenamePlot"      : "03_PhiHitEfficiency_MB3_Phase1",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -669,80 +413,16 @@
             "y"                 : [-0.5, 12.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "hit efficiency"],
             "option"            : "colz",
-            "legendTitle"       : "ph2 hit efficiency MB4",
+            "legendTitle"       : "ph1 hit efficiency MB4",
             "caption"           : "DT SliceTest",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.49, 0.70, 0.85, 0.83]
         },
         "output"    :
         {
-            "filenamePlot"      : "00_PhiHitEfficiency_MB4_Phase1",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
-    "Phase-1 theta Efficiency"   :
-    {
-        "inputs"    :
-        {
-            "nsegments"   :
-            {
-                "label"             : "Hit Efficiency",
-                "legendEntry"       : "Hit Efficiency",
-                "folder"            : "",
-                "plot"		    : "Ph1effTheta"
-	    }
-	    
-        },
-        "plot"      :
-        {
-            "x"                 : [0.5, 4.5, "Station"],
-            "y"                 : [0.8, 1.05, "#epsilon"],
-            "option"            : "",
-            "legendTitle"       : "Phase-1 theta Efficiency",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "00_Phase1_ThetaHitEfficiency",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
-    "Phase-2 phi n Segments"   :
-    {
-        "inputs"    :
-        {
-            "nsegments"   :
-            {
-                "label"             : "nseg",
-                "legendEntry"       : "nseg",
-                "folder"            : "",
-                "plot"		    : "Ph2hNsegment"
-	    }
-	    
-        },
-        "plot"      :
-        {
-            "x"                 : [20.0, 20.0, "# segments"],
-            "y"                 : [0.5, 12.5, "entries"],
-            "option"            : "hist",
-            "legendTitle"       : "Phase-2 n segments",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "00_Phase2_nSegmens",
+            "filenamePlot"      : "03_PhiHitEfficiency_MB4_Phase1",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -798,7 +478,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_PhiNhits",
+            "filenamePlot"      : "02_Phase2_PhiNhits",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -897,7 +577,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "03_Phase2_PhiChi2",
+            "filenamePlot"      : "05_Phase2_PhiChi2",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -949,7 +629,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "04_Phase2_PhiProbChi2",
+            "filenamePlot"      : "05_Phase2_PhiProbChi2",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -1053,135 +733,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "06_Phase2_t0",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
-    "Phase-2 fraction of hits per layer / segment MB1"   :
-    {
-        "inputs"    :
-        {
-            "MB1"   :
-            {
-                "label"             : "MB1",
-                "legendEntry"       : "MB1",
-                "folder"            : "",
-                "plot"		    : "Ph2hEffHitVsX_st1"
-	    }
-        },
-        "plot"      :
-        {
-            "x"                 : [-250.0, 250.0, "segment layer x (cm)"],
-            "y"                 : [0.5, 12.5, "superlayer / layer"],
-            "z"                 : [0.0, 1.0, "fraction of hits"],
-            "option"            : "colz",
-            "legendTitle"       : "hit efficiency MB1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "07_Phase2_FracHitsLayer_MB1",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
-    "Phase-2 fraction of hits per layer / segment MB2"   :
-    {
-        "inputs"    :
-        {
-            "MB2"   :
-            {
-                "label"             : "MB2",
-                "legendEntry"       : "MB2",
-                "folder"            : "",
-                "plot"		    : "Ph2hEffHitVsX_st2"
-	    }
-        },
-        "plot"      :
-        {
-            "x"                 : [-250.0, 250.0, "segment layer x (cm)"],
-            "y"                 : [0.5, 12.5, "superlayer / layer"],
-            "z"                 : [0.0, 1.0, "fraction of hits"],
-            "option"            : "colz",
-            "legendTitle"       : "hit efficiency MB2",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "07_Phase2_FracHitsLayer_MB2",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
-    "Phase-2 fraction of hits per layer / segment MB3"   :
-    {
-        "inputs"    :
-        {
-            "MB3"   :
-            {
-                "label"             : "MB3",
-                "legendEntry"       : "MB3",
-                "folder"            : "",
-                "plot"		    : "Ph2hEffHitVsX_st3"
-	    }
-        },
-        "plot"      :
-        {
-            "x"                 : [-250.0, 250.0, "segment layer x (cm)"],
-            "y"                 : [0.5, 12.5, "superlayer / layer"],
-            "z"                 : [0.0, 1.0, "fraction of hits"],
-            "option"            : "colz",
-            "legendTitle"       : "hit efficiency MB3",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "07_Phase2_FracHitsLayer_MB3",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
-    "Phase-2 fraction of hits per layer / segment MB4"   :
-    {
-        "inputs"    :
-        {
-            "MB4"   :
-            {
-                "label"             : "MB4",
-                "legendEntry"       : "MB4",
-                "folder"            : "",
-                "plot"		    : "Ph2hEffHitVsX_st4"
-	    }
-        },
-        "plot"      :
-        {
-            "x"                 : [-250.0, 250.0, "segment layer x (cm)"],
-            "y"                 : [0.5, 12.5, "superlayer / layer"],
-            "z"                 : [0.0, 1.0, "fraction of hits"],
-            "option"            : "colz",
-            "legendTitle"       : "hit efficiency MB4",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "07_Phase2_FracHitsLayer_MB4",
+            "filenamePlot"      : "01_Phase2_t0",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -1238,38 +790,6 @@
         }
     },
 
-    "Phase-2 phi Efficiency"   :
-    {
-        "inputs"    :
-        {
-            "nsegments"   :
-            {
-                "label"             : "Hit Efficiency",
-                "legendEntry"       : "Hit Efficiency",
-                "folder"            : "",
-                "plot"		    : "Ph2effPhi"
-	    }
-	    
-        },
-        "plot"      :
-        {
-            "x"                 : [0.5, 4.5, "Station"],
-            "y"                 : [0.8, 1.05, "#epsilon"],
-            "option"            : "",
-            "legendTitle"       : "Phase-2 phi Efficiency",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "00_Phase2_PhiHitEfficiency",
-            "fileType"          : ["png", "pdf"]
-        }
-    },
-
     "Phase-2 hit efficiency MB1"   :
     {
         "inputs"    :
@@ -1293,11 +813,11 @@
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.49, 0.70, 0.85, 0.83]
         },
         "output"    :
         {
-            "filenamePlot"      : "00_PhiHitEfficiency_MB1_Phase2",
+            "filenamePlot"      : "03_PhiHitEfficiency_MB1_Phase2",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -1325,11 +845,11 @@
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.49, 0.70, 0.85, 0.83]
         },
         "output"    :
         {
-            "filenamePlot"      : "00_PhiHitEfficiency_MB2_Phase2",
+            "filenamePlot"      : "03_PhiHitEfficiency_MB2_Phase2",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -1357,11 +877,11 @@
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.49, 0.70, 0.85, 0.83]
         },
         "output"    :
         {
-            "filenamePlot"      : "00_PhiHitEfficiency_MB3_Phase2",
+            "filenamePlot"      : "03_PhiHitEfficiency_MB3_Phase2",
             "fileType"          : ["png", "pdf"]
         }
     },
@@ -1389,43 +909,155 @@
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.49, 0.70, 0.85, 0.83]
         },
         "output"    :
         {
-            "filenamePlot"      : "00_PhiHitEfficiency_MB4_Phase2",
+            "filenamePlot"      : "03_PhiHitEfficiency_MB4_Phase2",
             "fileType"          : ["png", "pdf"]
         }
     },
 
-    "Phase-2 theta Efficiency"   :
+    "Phi Efficiency (Ph1 and Ph2)"   :
     {
         "inputs"    :
         {
-            "nsegments"   :
+            "01 Ph2"   :
             {
-                "label"             : "Hit Efficiency",
-                "legendEntry"       : "Hit Efficiency",
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
                 "folder"            : "",
-                "plot"		    : "Ph2effTheta"
+                "plot"		    : "Ph2effPhi_station"
+	    },
+	    
+	    "02 Ph1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"		    : "Ph1effPhi_station"
 	    }
 	    
         },
         "plot"      :
         {
             "x"                 : [0.5, 4.5, "Station"],
-            "y"                 : [0.8, 1.05, "#epsilon"],
+            "y"                 : [0.8, 1.2, "#epsilon"],
             "option"            : "",
-            "legendTitle"       : "Phase-2 theta Efficiency",
+            "legendTitle"       : "Hit efficiency w.r.t. segment (#phi view)",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [2, 1, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 25, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.19, 0.67, 0.55, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "03_PhiHitEfficiency_Ph1vsPh2",
+            "fileType"          : ["png", "pdf"]
+        }
+    },
+
+        "Theta Efficiency (Ph1 and Ph2)"   :
+    {
+        "inputs"    :
+        {
+            "01 Ph2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"		    : "Ph2effTheta_station"
+	    },
+	    
+	    "02 Ph1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"		    : "Ph1effTheta_station"
+	    }
+	    
+        },
+        "plot"      :
+        {
+            "x"                 : [0.5, 4.5, "Station"],
+            "y"                 : [0.8, 1.2, "#epsilon"],
+            "option"            : "",
+            "legendTitle"       : "Hit efficiency w.r.t. segment (#theta view)",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [2, 1, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 25, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.19, 0.67, 0.55, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "03_ThetaHitEfficiency_Ph1vsPh2",
+            "fileType"          : ["png", "pdf"]
+        }
+    },
+    
+    "Phase-1 phi segment # hits ph1 va ph2 MB3"   :
+    {
+        "inputs"    :
+        {
+            "plot"   :
+            {
+                "label"             : "",
+                "legendEntry"       : "",
+                "folder"            : "",
+                "plot"		    : "NHitsPhiPh1VsPh2_st3"
+	    }
+	    
+        },
+        "plot"      :
+        {
+            "x"                 : [-0.5, 9.5, "# #phi hits phase-1"],
+            "y"                 : [-0.5, 9.5, "# #phi hits phase-2"],
+            "option"            : "box",
+            "legendTitle"       : "Phase-1 vs Phase-2 # hits",
             "caption"           : "DT SliceTest",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.49, 0.70, 0.85, 0.83]
         },
         "output"    :
         {
-            "filenamePlot"      : "00_Phase2_ThetaHitEfficiency",
+            "filenamePlot"      : "06_nPhiHits_Ph1vsPh2_MB3",
+            "fileType"          : ["png", "pdf"]
+        }
+    },
+
+    "Phase-1 phi segment # hits ph1 va ph2 MB4"   :
+    {
+        "inputs"    :
+        {
+            "plot"   :
+            {
+                "label"             : "",
+                "legendEntry"       : "",
+                "folder"            : "",
+                "plot"		    : "NHitsPhiPh1VsPh2_st4"
+	    }
+	    
+        },
+        "plot"      :
+        {
+            "x"                 : [-0.5, 9.5, "# #phi hits phase-1"],
+            "y"                 : [-0.5, 9.5, "# #phi hits phase-2"],
+            "option"            : "box",
+            "legendTitle"       : "Phase-1 vs Phase-2 # hits",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.70, 0.85, 0.83]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "06_nPhiHits_Ph1vsPh2_MB4",
             "fileType"          : ["png", "pdf"]
         }
     }
