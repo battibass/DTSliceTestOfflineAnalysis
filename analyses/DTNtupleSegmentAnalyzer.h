@@ -36,31 +36,8 @@ class DTNtupleSegmentAnalyzer : public DTNtupleBaseAnalyzer
 
   void baseAnalysis();
 
-  void measureEfficiency(string tag,
-			 int Ndead,
-			 int dead[][6],
-			 UInt_t nSegments,
-			 vector<short> *hasPhi, 
-			 vector<short> *station, 
-			 vector<short> *wheel, 
-			 vector<short> *sector,  
-			 vector<short> *hasZed,  
-			 vector<short> *phi_nHits, 
-			 vector<short> *z_nHits,
-			 vector<float> *dirLoc_x, 
-			 TClonesArray  *hitsExpWire,
-			 TClonesArray  *phiHits_wire,
-			 TClonesArray  *phiHits_layer,
-			 TClonesArray  *phiHits_superLayer,
-			 TClonesArray  *zHits_wire,
-			 TClonesArray  *zHits_layer,
-			 UInt_t         Digi_nDigis,
-			 vector<short> *Digi_wheel,
-			 vector<short> *Digi_sector,
-			 vector<short> *Digi_station,
-			 vector<short> *Digi_superLayer,
-			 vector<short> *Digi_layer,
-			 vector<short> *Digi_wire);
+  void measureEfficiency(string tag, int Ndead, int dead[][6],
+			 DTNtupleSegment & seg, DTNtupleDigi & digi);
 
   void computeResidual(string tag, DTNtupleSegment & seg);
 
