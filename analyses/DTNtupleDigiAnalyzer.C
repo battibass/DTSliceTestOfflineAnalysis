@@ -97,6 +97,10 @@ void DTNtupleDigiAnalyzer::book()
 	  hName = ("hEffSummary" + stTag).c_str();
 	  m_plots[hName] = new TH1F(hName,"Efficiency summary;efficiency,# wires",110,0.5,1.05);
 	  
+
+	  hName = ("hTimeDiff" + stTag).c_str();
+	  m_plots[hName] = new TH1F(hName,"Wire by wire digi time difference;time difference;entries",125,0.,500.);
+
 	  for (int iSl = 1; iSl <= 3; ++iSl)
 	    {
 	      for (int iLayer = 1; iLayer <= 4; ++iLayer)
@@ -126,18 +130,22 @@ void DTNtupleDigiAnalyzer::book()
 void DTNtupleDigiAnalyzer::fill()
 {
 
-  std::set<WireId> wireIds;
-  std::set<WireId> ph2WireIds;
+  std::map<WireId, std::vector<float>> digisByWire;
+  std::map<WireId, std::vector<float>> ph2DigisByWire;
 
-  fillBasic("Ph1",wireIds);
-  fillBasic("Ph2",ph2WireIds);
+  fillBasic("Ph1",digisByWire);
+  fillBasic("Ph2",ph2DigisByWire);
 
+  auto wireIds    = wiresWithInTimeDigis("Ph1",digisByWire);
+  auto ph2WireIds = wiresWithInTimeDigis("Ph2",ph2DigisByWire);
+  
   fillEff("Ph1",wireIds,ph2WireIds);
   fillEff("Ph2",ph2WireIds,wireIds);
 
 }
 
-void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag, std::set<WireId> & wireIds)
+void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
+				     std::map<WireId, std::vector<float>> & digisByWire)
 {
 
   DTNtupleDigi & digi = digiObjs[typeTag];
@@ -164,12 +172,9 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag, std::set<WireId> & wir
       string stTag = stTagS.str();
       
       m_plots[("hOccupancy" + stTag).c_str()]->Fill(wire,slAndLay);
-      
-      if ( time > m_timeBoxMin[typeTag] + 100. && time < m_timeBoxMin[typeTag] + 900.)
-	{
-	  WireId wireId(st,sl,lay,wire);
-	  wireIds.insert(wireId);
-	}
+
+      WireId wireId(st,sl,lay,wire);
+      digisByWire[wireId].push_back(time);
 
       stringstream layerTagS;
       layerTagS << typeTag
@@ -181,12 +186,69 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag, std::set<WireId> & wir
       
       m_plots[("hTimeBox"+ layerTag).c_str()]->Fill(time);
     }
+
+  for (auto & wireAndDigis : digisByWire)
+    {
+      
+      auto & wireId    =  wireAndDigis.first;
+      auto & digiTimes =  wireAndDigis.second;
+
+      if (digiTimes.size() > 1)
+	{
+	  
+	  stringstream stTagS;
+	  stTagS << typeTag
+		 << "St" << wireId.m_chamb;
+
+	  string stTag = stTagS.str();
+
+	  std::sort(digiTimes.begin(),digiTimes.end());
+
+	  auto digiIt  = digiTimes.begin();
+	  auto digiEnd = digiTimes.end();
+
+	  double timePrev = (*digiIt);
+	  ++digiIt;
+
+	  for (; digiIt!=digiEnd; ++digiIt)
+	    {
+	      m_plots[("hTimeDiff"+ stTag).c_str()]->Fill((*digiIt) - timePrev);
+	      timePrev = (*digiIt);
+	    }
+	}
+    }
   
 }
 
-void DTNtupleDigiAnalyzer::fillEff(std::string typeTag, std::set<WireId> & wireIdProbes, std::set<WireId> & wireIdRefs)
+std::set<WireId> DTNtupleDigiAnalyzer::wiresWithInTimeDigis(std::string typeTag,
+							    const std::map<WireId, std::vector<float>> & digisByWire) const
 {
+  
+  std::set<WireId> wireIds;
+  
+  for (const auto & wireAndDigis : digisByWire)
+    {
+      const auto & wireId    =  wireAndDigis.first;
+      const auto & digiTimes =  wireAndDigis.second;
+      
+      for (const auto & digiTime : digiTimes)
+	{
+	  if (digiTime > m_timeBoxMin.at(typeTag) + 100. &&
+	      digiTime < m_timeBoxMin.at(typeTag) + 900.)
+	    {
+	      wireIds.insert(wireId);
+	      break;
+	    }
+	}
+    }
 
+  return wireIds;
+  
+}
+
+void DTNtupleDigiAnalyzer::fillEff(std::string typeTag, const std::set<WireId> & wireIdProbes, const std::set<WireId> & wireIdRefs)
+{
+  
   for (const auto & wireIdRef : wireIdRefs)
     {
       stringstream stTagS;
@@ -194,9 +256,9 @@ void DTNtupleDigiAnalyzer::fillEff(std::string typeTag, std::set<WireId> & wireI
              << "St" << wireIdRef.m_chamb;
       
       std::string stTag = stTagS.str();
-
+      
       bool hasWireMatch = false;
-
+      
       for (const auto & wireIdProbe : wireIdProbes)
 	{
 	  if (wireIdRef == wireIdProbe)
@@ -210,7 +272,7 @@ void DTNtupleDigiAnalyzer::fillEff(std::string typeTag, std::set<WireId> & wireI
       m_effs[("hWireByWireEff" + stTag).c_str()]->Fill(hasWireMatch,wireIdRef.m_wire,slAndLay);
       
     } 
-
+  
 }
 
 void DTNtupleDigiAnalyzer::endJob()

@@ -66,8 +66,9 @@ class DTNtupleDigiAnalyzer : public DTNtupleBaseAnalyzer
 
  private:
 
-  void fillBasic(std::string typeTag, std::set<WireId> & wireIds);
-  void fillEff(std::string typeTag, std::set<WireId> & wireIdProbes, std::set<WireId> & wireIdRefs);
+  void fillBasic(std::string typeTag, std::map<WireId, std::vector<float>> & digisByWire);
+  void fillEff(std::string typeTag, const std::set<WireId> & wireIdProbes, const std::set<WireId> & wireIdRefs);
+  std::set<WireId> wiresWithInTimeDigis(std::string typeTag, const std::map<WireId, std::vector<float>> & digisByWire) const;
 
   TFile m_outFile;
 
