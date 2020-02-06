@@ -21,12 +21,12 @@ m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(
   m_stations["Ph2"].push_back(3);
   m_stations["Ph2"].push_back(4);
 
-  m_timeBoxMin["Ph1"]  =     0.;
-  m_timeBoxMax["Ph1"]  =  5000.;
+  m_timeBoxMin["Ph1"]  =  -750.;
+  m_timeBoxMax["Ph1"]  =  4250.;
   m_timeBoxBins["Ph1"] =  1250;
 
-  m_timeBoxMin["Ph2"]  = 83900.;
-  m_timeBoxMax["Ph2"]  = 88900.;
+  m_timeBoxMin["Ph2"]  = 83150.;
+  m_timeBoxMax["Ph2"]  = 88150.;
   m_timeBoxBins["Ph2"] =  1250;
 
 }
@@ -233,8 +233,8 @@ std::set<WireId> DTNtupleDigiAnalyzer::wiresWithInTimeDigis(std::string typeTag,
       
       for (const auto & digiTime : digiTimes)
 	{
-	  if (digiTime > m_timeBoxMin.at(typeTag) + 100. &&
-	      digiTime < m_timeBoxMin.at(typeTag) + 900.)
+	  if (digiTime > m_timeBoxMin.at(typeTag) +  750. &&
+	      digiTime < m_timeBoxMin.at(typeTag) + 1650.)
 	    {
 	      wireIds.insert(wireId);
 	      break;
