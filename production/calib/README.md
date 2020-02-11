@@ -13,7 +13,7 @@ cmsRun dtT0WireCalibration_cfg.py runNumber=333514
 ## Run tTrig production
 ```
 # Run the tTrig production workflow
-# using t0 from the previous step (./t0_run333364.db)
+# using t0 from the previous step (./t0_run333514.db)
 dtCalibration ttrig timeboxes all --run=333510 --trial=1 --label=ttrig_timebox \
 	      	    	      	  --runselection=333510 --datasetpath=/Dummy/Dummy/RAW \
 				  --globaltag=106X_dataRun3_Express_v2  --datasettype=Cosmics \

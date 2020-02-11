@@ -1,23 +1,33 @@
 #include "DTNtupleDigiAnalyzer.h"
 
 #include <set>
+#include <fstream>
+#include <iomanip>
 
 DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer(const TString & inFileName,
-						 const TString & outFileName) :
-  m_outFile(outFileName,"RECREATE"), DTNtupleBaseAnalyzer(inFileName)  
+					   const TString & outFileName,
+					   std::string outFolder) :
+m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(inFileName)  
 { 
 
   // The list of chambers to monitor
-  // just MB2 for SX5, it ill be MB1 - MB4 
-  // for the slice test
-  m_stations.push_back(1);
-  m_stations.push_back(2);
-  m_stations.push_back(3);
-  m_stations.push_back(4);
+  m_stations["Ph1"].push_back(1);
+  m_stations["Ph1"].push_back(2);
+  m_stations["Ph1"].push_back(3);
+  m_stations["Ph1"].push_back(4);
 
-  // The time pedestal to subtract from
-  // phase-2 digis
-  ph2DigiPedestal = 82100;
+  m_stations["Ph2"].push_back(1);
+  m_stations["Ph2"].push_back(2);
+  m_stations["Ph2"].push_back(3);
+  m_stations["Ph2"].push_back(4);
+
+  m_timeBoxMin["Ph1"]  =  -750.;
+  m_timeBoxMax["Ph1"]  =  4250.;
+  m_timeBoxBins["Ph1"] =  1250;
+
+  m_timeBoxMin["Ph2"]  = 83150.;
+  m_timeBoxMax["Ph2"]  = 88150.;
+  m_timeBoxBins["Ph2"] =  1250;
 
 }
 
@@ -47,6 +57,8 @@ void DTNtupleDigiAnalyzer::Loop()
 	std::cout << "[DTNtupleDigiAnalyzer::Loop] processed : " 
 		  << jentry << " entries\r" << std::flush;
 
+      DTNtupleBaseAnalyzer::LoadObjs();
+
       fill();
 
     }
@@ -64,25 +76,29 @@ void DTNtupleDigiAnalyzer::book()
 
   std::vector<std::string> typeTags = { "Ph1", "Ph2" };
 
-  for (const auto typeTag : typeTags)
+  for (const auto & typeTag : typeTags)
     {
   
-      for (const auto iSt : m_stations)
+      for (const auto iSt : m_stations[typeTag])
 	{
       
 	  stringstream stTagS;
 	  stTagS << typeTag << "St" << iSt;
       
 	  string stTag = stTagS.str();
-
-	  m_plots[("hOccupancy" + stTag).c_str()] = new TH2F(("hOccupancy" + stTag).c_str(),
-							     "Occupancy; wire; layer / superlayer",
-							     100,0.5,100.5, 12, -0.5, 11.5);
-
-	  m_effs[("hWireByWireMatch" + stTag).c_str()] = new TEfficiency(("hWireByWireMatch" + stTag).c_str(),
-									 "Wire by wire matching; wire; layer / superlayer",
-									 100,0.5,100.5, 12, -0.5, 11.5);
 	  
+	  TString hName = ("hOccupancy" + stTag).c_str(); 
+	  m_plots[hName] = new TH2F(hName,"Occupancy;wire;layer / superlayer",100,0.5,100.5,12,-0.5,11.5);
+
+	  hName = ("hWireByWireEff" + stTag).c_str();
+	  m_effs[hName] = new TEfficiency(hName,"Wire by wire matching efficiency;wire;layer / superlayer",100,0.5,100.5,12,-0.5,11.5);
+
+	  hName = ("hEffSummary" + stTag).c_str();
+	  m_plots[hName] = new TH1F(hName,"Efficiency summary;efficiency,# wires",110,0.5,1.05);	  
+
+	  hName = ("hTimeDiff" + stTag).c_str();
+	  m_plots[hName] = new TH1F(hName,"Wire by wire digi time difference;time difference;entries",125,0.,500.);
+
 	  for (int iSl = 1; iSl <= 3; ++iSl)
 	    {
 	      for (int iLayer = 1; iLayer <= 4; ++iLayer)
@@ -96,14 +112,15 @@ void DTNtupleDigiAnalyzer::book()
 		  
 		  string layerTag = layerTagS.str();
 		  
-		  int nBins = typeTag == "Ph2" ? 1200 : 1280;
-
-		  m_plots[("hTimeBox" + layerTag).c_str()] = new TH1F(("hTimeBox" + layerTag).c_str(),
-								     "Digi time box; time (ns); entries",
-								     nBins,0.,5000.);
+		  hName = ("hTimeBox" + layerTag).c_str();
+		  m_plots[hName] = new TH1F(hName,"Digi time box;time (ns);entries",m_timeBoxBins[typeTag],m_timeBoxMin[typeTag],m_timeBoxMax[typeTag]);
 		}
 	    } 
 	}
+
+      TString hName = ("hFracEffWires" + typeTag).c_str();
+      m_effs[hName] = new TEfficiency(hName,"Fraction of wires with eff in [0.90:1.00] range",4,0.5,4.5);
+      
     }
 
 }
@@ -111,144 +128,203 @@ void DTNtupleDigiAnalyzer::book()
 void DTNtupleDigiAnalyzer::fill()
 {
 
-  std::set<WireId> wireIds;
-  std::set<WireId> ph2WireIds;
+  std::map<WireId, std::vector<float>> digisByWire;
+  std::map<WireId, std::vector<float>> ph2DigisByWire;
 
-  for (std::size_t iDigi = 0; iDigi < digi_nDigis; ++iDigi)
+  fillBasic("Ph1",digisByWire);
+  fillBasic("Ph2",ph2DigisByWire);
+
+  auto wireIds    = wiresWithInTimeDigis("Ph1",digisByWire);
+  auto ph2WireIds = wiresWithInTimeDigis("Ph2",ph2DigisByWire);
+  
+  fillEff("Ph1",wireIds,ph2WireIds);
+  fillEff("Ph2",ph2WireIds,wireIds);
+
+}
+
+void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
+				     std::map<WireId, std::vector<float>> & digisByWire)
+{
+
+  DTNtupleDigi & digi = digiObjs[typeTag];
+
+  for (std::size_t iDigi = 0; iDigi < (*digi.nDigis); ++iDigi)
     {
       
-      if(digi_sector->at(iDigi) != 12 || digi_wheel->at(iDigi) != 2) continue;    
+      // The slice test sector
+      if(digi.sector->at(iDigi) != 12 || digi.wheel->at(iDigi) != 2) continue;    
       
-      int st  = digi_station->at(iDigi);
-      int sl  = digi_superLayer->at(iDigi);
-      int lay = digi_layer->at(iDigi);
+      int st  = digi.station->at(iDigi);
+      int sl  = digi.superLayer->at(iDigi);
+      int lay = digi.layer->at(iDigi);
       
-      int wire = digi_wire->at(iDigi);
+      int wire = digi.wire->at(iDigi);
       int slAndLay = (lay - 1) + (sl - 1) * 4;
       
-      double time = digi_time->at(iDigi);
-      double timeInRange = std::max(0.5,std::min(4999.5,time));
+      double time = digi.time->at(iDigi);
       
       stringstream stTagS;
-      stTagS << "Ph1"
+      stTagS << typeTag
 	     << "St" << st;
       
       string stTag = stTagS.str();
       
       m_plots[("hOccupancy" + stTag).c_str()]->Fill(wire,slAndLay);
-      
-      if ( time > 0 && time < 5000)
-	{
-	  WireId wireId(st,sl,lay,wire);
-	  wireIds.insert(wireId);
-	}
+
+      WireId wireId(st,sl,lay,wire);
+      digisByWire[wireId].push_back(time);
 
       stringstream layerTagS;
-      layerTagS << "Ph1"
+      layerTagS << typeTag
 		<< "St" << st
 		<< "SuperLayer" << sl
 		<< "Layer" << lay;
-
+      
       string layerTag = layerTagS.str();
+      
+      m_plots[("hTimeBox"+ layerTag).c_str()]->Fill(time);
+    }
 
-      m_plots[("hTimeBox"+ layerTag).c_str()]->Fill(timeInRange);
+  for (auto & wireAndDigis : digisByWire)
+    {
+      
+      auto & wireId    =  wireAndDigis.first;
+      auto & digiTimes =  wireAndDigis.second;
+
+      if (digiTimes.size() > 1)
+	{
+	  
+	  stringstream stTagS;
+	  stTagS << typeTag
+		 << "St" << wireId.m_chamb;
+
+	  string stTag = stTagS.str();
+
+	  std::sort(digiTimes.begin(),digiTimes.end());
+
+	  auto digiIt  = digiTimes.begin();
+	  auto digiEnd = digiTimes.end();
+
+	  double timePrev = (*digiIt);
+	  ++digiIt;
+
+	  for (; digiIt!=digiEnd; ++digiIt)
+	    {
+	      m_plots[("hTimeDiff"+ stTag).c_str()]->Fill((*digiIt) - timePrev);
+	      timePrev = (*digiIt);
+	    }
+	}
     }
   
-  for (std::size_t iDigi = 0; iDigi < ph2Digi_nDigis; ++iDigi)
+}
+
+std::set<WireId> DTNtupleDigiAnalyzer::wiresWithInTimeDigis(std::string typeTag,
+							    const std::map<WireId, std::vector<float>> & digisByWire) const
+{
+  
+  std::set<WireId> wireIds;
+  
+  for (const auto & wireAndDigis : digisByWire)
     {
-
-      if(ph2Digi_sector->at(iDigi) != 12 || ph2Digi_wheel->at(iDigi) != 2) continue;    
-
-      int st  = ph2Digi_station->at(iDigi);
-      int sl  = ph2Digi_superLayer->at(iDigi);
-      int lay = ph2Digi_layer->at(iDigi);
+      const auto & wireId    =  wireAndDigis.first;
+      const auto & digiTimes =  wireAndDigis.second;
       
-      int wire = ph2Digi_wire->at(iDigi);
-      int slAndLay = (lay - 1) + (sl - 1) * 4;
-
-      double time = ph2Digi_time->at(iDigi) - ph2DigiPedestal;
-      double timeInRange = std::max(0.5,std::min(4999.5,time));
-      
-      stringstream stTagS;
-      stTagS << "Ph2"
-   	     << "St" << st;
-      
-      string stTag = stTagS.str();
-      
-      m_plots[("hOccupancy" + stTag).c_str()]->Fill(wire,slAndLay);
-      
-      if ( time > 0 && time < 5000)
+      for (const auto & digiTime : digiTimes)
 	{
-	  WireId ph2WireId(st,sl,lay,wire);
-	  ph2WireIds.insert(ph2WireId);
+	  if (digiTime > m_timeBoxMin.at(typeTag) +  750. &&
+	      digiTime < m_timeBoxMin.at(typeTag) + 1650.)
+	    {
+	      wireIds.insert(wireId);
+	      break;
+	    }
 	}
-
-      stringstream layerTagS;
-      layerTagS << "Ph2"
-   		<< "St" << st
-   		<< "SuperLayer" << sl
-   		<< "Layer" << lay;
-      
-      string layerTag = layerTagS.str();
-      
-      m_plots[("hTimeBox"+ layerTag).c_str()]->Fill(timeInRange);
     }
 
-  for (const auto & wireId : wireIds)
+  return wireIds;
+  
+}
+
+void DTNtupleDigiAnalyzer::fillEff(std::string typeTag, const std::set<WireId> & wireIdProbes, const std::set<WireId> & wireIdRefs)
+{
+  
+  for (const auto & wireIdRef : wireIdRefs)
     {
       stringstream stTagS;
-      stTagS << "Ph1"
-             << "St" << wireId.m_chamb;
-
-      string stTag = stTagS.str();
-
+      stTagS << typeTag
+             << "St" << wireIdRef.m_chamb;
+      
+      std::string stTag = stTagS.str();
+      
       bool hasWireMatch = false;
-
-      for (const auto & ph2WireId : ph2WireIds)
+      
+      for (const auto & wireIdProbe : wireIdProbes)
 	{
-	  if (wireId == ph2WireId)
+	  if (wireIdRef == wireIdProbe)
 	    {
 	      hasWireMatch = true;
 	      break;
 	    }
 	}
-
-      int slAndLay = (wireId.m_layer - 1) + (wireId.m_sl - 1) * 4;
-      m_effs[("hWireByWireMatch" + stTag).c_str()]->Fill(hasWireMatch,wireId.m_wire,slAndLay);
+      
+      int slAndLay = (wireIdRef.m_layer - 1) + (wireIdRef.m_sl - 1) * 4;
+      m_effs[("hWireByWireEff" + stTag).c_str()]->Fill(hasWireMatch,wireIdRef.m_wire,slAndLay);
       
     } 
-
-  for (const auto & ph2WireId : ph2WireIds)
-    {
-      stringstream stTagS;
-      stTagS << "Ph2"
-             << "St" << ph2WireId.m_chamb;
-
-      string stTag = stTagS.str();
-
-      bool hasWireMatch = false;
-
-      for (const auto & wireId : wireIds)
-	{
-	  if (wireId == ph2WireId)
-	    {
-	      hasWireMatch = true;
-	      break;
-	    }
-	}
-
-      int slAndLay = (ph2WireId.m_layer - 1) + (ph2WireId.m_sl - 1) * 4;
-      m_effs[("hWireByWireMatch" + stTag).c_str()]->Fill(hasWireMatch,ph2WireId.m_wire,slAndLay);
-      
-    } 
-
+  
 }
 
 void DTNtupleDigiAnalyzer::endJob()
 {
 
-  m_outFile.cd();
+  std::vector<std::string> typeTags = { "Ph1", "Ph2" };
 
+  for (const auto & typeTag : typeTags)
+    {
+      for (const auto & iSt : m_stations[typeTag])
+	{
+
+	  ofstream outTxtFile;
+
+	  std::string tag = typeTag + "St" + std::to_string(iSt);
+
+	  outTxtFile.open(m_outFolder + "/" + "ineffCh" + tag + ".txt");
+	  outTxtFile << "+--------------------------------+\n"; 
+	  outTxtFile << "| SL | layer | wire | efficiency |\n"; 
+
+	  TString  hName = ("hWireByWireEff" + tag).c_str();
+	  
+	  int nBinsX = m_effs[hName]->GetTotalHistogram()->GetNbinsX();
+	  int nBinsY = m_effs[hName]->GetTotalHistogram()->GetNbinsY();
+
+	  for (int iBinX = 1; iBinX <= nBinsX; ++ iBinX)
+	    {
+	      for (int iBinY = 1; iBinY <= nBinsY; ++ iBinY)
+		{
+		  
+		  int iBin = m_effs[hName]->GetGlobalBin(iBinX, iBinY);
+		  float eff = m_effs[hName]->GetEfficiency(iBin);
+
+		  if ( eff > 0.01 )
+		    {
+		      m_plots[("hEffSummary" + tag).c_str()]->Fill(eff);
+		      m_effs[("hFracEffWires" + typeTag).c_str()]->Fill(eff >= 0.9,iSt);
+		      if (eff < 0.9)
+			{
+			  outTxtFile << "| "  << std::setw(2)  << (iBinY/4+1)
+				     << " | " << std::setw(5)  << (iBinY%4)
+				     << " | " << std::setw(4)  << iBinX
+				     << " | " << std::setw(10) << std::setprecision(3) << eff
+				     << " |\n";
+			}
+		    }			
+		}
+	    }
+	  
+	  outTxtFile.close();
+	  
+	}
+    }
+  
   m_outFile.Write();
   m_outFile.Close();
 

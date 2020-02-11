@@ -40,4 +40,11 @@ __init__.py
 *.pcm
 
 # Intermediate files
+\#*\#
 *~
+
+# DB files
+*.db
+
+# txt files
+*.txt

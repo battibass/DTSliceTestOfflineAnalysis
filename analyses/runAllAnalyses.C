@@ -15,16 +15,17 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
   gSystem->Exec("mkdir -p " + runName + "/trigger/");
   gSystem->Exec("mkdir -p " + runName + "/segment/");
 
-  auto digiAnalysis = DTNtupleDigiAnalyzer(inputFile, runName + "/digi/results_digi.root");
+  //CB find a more elegant solution to pass directory
+  DTNtupleDigiAnalyzer digiAnalysis(inputFile, runName + "/digi/results_digi.root", (runName + "/digi/").Data());
   digiAnalysis.Loop();
 
-  auto triggerAnalysis = DTNtupleTriggerAnalyzer(inputFile, runName + "/trigger/results_trigger.root");
-  triggerAnalysis.Loop();
-
-  auto segmentAnalysis = DTNtupleSegmentAnalyzer(inputFile, runName + "/segment/results_segment.root");
+  DTNtupleSegmentAnalyzer segmentAnalysis(inputFile, runName + "/segment/results_segment.root");
   segmentAnalysis.PreLoop("Ph1");
   segmentAnalysis.PreLoop("Ph2");
   segmentAnalysis.Loop();
+
+  DTNtupleTriggerAnalyzer triggerAnalysis(inputFile, runName + "/trigger/results_trigger.root");
+  triggerAnalysis.Loop();
 
   gSystem->Exec("rm *d *pcm *so");
 

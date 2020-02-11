@@ -139,7 +139,11 @@ for keyPlot in config:
     hasLogY = option.find("logY") > -1
     if hasLogY :
         option = option.replace("logY","")
-    
+
+    hasVerbLeg = option.find("verbLeg") > -1
+    if hasVerbLeg :
+        option = option.replace("verbLeg","")
+
     pad.SetGrid()
     pad.Draw()
 
@@ -178,9 +182,6 @@ for keyPlot in config:
         inputHistos[iHisto].SetTitle(";"+plotX[2]+";"+plotY[2])
             
         if iHisto == 0 :
-            if histoDim == 2 :
-                inputHistos[iHisto].Draw(option)
-            else :
                 inputHistos[iHisto].Draw(option)
         else :
             inputHistos[iHisto].Draw('same' + option)
@@ -194,7 +195,11 @@ for keyPlot in config:
         else :
             histo = inputHistos[iHisto]
             
-        histo.GetXaxis().SetRangeUser(plotX[0], plotX[1])
+        if histoClass == "TEfficiency" and histoDim == 1 :
+            histo.GetXaxis().SetLimits(plotX[0], plotX[1])
+        else :
+            histo.GetXaxis().SetRangeUser(plotX[0], plotX[1])
+            
         histo.GetYaxis().SetRangeUser(rangeY[0], rangeY[1])
 
         if histoClass == "TEfficiency" and histoDim == 2 : 
@@ -248,7 +253,13 @@ for keyPlot in config:
         leg = TLegend(legendRange[0], legendRange[1], legendRange[2], legendRange[3])
 
         for iHisto in range(len(inputHistos)):
-            leg.AddEntry(inputHistos[iHisto], inputLegendEntries[iHisto], 'LP')
+            legEntry = inputLegendEntries[iHisto]
+            if hasVerbLeg :
+                nUnderFlow = int(inputHistos[iHisto].GetBinContent(0))
+                nOverFlow  = int(inputHistos[iHisto].GetBinContent(inputHistos[iHisto].GetNbinsX()+1))
+                legEntry = legEntry + "   [uf/of: " + str(nUnderFlow) + "/" +str(nOverFlow) + "]" 
+
+            leg.AddEntry(inputHistos[iHisto], legEntry, 'LP')
 
         leg.SetBorderSize(1)
         leg.SetTextFont(43)
