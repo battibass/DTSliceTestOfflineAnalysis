@@ -93,10 +93,8 @@ void DTNtupleDigiAnalyzer::book()
 	  hName = ("hWireByWireEff" + stTag).c_str();
 	  m_effs[hName] = new TEfficiency(hName,"Wire by wire matching efficiency;wire;layer / superlayer",100,0.5,100.5,12,-0.5,11.5);
 
-
 	  hName = ("hEffSummary" + stTag).c_str();
-	  m_plots[hName] = new TH1F(hName,"Efficiency summary;efficiency,# wires",110,0.5,1.05);
-	  
+	  m_plots[hName] = new TH1F(hName,"Efficiency summary;efficiency,# wires",110,0.5,1.05);	  
 
 	  hName = ("hTimeDiff" + stTag).c_str();
 	  m_plots[hName] = new TH1F(hName,"Wire by wire digi time difference;time difference;entries",125,0.,500.);
@@ -293,16 +291,19 @@ void DTNtupleDigiAnalyzer::endJob()
 	  outTxtFile << "+--------------------------------+\n"; 
 	  outTxtFile << "| SL | layer | wire | efficiency |\n"; 
 
-	  int nBinsX = m_effs[("hWireByWireEff" + tag).c_str()]->GetTotalHistogram()->GetNbinsX();
-	  int nBinsY = m_effs[("hWireByWireEff" + tag).c_str()]->GetTotalHistogram()->GetNbinsY();
+	  TString  hName = ("hWireByWireEff" + tag).c_str();
+	  
+	  int nBinsX = m_effs[hName]->GetTotalHistogram()->GetNbinsX();
+	  int nBinsY = m_effs[hName]->GetTotalHistogram()->GetNbinsY();
 
 	  for (int iBinX = 1; iBinX <= nBinsX; ++ iBinX)
 	    {
 	      for (int iBinY = 1; iBinY <= nBinsY; ++ iBinY)
 		{
 		  
-		  int iBin = m_effs[("hWireByWireEff" + tag).c_str()]->GetGlobalBin(iBinX, iBinY);
-		  float eff = m_effs[("hWireByWireEff" + tag).c_str()]->GetEfficiency(iBin);
+		  int iBin = m_effs[hName]->GetGlobalBin(iBinX, iBinY);
+		  float eff = m_effs[hName]->GetEfficiency(iBin);
+
 		  if ( eff > 0.01 )
 		    {
 		      m_plots[("hEffSummary" + tag).c_str()]->Fill(eff);
