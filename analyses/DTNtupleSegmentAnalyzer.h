@@ -44,7 +44,10 @@ class DTNtupleSegmentAnalyzer : public DTNtupleBaseAnalyzer
   void comparisonAnalysis();
 
   TFile m_outFile;
-  
+
+  std::map<std::string,float> m_timeBoxMin;
+  std::map<std::string,float> m_timeBoxMax;
+
   std::map<std::string, TH1*> m_plots;
   std::map<std::string, TH2*> m_2Dplots;
   std::map<std::string, TEfficiency*> m_effs;

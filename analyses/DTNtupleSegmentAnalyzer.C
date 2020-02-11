@@ -10,6 +10,12 @@ DTNtupleSegmentAnalyzer::DTNtupleSegmentAnalyzer(const TString & inFileName,
   m_outFile(outFileName,"RECREATE"), DTNtupleBaseAnalyzer(inFileName)  
 { 
 
+  m_timeBoxMin["Ph1"]  =  -750.;
+  m_timeBoxMax["Ph1"]  =  4250.;
+
+  m_timeBoxMin["Ph2"]  = 83150.;
+  m_timeBoxMax["Ph2"]  = 88150.;
+
   TObjArray *tx = outFileName.Tokenize("/");
   m_deadFileName = (((TObjString *)(tx->At(0)))->String()).Data();
   cout<<"m_deadFileName "<<m_deadFileName<<endl;
@@ -325,7 +331,7 @@ void DTNtupleSegmentAnalyzer::book()
       for (int st=1; st<5; st++)
 	{
 	  
-	  auto hName = Form("%shPhiNhits_st%d",typeTag.c_str(),st);
+	  hName = Form("%shPhiNhits_st%d",typeTag.c_str(),st);
 	  m_plots[hName] = new TH1F(hName,
 				    "# hits;# hits; entries",
 				    8,0.5,8.5); 	  
@@ -377,6 +383,10 @@ void DTNtupleSegmentAnalyzer::book()
 	  m_effs[hName] = new TEfficiency(hName,
 					  "Wire by wire efficiency; wire; layer / superlayer",
 					  100,0.5,100.5, 12, -0.5, 11.5);
+
+	  hName = Form("%seffPhiSummary_st%d",typeTag.c_str(),st);
+	  m_plots[hName] = new TH1F(hName,"Efficiency summary;efficiency,# wires",110,0.5,1.05);
+
 	}
             
       for (int st=1; st<5; st++)
@@ -462,40 +472,91 @@ void DTNtupleSegmentAnalyzer::fill()
 
 void DTNtupleSegmentAnalyzer::endJob()
 {
-  
-  
+
   std::vector<std::string> typeTags = { "Ph1", "Ph2" };
   
-  for (const auto & typeTag : typeTags){
-    for (int st=1; st<5; st++){
-      for (int sl=1; sl<4; sl++){
+  for (const auto & typeTag : typeTags)
+    {
+      for (int st=1; st<5; ++st)
+	{
+
+	  string hName = Form("%seffPhiByWire_st%d",typeTag.c_str(),st);
+	  
+	  int nBinsX = m_effs[hName]->GetTotalHistogram()->GetNbinsX();
+	  int nBinsY = m_effs[hName]->GetTotalHistogram()->GetNbinsY();
+
+	  for (int iBinX = 1; iBinX <= nBinsX; ++ iBinX)
+	    {
+	      for (int iBinY = 1; iBinY <= nBinsY; ++ iBinY)
+		{
+		  
+		  int iBin  = m_effs[hName]->GetGlobalBin(iBinX, iBinY);
+		  float eff = m_effs[hName]->GetEfficiency(iBin);
+		  if ( eff > 0.01 )
+		    {
+		      m_plots[Form("%seffPhiSummary_st%d",typeTag.c_str(),st)]->Fill(eff);
+		    }			
+		}
+	    }
+	  
+	  for (int sl=1; sl<4; ++sl)
+	    {
 	
-	if(sl==2 && st!=4){  
+	      if(sl==2 && st!=4)
+		{  
+
+		  string hName = Form("%shitResZ_st%d",typeTag.c_str(),st);
+
+		  auto histo = m_plots[hName];
+
+		  double center = histo->GetBinCenter(histo->GetMaximumBin());
+		  double sigma  = histo->GetStdDev();
+		  
+		  cout << "Fit " << hName << endl << endl;
+		  
+		  TF1 *  fTheta = new TF1("fTheta","gaus",
+					  center - 1.2 * sigma,
+					  center + 1.2 * sigma);
+		  
+		  m_plots[hName]->Fit("fTheta","RM");
+		  
+		  fTheta->SetRange(fTheta->GetParameter(1) - 1.1 * fTheta->GetParameter(2),
+				   fTheta->GetParameter(1) + 1.1 * fTheta->GetParameter(2));
+		  
+		  m_plots[hName]->Fit("fTheta","RM");
+		  
+		  m_plots[Form("%shResPerSl_st%d",typeTag.c_str(),st)]->SetBinContent(sl + 0.5, 1e4 * fTheta->GetParameter(2)); 	
+		}
+	      else if(sl!=2)
+		{
 	  
-	  cout<<"Fit "<<Form("%shitResZ_st%d",typeTag.c_str(),st)<<endl<<endl;;
-	  TF1 *  fTheta = new TF1("fTheta","gaus",m_plots[Form("%shitResZ_st%d",typeTag.c_str(),st)]->GetBinCenter(m_plots[Form("%shitResZ_st%d",typeTag.c_str(),st)]->GetMaximumBin())-1.2*m_plots[Form("%shitResZ_st%d",typeTag.c_str(),st)]->GetStdDev(),m_plots[Form("%shitResZ_st%d",typeTag.c_str(),st)]->GetBinCenter(m_plots[Form("%shitResZ_st%d",typeTag.c_str(),st)]->GetMaximumBin())+1.2*m_plots[Form("%shitResZ_st%d",typeTag.c_str(),st)]->GetStdDev());
+		  string hName = Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl);
+		  
+		  auto histo = m_plots[hName];
+
+		  double center = histo->GetBinCenter(histo->GetMaximumBin());
+		  double sigma  = histo->GetStdDev();
+
+		  cout << "Fit " << hName << endl;
+		  
+		  TF1 *  fPhi = new TF1("fPhi","gaus",
+					center - 1.2 * sigma,
+					center + 1.2 * sigma);
 	  
-	  m_plots[Form("%shitResZ_st%d",typeTag.c_str(),st)]->Fit("fTheta","RM");
-	  fTheta->SetRange(fTheta->GetParameter(1)-1.1*fTheta->GetParameter(2),fTheta->GetParameter(1)+1.1*fTheta->GetParameter(2));
-	  m_plots[Form("%shitResZ_st%d",typeTag.c_str(),st)]->Fit("fTheta","RM");
+		  m_plots[hName]->Fit("fPhi","RM");
+
+		  fPhi->SetRange(fPhi->GetParameter(1) - 1.1 * fPhi->GetParameter(2),
+				 fPhi->GetParameter(1) + 1.1 * fPhi->GetParameter(2));
+
+		  m_plots[hName]->Fit("fPhi","RM");
 	  
-	  m_plots[Form("%shResPerSl_st%d",typeTag.c_str(),st)]->SetBinContent(sl+0.5,1e4*fTheta->GetParameter(2)); 	
+		  m_plots[Form("%shResPerSl_st%d",typeTag.c_str(),st)]->SetBinContent(sl+0.5,1e4*fPhi->GetParameter(2)); 	
+		}
+
+	      cout << endl << endl;
+	    }
 	}
-	else if(sl!=2){
-	  
-	  cout<<"Fit "<<Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl)<<endl;	  
-	  TF1 *  fPhi = new TF1("fPhi","gaus",m_plots[Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl)]->GetBinCenter(m_plots[Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl)]->GetMaximumBin())-1.2*m_plots[Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl)]->GetStdDev(),m_plots[Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl)]->GetBinCenter(m_plots[Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl)]->GetMaximumBin())+1.2*m_plots[Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl)]->GetStdDev());
-	  
-	  m_plots[Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl)]->Fit("fPhi","RM");
-	  fPhi->SetRange(fPhi->GetParameter(1)-1.1*fPhi->GetParameter(2),fPhi->GetParameter(1)+1.1*fPhi->GetParameter(2));
-	  m_plots[Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl)]->Fit("fPhi","RM");
-	  
-	  m_plots[Form("%shResPerSl_st%d",typeTag.c_str(),st)]->SetBinContent(sl+0.5,1e4*fPhi->GetParameter(2)); 	
-	}
-	cout<<"\n\n";
-      }
-    }
-  }  
+    }  
   
   m_outFile.cd();
   m_outFile.Write();
@@ -860,7 +921,10 @@ void DTNtupleSegmentAnalyzer::measureEfficiency(string Tag, int Ndead, int dead[
 	      for (uint iDigi=0; iDigi < (*digi.nDigis); iDigi++)
 		{
 		  
-		  /*if (Digi_time->at(iDigi)<320 || Digi_time->at(iDigi)>700)  continue; */ //require only digis time inside time box
+		  if (digi.time->at(iDigi) < m_timeBoxMin.at(Tag) +  750. ||
+		      digi.time->at(iDigi) > m_timeBoxMin.at(Tag) + 1650.)
+		    continue;
+
 		  if (digi.wheel->at(iDigi)   != seg.wheel->at(iSeg))   continue;
 		  if (digi.sector->at(iDigi)  != seg.sector->at(iSeg))  continue;
 		  if (digi.station->at(iDigi) != seg.station->at(iSeg)) continue;
@@ -1021,6 +1085,10 @@ void DTNtupleSegmentAnalyzer::measureEfficiency(string Tag, int Ndead, int dead[
 
 	  for (uint iDigi=0; iDigi < (*digi.nDigis); iDigi++)
 	    {	    
+	      if (digi.time->at(iDigi) < m_timeBoxMin.at(Tag) +  750. ||
+		  digi.time->at(iDigi) > m_timeBoxMin.at(Tag) + 1650.)
+		continue;
+	      
 	      if (digi.wheel->at(iDigi)   != seg.wheel->at(iSeg))   continue;
 	      if (digi.sector->at(iDigi)  != seg.sector->at(iSeg))  continue;
 	      if (digi.station->at(iDigi) != seg.station->at(iSeg)) continue;
