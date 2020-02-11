@@ -918,6 +918,96 @@
         }
     },
 
+    "Phase-1 hit efficiency summary"   :
+    {
+        "inputs"    :
+        {
+            "MB3"   :
+            {
+                "label"             : "MB3",
+                "legendEntry"       : "MB3",
+                "folder"            : "",
+                 "plot"		    : "Ph1effPhiSummary_st3"
+	    },
+            "MB4"   :
+            {
+                "label"             : "MB4",
+                "legendEntry"       : "MB4",
+                "folder"            : "",
+                 "plot"		    : "Ph1effPhiSummary_st4"
+	    }
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 100.0, "efficiency"],
+            "y"                 : [-0.5, 12.5, "# of wires"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "Phase-1 hit efficiency (segments)",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [3, 4, 1, 2, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.39, 0.67, 0.75, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "03_PhiHitEfficiencyiSummary_Phase1",
+            "fileType"          : ["png", "pdf"]
+        }
+    },
+
+    "Phase-2 hit efficiency summary"   :
+    {
+        "inputs"    :
+        {
+            "MB1"   :
+            {
+                "label"             : "MB1",
+                "legendEntry"       : "MB1",
+                "folder"            : "",
+                 "plot"		    : "Ph2effPhiSummary_st1"
+	    },
+	    "MB2"   :
+            {
+                "label"             : "MB2",
+                "legendEntry"       : "MB2",
+                "folder"            : "",
+                 "plot"		    : "Ph2effPhiSummary_st2"
+	    },
+            "MB3"   :
+            {
+                "label"             : "MB3",
+                "legendEntry"       : "MB3",
+                "folder"            : "",
+                 "plot"		    : "Ph2effPhiSummary_st3"
+	    },
+            "MB4"   :
+            {
+                "label"             : "MB4",
+                "legendEntry"       : "MB4",
+                "folder"            : "",
+                 "plot"		    : "Ph2effPhiSummary_st4"
+	    }
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 100.0, "efficiency"],
+            "y"                 : [-0.5, 12.5, "# of wires"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "Phase-2 hit efficiency (segments)",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.39, 0.67, 0.75, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "03_PhiHitEfficiencyiSummary_Phase2",
+            "fileType"          : ["png", "pdf"]
+        }
+    },
+
     "Phi Efficiency (Ph1 and Ph2)"   :
     {
         "inputs"    :
