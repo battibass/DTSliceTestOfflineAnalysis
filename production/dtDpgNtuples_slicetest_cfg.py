@@ -2,6 +2,24 @@ import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
 from Configuration.StandardSequences.Eras import eras
 
+def appendToGlobalTag(process, rcd, tag, fileName, label) :
+
+    if  not fileName :
+        return process
+
+    if not hasattr(process.GlobalTag,"toGet") :
+        process.GlobalTag.toGet = cms.VPSet()
+
+    process.GlobalTag.toGet.append(
+        cms.PSet(tag = cms.string(tag),
+                 record = cms.string(rcd),
+                 connect = cms.string("sqlite_file:" + fileName),
+                 label = cms.untracked.string(label)
+             )
+    )
+
+    return process
+
 import subprocess
 import sys
 import os
@@ -68,7 +86,6 @@ options.register('t0FilePh2',
                  VarParsing.VarParsing.varType.string,
                  "File with customised DT phase-2 t0is, used only if non ''")
 
-
 options.register('vDriftFile',
                  '', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
@@ -90,11 +107,6 @@ options.register('ntupleName',
 
 options.parseArguments()
 
-if options.runOnDat :
-    inputSourceType = "NewEventStreamFileReader"
-else:
-    inputSourceType = "PoolSource"
-
 process = cms.Process("DTNTUPLES",eras.Run2_2018)
 
 process.load('Configuration.StandardSequences.Services_cff')
@@ -108,59 +120,22 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 
 process.GlobalTag.globaltag = cms.string(options.globalTag)
 
-if options.tTrigFile    != '' or \
-   options.t0File       != '' or \
-   options.tTrigFilePh2 != '' or \
-   options.t0FilePh2    != '' or \
-   options.vDriftFile   != '' :
-    process.GlobalTag.toGet = cms.VPSet()
+process = appendToGlobalTag(process, "DTTtrigRcd", "ttrig", options.tTrigFile, "cosmics")
+process = appendToGlobalTag(process, "DTT0Rcd", "t0", options.t0File, "")
 
-if options.tTrigFile != '' :
-    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTTtrigRcd"),
-                                            tag = cms.string("ttrig"),
-                                            connect = cms.string("sqlite_file:" + options.tTrigFile),
-                                            label = cms.untracked.string("cosmics")
-                                        )
-                               )
+process = appendToGlobalTag(process, "DTTtrigRcd", "ttrig", options.tTrigFilePh2, "cosmics_ph2")
+process = appendToGlobalTag(process, "DTT0Rcd", "t0", options.t0FilePh2, "ph2")
 
-if options.t0File != '' :
-    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTT0Rcd"),
-                                            tag = cms.string("t0"),
-                                            connect = cms.string("sqlite_file:" + options.t0File)
-                                        )
-                                   )
+process = appendToGlobalTag(process, "DTMtimeRcd", "vDrift", options.vDriftFile, "")
 
-if options.tTrigFilePh2 != '' :
-    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTTtrigRcd"),
-                                            tag = cms.string("ttrig"),
-                                            connect = cms.string("sqlite_file:" + options.tTrigFilePh2),
-                                            label = cms.untracked.string("cosmics_ph2")
-                                        )
-                               )
-
-if options.t0FilePh2 != '' :
-    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTT0Rcd"),
-                                            tag = cms.string("t0"),
-                                            connect = cms.string("sqlite_file:" + options.t0FilePh2),
-                                            label = cms.untracked.string("ph2")
-                                        )
-                                   )
-
-if options.vDriftFile != '' :
-    process.GlobalTag.toGet.append(cms.PSet(record = cms.string("DTMtimeRcd"),
-                                            tag = cms.string("vDrift"),
-                                            connect = cms.string("sqlite_file:" + options.vDriftFile)
-                                        )
-                                   )
-
-process.source = cms.Source(inputSourceType,
+process.source = cms.Source("NewEventStreamFileReader" if options.runOnDat else "PoolSource",
                             
         fileNames = cms.untracked.vstring()
 )
 
-if options.inputFile != '' :
+if options.inputFile :
 
-    print "[dtDpgNtuples_slicetest_cfg.py]: inputFile parameter is non-null running on file:\n\t\t\t" + options.inputFile
+    print('[dtDpgNtuples_slicetest_cfg.py]: inputFile parameter is non-null running on file:\n\t\t\t{}'.format(options.inputFile))
     process.source.fileNames = cms.untracked.vstring("file://" + options.inputFile)
 
 else :
@@ -170,35 +145,28 @@ else :
     if not options.runOnDat:
         runFolder = runFolder + "/00000"
     
-    print "[dtDpgNtuples_slicetest_cfg.py]: looking for files under:\n\t\t\t" + runFolder
+    print('[dtDpgNtuples_slicetest_cfg.py]: looking for files under:\n\t\t\t{}'.format(runFolder))
     
     if os.path.exists(runFolder) :
         files = subprocess.check_output(["ls", runFolder])
         process.source.fileNames = ["file://" + runFolder + "/" + f for f in files.split()]
 
     else :
-        print "[dtDpgNtuples_slicetest_cfg.py]: files not found there, looking under:\n\t\t\t" + options.inputFolderDT
+        print('[dtDpgNtuples_slicetest_cfg.py]: files not found there, looking under:\n\t\t\t{}'.format(options.inputFolderDT))
 
         files = subprocess.check_output(["ls", options.inputFolderDT])
-        filesFromRun = []
-
-        for f in files.split() :
-            if f.find(runStr[3:]) > -1 :
-                filesFromRun.append(f)
+        filesFromRun = [f for f in files.split() if f.find(runStr[3:]) > -1]
 
         if len(filesFromRun) == 1 :
             process.source.fileNames.append("file://" + options.inputFolderDT + "/" + filesFromRun[0])
 
         else :
-            print "[dtDpgNtuples_slicetest_cfg.py]: " + str(len(filesFromRun)) + " files found, can't run!"
+            print('[dtDpgNtuples_slicetest_cfg.py]: {} files found, can\'t run!'.format(len(filesFromRun)))
             sys.exit(999)
 
 print process.source.fileNames
 
-if options.ntupleName == '' :
-    ntupleName = "./DTDPGNtuple_run" + str(options.runNumber) + ".root"
-else :
-    ntupleName = options.ntupleName
+ntupleName = options.ntupleName if options.ntupleName else "./DTDPGNtuple_run" + str(options.runNumber) + ".root"  
 
 process.TFileService = cms.Service('TFileService',
         fileName = cms.string(ntupleName)
@@ -212,17 +180,20 @@ process.load('EventFilter.DTRawToDigi.dtab7unpacker_cfi')
 
 process.dtAB7unpacker.channelMapping = cms.untracked.string("july2019")
 
+process.load('DTDPGAnalysis.DTNtuples.dtUpgradeFedL1AProducer_cfi')
+
 process.load('RecoLocalMuon.Configuration.RecoLocalMuonCosmics_cff')
 
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_slicetest_cfi')
 
 process.p = cms.Path(process.muonDTDigis
                      + process.dtAB7unpacker
+                     + process.dtUpgradeFedL1AProducer
                      + process.twinMuxStage2Digis
                      + process.bmtfDigis
                      + process.dtlocalrecoT0Seg
                      + process.dtNtupleProducer)
 
-if options.tTrigFilePh2 != '' and options.t0FilePh2 != '' :
+if options.tTrigFilePh2 and options.t0FilePh2 :
     from DTDPGAnalysis.DTNtuples.customiseDtPhase2Reco_cff import customiseForPhase2Reco
     process = customiseForPhase2Reco(process,"p", options.tTrigFilePh2, options.t0FilePh2)
