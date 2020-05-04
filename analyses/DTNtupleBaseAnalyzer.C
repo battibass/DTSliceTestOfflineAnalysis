@@ -165,6 +165,48 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ph2Seg_zHits_layer = 0;
    ph2Seg_zHits_time = 0;
    ph2Seg_zHits_timeCali = 0;
+   mu_pt = 0;
+   mu_phi = 0;
+   mu_eta = 0;
+   mu_charge = 0;
+   mu_isGlobal = 0;
+   mu_isStandalone = 0;
+   mu_isTracker = 0;
+   mu_isTrackerArb = 0;
+   mu_isRPC = 0;
+   mu_firesIsoTrig = 0;
+   mu_firesTrig = 0;
+   mu_isLoose = 0;
+   mu_isMedium = 0;
+   mu_isTight = 0;
+   mu_trkIso03 = 0;
+   mu_pfIso04 = 0;
+   mu_trk_dxy = 0;
+   mu_trk_dz = 0;
+   mu_trk_algo = 0;
+   mu_trk_origAlgo = 0;
+   mu_trk_numberOfValidPixelHits = 0;
+   mu_trk_numberOfValidTrackerLayers = 0;
+   mu_trkMu_stationMask = 0;
+   mu_trkMu_numberOfMatchedStations = 0;
+   mu_trkMu_numberOfMatchedRPCLayers = 0;
+   mu_staMu_numberOfValidMuonHits = 0;
+   mu_staMu_normChi2 = 0;
+   mu_glbMu_normChi2 = 0;
+   mu_nMatches = 0;
+   mu_matches_wheel = 0;
+   mu_matches_sector = 0;
+   mu_matches_station = 0;
+   mu_matches_x = 0;
+   mu_matches_y = 0;
+   mu_matches_phi = 0;
+   mu_matches_eta = 0;
+   mu_matches_edgeX = 0;
+   mu_matches_edgeY = 0;
+   mu_matches_dXdZ = 0;
+   mu_matches_dYdZ = 0;
+   mu_staMu_nMatchSeg = 0;
+   mu_staMu_matchSegIdx = 0;
    ltTwinMuxIn_wheel = 0;
    ltTwinMuxIn_sector = 0;
    ltTwinMuxIn_station = 0;
@@ -206,6 +248,13 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ltBmtfInTh_station = 0;
    ltBmtfInTh_BX = 0;
    ltBmtfInTh_hitMap = 0;
+   tfBmtfOut_pt = 0;
+   tfBmtfOut_phi = 0;
+   tfBmtfOut_eta = 0;
+   tfBmtfOut_dxy = 0;
+   tfBmtfOut_qual = 0;
+   tfBmtfOut_etaFine = 0;
+   tfBmtfOut_matchedTpIdx = 0;
    ph2TpgPhiHw_wheel = 0;
    ph2TpgPhiHw_sector = 0;
    ph2TpgPhiHw_station = 0;
@@ -390,6 +439,56 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2Seg_zHits_layer", &ph2Seg_zHits_layer, &b_ph2Seg_zHits_layer);
    fChain->SetBranchAddress("ph2Seg_zHits_time", &ph2Seg_zHits_time, &b_ph2Seg_zHits_time);
    fChain->SetBranchAddress("ph2Seg_zHits_timeCali", &ph2Seg_zHits_timeCali, &b_ph2Seg_zHits_timeCali);
+
+   if(USE_MUONS)
+     {
+
+       fChain->SetBranchAddress("mu_nMuons", &mu_nMuons, &b_mu_nMuons);
+       fChain->SetBranchAddress("mu_pt", &mu_pt, &b_mu_pt);
+       fChain->SetBranchAddress("mu_phi", &mu_phi, &b_mu_phi);
+       fChain->SetBranchAddress("mu_eta", &mu_eta, &b_mu_eta);
+       fChain->SetBranchAddress("mu_charge", &mu_charge, &b_mu_charge);
+       fChain->SetBranchAddress("mu_isGlobal", &mu_isGlobal, &b_mu_isGlobal);
+       fChain->SetBranchAddress("mu_isStandalone", &mu_isStandalone, &b_mu_isStandalone);
+       fChain->SetBranchAddress("mu_isTracker", &mu_isTracker, &b_mu_isTracker);
+       fChain->SetBranchAddress("mu_isTrackerArb", &mu_isTrackerArb, &b_mu_isTrackerArb);
+       fChain->SetBranchAddress("mu_isRPC", &mu_isRPC, &b_mu_isRPC);
+       fChain->SetBranchAddress("mu_isLoose", &mu_isLoose, &b_mu_isLoose);
+       fChain->SetBranchAddress("mu_isMedium", &mu_isMedium, &b_mu_isMedium);
+       fChain->SetBranchAddress("mu_isTight", &mu_isTight, &b_mu_isTight);
+       fChain->SetBranchAddress("mu_firesTrig", &mu_firesTrig, &b_mu_firesTrig);
+       fChain->SetBranchAddress("mu_firesIsoTrig", &mu_firesIsoTrig, &b_mu_firesIsoTrig);
+       fChain->SetBranchAddress("mu_trkIso03", &mu_trkIso03, &b_mu_trkIso03);
+       fChain->SetBranchAddress("mu_pfIso04", &mu_pfIso04, &b_mu_pfIso04);
+       fChain->SetBranchAddress("mu_trk_dxy", &mu_trk_dxy, &b_mu_trk_dxy);
+       fChain->SetBranchAddress("mu_trk_dz", &mu_trk_dz, &b_mu_trk_dz);
+       fChain->SetBranchAddress("mu_trk_algo", &mu_trk_algo, &b_mu_trk_algo);
+       fChain->SetBranchAddress("mu_trk_origAlgo", &mu_trk_origAlgo, &b_mu_trk_origAlgo);
+       fChain->SetBranchAddress("mu_trk_numberOfValidPixelHits", &mu_trk_numberOfValidPixelHits, &b_mu_trk_numberOfValidPixelHits);
+       fChain->SetBranchAddress("mu_trk_numberOfValidTrackerLayers", &mu_trk_numberOfValidTrackerLayers, &b_mu_trk_numberOfValidTrackerLayers);
+       fChain->SetBranchAddress("mu_trkMu_stationMask", &mu_trkMu_stationMask, &b_mu_trkMu_stationMask);
+       fChain->SetBranchAddress("mu_trkMu_numberOfMatchedStations", &mu_trkMu_numberOfMatchedStations, &b_mu_trkMu_numberOfMatchedStations);
+       fChain->SetBranchAddress("mu_trkMu_numberOfMatchedRPCLayers", &mu_trkMu_numberOfMatchedRPCLayers, &b_mu_trkMu_numberOfMatchedRPCLayers);
+       fChain->SetBranchAddress("mu_staMu_numberOfValidMuonHits", &mu_staMu_numberOfValidMuonHits, &b_mu_staMu_numberOfValidMuonHits);
+       fChain->SetBranchAddress("mu_staMu_normChi2", &mu_staMu_normChi2, &b_mu_staMu_normChi2);
+       fChain->SetBranchAddress("mu_glbMu_normChi2", &mu_glbMu_normChi2, &b_mu_glbMu_normChi2);
+       fChain->SetBranchAddress("mu_nMatches", &mu_nMatches, &b_mu_nMatches);
+       fChain->SetBranchAddress("mu_matches_wheel", &mu_matches_wheel, &b_mu_matches_wheel);
+       fChain->SetBranchAddress("mu_matches_sector", &mu_matches_sector, &b_mu_matches_sector);
+       fChain->SetBranchAddress("mu_matches_station", &mu_matches_station, &b_mu_matches_station);
+       fChain->SetBranchAddress("mu_matches_x", &mu_matches_x, &b_mu_matches_x);
+       fChain->SetBranchAddress("mu_matches_y", &mu_matches_y, &b_mu_matches_y);
+       fChain->SetBranchAddress("mu_matches_phi", &mu_matches_phi, &b_mu_matches_phi);
+       fChain->SetBranchAddress("mu_matches_eta", &mu_matches_eta, &b_mu_matches_eta);
+       fChain->SetBranchAddress("mu_matches_edgeX", &mu_matches_edgeX, &b_mu_matches_edgeX);
+       fChain->SetBranchAddress("mu_matches_edgeY", &mu_matches_edgeY, &b_mu_matches_edgeY);
+       fChain->SetBranchAddress("mu_matches_dXdZ", &mu_matches_dXdZ, &b_mu_matches_dXdZ);
+       fChain->SetBranchAddress("mu_matches_dYdZ", &mu_matches_dYdZ, &b_mu_matches_dYdZ);
+       fChain->SetBranchAddress("mu_staMu_nMatchSeg", &mu_staMu_nMatchSeg, &b_mu_staMu_nMatchSeg);
+       fChain->SetBranchAddress("mu_staMu_matchSegIdx", &mu_staMu_matchSegIdx, &b_mu_staMu_matchSegIdx);
+
+     }
+
    fChain->SetBranchAddress("ltTwinMuxIn_nTrigs", &ltTwinMuxIn_nTrigs, &b_ltTwinMuxIn_nTrigs);
    fChain->SetBranchAddress("ltTwinMuxIn_wheel", &ltTwinMuxIn_wheel, &b_ltTwinMuxIn_wheel);
    fChain->SetBranchAddress("ltTwinMuxIn_sector", &ltTwinMuxIn_sector, &b_ltTwinMuxIn_sector);
@@ -436,6 +535,14 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ltBmtfInTh_station", &ltBmtfInTh_station, &b_ltBmtfInTh_station);
    fChain->SetBranchAddress("ltBmtfInTh_BX", &ltBmtfInTh_BX, &b_ltBmtfInTh_BX);
    fChain->SetBranchAddress("ltBmtfInTh_hitMap", &ltBmtfInTh_hitMap, &b_ltBmtfInTh_hitMap);
+   fChain->SetBranchAddress("tfBmtfOut_nBmtfCands", &tfBmtfOut_nBmtfCands, &b_tfBmtfOut_nBmtfCands);
+   fChain->SetBranchAddress("tfBmtfOut_pt", &tfBmtfOut_pt, &b_tfBmtfOut_pt);
+   fChain->SetBranchAddress("tfBmtfOut_phi", &tfBmtfOut_phi, &b_tfBmtfOut_phi);
+   fChain->SetBranchAddress("tfBmtfOut_eta", &tfBmtfOut_eta, &b_tfBmtfOut_eta);
+   fChain->SetBranchAddress("tfBmtfOut_dxy", &tfBmtfOut_dxy, &b_tfBmtfOut_dxy);
+   fChain->SetBranchAddress("tfBmtfOut_qual", &tfBmtfOut_qual, &b_tfBmtfOut_qual);
+   fChain->SetBranchAddress("tfBmtfOut_etaFine", &tfBmtfOut_etaFine, &b_tfBmtfOut_etaFine);
+   fChain->SetBranchAddress("tfBmtfOut_matchedTpIdx", &tfBmtfOut_matchedTpIdx, &b_tfBmtfOut_matchedTpIdx);
    fChain->SetBranchAddress("ph2TpgPhiHw_nTrigs", &ph2TpgPhiHw_nTrigs, &b_ph2TpgPhiHw_nTrigs);
    fChain->SetBranchAddress("ph2TpgPhiHw_wheel", &ph2TpgPhiHw_wheel, &b_ph2TpgPhiHw_wheel);
    fChain->SetBranchAddress("ph2TpgPhiHw_sector", &ph2TpgPhiHw_sector, &b_ph2TpgPhiHw_sector);
@@ -481,7 +588,6 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_BX", &ph2TpgPhiEmuAm_BX, &b_ph2TpgPhiEmuAm_BX);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_t0", &ph2TpgPhiEmuAm_t0, &b_ph2TpgPhiEmuAm_t0);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_index", &ph2TpgPhiEmuAm_index, &b_ph2TpgPhiEmuAm_index);
-
    Notify();
 }
 
@@ -641,5 +747,5 @@ void DTNtupleBaseAnalyzer::LoadObjs()
 					ph2Seg_zHits_layer,
 					ph2Seg_zHits_time,
 					ph2Seg_zHits_timeCali);
-  
+
 }
