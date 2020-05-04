@@ -27,7 +27,7 @@ import os
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '106X_dataRun3_Express_v2', #default value
+                 '110X_dataRun3_HLT_v1', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
