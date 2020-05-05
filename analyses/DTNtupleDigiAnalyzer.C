@@ -3,6 +3,7 @@
 #include <set>
 #include <fstream>
 #include <iomanip>
+#include <algorithm>
 
 DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer(const TString & inFileName,
 					   const TString & outFileName,
