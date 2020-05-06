@@ -35,13 +35,13 @@ class DTNtupleDigi
     };
 
   DTNtupleDigi (UInt_t & nDigis,
- 		vector<short> * wheel,
- 		vector<short> * sector,
- 		vector<short> * station,
- 		vector<short> * superLayer,
- 		vector<short> * layer,
- 		vector<short> * wire,
- 		vector<float> * time) :
+		vector<short> * wheel,
+		vector<short> * sector,
+		vector<short> * station,
+		vector<short> * superLayer,
+		vector<short> * layer,
+		vector<short> * wire,
+		vector<float> * time) :
   nDigis(&nDigis), wheel(wheel), sector(sector), station(station),
     superLayer(superLayer), layer(layer), wire(wire), time(time)
   { };
@@ -56,7 +56,7 @@ class DTNtupleDigi
   vector<short> * layer;
   vector<short> * wire;
   vector<float> * time;
-  
+
 };
 
 class DTNtupleSegment
@@ -71,7 +71,7 @@ class DTNtupleSegment
       station = nullptr;
       hasPhi = nullptr;
       hasZed = nullptr;
-      
+
       posLoc_x = nullptr;
       posLoc_y = nullptr;
       posLoc_z = nullptr;
@@ -85,16 +85,16 @@ class DTNtupleSegment
       posGlb_eta = nullptr;
       dirGlb_phi = nullptr;
       dirGlb_eta = nullptr;
-      
+
       hitsExpPos = nullptr;
       hitsExpPosCh = nullptr;
       hitsExpWire = nullptr;
-      
+
       phi_t0 = nullptr;
       phi_vDrift = nullptr;
       phi_normChi2 = nullptr;
       phi_nHits = nullptr;
-      
+
       phiHits_pos = nullptr;
       phiHits_posCh = nullptr;
       phiHits_posErr = nullptr;
@@ -105,10 +105,10 @@ class DTNtupleSegment
       phiHits_superLayer = nullptr;
       phiHits_time = nullptr;
       phiHits_timeCali = nullptr;
-      
+
       z_normChi2 = nullptr;
       z_nHits = nullptr;
-      
+
       zHits_pos = nullptr;
       zHits_posCh = nullptr;
       zHits_posErr = nullptr;
@@ -120,8 +120,8 @@ class DTNtupleSegment
       zHits_timeCali = nullptr;
 
     };
-  
-  DTNtupleSegment (UInt_t & nSegments,  
+
+  DTNtupleSegment (UInt_t & nSegments,
 		   vector<short>   *wheel,
 		   vector<short>   *sector,
 		   vector<short>   *station,
@@ -193,7 +193,7 @@ class DTNtupleSegment
   ~DTNtupleSegment() { };
 
   UInt_t * nSegments;
-  
+
   vector<short>   *wheel;
   vector<short>   *sector;
   vector<short>   *station;
@@ -213,16 +213,16 @@ class DTNtupleSegment
   vector<float>   *posGlb_eta;
   vector<float>   *dirGlb_phi;
   vector<float>   *dirGlb_eta;
-  
+
   TClonesArray    *hitsExpPos;
   TClonesArray    *hitsExpPosCh;
   TClonesArray    *hitsExpWire;
-  
+
   vector<float>   *phi_t0;
   vector<float>   *phi_vDrift;
   vector<float>   *phi_normChi2;
   vector<short>   *phi_nHits;
-  
+
   TClonesArray    *phiHits_pos;
   TClonesArray    *phiHits_posCh;
   TClonesArray    *phiHits_posErr;
@@ -233,10 +233,10 @@ class DTNtupleSegment
   TClonesArray    *phiHits_superLayer;
   TClonesArray    *phiHits_time;
   TClonesArray    *phiHits_timeCali;
-  
+
   vector<float>   *z_normChi2;
   vector<short>   *z_nHits;
-  
+
   TClonesArray    *zHits_pos;
   TClonesArray    *zHits_posCh;
   TClonesArray    *zHits_posErr;
@@ -490,7 +490,7 @@ public :
    vector<unsigned short> *ltBmtfInTh_hitMap;
    UInt_t          tfBmtfOut_nBmtfCands;
    vector<float>   *tfBmtfOut_pt;
-   vector<int>     *tfBmtfOut_phi;
+   vector<float>   *tfBmtfOut_phi;
    vector<float>   *tfBmtfOut_eta;
    vector<int>     *tfBmtfOut_dxy;
    vector<int>     *tfBmtfOut_qual;
