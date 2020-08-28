@@ -1,4 +1,4 @@
-CMSSW_FOLDER=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DT/OfflineCode/SliceTest/v9p2/CMSSW_11_1_0/
+CMSSW_FOLDER=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DT/OfflineCode/SliceTest/v9p3/CMSSW_11_1_3/
 CRAB_CONFIG_SCRIPT=/cvmfs/cms.cern.ch/crab3/crab.sh
  
 cd $CMSSW_FOLDER/src
