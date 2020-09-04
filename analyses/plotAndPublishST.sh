@@ -7,7 +7,6 @@
 UTILS_FOLDER="./plotAndPublish/"
 PUBLUSH_FOLDER="/eos/project/c/cmsweb/www/MUON/dpgdt/sx5/Results/SliceTest"
 # PUBLUSH_FOLDER="/eos/user/b/battilan/www/DTDPG/SliceTest/"
-#PUBLUSH_FOLDER="/afs/cern.ch/user/g/gpinnaan/www/DTslice/ProveSliceTest"
 
 PLOTTER_CFGS=("configDigiST.json" "configTriggerST.json" "configSegmentST.json")
 PLOTTER_ROOTS=("results_digi.root" "results_trigger.root" "results_segment.root")
