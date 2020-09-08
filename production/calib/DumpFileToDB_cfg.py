@@ -2,9 +2,9 @@
 # Configuration
 ########################################
 
-INPUTFILE = "106X_dataRun2_v10_cosmics_ttrig.txt"
+INPUTFILE = "337261_cosmics_ttrig.txt"
 
-OUTPUTFILE = "TTrigDB_cosmics_ttrig.db"
+OUTPUTFILE = INPUTFILE.replace(".txt",".db")
 
 # LABEL = ""
 LABEL = "cosmics"

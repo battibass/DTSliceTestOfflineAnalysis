@@ -2,9 +2,9 @@
 # Configuration
 ########################################
 
-GLOBALTAG = "106X_dataRun2_v10"
+GLOBALTAG = "111X_dataRun3_Prompt_v2"
 
-INPUTFILE = ""
+INPUTFILE = "./Run337261-ttrig_timebox_v1/TimeBoxes/results/ttrig_timeboxes_Run337261_v1.db"
 # INPUTFILE = "TTrigDB_Legacy.db"
 
 INPUTTAG=""
@@ -13,9 +13,9 @@ INPUTTAG=""
 # LABEL = ""
 LABEL = "cosmics"
 
-RUN=328798
+RUN=337261
 
-OUTPUTFILE = "106X_dataRun2_v10_cosmics_ttrig.txt"
+OUTPUTFILE = "{}_{}_ttrig.txt".format(RUN,LABEL)
 
 if INPUTTAG!="" and INPUTFILE!="" :
     print 'ERROR!'

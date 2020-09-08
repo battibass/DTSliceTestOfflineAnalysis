@@ -9,8 +9,14 @@ process = cms.Process("PROD")
 
 options = VarParsing.VarParsing()
 
+options.register('globalTag',
+                 '111X_dataRun3_Prompt_v2', #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 "Global Tag")
+
 options.register('runNumber',
-                 '333369', #default value
+                 '336977', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                  "Run number to be looked for in either 'inputFolderCentral' or 'inputFolderDT' folders")
@@ -22,13 +28,13 @@ options.register('inputFile',
                  "The input file to be processed, if non null overrides runNumber based input file selection")
 
 options.register('inputFolderCentral',
-                 '/eos/cms/store/data/Commissioning2019/MiniDaq/RAW/v1/', #default value
+                 '/eos/cms/store/data/Commissioning2020/MiniDaq/RAW/v1/', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
                  "Base EOS folder with input files from MiniDAQ runs with central tier0 transfer")
 
 options.register('inputFolderDT',
-                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/root/', #default value
+                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2020_data/root/', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
                  "Base EOS folder with input files from MiniDAQ runs with DT 'private' tier0 transfer")
@@ -680,7 +686,7 @@ process.GlobalTag = cms.ESSource("PoolDBESSource",
     RefreshEachRun = cms.untracked.bool(False),
     RefreshOpenIOVs = cms.untracked.bool(False),
     connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS'),
-    globaltag = cms.string('106X_dataRun3_Express_v2'),
+    globaltag = cms.string(options.globalTag),
     pfnPostfix = cms.untracked.string(''),
     pfnPrefix = cms.untracked.string(''),
     snapshotTime = cms.string(''),
