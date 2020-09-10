@@ -1,5 +1,6 @@
 #include "DTNtupleSegmentAnalyzer.h"
 #include "TCanvas.h"
+#include <algorithm>
 #include <fstream>
 #include <iomanip>      // std::setprecision
 #include "TMath.h"
@@ -291,6 +292,11 @@ void DTNtupleSegmentAnalyzer::book()
       m_plots[hName] = new TH2F(hName,
 				"# phi hits ph1 vs ph2;# phi hits (phase-1); # phi hits (phase-2)",
 				10,-0.5,9.5,10,-0.5,9.5);
+
+      hName = Form("EffPhiPh1VsPh2_st%d",st);
+      m_plots[hName] = new TH2F(hName,
+				"eff ph1 vs ph2;# efficiency (phase-1); efficiency (phase-2)",
+				100,0.9,1.0,100,0.9,1.0);
     }
 	
   std::vector<std::string> typeTags = { "Ph1", "Ph2" };
@@ -556,8 +562,36 @@ void DTNtupleSegmentAnalyzer::endJob()
 	      cout << endl << endl;
 	    }
 	}
-    }  
-  
+    }
+
+  for (int st=1; st<5; ++st)
+    {
+
+      string hNamePh1 = Form("Ph1effPhiByWire_st%d",st);
+      string hNamePh2 = Form("Ph2effPhiByWire_st%d",st);
+      
+      int nBinsX = m_effs[hNamePh1]->GetTotalHistogram()->GetNbinsX();
+      int nBinsY = m_effs[hNamePh1]->GetTotalHistogram()->GetNbinsY();
+      
+      for (int iBinX = 1; iBinX <= nBinsX; ++ iBinX)
+	{
+	  for (int iBinY = 1; iBinY <= nBinsY; ++ iBinY)
+	    {
+	      
+	      int iBinPh1  = m_effs[hNamePh1]->GetGlobalBin(iBinX, iBinY);
+	      float effPh1 = m_effs[hNamePh1]->GetEfficiency(iBinPh1);
+	      
+	      int iBinPh2  = m_effs[hNamePh2]->GetGlobalBin(iBinX, iBinY);
+	      float effPh2 = m_effs[hNamePh2]->GetEfficiency(iBinPh2);
+	      if ( effPh1 > 0.01 && effPh2 > 0.01 )
+		{
+		  m_plots[Form("EffPhiPh1VsPh2_st%d",st)]->Fill(std::max(effPh1, float(0.901)),
+								std::max(effPh2, float(0.901)));
+		}			
+	    }
+	}
+    }
+
   m_outFile.cd();
   m_outFile.Write();
   m_outFile.Close();
@@ -734,6 +768,7 @@ void DTNtupleSegmentAnalyzer::comparisonAnalysis()
 		int nHitsPh2 = ph2Seg_phi_nHits->at(iBestSegPerStPh2[iSt - 1]);
 		
 		m_plots[Form("NHitsPhiPh1VsPh2_st%d",iSt)]->Fill(nHitsPh1,nHitsPh2);
+
 	      }
 	  }
 	

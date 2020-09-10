@@ -1088,7 +1088,7 @@
         }
     },
     
-    "Phase-1 phi segment # hits ph1 va ph2 MB3"   :
+    "Phi segment # hits ph1 vs ph2 MB3"   :
     {
         "inputs"    :
         {
@@ -1120,7 +1120,7 @@
         }
     },
 
-    "Phase-1 phi segment # hits ph1 va ph2 MB4"   :
+    "Phi segment # hits ph1 vs ph2 MB4"   :
     {
         "inputs"    :
         {
@@ -1148,6 +1148,70 @@
         "output"    :
         {
             "filenamePlot"      : "06_nPhiHits_Ph1vsPh2_MB4",
+            "fileType"          : ["png", "pdf"]
+        }
+    },
+
+    "Segment hit efficiency ph1 vs ph2 MB3"   :
+    {
+        "inputs"    :
+        {
+            "plot"   :
+            {
+                "label"             : "",
+                "legendEntry"       : "",
+                "folder"            : "",
+                "plot"		    : "EffPhiPh1VsPh2_st3"
+	    }
+	    
+        },
+        "plot"      :
+        {
+            "x"                 : [0.9, 1.0, "hit efficiency phase-1"],
+            "y"                 : [0.9, 1.0, "hit efficiency phase-2"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 vs Phase-2 # hit efficiency (from segments)",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.15, 0.70, 0.85, 0.83]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "07_eff_Ph1vsPh2_MB3",
+            "fileType"          : ["png", "pdf"]
+        }
+    },
+
+    "Segment hit efficiency ph1 vs ph2 MB3"   :
+    {
+        "inputs"    :
+        {
+            "plot"   :
+            {
+                "label"             : "",
+                "legendEntry"       : "",
+                "folder"            : "",
+                "plot"		    : "EffPhiPh1VsPh2_st4"
+	    }
+	    
+        },
+        "plot"      :
+        {
+            "x"                 : [0.9, 1.0, "hit efficiency phase-1"],
+            "y"                 : [0.9, 1.0, "hit efficiency phase-2"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 vs Phase-2 # hit efficiency (from segments)",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.15, 0.70, 0.85, 0.83]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "07_eff_Ph1vsPh2_MB4",
             "fileType"          : ["png", "pdf"]
         }
     }
