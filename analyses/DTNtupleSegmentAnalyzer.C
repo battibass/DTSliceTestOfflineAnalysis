@@ -1,4 +1,5 @@
 #include "DTNtupleSegmentAnalyzer.h"
+#include "TProfile.h"
 #include "TCanvas.h"
 #include <algorithm>
 #include <fstream>
@@ -296,7 +297,7 @@ void DTNtupleSegmentAnalyzer::book()
       hName = Form("EffPhiPh1VsPh2_st%d",st);
       m_plots[hName] = new TH2F(hName,
 				"eff ph1 vs ph2;# efficiency (phase-1); efficiency (phase-2)",
-				100,0.9,1.0,100,0.9,1.0);
+				101,0.9,1.01,101,0.9,1.01);
     }
 	
   std::vector<std::string> typeTags = { "Ph1", "Ph2" };
@@ -351,6 +352,11 @@ void DTNtupleSegmentAnalyzer::book()
 	  m_plots[hName] = new TH1F(hName,
 				    "Segment t0;t0 (ns); entries",
 				    200,-100.,100.);  
+
+	  hName = Form("%shT0VsX_st%d",typeTag.c_str(),st);
+	  m_plots[hName] = new TProfile(hName,
+					"Segment t0 vs local x;local x (cm);t0 (ns)",
+					20,-200.,200.,-100.,100.);  
 
 	  hName = Form("%shPhiProbChi2_st%d",typeTag.c_str(),st);
 	  m_plots[hName] = new TH1F(hName, 
@@ -628,7 +634,13 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
 	    m_plots[Form("Ph1hPhiProbChi2_st%d",seg_station->at(iSeg))]->Fill(TMath::Prob(seg_phi_normChi2->at(iSeg)*6,6));
 
 	  if (seg_phi_t0->at(iSeg) > -900)
-	    m_plots[Form("Ph1hT0_st%d",seg_station->at(iSeg))]->Fill(std::max(float(-99.9),(std::min(float(99.9),seg_phi_t0->at(iSeg)))));
+	    {
+	      float t0 = seg_phi_t0->at(iSeg);
+	      float t0InRange = std::max(float(-99.9),(std::min(float(99.9),t0)));
+
+	      m_plots[Form("Ph1hT0_st%d",seg_station->at(iSeg))]->Fill(t0InRange);
+	      m_plots[Form("Ph1hT0VsX_st%d",seg_station->at(iSeg))]->Fill(seg_posLoc_x->at(iSeg), t0);
+	    }
 	  
 	}
 
@@ -676,7 +688,13 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
 	    m_plots[Form("Ph2hPhiProbChi2_st%d",ph2Seg_station->at(iSeg))]->Fill(TMath::Prob(ph2Seg_phi_normChi2->at(iSeg)*6,6));
 
 	  if (ph2Seg_phi_t0->at(iSeg) > -900)
-	    m_plots[Form("Ph2hT0_st%d",ph2Seg_station->at(iSeg))]->Fill(std::max(float(-99.9),(std::min(float(99.9),ph2Seg_phi_t0->at(iSeg)))));
+	    {
+	      float t0 = ph2Seg_phi_t0->at(iSeg);
+	      float t0InRange = std::max(float(-99.9),(std::min(float(99.9),t0)));
+
+	      m_plots[Form("Ph2hT0_st%d",ph2Seg_station->at(iSeg))]->Fill(t0InRange);
+	      m_plots[Form("Ph2hT0VsX_st%d",ph2Seg_station->at(iSeg))]->Fill(ph2Seg_posLoc_x->at(iSeg), t0);
+	    }
 	  
 	}
 
