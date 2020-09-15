@@ -39,8 +39,8 @@ Setup argument parser
 parser = argparse.ArgumentParser(description="This program takes an input JSON config and extracts plots from ROOT files. " \
                                              + "The output consists of a plot with superimposed plots from multiple files." )
 parser.add_argument("inputJsonConfig", help="Path to the input JSON config file")
-parser.add_argument("plotFolder", help="Plot input/output folder")
 parser.add_argument("inputFile", help="The input file to be processed")
+parser.add_argument("plotFolder", help="Plot output folder")
 parser.add_argument("-f", "--fast", default=0, action="count", help="Skip fetching and saving the fit canvases for each plot")
 parser.add_argument("-v", "--verbosity", default=1, help="Increase or decrease output verbosity")
 args = parser.parse_args()
@@ -65,10 +65,10 @@ gStyle.SetOptTitle(0)
 gStyle.SetPaintTextFormat("1.3f");
 gStyle.SetHistMinimumZero()
 
-inputFile = TFile.Open(os.path.join(args.plotFolder, args.inputFile))
+inputFile = TFile.Open(args.inputFile)
 
 if not inputFile:
-    print('[ERROR] File {} not found in folder {}'.format(args.plotFolder, args.inputFile))
+    print('[ERROR] File {} not found'.format(args.inputFile))
     sys.exit()
 
 for keyPlot in config:
@@ -143,6 +143,10 @@ for keyPlot in config:
     hasVerbLeg = option.find("verbLeg") > -1
     if hasVerbLeg :
         option = option.replace("verbLeg","")
+
+    hasVerbRes = option.find("verbRes") > -1
+    if hasVerbRes :
+        option = option.replace("verbRes","")
 
     pad.SetGrid()
     pad.Draw()
@@ -258,6 +262,11 @@ for keyPlot in config:
                 nUnderFlow = int(inputHistos[iHisto].GetBinContent(0))
                 nOverFlow  = int(inputHistos[iHisto].GetBinContent(inputHistos[iHisto].GetNbinsX()+1))
                 legEntry = legEntry + "   [uf/of: " + str(nUnderFlow) + "/" +str(nOverFlow) + "]" 
+
+            if hasVerbRes :
+                sigma    = int(inputHistos[iHisto].GetFunction("fPhi").GetParameter(2) * 10000.)
+                sigmaErr = int(inputHistos[iHisto].GetFunction("fPhi").GetParError(2) * 10000.)
+                legEntry = legEntry + "  [#sigma of gaussian fit = " + str(sigma) + " ]"
 
             leg.AddEntry(inputHistos[iHisto], legEntry, 'LP')
 
