@@ -1,4 +1,4 @@
-setenv CMSSW_FOLDER /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DT/OfflineCode/SliceTest/v9p3/CMSSW_11_1_3/
+setenv CMSSW_FOLDER /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DT/OfflineCode/SliceTest/v9p3p1/CMSSW_11_1_3/
 setenv TTRIG_DATASET /eos/cms/store/data/Commissioning2020/MiniDaq/RAW/v1/
 setenv CRAB_CONFIG_SCRIPT /cvmfs/cms.cern.ch/crab3/crab.sh
  
