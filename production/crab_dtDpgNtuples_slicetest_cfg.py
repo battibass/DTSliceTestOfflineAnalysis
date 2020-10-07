@@ -1,50 +1,36 @@
+import yaml
 from WMCore.Configuration import Configuration
 config = Configuration()
 
-##### Configuration parameters ################################
+json_data = []
 
-runNumber = 337240
-inputDataset = "/Cosmics/Commissioning2020-v1/RAW"
-
-# These are the cfg parameters used to configure the 
-# dtDpgNtuples_slicetest_cfg.py configuration file
-configParams = ['ntupleName=DTDPGNtuple.root',
-                'tTrigFilePh2=./ttrig_timeboxes_Run337240_v1.db',
-                't0FilePh2=./t0_run337214.db'] 
-# E.g. use dedicated tTrigs
-# configParams = ['ntupleName=DTDPGNtuple.root', \
-#                 'tTrigFile=calib/TTrigDB_cosmics_ttrig.db'] 
-
-# These are the additional input files (e.g. sqlite .db) 
-# needed by dtDpgNtuples_slicetest_cfg.py to run
-inputFiles = ['./ttrig_timeboxes_Run337240_v1.db',
-              './t0_run337214.db'] 
-# E.g. use dedicated tTrigs
-# inputFiles = ['./calib/TTrigDB_cosmics_ttrig.db'] 
-
-###############################################################
+with open('./crab_jsons/crab.json', 'r') as json_file:
+    json_data = yaml.safe_load(json_file)
 
 config.section_('General')
 config.General.workArea = 'crab_jobs'
-config.General.requestName = 'DTDPGNtuples_SliceTest_run' + str(runNumber)
+config.General.requestName = 'DTDPGNtuples_SliceTest_run' \
+                             + json_data["runNumber"] + "_" \
+                             + json_data["version"]
 config.General.transferOutputs = True
 
 config.section_('JobType')
 config.JobType.pluginName  = 'Analysis'
 config.JobType.psetName    = 'dtDpgNtuples_slicetest_cfg.py'
 
-config.JobType.pyCfgParams = configParams
-config.JobType.inputFiles  = inputFiles
+config.JobType.pyCfgParams = json_data["config_params"]
+config.JobType.inputFiles  = json_data["input_files"]
 
 config.section_('Data')
-config.Data.inputDataset = inputDataset
+config.Data.inputDataset = json_data["dataset"]
 
 config.Data.splitting    = 'LumiBased'
 config.Data.unitsPerJob  = 5  
-config.Data.runRange     = str(runNumber)
+config.Data.runRange     = json_data["runNumber"]
 config.Data.inputDBS     = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader/'
-config.Data.outLFNDirBase  = '/store/group/dpg_dt/comm_dt/commissioning_2020_data/crab/'
-
+config.Data.outLFNDirBase  = json_data["outLFNBase"]
+ 
 config.section_('Site')
 config.Site.storageSite = 'T2_CH_CERN'
 
+print config
