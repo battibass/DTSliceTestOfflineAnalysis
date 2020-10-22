@@ -2,6 +2,13 @@ import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
 from Configuration.StandardSequences.Eras import eras
 
+import lxml.etree as etree
+import subprocess
+import sys
+import os
+
+XML_FOLDER = "./cmsrun_xml/"
+
 def appendToGlobalTag(process, rcd, tag, fileName, label) :
 
     if  not fileName :
@@ -19,10 +26,6 @@ def appendToGlobalTag(process, rcd, tag, fileName, label) :
     )
 
     return process
-
-import subprocess
-import sys
-import os
 
 options = VarParsing.VarParsing()
 
@@ -197,3 +200,23 @@ process.p = cms.Path(process.muonDTDigis
 if options.tTrigFilePh2 and options.t0FilePh2 :
     from DTDPGAnalysis.DTNtuples.customiseDtPhase2Reco_cff import customiseForPhase2Reco
     process = customiseForPhase2Reco(process,"p", options.tTrigFilePh2, options.t0FilePh2)
+
+xml_base = etree.Element("options") 
+
+for var, val in options._singletons.iteritems():
+    if var == "ntupleName":
+        etree.SubElement(xml_base, var).text = os.path.abspath(ntupleName)
+    elif var.find("File") > -1 and val != "":
+        etree.SubElement(xml_base, var).text = os.path.abspath(val)
+    else:
+        etree.SubElement(xml_base, var).text = str(val)
+
+if not os.path.exists(XML_FOLDER):
+    os.makedirs(XML_FOLDER)
+
+xml_string = etree.tostring(xml_base, pretty_print=True)
+
+out_file_name = "ntuple_cfg_run" + str(options.runNumber) + ".xml"
+out_file_path = os.path.join(XML_FOLDER, out_file_name)
+
+with open(out_file_path, 'w') as file: file.write(xml_string)
