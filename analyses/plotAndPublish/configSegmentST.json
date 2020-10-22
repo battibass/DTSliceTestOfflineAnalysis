@@ -1256,6 +1256,70 @@
         }
     },
 
+    "Phi segment ph2 - ph1 # hits diff vs x MB3"   :
+    {
+        "inputs"    :
+        {
+            "plot"   :
+            {
+                "label"             : "",
+                "legendEntry"       : "",
+                "folder"            : "",
+                "plot"		    : "NPh2Ph1HitsDiffPhiVsX_st3"
+	    }
+	    
+        },
+        "plot"      :
+        {
+            "x"                 : [-200.0, 200.0, "ph2 + ph1 segment local x average (cm)"],
+            "y"                 : [-8.5, 8.5, "# ph2 - ph1 #phi hits difference"],
+            "option"            : "box",
+            "legendTitle"       : "Phase-1 vs Phase-2 # hits difference",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.34, 0.70, 0.85, 0.83]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "06_phiHitsDiffVsX_Ph1vsPh2_MB3",
+            "fileType"          : ["png", "pdf"]
+        }
+    },
+
+    "Phi segment ph2 - ph1 # hits diff vs x MB4"   :
+    {
+        "inputs"    :
+        {
+            "plot"   :
+            {
+                "label"             : "",
+                "legendEntry"       : "",
+                "folder"            : "",
+                "plot"		    : "NPh2Ph1HitsDiffPhiVsX_st4"
+	    }
+	    
+        },
+        "plot"      :
+        {
+            "x"                 : [-200.0, 200.0, "ph2 + ph1 segment local x average (cm)"],
+            "y"                 : [-8.5, 8.5, "ph2 - ph1 # #phi hits difference"],
+            "option"            : "box",
+            "legendTitle"       : "Phase-1 vs Phase-2 # hits difference",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.34, 0.70, 0.85, 0.83]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "06_phiHitsDiffVsX_Ph1vsPh2_MB4",
+            "fileType"          : ["png", "pdf"]
+        }
+    },
+
     "Segment hit efficiency ph1 vs ph2 MB3"   :
     {
         "inputs"    :

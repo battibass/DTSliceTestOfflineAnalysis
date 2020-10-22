@@ -294,6 +294,11 @@ void DTNtupleSegmentAnalyzer::book()
 				"# phi hits ph1 vs ph2;# phi hits (phase-1); # phi hits (phase-2)",
 				10,-0.5,9.5,10,-0.5,9.5);
 
+      hName = Form("NPh2Ph1HitsDiffPhiVsX_st%d",st);
+      m_plots[hName] = new TH2F(hName,
+				"# ph2 - ph1 phi hits vs x;local x (cm); # ph2 - ph1 phi hits",
+				20,-200.,200.,17,-8.5,8.5);
+
       hName = Form("EffPhiPh1VsPh2_st%d",st);
       m_plots[hName] = new TH2F(hName,
 				"eff ph1 vs ph2;# efficiency (phase-1); efficiency (phase-2)",
@@ -784,9 +789,14 @@ void DTNtupleSegmentAnalyzer::comparisonAnalysis()
 	      {
 		int nHitsPh1 = seg_phi_nHits->at(iBestSegPerStPh1[iSt - 1]);
 		int nHitsPh2 = ph2Seg_phi_nHits->at(iBestSegPerStPh2[iSt - 1]);
-		
+
 		m_plots[Form("NHitsPhiPh1VsPh2_st%d",iSt)]->Fill(nHitsPh1,nHitsPh2);
 
+		float posXPh1 = seg_posLoc_x->at(iBestSegPerStPh1[iSt - 1]);
+		float posXPh2 = ph2Seg_posLoc_x->at(iBestSegPerStPh2[iSt - 1]);
+
+		if (std::abs(posXPh1 - posXPh2) < 10.)
+		  m_plots[Form("NPh2Ph1HitsDiffPhiVsX_st%d",iSt)]->Fill(posXPh1,nHitsPh2 - nHitsPh1);		
 	      }
 	  }
 	
