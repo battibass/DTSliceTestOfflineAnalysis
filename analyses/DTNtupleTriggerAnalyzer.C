@@ -29,7 +29,8 @@ DTNtupleTriggerAnalyzer::DTNtupleTriggerAnalyzer(const TString & inFileName,
   // BXOK_ph2Hw = 3295; // From ntuple based on SX5 run 329705
   // BXOK_ph2Hw = 3391; // From ntuple based on global run 330160
   // BXOK_ph2Hw = 3392; // From ntuple based on global run 330163
-  BXOK_ph2Hw = 3366; // From ntuple based on miniDAQ run 330463
+  // BXOK_ph2Hw = 3366; // From ntuple based on miniDAQ run 330463
+  BXOK_ph2Hw = 0; // From ntuple based on miniDAQ run 338150
   BXOK_ph2EmuHb = 0; // to be properly set
   BXOK_ph2EmuAm = 0; // to be properly set
 

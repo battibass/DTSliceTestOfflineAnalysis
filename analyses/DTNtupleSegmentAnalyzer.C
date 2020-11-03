@@ -15,8 +15,8 @@ DTNtupleSegmentAnalyzer::DTNtupleSegmentAnalyzer(const TString & inFileName,
   m_timeBoxMin["Ph1"]  =  -750.;
   m_timeBoxMax["Ph1"]  =  4250.;
 
-  m_timeBoxMin["Ph2"]  = 83150.;
-  m_timeBoxMax["Ph2"]  = 88150.;
+  m_timeBoxMin["Ph2"]  = -1250.;
+  m_timeBoxMax["Ph2"]  =  3750.;
 
   TObjArray *tx = outFileName.Tokenize("/");
   m_deadFileName = (((TObjString *)(tx->At(0)))->String()).Data();

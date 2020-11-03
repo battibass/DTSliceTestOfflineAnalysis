@@ -26,8 +26,8 @@ m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(
   m_timeBoxMax["Ph1"]  =  4250.;
   m_timeBoxBins["Ph1"] =  1250;
 
-  m_timeBoxMin["Ph2"]  = 83150.;
-  m_timeBoxMax["Ph2"]  = 88150.;
+  m_timeBoxMin["Ph2"]  = -1250.;
+  m_timeBoxMax["Ph2"]  =  3750.;
   m_timeBoxBins["Ph2"] =  1250;
 
 }

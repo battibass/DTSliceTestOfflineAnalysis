@@ -227,7 +227,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-1 MB3 SL1",
@@ -280,7 +280,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-1 MB3 SL2",
@@ -333,7 +333,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-1 MB3 SL3",
@@ -386,7 +386,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-1 MB4 SL1",
@@ -439,7 +439,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-1 MB4 SL3",
@@ -492,7 +492,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 MB1 SL1",
@@ -545,7 +545,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 MB1 SL3",
@@ -598,7 +598,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 MB2 SL1",
@@ -651,7 +651,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 MB2 SL3",
@@ -704,7 +704,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 MB2 SL1",
@@ -757,7 +757,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 MB2 SL3",
@@ -810,7 +810,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 MB3 SL1",
@@ -863,7 +863,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 MB3 SL3",
@@ -916,7 +916,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 MB4 SL1",
@@ -969,7 +969,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 5000.0, "digi time (ns)"],
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 MB4 SL3",
