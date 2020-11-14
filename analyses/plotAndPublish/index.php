@@ -83,17 +83,17 @@ foreach (glob("*") as $filename) {
         break;
     }
 }
-if ($has_subs) {
+#if ($has_subs) {
     print "<div class=\"dirlinks\">\n";
     print "<h2>Directories</h2>\n";
     print "<a href=\"../\">[parent]</a> ";
     foreach (glob("*") as $filename) {
-        if (is_dir($filename) && ($_SERVER['PHP_AUTH_USER'] == 'gpetrucc' || !preg_match("/^\..*|.*private.*/", $filename))) {
+        if (is_dir($filename) && (!preg_match("/^\..*|.*private.*/", $filename))) {
             print " <a href=\"$filename\">[$filename]</a>";
         }
     }
     print "</div>";
-}
+#}
 
 foreach (array("00_README.txt", "README.txt", "readme.txt") as $readme) {
     if (file_exists($readme)) {
