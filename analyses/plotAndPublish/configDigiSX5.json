@@ -28,7 +28,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase1_Occupancy_MB2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -60,7 +60,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase2_Occupancy_MB2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -113,7 +113,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase1_TimeBox_MB2_SL1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -166,7 +166,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase1_TimeBox_MB2_SL2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -219,7 +219,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase1_TimeBox_MB2_SL3",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -272,7 +272,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase2_TimeBox_MB2_SL1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -325,7 +325,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase2_TimeBox_MB2_SL2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -378,7 +378,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase2_TimeBox_MB2_SL3",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     }
 
