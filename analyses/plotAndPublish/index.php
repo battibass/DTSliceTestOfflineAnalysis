@@ -7,6 +7,36 @@ body {
     font-size: 9pt;
     line-height: 10.5pt;
 }
+h1 {
+  text-align:center;
+  padding-bottom: 5px;
+  border-bottom: 2px solid lightblue;
+}
+
+h2 {
+  border: 2px solid gray;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  color: blue;
+}
+
+ul.subdirs {
+    padding: 0pt;
+}
+li.subdirs {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+}
+div.box {
+  border: 2px dotted lightgray;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 div.pic h3 { 
     font-size: 11pt;
     margin: 0.5em 1em 0.2em 1em;
@@ -36,9 +66,15 @@ div.dirlinks a {
     padding: 0 0.5em; 
 }
 </style>
+<script>
+function ClearFields() {
+
+     document.getElementById("match").value = "";
+}
+</script>
 </head>
 <body>
-<h1><?php echo getcwd(); ?></h1>
+<h1><?php echo substr(dirname(__FILE__), strpos(dirname(__FILE__), 'SliceTest/')); ?></h1>
 <?php
 $has_subs = false;
 foreach (glob("*") as $filename) {
@@ -47,17 +83,17 @@ foreach (glob("*") as $filename) {
         break;
     }
 }
-if ($has_subs) {
+#if ($has_subs) {
     print "<div class=\"dirlinks\">\n";
     print "<h2>Directories</h2>\n";
     print "<a href=\"../\">[parent]</a> ";
     foreach (glob("*") as $filename) {
-        if (is_dir($filename) && ($_SERVER['PHP_AUTH_USER'] == 'gpetrucc' || !preg_match("/^\..*|.*private.*/", $filename))) {
+        if (is_dir($filename) && (!preg_match("/^\..*|.*private.*/", $filename))) {
             print " <a href=\"$filename\">[$filename]</a>";
         }
     }
     print "</div>";
-}
+#}
 
 foreach (array("00_README.txt", "README.txt", "readme.txt") as $readme) {
     if (file_exists($readme)) {
@@ -67,33 +103,57 @@ foreach (array("00_README.txt", "README.txt", "readme.txt") as $readme) {
 ?>
 
 <h2><a name="plots">Plots</a></h2>
-<p><form>Filter: <input type="text" name="match" size="30" value="<?php if (isset($_GET['match'])) print htmlspecialchars($_GET['match']);  ?>" /><input type="Submit" value="Go" /></form></p>
+<div class="box">
+<p><form>Filter: <input type="text" name="match" id="match" size="30" value="<?php if (isset($_GET['match'])) print htmlspecialchars($_GET['match']);  ?>" /><input type="Submit" value="Go" /><button type="button" onclick="ClearFields();">Clear</button></form></p>
+</div>
 <div>
 <?php
+
+# Configure the plot size (should also play above with CSS)
+$plotwidth = '300px';
+
+# Say the name of the object in the root files you want to display by default
+$roothistoname = 'canvas';
+
+# Path to the JSRoot installation
+$jsrootpath='https://dt-sx5.web.cern.ch/dt-sx5/Results/SliceTest/jsroot/';
+$thisfolder=str_replace("/SliceTest/","../",substr(dirname(__FILE__),strpos(dirname(__FILE__), '/SliceTest/')));
+
+# Extension that will be searched for files
+$filenames = glob("*.png"); 
+
+# Other possible formats for the files that will be considered
+$other_exts = array('.pdf', '.cxx', '.eps', '.root', '.txt', '.C', '.gif');
+
+# Start playing...
 $displayed = array();
-if ($_GET['noplots']) {
-    print "Plots will not be displayed.\n";
-} else {
-    $other_exts = array('.pdf', '.cxx', '.eps', '.root', '.txt');
-    $filenames = glob("*.png"); sort($filenames);
-    foreach ($filenames as $filename) {
-        if (isset($_GET['match']) && !fnmatch('*'.$_GET['match'].'*', $filename)) continue;
-        array_push($displayed, $filename);
-        print "<div class='pic'>\n";
-        print "<h3><a href=\"$filename\">$filename</a></h3>";
-        print "<a href=\"$filename\"><img src=\"$filename\" style=\"border: none; width: 300px; \"></a>";
-        $others = array();
-        foreach ($other_exts as $ex) {
-            $other_filename = str_replace('.png', $ex, $filename);
-            if (file_exists($other_filename)) {
-                array_push($others, "<a class=\"file\" href=\"$other_filename\">[" . $ex . "]</a>");
-                if ($ex != '.txt') array_push($displayed, $other_filename);
-            }
-        }
-        if ($others) print "<p>Also as ".implode(', ',$others)."</p>";
-        print "</div>";
-    }
+array_push($displayed,basename($_SERVER['PHP_SELF']));
+sort($filenames);
+foreach ($filenames as $filename) {
+   if (isset($_GET['match']) && !fnmatch('*'.$_GET['match'].'*', $filename)) continue;
+   array_push($displayed, $filename);
+   print "<div class='pic'>\n";
+   print "<h3><a href=\"$filename\">$filename</a></h3>";
+   print "<a href=\"$filename\"><img src=\"$filename\" style=\"border: none; width: $plotwidth; \"></a>";
+   $others = array();
+   foreach ($other_exts as $ex) {
+          $other_filename = str_replace('.png', $ex, $filename);
+          if (file_exists($other_filename)) {
+	    if ($ex == '.root') {
+              array_push($others, "<a class=\"file\" href=\"$jsrootpath?file=$thisfolder/$other_filename&item=$roothistoname \">[<img src=\"https://root.cern/favicon.ico\">" . $ex . "]</a>");
+	    }
+	    else {
+              array_push($others, "<a class=\"file\" href=\"$other_filename\">[" . $ex . "]</a>");
+	    }
+            if ($ex != '.txt') array_push($displayed, $other_filename);
+          }
+   }
+   if ($others) print "<p>Also as ".implode(', ',$others)."</p>";
+   else print "<p>&nbsp;</p>";
+   print "</div>";
 }
+
+
 ?>
 </div>
 <div style="display: block; clear:both;">
@@ -103,6 +163,7 @@ if ($_GET['noplots']) {
 foreach (glob("*") as $filename) {
     if ($_GET['noplots'] || !in_array($filename, $displayed)) {
         if (isset($_GET['match']) && !fnmatch('*'.$_GET['match'].'*', $filename)) continue;
+        if ($filename == 'index.php') continue;
         if (is_dir($filename)) {
             print "<li>[DIR] <a href=\"$filename\">$filename</a></li>";
         } else {

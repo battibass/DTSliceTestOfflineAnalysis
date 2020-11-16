@@ -52,7 +52,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_Phase1_PhiNhits",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -99,7 +99,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_Phase1_ThetaNhits",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },    
     
@@ -151,7 +151,7 @@
         "output"    :
         {
             "filenamePlot"      : "05_Phase1_PhiChi2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
     
@@ -203,7 +203,7 @@
         "output"    :
         {
             "filenamePlot"      : "05_Phase1_PhiProbChi2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -255,7 +255,7 @@
         "output"    :
         {
             "filenamePlot"      : "05_Phase1_ThetaProbChi2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
     
@@ -307,7 +307,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Phase1_t0",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -359,7 +359,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Phase1_t0_vs_x",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -411,7 +411,7 @@
         "output"    :
         {
             "filenamePlot"      : "04_Phase1_ResPerSl",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -443,7 +443,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_PhiHitEfficiency_MB3_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -475,7 +475,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_PhiHitEfficiency_MB4_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -531,7 +531,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_Phase2_PhiNhits",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -578,7 +578,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_Phase2_ThetaNhits",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },    
     
@@ -630,7 +630,7 @@
         "output"    :
         {
             "filenamePlot"      : "05_Phase2_PhiChi2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
     
@@ -682,7 +682,7 @@
         "output"    :
         {
             "filenamePlot"      : "05_Phase2_PhiProbChi2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -734,7 +734,7 @@
         "output"    :
         {
             "filenamePlot"      : "05_Phase2_ThetaProbChi2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
     
@@ -786,7 +786,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Phase2_t0",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -838,7 +838,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Phase2_t0_vs_x",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
     
@@ -890,7 +890,7 @@
         "output"    :
         {
             "filenamePlot"      : "04_Phase2_ResPerSl",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -922,7 +922,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_PhiHitEfficiency_MB1_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -954,7 +954,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_PhiHitEfficiency_MB2_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -986,7 +986,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_PhiHitEfficiency_MB3_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1018,7 +1018,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_PhiHitEfficiency_MB4_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1056,7 +1056,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_PhiHitEfficiencyiSummary_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1108,7 +1108,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_PhiHitEfficiencyiSummary_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1148,7 +1148,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_PhiHitEfficiency_Ph1vsPh2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1188,7 +1188,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_ThetaHitEfficiency_Ph1vsPh2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
     
@@ -1220,7 +1220,7 @@
         "output"    :
         {
             "filenamePlot"      : "06_nPhiHits_Ph1vsPh2_MB3",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1252,7 +1252,7 @@
         "output"    :
         {
             "filenamePlot"      : "06_nPhiHits_Ph1vsPh2_MB4",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1284,7 +1284,7 @@
         "output"    :
         {
             "filenamePlot"      : "06_phiHitsDiffVsX_Ph1vsPh2_MB3",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1316,7 +1316,7 @@
         "output"    :
         {
             "filenamePlot"      : "06_phiHitsDiffVsX_Ph1vsPh2_MB4",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1348,7 +1348,7 @@
         "output"    :
         {
             "filenamePlot"      : "06_eff_Ph1vsPh2_MB3",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1380,7 +1380,7 @@
         "output"    :
         {
             "filenamePlot"      : "06_eff_Ph1vsPh2_MB4",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     }
 

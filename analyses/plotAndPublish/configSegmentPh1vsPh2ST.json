@@ -34,7 +34,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Phase1_vs_Phase2_t0_MB3",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -73,7 +73,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_Phase1_vs_Phase2_PhiNhits_MB3",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -112,7 +112,7 @@
         "output"    :
         {
             "filenamePlot"      : "04_Phase1_vs_Phase2_HitRes_MB3_SL1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -151,7 +151,7 @@
         "output"    :
         {
             "filenamePlot"      : "04_Phase1_vs_Phase2_HitRes_MB3_SL3",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -189,7 +189,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Phase1_vs_Phase2_t0",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -228,7 +228,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_Phase1_vs_Phase2_PhiNhits_MB4",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -268,7 +268,7 @@
         "output"    :
         {
             "filenamePlot"      : "04_Phase1_vs_Phase2_HitRes_MB4_SL1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -307,7 +307,7 @@
         "output"    :
         {
             "filenamePlot"      : "04_Phase1_vs_Phase2_HitRes_MB4_SL3",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     }
 

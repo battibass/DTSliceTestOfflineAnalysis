@@ -27,7 +27,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Occupancy_MB3_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -59,7 +59,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Occupancy_MB4_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -91,7 +91,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Occupancy_MB1_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -123,7 +123,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Occupancy_MB2_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
    
@@ -155,7 +155,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Occupancy_MB3_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -187,7 +187,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_Occupancy_MB4_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -240,7 +240,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB3_SL1_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -293,7 +293,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB3_SL2_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -346,7 +346,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB3_SL3_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -399,7 +399,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB4_SL1_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -452,7 +452,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB4_SL3_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -505,7 +505,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB1_SL1_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -558,7 +558,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB1_SL3_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -611,7 +611,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB2_SL1_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -664,7 +664,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB2_SL3_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -717,7 +717,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB2_SL1_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -770,7 +770,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB2_SL3_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -823,7 +823,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB3_SL1_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -876,7 +876,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB3_SL3_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -929,7 +929,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB4_SL1_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -982,7 +982,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB4_SL3_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1014,7 +1014,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_MatchedDigisByWire_MB3_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1046,7 +1046,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_MatchedDigisByWire_MB4_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1078,7 +1078,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_MatchedDigisByWire_MB3_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1110,7 +1110,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_MatchedDigisByWire_MB4_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1148,7 +1148,7 @@
         "output"    :
         {
             "filenamePlot"      : "04_MatchedDigiSummary_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1186,7 +1186,7 @@
         "output"    :
         {
             "filenamePlot"      : "05_FracEffDigi_Ph1VsPh2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1224,7 +1224,7 @@
         "output"    :
         {
             "filenamePlot"      : "04_MatchedDigiSummary_Phase1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -1256,7 +1256,7 @@
         "output"    :
         {
             "filenamePlot"      : "06_MultipleHits_Time_MB1",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
     
@@ -1288,7 +1288,7 @@
         "output"    :
         {
             "filenamePlot"      : "06_MultipleHits_Time_MB2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
     
@@ -1327,7 +1327,7 @@
         "output"    :
         {
             "filenamePlot"      : "06_MultipleHits_Time_MB3",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
     
@@ -1366,7 +1366,7 @@
         "output"    :
         {
             "filenamePlot"      : "06_MultipleHits_Time_MB4",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     }
 

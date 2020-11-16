@@ -28,7 +28,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase1_nSegmens",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -59,7 +59,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase1_Nhits",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -90,7 +90,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase1_t0",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -121,7 +121,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase1_PhiChi2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -152,7 +152,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase1_ThetaChi2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -183,7 +183,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase1_PhiProbChi2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -214,7 +214,7 @@
         "output"    :
         {
             "filenamePlot"      : "Phase1_ThetaProbChi2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     }
 }

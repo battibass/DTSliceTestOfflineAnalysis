@@ -52,7 +52,7 @@
         "output"    :
         {
             "filenamePlot"      : "03_quality_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -109,7 +109,7 @@
         "output"    :
         {
             "filenamePlot"      : "02_BX_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -165,7 +165,7 @@
         "output"    :
         {
             "filenamePlot"      : "07_phi_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -221,7 +221,7 @@
         "output"    :
         {
             "filenamePlot"      : "08_phiB_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -277,7 +277,7 @@
         "output"    :
         {
             "filenamePlot"      : "06_chi2_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -329,7 +329,7 @@
         "output"    :
         {
             "filenamePlot"      : "05_t0_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -386,7 +386,7 @@
         "output"    :
         {
             "filenamePlot"      : "04_BXOK_quality_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -419,7 +419,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_BX_vs_quality_MB1_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -451,7 +451,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_BX_vs_quality_MB2_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -483,7 +483,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_BX_vs_quality_MB3_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
@@ -515,7 +515,7 @@
         "output"    :
         {
             "filenamePlot"      : "01_BX_vs_quality_MB4_Phase2",
-            "fileType"          : ["png", "pdf"]
+            "fileType"          : ["png", "root",  "pdf"]
         }
     }
 }   
