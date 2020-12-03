@@ -51,8 +51,9 @@ class DTNtupleDigiAnalyzer : public DTNtupleBaseAnalyzer
  public:
   
   DTNtupleDigiAnalyzer(const TString & inFileName,
-		       const TString & outFileName,
-		       std::string outFolder);
+                       const TString & outFileName,
+                       std::string outFolder,
+                       const TString & maskFile);
 
   ~DTNtupleDigiAnalyzer();
 
@@ -73,6 +74,7 @@ class DTNtupleDigiAnalyzer : public DTNtupleBaseAnalyzer
   TFile m_outFile;
 
   std::string m_outFolder;
+  std::map<int,std::vector<int>> maskedWires;
 
   std::map<std::string,std::vector<int>> m_stations;
 

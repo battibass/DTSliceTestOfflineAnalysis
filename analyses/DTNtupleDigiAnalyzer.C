@@ -1,13 +1,15 @@
 #include "DTNtupleDigiAnalyzer.h"
 
 #include <set>
+#include <string>
 #include <fstream>
 #include <iomanip>
 #include <algorithm>
 
 DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer(const TString & inFileName,
-					   const TString & outFileName,
-					   std::string outFolder) :
+                                           const TString & outFileName,
+                                           std::string outFolder,
+                                           const TString & maskFile = "") :
 m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(inFileName)  
 { 
 
@@ -30,6 +32,44 @@ m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(
   m_timeBoxMax["Ph2"]  =  3750.;
   m_timeBoxBins["Ph2"] =  1250;
 
+
+  if (maskFile != "") {
+    TString tmpstr_1, tmpstr_2, tmpstr_3, tmpstr_4;
+    ifstream myfile (maskFile);
+
+    if (myfile.is_open()) {
+      string line;
+      while ( getline (myfile, line) ) {
+        TString tmpline = line;
+        if      (tmpline.Contains("MB1")) tmpstr_1 = tmpline;
+        else if (tmpline.Contains("MB2")) tmpstr_2 = tmpline;
+        else if (tmpline.Contains("MB3")) tmpstr_3 = tmpline;
+        else if (tmpline.Contains("MB4")) tmpstr_4 = tmpline;
+      }
+      tmpstr_1.ReplaceAll("\n", ""); tmpstr_1.ReplaceAll("MB1 ", "");
+      tmpstr_2.ReplaceAll("\n", ""); tmpstr_2.ReplaceAll("MB2 ", "");
+      tmpstr_3.ReplaceAll("\n", ""); tmpstr_3.ReplaceAll("MB3 ", "");
+      tmpstr_4.ReplaceAll("\n", ""); tmpstr_4.ReplaceAll("MB4 ", "");
+      myfile.close();
+    }
+    else cout << "WARNING: unable to open mask wire file: NO WIRE WILL BE MASKED!";
+
+    TString tok;
+    Ssiz_t from = 0;
+    while (tmpstr_1.Tokenize(tok, from, " ")) {
+      maskedWires[1].push_back(atoi(tok));
+    }
+    while (tmpstr_2.Tokenize(tok, from, " ")) {
+      maskedWires[2].push_back(atoi(tok));
+    }
+    while (tmpstr_3.Tokenize(tok, from, " ")) {
+      maskedWires[3].push_back(atoi(tok));
+    }
+    while (tmpstr_4.Tokenize(tok, from, " ")) {
+      maskedWires[4].push_back(atoi(tok));
+    }
+
+  }
 }
 
 DTNtupleDigiAnalyzer::~DTNtupleDigiAnalyzer() 
@@ -90,6 +130,9 @@ void DTNtupleDigiAnalyzer::book()
 	  
 	  TString hName = ("hOccupancy" + stTag).c_str(); 
 	  m_plots[hName] = new TH2F(hName,"Occupancy;wire;layer / superlayer",100,0.5,100.5,12,-0.5,11.5);
+
+      hName = ("hOccupancyMultiple" + stTag).c_str();
+      m_plots[hName] = new TH2F(hName, "Occupancy;wire;layer / superlayer", 100, 0.5, 100.5, 12, -0.5, 11.5);
 
 	  hName = ("hWireByWireEff" + stTag).c_str();
 	  m_effs[hName] = new TEfficiency(hName,"Wire by wire matching efficiency;wire;layer / superlayer",100,0.5,100.5,12,-0.5,11.5);
@@ -190,31 +233,36 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
     {
       
       auto & wireId    =  wireAndDigis.first;
+      stringstream stTagS;
+      stTagS << typeTag
+              << "St" << wireId.m_chamb;
+
+      string stTag = stTagS.str();
+
+      if (wireId.m_sl == 2 || std::find(maskedWires[wireId.m_chamb].begin(), maskedWires[wireId.m_chamb].end(), wireId.m_wire) != maskedWires[wireId.m_chamb].end()) continue;
+
       auto & digiTimes =  wireAndDigis.second;
 
+//       m_plots[("hOccupancyMultiple" + stTag).c_str()]->Fill(wireId.m_wire, (wireId.m_layer - 1) + (wireId.m_sl - 1) * 4);
+
       if (digiTimes.size() > 1)
-	{
-	  
-	  stringstream stTagS;
-	  stTagS << typeTag
-		 << "St" << wireId.m_chamb;
+        {
 
-	  string stTag = stTagS.str();
+          std::sort(digiTimes.begin(),digiTimes.end());
 
-	  std::sort(digiTimes.begin(),digiTimes.end());
+          auto digiIt  = digiTimes.begin();
+          auto digiEnd = digiTimes.end();
 
-	  auto digiIt  = digiTimes.begin();
-	  auto digiEnd = digiTimes.end();
+          double timePrev = (*digiIt);
+          ++digiIt;
 
-	  double timePrev = (*digiIt);
-	  ++digiIt;
-
-	  for (; digiIt!=digiEnd; ++digiIt)
-	    {
-	      m_plots[("hTimeDiff"+ stTag).c_str()]->Fill((*digiIt) - timePrev);
-	      timePrev = (*digiIt);
-	    }
-	}
+          for (; digiIt!=digiEnd; ++digiIt)
+            {
+              m_plots[("hTimeDiff"+ stTag).c_str()]->Fill((*digiIt) - timePrev);
+              timePrev = (*digiIt);
+              m_plots[("hOccupancyMultiple" + stTag).c_str()]->Fill(wireId.m_wire, (wireId.m_layer - 1) + (wireId.m_sl - 1) * 4);
+            }
+        }
     }
   
 }

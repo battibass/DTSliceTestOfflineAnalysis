@@ -9,7 +9,7 @@
 #include "DTNtupleTriggerAnalyzer.h"
 #include "DTNtupleSegmentAnalyzer.h"
 
-void runAllAnalyses(TString inputFile, Int_t runNumber)
+void runAllAnalyses(TString inputFile, Int_t runNumber, TString maskFile = "")
 {
 
   TString runName;
@@ -20,7 +20,7 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
   gSystem->Exec("mkdir -p " + runName + "/segment/");
 
   //CB find a more elegant solution to pass directory
-  DTNtupleDigiAnalyzer digiAnalysis(inputFile, runName + "/digi/results_digi.root", (runName + "/digi/").Data());
+  DTNtupleDigiAnalyzer digiAnalysis(inputFile, runName + "/digi/results_digi.root", (runName + "/digi/").Data(), maskFile);
   digiAnalysis.Loop();
 
   DTNtupleSegmentAnalyzer segmentAnalysis(inputFile, runName + "/segment/results_segment.root");
@@ -35,7 +35,7 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
 
 }
 
-void runAllAnalyses(TString xmlFile)
+void runAllAnalyses(TString xmlFile, TString maskFile = "")
 {
 
   TString calibFolder = "/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2020_data/calib/";
@@ -87,6 +87,6 @@ void runAllAnalyses(TString xmlFile)
   for (const auto & fileToCopy : filesToCopy)
     gSystem->Exec("cp " + fileToCopy + " run" + runNumber + "/cfg/");
 
-  runAllAnalyses(ntupleName, atoi(runNumber));
+  runAllAnalyses(ntupleName, atoi(runNumber), maskFile);
 
 }
