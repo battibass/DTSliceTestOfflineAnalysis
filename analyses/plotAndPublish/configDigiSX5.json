@@ -64,6 +64,198 @@
         }
     },
 
+    "Phase-1 Occupancy (including multiple digis) MB3"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB3",
+                "legendEntry"       : "MB3",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh1St3"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 MB3",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "01_OccupancyMultiple_MB3_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 Occupancy (including multiple digis) MB4"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB4",
+                "legendEntry"       : "MB4",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh1St4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 100.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 MB4",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "01_OccupancyMultiple_MB4_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-2 Occupancy (including multiple digis) MB1"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB1",
+                "legendEntry"       : "MB1",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh2St1"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-2 MB1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "01_OccupancyMultiple_MB1_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-2 Occupancy (including multiple digis) MB2"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB2",
+                "legendEntry"       : "MB2",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh2St2"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-2 MB2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "01_OccupancyMultiple_MB2_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-2 Occupancy (including multiple digis) MB3"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB3",
+                "legendEntry"       : "MB3",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh2St3"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-2 MB3",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "01_OccupancyMultiple_MB3_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-2 Occupancy (including multiple digis) MB4"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB4",
+                "legendEntry"       : "MB4",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh2St4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 100.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-2 MB4",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "01_OccupancyMultiple_MB4_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
     "Phase-1 TimeBox SL1 MB2"   :
     {
         "inputs"    :

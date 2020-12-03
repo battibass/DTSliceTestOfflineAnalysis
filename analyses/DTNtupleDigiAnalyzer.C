@@ -255,6 +255,7 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
 
           double timePrev = (*digiIt);
           ++digiIt;
+          m_plots[("hOccupancyMultiple" + stTag).c_str()]->Fill(wireId.m_wire, (wireId.m_layer - 1) + (wireId.m_sl - 1) * 4);
 
           for (; digiIt!=digiEnd; ++digiIt)
             {
