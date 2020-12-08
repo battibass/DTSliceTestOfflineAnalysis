@@ -91,7 +91,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_OccupancyMultiple_MB3_Phase1",
+            "filenamePlot"      : "07_OccupancyMultiple_MB3_Phase1",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -123,7 +123,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_OccupancyMultiple_MB4_Phase1",
+            "filenamePlot"      : "07_OccupancyMultiple_MB4_Phase1",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -155,7 +155,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_OccupancyMultiple_MB1_Phase2",
+            "filenamePlot"      : "07_OccupancyMultiple_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -187,7 +187,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_OccupancyMultiple_MB2_Phase2",
+            "filenamePlot"      : "07_OccupancyMultiple_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -219,7 +219,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_OccupancyMultiple_MB3_Phase2",
+            "filenamePlot"      : "07_OccupancyMultiple_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -251,7 +251,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_OccupancyMultiple_MB4_Phase2",
+            "filenamePlot"      : "07_OccupancyMultiple_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
