@@ -191,6 +191,198 @@
         }
     },
 
+    "Phase-1 Occupancy (including multiple digis) MB3"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB3",
+                "legendEntry"       : "MB3",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh1St3"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 MB3",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "07_OccupancyMultiple_MB3_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 Occupancy (including multiple digis) MB4"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB4",
+                "legendEntry"       : "MB4",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh1St4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 100.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 MB4",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "07_OccupancyMultiple_MB4_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-2 Occupancy (including multiple digis) MB1"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB1",
+                "legendEntry"       : "MB1",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh2St1"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-2 MB1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "07_OccupancyMultiple_MB1_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-2 Occupancy (including multiple digis) MB2"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB2",
+                "legendEntry"       : "MB2",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh2St2"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-2 MB2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "07_OccupancyMultiple_MB2_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-2 Occupancy (including multiple digis) MB3"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB3",
+                "legendEntry"       : "MB3",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh2St3"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-2 MB3",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "07_OccupancyMultiple_MB3_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-2 Occupancy (including multiple digis) MB4"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB4",
+                "legendEntry"       : "MB4",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh2St4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 100.0, "wire"],
+            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-2 MB4",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "07_OccupancyMultiple_MB4_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
     "Phase-1 TimeBox SL1 MB3"   : 
     {
         "inputs"    :
@@ -1228,7 +1420,7 @@
         }
     },
 
-    "Multiple Hits Time MB1"   :
+    "Multiple Hits Time MB1 Phi SL"   :
     {
         "inputs"    :
         {
@@ -1237,7 +1429,7 @@
                 "label"             : "Phase-2",
                 "legendEntry"       : "Phase-2",
                 "folder"            : "",
-                "plot"		    : "hTimeDiffPh2St1"
+                "plot"		    : "hTimeDiffPhiPh2St1"
 	    }
 
         },
@@ -1255,12 +1447,12 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "06_MultipleHits_Time_MB1",
+            "filenamePlot"      : "06_MultipleHits_Time_MB1_Phi",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
-    
-    "Multiple Hits Time MB2"   :
+
+    "Multiple Hits Time MB1 Theta"   :
     {
         "inputs"    :
         {
@@ -1269,7 +1461,39 @@
                 "label"             : "Phase-2",
                 "legendEntry"       : "Phase-2",
                 "folder"            : "",
-                "plot"		    : "hTimeDiffPh2St2"
+                "plot"		    : "hTimeDiffThetaPh2St1"
+	    }
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 500.0, "time difference"],
+            "y"                 : [-0.5, 12.5, "entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "MB1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [2, 1, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.55, 0.67, 0.89, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "06_MultipleHits_Time_MB1_Theta",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+    
+    "Multiple Hits Time MB2 Phi"   :
+    {
+        "inputs"    :
+        {
+            "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"		    : "hTimeDiffPhiPh2St2"
 	    }
 
         },
@@ -1287,12 +1511,44 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "06_MultipleHits_Time_MB2",
+            "filenamePlot"      : "06_MultipleHits_Time_MB2_Phi",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Multiple Hits Time MB2 Theta"   :
+    {
+        "inputs"    :
+        {
+            "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"		    : "hTimeDiffThetaPhiPh2St2"
+	    }
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 500.0, "time difference"],
+            "y"                 : [-0.5, 12.5, "entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "MB2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [2, 1, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.55, 0.67, 0.89, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "06_MultipleHits_Time_MB2_Theta",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
     
-    "Multiple Hits Time MB3"   :
+    "Multiple Hits Time MB3 Phi"   :
     {
         "inputs"    :
         {
@@ -1301,14 +1557,14 @@
                 "label"             : "Phase-1",
                 "legendEntry"       : "Phase-1",
                 "folder"            : "",
-                "plot"		    : "hTimeDiffPh1St3"
+                "plot"		    : "hTimeDiffPhiPh1St3"
 	    },
             "Phase-2"   :
             {
                 "label"             : "Phase-2",
                 "legendEntry"       : "Phase-2",
                 "folder"            : "",
-                "plot"		    : "hTimeDiffPh2St3"
+                "plot"		    : "hTimeDiffPhiPh2St3"
 	    }
 
         },
@@ -1326,12 +1582,12 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "06_MultipleHits_Time_MB3",
+            "filenamePlot"      : "06_MultipleHits_Time_MB3_Phi",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
     
-    "Multiple Hits Time MB4"   :
+    "Multiple Hits Time MB3 Theta"   :
     {
         "inputs"    :
         {
@@ -1340,14 +1596,53 @@
                 "label"             : "Phase-1",
                 "legendEntry"       : "Phase-1",
                 "folder"            : "",
-                "plot"		    : "hTimeDiffPh1St4"
+                "plot"		    : "hTimeDiffThetaPh1St3"
 	    },
             "Phase-2"   :
             {
                 "label"             : "Phase-2",
                 "legendEntry"       : "Phase-2",
                 "folder"            : "",
-                "plot"		    : "hTimeDiffPh2St4"
+                "plot"		    : "hTimeDiffThetaPh2St3"
+	    }
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 500.0, "time difference"],
+            "y"                 : [-0.5, 12.5, "entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "MB3",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.55, 0.67, 0.89, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "06_MultipleHits_Time_MB3_Theta",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Multiple Hits Time MB4 Phi"   :
+    {
+        "inputs"    :
+        {
+            "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"		    : "hTimeDiffPhiPh1St4"
+	    },
+            "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"		    : "hTimeDiffPhiPh2St4"
 	    }
 
         },
@@ -1365,9 +1660,47 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "06_MultipleHits_Time_MB4",
+            "filenamePlot"      : "06_MultipleHits_Time_MB4_Phi",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Multiple Hits Time MB4 Theta"   :
+    {
+        "inputs"    :
+        {
+            "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"		    : "hTimeDiffThetaPh1St4"
+	    },
+            "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"		    : "hTimeDiffThetaPh2St4"
+	    }
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 500.0, "time difference"],
+            "y"                 : [-0.5, 12.5, "entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "MB4",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.55, 0.67, 0.89, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "06_MultipleHits_Time_MB4_Theta",
             "fileType"          : ["png", "root",  "pdf"]
         }
     }
-
 }
