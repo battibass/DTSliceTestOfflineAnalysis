@@ -1,5 +1,5 @@
-#ifndef DTTnPBaseAnalysis_h
-#define DTTnPBaseAnalysis_h
+#ifndef DTNtupleSegmentAnalyzer_h
+#define DTNtupleSegmentAnalyzer_h
 
 #include "DTNtupleBaseAnalyzer.h"
 
@@ -24,7 +24,7 @@ class DTNtupleSegmentAnalyzer : public DTNtupleBaseAnalyzer
   ~DTNtupleSegmentAnalyzer();
 
   virtual void Loop() override;
-  void PreLoop(string Tag);
+  void PreLoop();
 
   string m_deadFileName;
   
@@ -36,14 +36,16 @@ class DTNtupleSegmentAnalyzer : public DTNtupleBaseAnalyzer
 
   void baseAnalysis();
 
-  void measureEfficiency(string tag, int Ndead, int dead[][6],
-			 DTNtupleSegment & seg, DTNtupleDigi & digi);
+  void measureEfficiency(string tag);
 
-  void computeResidual(string tag, DTNtupleSegment & seg);
+  void computeResidual(string tag);
 
   void comparisonAnalysis();
 
   TFile m_outFile;
+
+  std::vector<std::string> m_tags;
+  std::map<std::string, std::vector<WireId>> m_deadWires;
 
   std::map<std::string,float> m_timeBoxMin;
   std::map<std::string,float> m_timeBoxMax;

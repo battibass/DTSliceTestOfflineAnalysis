@@ -1,11 +1,15 @@
 #include "DTNtupleSegmentAnalyzer.h"
+
 #include "TProfile.h"
 #include "TCanvas.h"
-#include <algorithm>
-#include <fstream>
-#include <iomanip>      // std::setprecision
 #include "TMath.h"
 #include "TF1.h"
+
+#include <algorithm>
+#include <fstream>
+#include <iomanip>
+#include <bitset>
+
 
 DTNtupleSegmentAnalyzer::DTNtupleSegmentAnalyzer(const TString & inFileName,
 						 const TString & outFileName) :
@@ -18,9 +22,14 @@ DTNtupleSegmentAnalyzer::DTNtupleSegmentAnalyzer(const TString & inFileName,
   m_timeBoxMin["Ph2"]  = -1250.;
   m_timeBoxMax["Ph2"]  =  3750.;
 
+  // CB make this constexpr
+  m_tags.push_back("Ph1");
+  m_tags.push_back("Ph2");
+
   TObjArray *tx = outFileName.Tokenize("/");
   m_deadFileName = (((TObjString *)(tx->At(0)))->String()).Data();
   cout<<"m_deadFileName "<<m_deadFileName<<endl;
+
 }
 
 DTNtupleSegmentAnalyzer::~DTNtupleSegmentAnalyzer() 
@@ -28,152 +37,160 @@ DTNtupleSegmentAnalyzer::~DTNtupleSegmentAnalyzer()
 
 }
 
+void DTNtupleSegmentAnalyzer::PreLoop()
+{
 
-int deadPh1[1000000][6];
-int NdeadPh1=0;
+  // maps by "tag"
+  std::map<std::string, std::ofstream> deadChannelListRun, deadChannelList;
 
-int deadPh2[1000000][6];
-int NdeadPh2=0;
+  // plot by tag and SL
+  std::map<std::string, std::map<int, std::map<int, TH2F*>>> hOccupancyBySl;
 
-int nrequiredhit=7;
-int MaxDead=0;
+  for (const auto & tag : m_tags)
+    {
+      std::string deadFileNameRun = m_deadFileName 
+                                    + "/segment/DeadList/DeadList_" 
+	                            + m_deadFileName 
+                                    + tag;
 
+      std::cout << "[DTNtupleSegmentAnalyzer] Running Preloop to save dead channels. Info will be saved in "
+		<< deadFileNameRun << std::endl;
 
-//Add preloop for both ph1 and ph2 //del
-void DTNtupleSegmentAnalyzer::PreLoop(string Tag){
+      deadChannelListRun[tag].open(deadFileNameRun);
+
+      std::string deadFileName = "deadChannelList" + tag;
+
+      std::cout << "\tSame info will also be saved in "
+		<< deadFileName << " for future use" << std::endl;
+
+      deadChannelList[tag].open(deadFileName);
+
+      //Create a Histogram per SL
+      for (int iSt=1; iSt<=4; ++iSt)
+	{
+	  for (int iSL=1; iSL<=3; ++iSL)
+	    {
+	      if (iSt==4 &&iSL==2) continue; 
+	      std::string hName = "MB" + std::to_string(iSt) + "_SL" + std::to_string(iSL) + "_" + tag;
+	      hOccupancyBySl[tag][iSt][iSL] = new TH2F(hName.c_str(), "", 92, 1., 93., 4, 0.5, 4.5);
+	    }
+	}
+    }
 
   if (fChain == 0) return;
-  Long64_t nentries = fChain->GetEntriesFast();
-  Long64_t nRealEntries = fChain->GetEntries();
+  Long64_t nEntries = fChain->GetEntriesFast();
 
-  //nentries=50000;
+  //nEntries=50000;
 
-  Long64_t nbytes = 0, nb = 0;
+  for (Long64_t jentry=0; jentry<nEntries; ++jentry) 
+    {
 
-  ofstream DeadList;
-  std::string deadname;
+      Long64_t ientry = LoadTree(jentry);
+      if (ientry < 0) break;
+      fChain->GetEntry(jentry);
 
-  deadname.append("DeadList/DeadList_"+m_deadFileName+Tag);
-  cout<<("Preloop on "+Tag+" digis to save dead channels. Info will be saved in DeadList/DeadList_"+m_deadFileName+Tag).c_str()<<endl;
-  DeadList.open(deadname.c_str());
-  //Create a Histogram per layer 
-  char go;
-  char hname[50];
-  TH1F* occupancy[4][3][4];
-      for (int ist=0; ist<4; ist++) {
-	for (int isl=0; isl<3; isl++) {
-	  if (isl==1 && ist==3) continue;
-	  for (int ilay=0; ilay<4; ilay++) {
-	    sprintf (hname,"MB%u_SL%u_Lay%u",ist+1,isl+1,ilay+1);
-	    occupancy[ist][isl][ilay] = new TH1F (hname,"",92,1.,93.);
-	  }
+      DTNtupleBaseAnalyzer::LoadObjs();
+
+      if (jentry%1000 == 0) 
+	std::cout << setprecision (2) 
+		  << "[DTNtupleSegmentAnalyzer] : Pre-Loop event " 
+		  << jentry << " " << jentry/float(nEntries)*100. << "%" 
+		  << std::endl;
+
+      for (const auto & tag : m_tags) 
+	{
+	  for (uint iDigi=0; iDigi<(*digiObjs[tag].nDigis); iDigi++) 
+	    {
+	      int st = digiObjs[tag].station->at(iDigi);
+	      int sl = digiObjs[tag].superLayer->at(iDigi);
+	      int lay = digiObjs[tag].layer->at(iDigi);
+	      int wire = digiObjs[tag].wire->at(iDigi);
+	      
+	      hOccupancyBySl[tag][st][sl]->Fill(wire, lay);
+	    }
 	}
-      }
-
-  for (Long64_t jentry=0; jentry<nentries;jentry++) {
-
-    Long64_t ientry = LoadTree(jentry);
-    if (ientry < 0) break;
-    nb = fChain->GetEntry(jentry);   nbytes += nb;
-    // if (Cut(ientry) < 0) continue;
-    if (jentry%50000 == 0) cout<<setprecision (2)<<" Pre-Loop event "<<jentry<<" "<<jentry/float(nRealEntries)*100.<<"%"<<endl;
-    if(Tag=="Ph2")
-      for (uint idigi=0; idigi<ph2Digi_nDigis; idigi++) {
-	occupancy[ph2Digi_station->at(idigi)-1][ph2Digi_superLayer->at(idigi)-1][ph2Digi_layer->at(idigi)-1]->Fill(float(ph2Digi_wire->at(idigi)));
-      }
-    else
-      for (uint idigi=0; idigi<digi_nDigis; idigi++) {
-	occupancy[digi_station->at(idigi)-1][digi_superLayer->at(idigi)-1][digi_layer->at(idigi)-1]->Fill(float(digi_wire->at(idigi)));
-      }
-  }
+    }
   
   // analyze occupancy histos and fill dead channel table
-  
-  int nwire=0; int NwireTot=0;
-
-  if(Tag=="Ph1")  for (int iw=0; iw<5000; iw++) for (int geo=0; geo<6; geo++) deadPh1[iw][geo]=0;
-  else for (int iw=0; iw<5000; iw++) for (int geo=0; geo<6; geo++) deadPh2[iw][geo]=0;
-
-  for (int ist=0; ist<4; ist++) {
-    //	if (ist!=3 && ise>11) continue;
-    //if (ist!=3) continue;
-    for (int isl=0; isl<3; isl++) {
-      if (isl==1 && ist==3) continue;
-      if (isl==1) nwire=57; 
-      else if (ist==0) nwire = 49;
-      else if (ist==1) nwire = 60;
-      else if (ist==2) nwire = 72;
-      else if (ist==3) nwire = 92;	  	   
+    
+  for (const auto & tag : m_tags) 
+    {
+      int nWiresFile = 0;
+      int nWiresTot = 0;
       
-      NwireTot+=(nwire*4);
-      for (int ilay=0; ilay<4; ilay++) {
-	for (int iw=1; iw<nwire+1; iw++) {
-	  if (occupancy[ist][isl][ilay]->GetBinContent(iw)==0){
+      for (int iSt=1; iSt<=4; ++iSt) 
+	{
+	  for (int iSL=1; iSL<=3; ++iSL) 
+	    {
+	      int nWiresLay=0;
+ 
+	      if (iSL==2 && iSt==4) continue;
 
-	    if(Tag=="Ph1"){
-	    deadPh1[NdeadPh1][0]=ist+1;
-	    deadPh1[NdeadPh1][1]=isl+1;
-	    deadPh1[NdeadPh1][2]=ilay+1;
-	    deadPh1[NdeadPh1][3]=iw; 
+	      if (iSL==2) nWiresLay = 57; 
+	      else if (iSt==1) nWiresLay = 49;
+	      else if (iSt==2) nWiresLay = 60;
+	      else if (iSt==3) nWiresLay = 72;
+	      else if (iSt==4) nWiresLay = 92;	  	   
+      
+	      for (int iLay=1; iLay<=4; ++iLay) 
+		{
+		  for (int iW=1; iW<=nWiresLay; ++iW) 
+		    {
+		      nWiresTot++;
 
-	    DeadList <<NdeadPh1+1<<" ";
-	    for (int ip=0; ip<6; ip++){
-	      DeadList<< deadPh1[NdeadPh1][ip]<<" "; DeadList<<endl;
-	    }
-	    NdeadPh1++; 
-	  }
-	    else{
-	    deadPh2[NdeadPh2][0]=ist+1;
-	    deadPh2[NdeadPh2][1]=isl+1;
-	    deadPh2[NdeadPh2][2]=ilay+1;
-	    deadPh2[NdeadPh2][3]=iw; 
+		      if (hOccupancyBySl[tag][iSt][iSL]->GetBinContent(iW,iLay)==0)
+			{
+			  nWiresFile++;
 
-	    DeadList <<NdeadPh2+1<<" ";
-	    for (int ip=0; ip<6; ip++){
-	      DeadList<< deadPh2[NdeadPh2][ip]<<" "; DeadList<<endl;
+			  m_deadWires[tag].push_back(WireId(iSt,iSL,iLay,iW));
+			  
+			  std::stringstream wireString;
+			  			  
+			  wireString << nWiresFile 
+				     << " " << iSt 
+				     << " " << iSL 
+				     << " " << iLay 
+				     << " " << iW 
+				     << std::endl;
+
+			  deadChannelListRun[tag] << wireString.str();
+			  deadChannelList[tag] << wireString.str();
+			}
+		    }
+		}
+
+	      // do not want to store these histos
+	      delete hOccupancyBySl[tag][iSt][iSL];
+
 	    }
-	    NdeadPh2++; 
-	  }
-	    }
-	    //if(Ndead==10000){cout<<"Error. Too many dead channels. "<<endl; abort();}
-	  }
 	}
-      }
-    }
 
+      std::cout << "[DTNtupleSegmentAnalyzer] : " 
+		<< nWiresFile << " dead wires out of " 
+		<< nWiresTot << std::endl;
 
+      std::stringstream trailingString;
+      trailingString << 0 
+		     << " " << 0 
+		     << " " << 0 
+		     << " " << 0
+		     << " " << 0
+		     << " " << 0
+		     << " " << 0 
+		     << " " << 0 
+		     << " " << std:: endl
+		     << nWiresFile << " dead wires out of "
+		     << nWiresTot << std::endl;
+      
+      deadChannelListRun[tag] << trailingString.str();
+      deadChannelList[tag] << trailingString.str();
 
-  //Delete histrograms not to be saved in output file  
-  for (int ist=0; ist<4; ist++) 
-    for (int isl=0; isl<3; isl++){
-      if (isl==1 && ist==3) continue;
-      for (int ilay=0; ilay<4; ilay++){
-	delete occupancy[ist][isl][ilay];
-      }
+      deadChannelListRun[tag].close();
+      deadChannelList[tag].close();
+      
     }
   
-
-  if(Tag=="Ph1"){  cout<<NdeadPh1<<" dead wires out of "<<NwireTot<<endl;
-  DeadList<<0<<" "<<0<<" "<<0<<" "<<0<<" "<<0<<" "<<0<<" "<<0<<" "<<0<<" "
-          <<endl<<NdeadPh1<<" dead wires of out "<<NwireTot<<endl;
-  }
-
-  else{
-    cout<<NdeadPh2<<" dead wires out of "<<NwireTot<<endl;
-    DeadList<<0<<" "<<0<<" "<<0<<" "<<0<<" "<<0<<" "<<0<<" "<<0<<" "<<0<<" "
-	    <<endl<<NdeadPh2<<" dead wires of out "<<NwireTot<<endl;
-  }
-  //Uncomment to see list of dead channels.
-
-  // for (int idead=0; idead<Ndead; idead++) {
-  //   cout<<"MB"<<dead[idead][0]<<"_SL"<<dead[idead][1]
-  //       <<"_layer"<<dead[idead][2]<<"_cell"<<dead[idead][3]<<endl;
-  // }
-   
-  DeadList.close();
 }
-
-
 
 void DTNtupleSegmentAnalyzer::Loop()
 {
@@ -182,81 +199,12 @@ void DTNtupleSegmentAnalyzer::Loop()
 
   if (fChain == 0) return;
 
-  Long64_t nentries = fChain->GetEntries();
-  //nentries = 50000;
-
-  //Read file with dead cells Ph1
-  if (NdeadPh1==0) {
-    cout<<" READING FROM FILE !! "<<endl;
-    ifstream txtin;
-    std::string deadname;
-
-    deadname.append("DeadList/DeadList_"+m_deadFileName+"Ph1");
-     
-    cout<<" reading from "<<deadname<<endl;
-    txtin.open(deadname.c_str(),std::ifstream::in);
-     
-    int idead    = 0;
-    int prevlay  = 0; int prevSL = 0;
-    int ndeadlay = 0;
-
-    do {
-      txtin>>idead>>deadPh1[NdeadPh1][0]>>deadPh1[NdeadPh1][1]>>deadPh1[NdeadPh1][2]>>deadPh1[NdeadPh1][3];
-      if (deadPh1[NdeadPh1][1] == prevSL && deadPh1[NdeadPh1][2] == prevlay ) {
-	ndeadlay++;
-      }
-      else {
-	if (ndeadlay>20) cout<<"/MB"<<deadPh1[NdeadPh1][0]<<" SL"
-			     <<deadPh1[NdeadPh1][1]<<" L"
-			     <<deadPh1[NdeadPh1][2]<<" "<<ndeadlay+1<<" deads!!"<<endl;
-	prevSL=deadPh1[NdeadPh1][1]; 
-	prevlay=deadPh1[NdeadPh1][2]; 
-	ndeadlay=0;
-      }
-      NdeadPh1++;
-    }
-    while (idead!=0);
-  }
-
-
-  //Read file with dead cells Ph2
-  if (NdeadPh2==0) {
-    cout<<" READING FROM FILE !! "<<endl;
-    ifstream txtin;
-    std::string deadname;
-
-    deadname.append("DeadList/DeadList_"+m_deadFileName+"Ph2");
-     
-    cout<<" reading from "<<deadname<<endl;
-    txtin.open(deadname.c_str(),std::ifstream::in);
-     
-    int idead    = 0;
-    int prevlay  = 0; int prevSL = 0;
-    int ndeadlay = 0;
-
-    do {
-      txtin>>idead>>deadPh2[NdeadPh2][0]>>deadPh2[NdeadPh2][1]>>deadPh2[NdeadPh2][2]>>deadPh2[NdeadPh2][3];
-      if (deadPh2[NdeadPh2][1] == prevSL && deadPh2[NdeadPh2][2] == prevlay ) {
-	ndeadlay++;
-      }
-      else {
-	if (ndeadlay>20) cout<<"/MB"<<deadPh2[NdeadPh2][0]<<" SL"
-			     <<deadPh2[NdeadPh2][1]<<" L"
-			     <<deadPh2[NdeadPh2][2]<<" "<<ndeadlay+1<<" deads!!"<<endl;
-	prevSL=deadPh2[NdeadPh2][1]; 
-	prevlay=deadPh2[NdeadPh2][2]; 
-	ndeadlay=0;
-      }
-      NdeadPh2++;
-    }
-    while (idead!=0);
-  }
-
-
+  Long64_t nEntries = fChain->GetEntries();
+  //nEntries = 50000;
 
   //Main loop over entries
   Long64_t nbytes = 0, nb = 0;
-  for (Long64_t jentry=0; jentry<nentries;jentry++) 
+  for (Long64_t jentry=0; jentry<nEntries;jentry++) 
     {
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
@@ -396,12 +344,12 @@ void DTNtupleSegmentAnalyzer::book()
 				    "Residual per Sl; Sl ; Residual [#mu m]",
 				    3,0.5,3.5);
 
-	  hName = Form("%seffPhiByWire_st%d",typeTag.c_str(),st); 
+	  hName = Form("%seffByWire_st%d",typeTag.c_str(),st); 
 	  m_effs[hName] = new TEfficiency(hName,
 					  "Wire by wire efficiency; wire; layer / superlayer",
-					  100,0.5,100.5, 12, -0.5, 11.5);
+					  100,0.5,100.5, 12, 0.5, 12.5);
 
-	  hName = Form("%seffPhiSummary_st%d",typeTag.c_str(),st);
+	  hName = Form("%seffSummary_st%d",typeTag.c_str(),st);
 	  m_plots[hName] = new TH1F(hName,"Efficiency summary;efficiency,# wires",110,0.5,1.05);
 
 	}
@@ -479,25 +427,23 @@ void DTNtupleSegmentAnalyzer::fill()
   baseAnalysis();
   comparisonAnalysis();
 
-  measureEfficiency("Ph1",NdeadPh1,deadPh1,segmentObjs["Ph1"],digiObjs["Ph1"]);
-  measureEfficiency("Ph2",NdeadPh2,deadPh2,segmentObjs["Ph2"],digiObjs["Ph2"]);
-  
-  computeResidual("Ph1",segmentObjs["Ph1"]);
-  computeResidual("Ph2",segmentObjs["Ph2"]);
+  for (const auto & tag : m_tags)
+    {
+      measureEfficiency(tag);
+      computeResidual(tag);
+    }
 
 }
 
 void DTNtupleSegmentAnalyzer::endJob()
 {
 
-  std::vector<std::string> typeTags = { "Ph1", "Ph2" };
-  
-  for (const auto & typeTag : typeTags)
+  for (const auto & tag : m_tags)
     {
       for (int st=1; st<5; ++st)
 	{
 
-	  string hName = Form("%seffPhiByWire_st%d",typeTag.c_str(),st);
+	  string hName = Form("%seffByWire_st%d",tag.c_str(),st);
 	  
 	  int nBinsX = m_effs[hName]->GetTotalHistogram()->GetNbinsX();
 	  int nBinsY = m_effs[hName]->GetTotalHistogram()->GetNbinsY();
@@ -511,7 +457,7 @@ void DTNtupleSegmentAnalyzer::endJob()
 		  float eff = m_effs[hName]->GetEfficiency(iBin);
 		  if ( eff > 0.01 )
 		    {
-		      m_plots[Form("%seffPhiSummary_st%d",typeTag.c_str(),st)]->Fill(eff);
+		      m_plots[Form("%seffSummary_st%d",tag.c_str(),st)]->Fill(eff);
 		    }			
 		}
 	    }
@@ -522,7 +468,7 @@ void DTNtupleSegmentAnalyzer::endJob()
 	      if(sl==2 && st!=4)
 		{  
 
-		  string hName = Form("%shitResZ_st%d",typeTag.c_str(),st);
+		  string hName = Form("%shitResZ_st%d",tag.c_str(),st);
 
 		  auto histo = m_plots[hName];
 
@@ -542,12 +488,12 @@ void DTNtupleSegmentAnalyzer::endJob()
 		  
 		  m_plots[hName]->Fit("fTheta","RM");
 		  
-		  m_plots[Form("%shResPerSl_st%d",typeTag.c_str(),st)]->SetBinContent(sl + 0.5, 1e4 * fTheta->GetParameter(2)); 	
+		  m_plots[Form("%shResPerSl_st%d",tag.c_str(),st)]->SetBinContent(sl + 0.5, 1e4 * fTheta->GetParameter(2)); 	
 		}
 	      else if(sl!=2)
 		{
 	  
-		  string hName = Form("%shitResX_st%d_sl%d",typeTag.c_str(),st,sl);
+		  string hName = Form("%shitResX_st%d_sl%d",tag.c_str(),st,sl);
 		  
 		  auto histo = m_plots[hName];
 
@@ -567,7 +513,7 @@ void DTNtupleSegmentAnalyzer::endJob()
 
 		  m_plots[hName]->Fit("fPhi","RM");
 	  
-		  m_plots[Form("%shResPerSl_st%d",typeTag.c_str(),st)]->SetBinContent(sl+0.5,1e4*fPhi->GetParameter(2)); 	
+		  m_plots[Form("%shResPerSl_st%d",tag.c_str(),st)]->SetBinContent(sl+0.5,1e4*fPhi->GetParameter(2)); 	
 		}
 
 	      cout << endl << endl;
@@ -578,8 +524,8 @@ void DTNtupleSegmentAnalyzer::endJob()
   for (int st=1; st<5; ++st)
     {
 
-      string hNamePh1 = Form("Ph1effPhiByWire_st%d",st);
-      string hNamePh2 = Form("Ph2effPhiByWire_st%d",st);
+      string hNamePh1 = Form("Ph1effByWire_st%d",st);
+      string hNamePh2 = Form("Ph2effByWire_st%d",st);
       
       int nBinsX = m_effs[hNamePh1]->GetTotalHistogram()->GetNbinsX();
       int nBinsY = m_effs[hNamePh1]->GetTotalHistogram()->GetNbinsY();
@@ -804,380 +750,267 @@ void DTNtupleSegmentAnalyzer::comparisonAnalysis()
 
 }
 
-void DTNtupleSegmentAnalyzer::measureEfficiency(string Tag, int Ndead, int dead[][6],
-						DTNtupleSegment & seg, DTNtupleDigi & digi)
+void DTNtupleSegmentAnalyzer::measureEfficiency(string Tag)
 {
 
-  // ***********************
-  // CB to be cleaned up yet
-  // ***********************
-  
-  int ChambCross[100][3];
-  for (int i=0; i<100; i++) for (int geo=0; geo<3; geo++) ChambCross[i][geo]=-999;
-  int NChambCross=0;
-  
-  // First search for Phi segments
+  DTNtupleSegment & seg = segmentObjs[Tag];
+  DTNtupleDigi & digi = digiObjs[Tag];
+
+  // First analyze phi segments
   
   for (uint iSeg=0; iSeg<(*seg.nSegments); iSeg++)
     {
+      int nHitsPhi = seg.phi_nHits->at(iSeg);
+      int station = seg.station->at(iSeg);
+      
       //selection
+      if (nHitsPhi < 7) continue;
       if (!seg.hasPhi->at(iSeg)) continue;
-      // In chambers 1,2,3 select only segments with also Z (theta) contribution.
-      if(seg.sector->at(iSeg) != 12 || seg.wheel->at(iSeg) != 2) continue;     
-      
-      // if (station->at(iSeg)!=4 && !hasZed->at(iSeg)) continue;
-    
-      int seg_phinhits = seg.phi_nHits->at(iSeg);
-      
-      if (fabs(seg.dirLoc_x->at(iSeg))>0.7) continue; // angle
-      
+      if (seg.sector->at(iSeg) != 12 || seg.wheel->at(iSeg) != 2) continue;     
+      if (fabs(seg.dirLoc_x->at(iSeg))>0.7) continue;
       
       auto expWire = (TVectorF*)seg.hitsExpWire->At(iSeg);
       
-      // If a hit is missing, let us check that the extrapolation doesn't fall beyond layer or cross a dead cell!
-      int NexpDead=0; bool OutOfLayer=false;
+      // If a hit is missing, let us check that the 
+      // extrapolation doesn't fall beyond layer or 
+      // cross a dead cell!
+      bool crossDeadWire = false; 
+      bool outOfLayer = false;
       
-      if (seg_phinhits < 8 )
+      if (nHitsPhi < 8 )
 	{
-	  for (int iex=0; iex<12; iex++)
+	  for (int expSL=1; expSL<4; expSL +=2)
 	    {
-	      int expSL = 1;
-	      int expLay = iex+1;
-	      //associate layer with right super layer
-	      if (seg.station->at(iSeg) != 4)
+	      for (int expLay=1; expLay<5; ++expLay)
 		{
-		  if (iex > 3 && iex<8)
+
+		  int slAndLay = expLay + (expSL - 1) * 4; // 1 - 12
+	      
+		  int nWires = 0;
+	      
+		  if (station==1) nWires = 49;
+		  else if (station==2) nWires = 60;
+		  else if (station==3) nWires = 72;
+		  else if (station==4) nWires = 92;
+	      
+		  int expW = (*expWire)(slAndLay - 1);
+	      
+		  if (expW > nWires)
 		    {
-		      expSL=2;
-		      expLay-=4;
+		      outOfLayer = true;
+		      break;
 		    }
-		  else if (iex>7)
+
+		  WireId refWireId(station,expSL,expLay,expW);
+
+		  for (const auto & wireId : m_deadWires[Tag])
 		    {
-		      expSL=3;
-		      expLay-=8;
+		      if (wireId == refWireId)
+			{
+			  crossDeadWire = true;
+			  break;
+			}
 		    }
+
+		  if (crossDeadWire) break;
+	      
 		}
-	      else
-		{
-		  if (iex > 3 && iex<8) continue;
-		  else if (iex > 7)
-		    {
-		      expSL=3;
-		      expLay-=8;
-		    }
-		}
-	      
-	      int nwire=0;
-	      
-	      if (expSL==2)
-		{
-		  nwire=57; 
-		}
-	      else if (seg.station->at(iSeg)==1) nwire = 49;
-	      else if (seg.station->at(iSeg)==2) nwire = 60;
-	      else if (seg.station->at(iSeg)==3) nwire = 72;
-	      else if (seg.station->at(iSeg)==4) nwire = 92;
-	      
-	      Float_t expW = (*expWire)(iex);
-	      
-	      if (expW>nwire)
-		{
-		  OutOfLayer=true;
-		  break;
-		}
-	      
-	      for (int idead=0; idead<Ndead; idead++)
-		{
-		  if (dead[idead][0] != seg.station->at(iSeg)) continue;
-		  if (dead[idead][1] != expSL)  continue;  
-		  if (dead[idead][2] != expLay) continue;
-		  if (dead[idead][3] != expW)   continue; 
-		  NexpDead++;
-		  
-		  break;
-		}
-	      
-	      if (NexpDead>MaxDead) break;
-	      
+
+	      if (crossDeadWire || outOfLayer) break;
 	    }
-	  
-	  if (OutOfLayer)       continue; // this segment goes out of layer boundary
-	  if (NexpDead>MaxDead) continue; // this segment crosses dead cell(s): drop it!
-	  
 	}
-      
-      int NHits=0;
-      int missingLayer[3][2];
-      for (int imi=0; imi<3;imi++)
-	{
-	  missingLayer[imi][0]=0;
-	  missingLayer[imi][1]=0;
-	}
-      int nmissing=0;
-      
+
+      // this segment goes out of layer boundary
+      // or it crosses dead cell(s): drop it!
+      if (outOfLayer || crossDeadWire) continue; 
+      	  
+      std::bitset<12> firedLayers(0); 
+
       auto hitSuperLayerPhi =(TVectorF*)seg.phiHits_superLayer->At(iSeg);
       auto hitLayerPhi      =(TVectorF*)seg.phiHits_layer->At(iSeg);
-      auto hitWirePhi       =(TVectorF*)seg.phiHits_wire->At(iSeg);
       
-      for (int ilay=1; ilay<9; ilay++)
+      // checking hits from segment
+      for (int iHit=0; iHit<nHitsPhi; ++iHit)
 	{
-	  // Search for associated hits
-	  bool foundh = false;
-	  for (int kk=0; kk<seg_phinhits; kk++)
-	    {
-	      int sl1  = (*hitSuperLayerPhi)(kk);
-	      int lay1 = (sl1==1) ? (*hitLayerPhi)(kk) : (*hitLayerPhi)(kk)+4; // hit layer 1-8
-	  
-	      if (lay1==ilay)
-		{
-		  NHits++;
-		  foundh=true;
-		  break;
-		}
-	    }
-	  
-	  if (!foundh)
-	    {
-	      if (nmissing<3)
-		missingLayer[nmissing][0]=ilay;
-	      nmissing++;
-	    }
+	  int hitSL = (*hitSuperLayerPhi)(iHit);
+	  int hitSlAndLay = hitSL == 1 ? (*hitLayerPhi)(iHit) : (*hitLayerPhi)(iHit) + 8; // hit layer 1 - 12
+	  firedLayers.set(hitSlAndLay - 1);
 	}
-      
-      if (nmissing != 8-NHits)
-	{
-	  cout << NHits << " hits and " << nmissing << " missing!!" << endl;
-	  return;
-	}
-      
-      if (NHits<nrequiredhit)
-	continue;
-      else if (NHits==8)
-	{
-	  for (int sl=0; sl<2; sl++)
-	    {
-	      for (int lay=0; lay<4; lay++)
-		{
-		  //variables, points, stations, wheels 
-		  m_effs[(Tag+"effPhi_station").c_str()]->Fill(1,seg.station->at(iSeg)-0.5);    
-		  
-		  int slAndLay = (lay) + (sl * 2) * 4;
-		  //int layExp   = sl == 0 ? lay : lay + 4;
-		  Float_t expW = (*expWire)(slAndLay);
-		  m_effs[Form("%seffPhiByWire_st%d",Tag.c_str(),seg.station->at(iSeg))]->Fill(1,expW,slAndLay);
-		}
-	    }
-	}
-      else
-	{ // let's see how to treat missing layers
-	  for (int imiss=0; imiss<nmissing; imiss++)
-	    {
-	      int sl  = missingLayer[imiss][0] < 5 ? 0 : 1;
-	      int lay = sl==0 ? missingLayer[imiss][0]-1 : missingLayer[imiss][0]-5;
-	      // is there a digi within the expected tube?
-	      
-	      float digiW  = -1.;
-	      float d      = 1000000; //just a very big number
-	      int iex      = missingLayer[imiss][0] < 5 ? missingLayer[imiss][0]-1 : missingLayer[imiss][0]+3;
-	      Float_t expW = (*expWire)(iex);  //perche` float?
-	      
-	      for (uint iDigi=0; iDigi < (*digi.nDigis); iDigi++)
-		{
-		  
-		  if (digi.time->at(iDigi) < m_timeBoxMin.at(Tag) +  750. ||
-		      digi.time->at(iDigi) > m_timeBoxMin.at(Tag) + 1650.)
-		    continue;
 
-		  if (digi.wheel->at(iDigi)   != seg.wheel->at(iSeg))   continue;
-		  if (digi.sector->at(iDigi)  != seg.sector->at(iSeg))  continue;
-		  if (digi.station->at(iDigi) != seg.station->at(iSeg)) continue;
-		  
-		  if (digi.superLayer->at(iDigi) == 2)            continue;
-		  if (digi.superLayer->at(iDigi) == 1 && sl != 0) continue;
-		  if (digi.superLayer->at(iDigi) == 3 && sl != 1) continue;
-		  if (digi.layer->at(iDigi) != lay+1)     continue;
-		  
-		  // let's loop all over the digis and take the closest digis to the extrapolated wire. 
-		  // Think about an extra condition on time.
-		  
-		  if (fabs(expW - digi.wire->at(iDigi))<fabs(d))
-		    {
-		      digiW = digi.wire->at(iDigi);
-		      d=expW-digiW; 
-		    }
-		}
-	      
-	      if (fabs(d)< 1.1)
-		{
-		  missingLayer[imiss][1]=1;
-		} //non dovrebbe essere sempre un intero d?
+      // checking if a digi exist in a wire from extrapolation
+      // and filling TEfficiency histograms 
+      for (int sl=1; sl<4; sl+=2)
+	{
+	  for (int lay=1; lay<5; ++lay)
+	    {
 
-	    }
-	  
-	  if (NHits==nrequiredhit)
-	    {
-	      for (int imiss=0; imiss<nmissing; imiss++)
-		{
-		  int sl = missingLayer[imiss][0] < 5 ? 0 : 1;
-		  int lay = sl==0 ? missingLayer[imiss][0]-1 : missingLayer[imiss][0]-5;
-		  m_effs[(Tag+"effPhi_station").c_str()]->Fill(missingLayer[imiss][1],seg.station->at(iSeg)-0.5);
-		  
-		  int slAndLay = (lay) + (sl*2) * 4;
-		  Float_t expW = (*expWire)(slAndLay);
-		  m_effs[Form("%seffPhiByWire_st%d",Tag.c_str(),seg.station->at(iSeg))]->Fill(missingLayer[imiss][1],expW,slAndLay); 
-		}
-	    }
-	  else
-	    {
-	      for (int sl=0; sl<2; sl++)
-		{
-		  for (int lay=0; lay<4; lay++)
+	      int slAndLay = lay + (sl - 1) * 4; // 1 -12
+
+	      auto firedLayersReq = firedLayers;
+	      firedLayersReq.set(slAndLay - 1, 0);
+
+	      if (firedLayersReq.count() < 7) 
+		continue;
+
+	      bool hasFired = firedLayers.test(slAndLay - 1);
+	      int expW = (*expWire)(slAndLay - 1);
+
+	      if (!hasFired)
+		{		  
+
+		  for (uint iDigi=0; iDigi<(*digi.nDigis); ++iDigi)
 		    {
-		      bool missAss=false; bool missDigi=false;
-		      for (int imiss=0; imiss<nmissing; imiss++)
-			{
-			  if (missingLayer[imiss][0]==sl*4+lay+1)
-			    {
-			      missAss=true;
-			      if (!missingLayer[imiss][1])
-				missDigi=true;
-			    }
-			}
-		      m_effs[(Tag+"effPhi_station").c_str()]->Fill(!(missAss&&missDigi),seg.station->at(iSeg)-0.5);
+		  
+		      if (digi.wheel->at(iDigi)   != 2) continue;
+		      if (digi.sector->at(iDigi)  != 12) continue;
+		      if (digi.station->at(iDigi) != station) continue;
+		      if (digi.superLayer->at(iDigi) != sl) continue;
+		      if (digi.layer->at(iDigi) != lay) continue;
+
+		      float time = digi.time->at(iDigi);
+		      if (time < m_timeBoxMin.at(Tag) +  750. ||
+			  time > m_timeBoxMin.at(Tag) + 1650.)
+			continue;
 		      
-		      int slAndLay = (lay) + (sl * 2) * 4;
-		      //int iex      = sl == 0 ? lay : lay + 4;
-		      Float_t expW = (*expWire)(slAndLay);
-		      m_effs[Form("%seffPhiByWire_st%d",Tag.c_str(),seg.station->at(iSeg))]->Fill(!(missAss&&missDigi),expW,slAndLay);
+		      int digiW = digi.wire->at(iDigi);
+
+		      if (std::abs(expW - digiW) < 1.1)
+			{
+			  hasFired = true;
+			  break;
+			}
 		    }
 		}
+	      
+	      //variables, points, stations, wheels 
+	      m_effs[(Tag+"effPhi_station").c_str()]->Fill(hasFired,seg.station->at(iSeg)-0.5);    		  
+	      m_effs[Form("%seffByWire_st%d",Tag.c_str(),seg.station->at(iSeg))]->Fill(hasFired,expW,slAndLay);
+
 	    }
 	}
     }
   
-  // Then search for Zed segments
+  // Then analyze theta segments
   
-  for (uint iSeg=0; iSeg<(*seg.nSegments); iSeg++)
+  for (uint iSeg=0; iSeg<(*seg.nSegments); ++iSeg)
     {
+
+      int station = seg.station->at(iSeg);
+      int nHitsTheta= seg.z_nHits->at(iSeg);
+      
+      if (nHitsTheta < 3) continue;
+      if (!seg.hasZed->at(iSeg) || seg.phi_nHits->at(iSeg) < 7) continue; 
       if(seg.sector->at(iSeg) != 12 || seg.wheel->at(iSeg) != 2) continue;     
-      if (!seg.hasZed->at(iSeg) || seg.phi_nHits->at(iSeg)<nrequiredhit) continue; 
-      
-      int seg_znhits = seg.z_nHits->at(iSeg);
-      
-      //if (fabs(dirLoc_y->at(iSeg))>0.7) continue; // angle WARNING!!! try and disable this for theta layers!
-      if (seg_znhits < 3) continue; // piuttosto ovvio!!!  :-)
       
       auto expWire = (TVectorF*)seg.hitsExpWire->At(iSeg);
 
-      // If a hit is missing, let us check that the extrapolation doesn't fall out of layer or cross a dead cell!
-      int NexpDead=0;
-      bool OutOfLayer=false;
+      // If a hit is missing, let us check that the 
+      // extrapolation doesn't fall beyond layer or 
+      // cross a dead cell!
+      bool crossDeadWire = false; 
+      bool outOfLayer = false;
       
-      if (seg_znhits < 4)
+      if (nHitsTheta < 4 )
 	{
-	  for (int iex=4; iex<8; iex++)
+
+	  for (int expLay=1; expLay<5; ++expLay)
 	    {
-	      int expSL = 2;
-	      int expLay = iex-3;		
-	  
-	      Float_t expW = (*expWire)(iex);
-	      if (expW>58) {
-		OutOfLayer=true;
-		break;
-	      }
-	      for (int idead=0; idead<Ndead; idead++)
+	      
+	      int slAndLay = expLay + 4; // SL == 2 and range: 1 - 12
+	      int expW = (*expWire)(slAndLay - 1);
+
+	      if (expW > 58) // theta SLs have 58 wires
 		{
-		  if (dead[idead][1] != seg.station->at(iSeg)) continue;
-		  if (dead[idead][2] != expSL) continue;  
-		  if (dead[idead][3] != expLay) continue;
-		  if (dead[idead][4] != expW) continue; 
-		  NexpDead++;
-		  break;   
-		}
-	      if (OutOfLayer) break;
-	      if (NexpDead>MaxDead) break; 
-	    }
-	
-	  if (NexpDead>MaxDead)
-	      continue;
-	}
-      
-      int NHits=0;
-      int missingLayer=-1;
-      
-      auto hitLayerZ = (TVectorF*)seg.zHits_layer->At(iSeg);
-      auto hitWireZ  = (TVectorF*)seg.zHits_wire->At(iSeg);
-      
-      for (int ilay=1; ilay<5; ilay++)
-	{
-	  // Search for associated hits
-	  bool foundh = false;
-	  for (int kk=0; kk<seg_znhits; kk++)
-	    {
-	      int lay1 = (*hitLayerZ)(kk);
-	  
-	      if (lay1==ilay)
-		{
-		  NHits++;
-		  foundh=true;
+		  outOfLayer = true;
 		  break;
 		}
-	    }
-	  if (!foundh)
-	    missingLayer=ilay;
-	}
-      
-      if (NHits<3)
-	continue;
-      else if (NHits==4)
-	{
-	  for (int lay=0; lay<4; lay++)
-	    {
-	      m_effs[(Tag+"effTheta_station").c_str()]->Fill(1,seg.station->at(iSeg)-0.5); 
-	    }
-	}
-      else if (NHits==3)
-	{
-	  int lay = missingLayer-1;
-	
-	  // is there a digi within the expected tube?
-	  float digiW=-1.;
-	  float d =1000000;
-	  int iex = missingLayer+3;
-	  Float_t expW = (*expWire)(iex); 
 
-	  for (uint iDigi=0; iDigi < (*digi.nDigis); iDigi++)
-	    {	    
-	      if (digi.time->at(iDigi) < m_timeBoxMin.at(Tag) +  750. ||
-		  digi.time->at(iDigi) > m_timeBoxMin.at(Tag) + 1650.)
-		continue;
-	      
-	      if (digi.wheel->at(iDigi)   != seg.wheel->at(iSeg))   continue;
-	      if (digi.sector->at(iDigi)  != seg.sector->at(iSeg))  continue;
-	      if (digi.station->at(iDigi) != seg.station->at(iSeg)) continue;
-	      
-	      if (digi.superLayer->at(iDigi) != 2) continue;
-	      if (digi.layer->at(iDigi) != lay+1) continue;
-	      
-	      if (fabs(expW - digi.wire->at(iDigi))<fabs(d))
+	      WireId refWireId(station,2,expLay,expW);
+
+	      for (const auto & wireId : m_deadWires[Tag])
 		{
-		  digiW=digi.wire->at(iDigi);
-		  d=expW-digiW;
+		  if (wireId == refWireId)
+		    {
+		      crossDeadWire = true;
+		      break;
+		    }
+		}
+	      
+	      if (crossDeadWire) break;
+	      
+	    }  
+	}
+
+      // this segment goes out of layer boundary
+      // or it crosses dead cell(s): drop it!
+      if (outOfLayer || crossDeadWire) continue; 
+
+      std::bitset<4>firedLayers(0); 
+
+      auto hitLayerTheta = (TVectorF*)seg.zHits_layer->At(iSeg);
+      
+      // checking hits from segment
+      for (int iHit=0; iHit<nHitsTheta; ++iHit)
+	{
+	  int hitLay = (*hitLayerTheta)(iHit); // hit layer 1 - 4
+	  firedLayers.set(hitLay - 1);
+	}
+
+      // checking if a digi exist in a wire from extrapolation
+      // and filling TEfficiency histograms 
+      for (int lay=1; lay<5; ++lay)
+	{
+
+	  auto firedLayersReq = firedLayers;
+	  firedLayersReq.set(lay - 1, 0);
+
+	  if (firedLayersReq.count() < 3)
+	    continue;
+
+	  int expW = (*expWire)(lay + 3); // 4 - 7
+	  bool hasFired = firedLayers.test(lay - 1); // 0 - 3
+
+	  if (!hasFired)
+	    {		  
+
+	      for (uint iDigi=0; iDigi<(*digi.nDigis); ++iDigi)
+		{
+		  
+		  if (digi.wheel->at(iDigi)   != 2) continue;
+		  if (digi.sector->at(iDigi)  != 12) continue;
+		  if (digi.station->at(iDigi) != station) continue;
+		  if (digi.superLayer->at(iDigi) != 2) continue;
+		  if (digi.layer->at(iDigi) != lay) continue;
+
+		  float time = digi.time->at(iDigi);
+		  if (time < m_timeBoxMin.at(Tag) +  750. ||
+		      time > m_timeBoxMin.at(Tag) + 1650.)
+		    continue;
+		  
+		  int digiW = digi.wire->at(iDigi);
+		  
+		  if (std::abs(expW - digiW) < 1.1)
+		    {
+		      hasFired = true;
+		      break;
+		    }
 		}
 	    }
-	  m_effs[(Tag+"effTheta_station").c_str()]->Fill((fabs(d)< 1.1),seg.station->at(iSeg)-0.5); 
-	}
-      else
-	{
-	  cout<<" what do you want?? NHits (z) = "<<NHits<<endl;
-	  return;
+
+	  //variables, points, stations, wheels 
+	  m_effs[(Tag+"effTheta_station").c_str()]->Fill(hasFired,seg.station->at(iSeg)-0.5);    		  
+	  m_effs[Form("%seffByWire_st%d",Tag.c_str(),seg.station->at(iSeg))]->Fill(hasFired,expW,lay + 4);
+
 	}
     }
+
 }
 
-void DTNtupleSegmentAnalyzer::computeResidual(string Tag, DTNtupleSegment & seg)
+void DTNtupleSegmentAnalyzer::computeResidual(string Tag)
 {
-  
+
+  DTNtupleSegment & seg = segmentObjs[Tag];
+
   for (std::size_t iSeg = 0; iSeg < (*seg.nSegments); ++iSeg)
     {
 

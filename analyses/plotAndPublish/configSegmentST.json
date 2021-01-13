@@ -424,13 +424,13 @@
                 "label"             : "MB3",
                 "legendEntry"       : "MB3",
                 "folder"            : "",
-                "plot"		    : "Ph1effPhiByWire_st3"
+                "plot"		    : "Ph1effByWire_st3"
 	    }
         },
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "hit efficiency"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 hit efficiency MB3",
@@ -442,7 +442,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "03_PhiHitEfficiency_MB3_Phase1",
+            "filenamePlot"      : "03_HitEfficiency_MB3_Phase1",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -456,13 +456,13 @@
                 "label"             : "MB4",
                 "legendEntry"       : "MB4",
                 "folder"            : "",
-                "plot"		    : "Ph1effPhiByWire_st4"
+                "plot"		    : "Ph1effByWire_st4"
 	    }
         },
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "hit efficiency"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 hit efficiency MB4",
@@ -474,7 +474,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "03_PhiHitEfficiency_MB4_Phase1",
+            "filenamePlot"      : "03_HitEfficiency_MB4_Phase1",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -903,13 +903,13 @@
                 "label"             : "MB1",
                 "legendEntry"       : "MB1",
                 "folder"            : "",
-                "plot"		    : "Ph2effPhiByWire_st1"
+                "plot"		    : "Ph2effByWire_st1"
 	    }
         },
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "hit efficiency"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 hit efficiency MB1",
@@ -921,7 +921,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "03_PhiHitEfficiency_MB1_Phase2",
+            "filenamePlot"      : "03_HitEfficiency_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -935,13 +935,13 @@
                 "label"             : "MB2",
                 "legendEntry"       : "MB2",
                 "folder"            : "",
-                "plot"		    : "Ph2effPhiByWire_st2"
+                "plot"		    : "Ph2effByWire_st2"
 	    }
         },
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "hit efficiency"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 hit efficiency MB2",
@@ -953,7 +953,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "03_PhiHitEfficiency_MB2_Phase2",
+            "filenamePlot"      : "03_HitEfficiency_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -967,13 +967,13 @@
                 "label"             : "MB3",
                 "legendEntry"       : "MB3",
                 "folder"            : "",
-                "plot"		    : "Ph2effPhiByWire_st3"
+                "plot"		    : "Ph2effByWire_st3"
 	    }
         },
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "hit efficiency"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 hit efficiency MB3",
@@ -985,7 +985,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "03_PhiHitEfficiency_MB3_Phase2",
+            "filenamePlot"      : "03_HitEfficiency_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -999,13 +999,13 @@
                 "label"             : "MB4",
                 "legendEntry"       : "MB4",
                 "folder"            : "",
-                "plot"		    : "Ph2effPhiByWire_st4"
+                "plot"		    : "Ph2effByWire_st4"
 	    }
         },
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "hit efficiency"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 hit efficiency MB4",
@@ -1017,7 +1017,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "03_PhiHitEfficiency_MB4_Phase2",
+            "filenamePlot"      : "03_HitEfficiency_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1031,20 +1031,20 @@
                 "label"             : "MB3",
                 "legendEntry"       : "MB3",
                 "folder"            : "",
-                 "plot"		    : "Ph1effPhiSummary_st3"
+                 "plot"		    : "Ph1effSummary_st3"
 	    },
             "MB4"   :
             {
                 "label"             : "MB4",
                 "legendEntry"       : "MB4",
                 "folder"            : "",
-                 "plot"		    : "Ph1effPhiSummary_st4"
+                 "plot"		    : "Ph1effSummary_st4"
 	    }
         },
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "efficiency"],
-            "y"                 : [-0.5, 12.5, "# of wires"],
+            "y"                 : [-0.5, 13.5, "# of wires"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-1 hit efficiency (segments)",
             "caption"           : "DT SliceTest",
@@ -1055,7 +1055,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "03_PhiHitEfficiencyiSummary_Phase1",
+            "filenamePlot"      : "03_HitEfficiencyiSummary_Phase1",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1069,34 +1069,34 @@
                 "label"             : "MB1",
                 "legendEntry"       : "MB1",
                 "folder"            : "",
-                 "plot"		    : "Ph2effPhiSummary_st1"
+                 "plot"		    : "Ph2effSummary_st1"
 	    },
 	    "MB2"   :
             {
                 "label"             : "MB2",
                 "legendEntry"       : "MB2",
                 "folder"            : "",
-                 "plot"		    : "Ph2effPhiSummary_st2"
+                 "plot"		    : "Ph2effSummary_st2"
 	    },
             "MB3"   :
             {
                 "label"             : "MB3",
                 "legendEntry"       : "MB3",
                 "folder"            : "",
-                 "plot"		    : "Ph2effPhiSummary_st3"
+                 "plot"		    : "Ph2effSummary_st3"
 	    },
             "MB4"   :
             {
                 "label"             : "MB4",
                 "legendEntry"       : "MB4",
                 "folder"            : "",
-                 "plot"		    : "Ph2effPhiSummary_st4"
+                 "plot"		    : "Ph2effSummary_st4"
 	    }
         },
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "efficiency"],
-            "y"                 : [-0.5, 12.5, "# of wires"],
+            "y"                 : [-0.5, 13.5, "# of wires"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 hit efficiency (segments)",
             "caption"           : "DT SliceTest",
@@ -1107,7 +1107,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "03_PhiHitEfficiencyiSummary_Phase2",
+            "filenamePlot"      : "03_HitEfficiencyiSummary_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
