@@ -46,6 +46,8 @@ void DTNtupleSegmentAnalyzer::PreLoop()
   // plot by tag and SL
   std::map<std::string, std::map<int, std::map<int, TH2F*>>> hOccupancyBySl;
 
+  std::cout << "[DTNtupleSegmentAnalyzer] Running Preloop to save dead channels." << std::endl;
+
   for (const auto & tag : m_tags)
     {
       std::string deadFileNameRun = m_deadFileName 
@@ -53,16 +55,14 @@ void DTNtupleSegmentAnalyzer::PreLoop()
 	                            + m_deadFileName 
                                     + tag;
 
-      std::cout << "[DTNtupleSegmentAnalyzer] Running Preloop to save dead channels. Info will be saved in "
-		<< deadFileNameRun << std::endl;
-
-      deadChannelListRun[tag].open(deadFileNameRun);
-
       std::string deadFileName = "deadChannelList" + tag;
 
-      std::cout << "\tSame info will also be saved in "
-		<< deadFileName << " for future use" << std::endl;
+      std::cout << "[DTNtupleSegmentAnalyzer] Info will be saved in "
+		<< deadFileNameRun << " and in "
+		<< deadFileName << " (for future use)" 
+		<< std::endl;
 
+      deadChannelListRun[tag].open(deadFileNameRun);
       deadChannelList[tag].open(deadFileName);
 
       //Create a Histogram per SL
@@ -94,8 +94,8 @@ void DTNtupleSegmentAnalyzer::PreLoop()
       if (jentry%1000 == 0) 
 	std::cout << setprecision (2) 
 		  << "[DTNtupleSegmentAnalyzer] : Pre-Loop event " 
-		  << jentry << " " << jentry/float(nEntries)*100. << "%" 
-		  << std::endl;
+		  << jentry << " " << jentry/float(nEntries)*100. << "%\r" 
+		  << std::flush;
 
       for (const auto & tag : m_tags) 
 	{
@@ -110,6 +110,8 @@ void DTNtupleSegmentAnalyzer::PreLoop()
 	    }
 	}
     }
+
+  std::cout << std::endl;
   
   // analyze occupancy histos and fill dead channel table
     
@@ -516,7 +518,7 @@ void DTNtupleSegmentAnalyzer::endJob()
 		  m_plots[Form("%shResPerSl_st%d",tag.c_str(),st)]->SetBinContent(sl+0.5,1e4*fPhi->GetParameter(2)); 	
 		}
 
-	      cout << endl << endl;
+	      cout << std::endl << std::endl;
 	    }
 	}
     }
