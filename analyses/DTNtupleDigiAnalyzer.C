@@ -1,6 +1,5 @@
 #include "DTNtupleDigiAnalyzer.h"
 
-#include <set>
 #include <string>
 #include <fstream>
 #include <iomanip>
@@ -73,8 +72,8 @@ m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(
         }
       myfile.close();
     }
-    else cout << "WARNING: unable to open mask wire file: NO WIRE WILL BE MASKED!";
-
+    else 
+      cout << "[DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer] Unable to open mask wire file: NO WIRE WILL BE MASKED!" << std::endl;
 
   }
 }
@@ -136,13 +135,13 @@ void DTNtupleDigiAnalyzer::book()
 	  string stTag = stTagS.str();
 	  
 	  TString hName = ("hOccupancy" + stTag).c_str(); 
-	  m_plots[hName] = new TH2F(hName,"Occupancy;wire;layer / superlayer",100,0.5,100.5,12,-0.5,11.5);
+	  m_plots[hName] = new TH2F(hName,"Occupancy;wire;layer / superlayer",100,0.5,100.5,12,0.5,12.5);
 
-      hName = ("hOccupancyMultiple" + stTag).c_str();
-      m_plots[hName] = new TH2F(hName, "Occupancy;wire;layer / superlayer", 100, 0.5, 100.5, 12, -0.5, 11.5);
+	  hName = ("hOccupancyMultiple" + stTag).c_str();
+	  m_plots[hName] = new TH2F(hName, "Occupancy;wire;layer / superlayer", 100, 0.5, 100.5, 12, 0.5, 12.5);
 
 	  hName = ("hWireByWireEff" + stTag).c_str();
-	  m_effs[hName] = new TEfficiency(hName,"Wire by wire matching efficiency;wire;layer / superlayer",100,0.5,100.5,12,-0.5,11.5);
+	  m_effs[hName] = new TEfficiency(hName,"Wire by wire matching efficiency;wire;layer / superlayer",100,0.5,100.5,12,0.5,12.5);
 
 	  hName = ("hEffSummary" + stTag).c_str();
 	  m_plots[hName] = new TH1F(hName,"Efficiency summary;efficiency,# wires",110,0.5,1.05);	  
@@ -213,7 +212,7 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
       int lay = digi.layer->at(iDigi);
       
       int wire = digi.wire->at(iDigi);
-      int slAndLay = (lay - 1) + (sl - 1) * 4;
+      int slAndLay = lay + (sl - 1) * 4;
       
       double time = digi.time->at(iDigi);
       
@@ -262,8 +261,6 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
 
       auto & digiTimes =  wireAndDigis.second;
 
-//       m_plots[("hOccupancyMultiple" + stTag).c_str()]->Fill(wireId.m_wire, (wireId.m_layer - 1) + (wireId.m_sl - 1) * 4);
-
       if (digiTimes.size() > 1)
         {
 
@@ -274,14 +271,15 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
 
           double timePrev = (*digiIt);
           ++digiIt;
-          m_plots[("hOccupancyMultiple" + stTag).c_str()]->Fill(wireId.m_wire, (wireId.m_layer - 1) + (wireId.m_sl - 1) * 4);
+          m_plots[("hOccupancyMultiple" + stTag).c_str()]->Fill(wireId.m_wire, wireId.m_layer  + (wireId.m_sl - 1) * 4);
 
           for (; digiIt!=digiEnd; ++digiIt)
             {
-              if (wireId.m_sl == 2) m_plots[("hTimeDiffTheta" + stTag).c_str()]->Fill((*digiIt) - timePrev);
-              else                  m_plots[("hTimeDiffPhi"   + stTag).c_str()]->Fill((*digiIt) - timePrev);
+              if (wireId.m_sl == 2) 
+		m_plots[("hTimeDiffTheta" + stTag).c_str()]->Fill((*digiIt) - timePrev);
+              else
+		m_plots[("hTimeDiffPhi"   + stTag).c_str()]->Fill((*digiIt) - timePrev);
               timePrev = (*digiIt);
-              m_plots[("hOccupancyMultiple" + stTag).c_str()]->Fill(wireId.m_wire, (wireId.m_layer - 1) + (wireId.m_sl - 1) * 4);
             }
         }
     }
@@ -302,7 +300,7 @@ std::set<WireId> DTNtupleDigiAnalyzer::wiresWithInTimeDigis(std::string typeTag,
       for (const auto & digiTime : digiTimes)
 	{
 	  if (digiTime > m_timeBoxMin.at(typeTag) +  750. &&
-	      digiTime < m_timeBoxMin.at(typeTag) + 1650.)
+	      digiTime < m_timeBoxMin.at(typeTag) + 2250.)
 	    {
 	      wireIds.insert(wireId);
 	      break;
@@ -336,7 +334,7 @@ void DTNtupleDigiAnalyzer::fillEff(std::string typeTag, const std::set<WireId> &
 	    }
 	}
       
-      int slAndLay = (wireIdRef.m_layer - 1) + (wireIdRef.m_sl - 1) * 4;
+      int slAndLay = wireIdRef.m_layer + (wireIdRef.m_sl - 1) * 4;
       m_effs[("hWireByWireEff" + stTag).c_str()]->Fill(hasWireMatch,wireIdRef.m_wire,slAndLay);
       
     } 

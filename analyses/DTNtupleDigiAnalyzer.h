@@ -14,6 +14,7 @@
 #include <sstream>
 #include <tuple>
 #include <map>
+#include <set>
 
 class DTNtupleDigiAnalyzer : public DTNtupleBaseAnalyzer 
 {
