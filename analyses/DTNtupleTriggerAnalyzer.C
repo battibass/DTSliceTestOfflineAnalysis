@@ -22,8 +22,8 @@ DTNtupleTriggerAnalyzer::DTNtupleTriggerAnalyzer(const TString & inFileName,
   phi_Ph1_conv = 0.5/2048.;  // conversion from trig phi to phi in rad in Phase1
   phiB_Ph1_conv = 1./512.;  // conversion from trig phiB to phiB in rad in Phase1
 
-  phi_Ph2_conv = 0.025; // in cm, local position in the station 
-  phiB_Ph2_conv = 1/4096.; // to transform in radians
+  phi_Ph2_conv = 0.8/65536;// 0.025; // in cm, local position in the station 
+  phiB_Ph2_conv = 1.4/2048.;// 1/4096.; // to transform in radians
 
   BXOK_TwinMuxOut = 0;
   // BXOK_ph2Hw = 3295; // From ntuple based on SX5 run 329705
@@ -98,12 +98,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_t0" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs t0; t0; primitive effic.",
-					100,-300.,300.);
+					25,-100.,100.);
 
 	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_philoc" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs philoc; philoc; primitive effic",
-					100,-80.,80.);
+					40,-80.,80.);
 
 	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_nHits" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
@@ -113,17 +113,22 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_dirGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs dirGlb_phi; dirGlb_phi; primitive effic",
-					100,-2.,1.);
+					30,-2.,1.);
 
 	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_posGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs posGlb_phi; posGlb_phi; ph2TpgPhiHw effic",
-					100,-0.6,-0.2);
+					50,-1.0,-0.2);
+
+	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_dirGlb_phi_posGlb_phi" + iChTag.str(); // vs posGlb_phi (x) and dirGlb_phi (y)
+	m_effs[hName] = new TEfficiency(hName.c_str(),
+					"trigger efficiency AnyBX vs dirGlb_phi and posGlb_phi; dirGlb_phi; posGlb_phi; ph2TpgPhiHw AnyBX effic",
+					50,-2.,1., 50,-1.0,-0.2);
 
 	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_normChi2" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs normChi2; normChi2; ph2TpgPhiHw effic",
-					60,0.,30.);
+					60,0.,20.);
 
 
 	// efficiency plots for ph2TphPhiHw for BXOK
@@ -132,12 +137,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_ph2TpgPhiHw_BXOK_vs_t0" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs t0; t0; primitive effic.",
-					100,-300.,300.);
+					25,-100.,100.);
 
 	hName = "trigeff_ph2TpgPhiHw_BXOK_vs_philoc" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs philoc; philoc; primitive effic",
-					100,-80.,80.);
+					40,-80.,80.);
 
 	hName = "trigeff_ph2TpgPhiHw_BXOK_vs_nHits" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
@@ -147,17 +152,17 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_ph2TpgPhiHw_BXOK_vs_dirGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs dirGlb_phi; dirGlb_phi; primitive effic",
-					100,-2.,1.);
+					30,-2.,1.);
 
 	hName = "trigeff_ph2TpgPhiHw_BXOK_vs_posGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs posGlb_phi; posGlb_phi; ph2TpgPhiHw effic",
-					100,-0.6,-0.2);
+					50,-1.0,-0.2);
 
 	hName = "trigeff_ph2TpgPhiHw_BXOK_vs_normChi2" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs normChi2; normChi2; ph2TpgPhiHw effic",
-					60,0.,30.);
+					60,0.,20.);
       }
 
       if(m_ph2TpgPhiEmuAm && m_segments)   {  //*** ph2TpgEmuAm and segments must be "true"
@@ -166,12 +171,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_ph2TpgPhiEmuAm_AnyBX_vs_t0" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs t0; t0; primitive effic.",
-					100,-300.,300.);
+					25,-100.,100.);
 
 	hName = "trigeff_ph2TpgPhiEmuAm_AnyBX_vs_philoc" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs philoc; philoc; primitive effic",
-					100,-80.,80.);
+					40,-80.,80.);
 
 	hName = "trigeff_ph2TpgPhiEmuAm_AnyBX_vs_nHits" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
@@ -181,17 +186,17 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_ph2TpgPhiEmuAm_AnyBX_vs_dirGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs dirGlb_phi; dirGlb_phi; primitive effic",
-					100,-2.,1.);
+					30,-2.,1.);
 
 	hName = "trigeff_ph2TpgPhiEmuAm_AnyBX_vs_posGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs posGlb_phi; posGlb_phi; ph2TpgPhiEmuAm effic",
-					100,-0.6,-0.2);
+					50,-1.0,-0.2);
 
 	hName = "trigeff_ph2TpgPhiEmuAm_AnyBX_vs_normChi2" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs normChi2; normChi2; ph2TpgPhiEmuAm effic",
-					60,0.,30.);
+					60,0.,20.);
 
 
 	// efficiency plots for ph2TphPhiEmuAm for BXOK
@@ -201,12 +206,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_ph2TpgPhiEmuAm_BXOK_vs_t0" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs t0; t0; primitive effic.",
-					100,-300.,300.);
+					25,-100.,100.);
 
 	hName = "trigeff_ph2TpgPhiEmuAm_BXOK_vs_philoc" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs philoc; philoc; primitive effic",
-					100,-80.,80.);
+					40,-80.,80.);
 
 	hName = "trigeff_ph2TpgPhiEmuAm_BXOK_vs_nHits" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
@@ -216,17 +221,17 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_ph2TpgPhiEmuAm_BXOK_vs_dirGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs dirGlb_phi; dirGlb_phi; primitive effic",
-					100,-2.,1.);
+					30,-2.,1.);
 
 	hName = "trigeff_ph2TpgPhiEmuAm_BXOK_vs_posGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs posGlb_phi; posGlb_phi; ph2TpgPhiEmuAm effic",
-					100,-0.6,-0.2);
+					50,-1.0,-0.2);
 
 	hName = "trigeff_ph2TpgPhiEmuAm_BXOK_vs_normChi2" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs normChi2; normChi2; ph2TpgPhiEmuAm effic",
-					60,0.,30.);
+					60,0.,20.);
 
    
       }
@@ -238,12 +243,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_TwinMuxOut_AnyBX_vs_t0" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs t0; t0; primitive effic.",
-					100,-300.,300.);
+					25,-100.,100.);
 
 	hName = "trigeff_TwinMuxOut_AnyBX_vs_philoc" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs philoc; philoc; primitive effic",
-					100,-80.,80.);
+					40,-80.,80.);
 
 	hName = "trigeff_TwinMuxOut_AnyBX_vs_nHits" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
@@ -253,17 +258,17 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_TwinMuxOut_AnyBX_vs_dirGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs dirGlb_phi; dirGlb_phi; primitive effic",
-					100,-2.,1.);
+					30,-2.,1.);
 
 	hName = "trigeff_TwinMuxOut_AnyBX_vs_posGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs posGlb_phi; posGlb_phi; TwinMuxOut effic",
-					100,-0.6,-0.2);
+					50,-1.0,-0.2);
 
 	hName = "trigeff_TwinMuxOut_AnyBX_vs_normChi2" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs normChi2; normChi2; TwinMuxOut effic",
-					60,0.,30.);
+					60,0.,20.);
 
   
 
@@ -272,12 +277,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_TwinMuxOut_BXOK_vs_t0" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs t0; t0; primitive effic.",
-					100,-300.,300.);
+					25,-100.,100.);
 
 	hName = "trigeff_TwinMuxOut_BXOK_vs_philoc" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs philoc; philoc; primitive effic",
-					100,-80.,80.);
+					40,-80.,80.);
 
 	hName = "trigeff_TwinMuxOut_BXOK_vs_nHits" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
@@ -287,17 +292,17 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_TwinMuxOut_BXOK_vs_dirGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs dirGlb_phi; dirGlb_phi; primitive effic",
-					100,-2.,1.);
+					30,-2.,1.);
 
 	hName = "trigeff_TwinMuxOut_BXOK_vs_posGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs posGlb_phi; posGlb_phi; TwinMuxOut effic",
-					100,-0.6,-0.2);
+					50,-1.0,-0.2);
 
 	hName = "trigeff_TwinMuxOut_BXOK_vs_normChi2" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency BXOK vs normChi2; normChi2; TwinMuxOut effic",
-					60,0.,30.);
+					60,0.,20.);
 
       }
 
@@ -305,11 +310,13 @@ void DTNtupleTriggerAnalyzer::book()
 
 	// correlations btw segment and primitive
 
+	//***PLOTTED IN JSON
 	hName = "ph2TpgPhiHw_BX_vs_nHits" + iChTag.str();   // BX vs nHits
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "ph2TpgPhiHw BX vs segment nHits; segment nHits; ph2TpgHw BX ", 
 				   11, -0.5, 10.5, 21,-10.5,10.5);  
 
+	//***PLOTTED IN JSON
 	hName = "ph2TpgPhiHw_quality_vs_nHits" + iChTag.str();   // BX vs nHits
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "ph2TpgPhiHw quality vs segment nHits; segment nHits; ph2TpgHw quality ", 
@@ -318,14 +325,45 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "ph2TpgPhiHw_phi_vs_seg_posLoc_x" + iChTag.str();   // phi vs posLoc_x
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "ph2TpgPhiHw phi vs segment posLoc x; segment posLoc x; ph2TpgHw phi", 
-				   100, -150., 100., 100,-40000,40000);  
+				   100, -200., 200., 50,-0.5,0.5);  
+	
+	         
+	hName = "ph2TpgPhiHw_phi_vs_seg_posGlb_phi" + iChTag.str();   // Phase 2 phi vs seg posGlb_phi 
+	m_plots[hName]  = new TH2F(hName.c_str(),
+				   "ph2TpgPhiHw phi vs segment Glb_phi midPlane; segment Phi; ph2TpgHw Phi", 
+				   100, -1., 0., 100,-0.4, 0.4);  
 				 
 
 	hName = "ph2TpgPhiHw_phiB_vs_seg_dirLoc_x" + iChTag.str();   // phiB vs dirLoc_x
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "ph2TpgPhiHw phiB vs segment dirLoc x; segment dirLoc x; ph2TpgHw phiB", 
-				   100, -1., 1., 100,-3000,3000);  
+				   100, -1.0, 1., 100,-2.,2.);  
+
+	hName = "ph2TpgPhiHw_phi_plus_phiB_vs_seg_dirLoc_x" + iChTag.str();   // phi + phiB vs dirLoc_x
+	m_plots[hName]  = new TH2F(hName.c_str(),
+				   "ph2TpgPhiHw phi plus phiB vs segment dirLoc x; segment dirLoc x; ph2TpgHw phi + phiB", 
+				   100, -1., 1., 100,-1.,1.);  
+
+	hName = "ph2TpgPhiHw_posLoc_x_vs_seg_posLoc_x" + iChTag.str(); //  ph2 posLoc_ vs seg posLoc_x
+	m_plots[hName]  = new TH2F(hName.c_str(),
+				   "ph2TpgPhiHw posLoc_s vs segm posLoc_x; segment posLoc x; ph2TpgHw posLoc_x", 
+				   100, -200., 200., 100,-200.,200.);  
+
+	hName = "Phase2Hw_t0_vs_segment_t0" + iChTag.str();   // Phase2 prim t0 vs segment t0 
+	m_plots[hName]  = new TH2F(hName.c_str(),
+				   "Phase2Hw t0 vs segment_t0; Segment t0; Phase2Hw t0",
+				   60, -60., 60., 60, -60, 60); 
+	//NEW
+	hName = "Phase2Hw_t0_minus_segment_t0" + iChTag.str();   // Phase2 prim tminus segment t0 
+	m_plots[hName]  = new TH1F(hName.c_str(),
+				   "Phase2Hw t0 - segment_t0; Phase 2 trig t0 - Segment t0; Phase2Hw t0Entries",
+				   120, -40., 40.); 
 			       
+	hName = "ph2TpgPhiHw_quality_vs_seg_posGlb_phi" + iChTag.str();   // priitive quality vs segment posGlb_phi
+	m_plots[hName]  = new TH2F(hName.c_str(),
+				   "ph2TpgPhiHw quality vs segment posGlb phi; segment posGlb phi; ph2TpgHw quality", 
+				   50,-1.0,-0.2, 10,0.5,10.5);  
+
       }
 
       if(m_twinMux)   {  //*** TwinMux must be "true"
@@ -344,12 +382,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "phi_" + iChTag.str();   // phi distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "phi;phi;#entries/phi",
-				   100,-0.6,0.6); 
+				   50,-0.9,0.9); 
 
 	hName = "phiB_" + iChTag.str();   // phiB distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "phiB;phiB;#entries/phiB",
-				   100,-0.2,0.2);
+				   60,-1.2,1.2);
 
 	// hName = "pos_" + iChTag.str();   // pos distribution 
 	// m_plots[hName]  = new TH1F(hName.c_str(),
@@ -371,49 +409,49 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "BXOK_phi_" + iChTag.str();   // phi distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "whenBXOK phi;phi;#entries/phi",
-				   100,-0.6,0.6); 
+				   60,-1.2,1.2); 
 
 	hName = "BXOK_phiB_" + iChTag.str();   // phiB distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "whenBXOK phiB;phiB;#entries/phiB",
-				   100,-0.2,0.2);
+				   60,-1.2,1.2);
       }
 
       if(m_ph2TpgPhiHw)   {  //*** ph2TpgPhiHw  must be "true"
 
 	// ---- Distributions for PHASE2Hw - Madrid primitives
-
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_BX_" + iChTag.str();   // BX distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "Phase2Hw BX;BX;#entries/Phase2Hw BX",
 				   21,-10.5,10.5);  
-
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_quality_" + iChTag.str();   // quality distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "Phase2Hw quality; quality;#entries/quality",
 				   11,-0.5,10.5); 
-
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_phi_" + iChTag.str();   // phi distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "Phase2Hw phi;Phase2Hw phi;#entries/Phase2Hw phi",
-				   100,0.,180.); 
-	//	 100,-0.6,0.6); 
-
+				   100,-1.,1.); 
+	//	 60,-1.2,1.2); 
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_phiB_" + iChTag.str();   // phiB distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
-				   "Pjase2 phiB;phiB;#entries/phiB",
-				   100,-100,100);
-
+				   "Phase2 phiB;phiB;#entries/phiB",
+				   100,-1.2,1.2);
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_chi2_" + iChTag.str();   // chi2 distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "Phase2Hw chi2;Phase2Hw chi2;#entries/Phase2Hw chi2",
 				   32,0.,32.); 
-
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_t0_" + iChTag.str();   // t0 distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "Phase2Hw t0;Phase2Hw t0;#entries/Phase2Hw t0",
-				   100,0.,90000.); 
-
+				   60,-60.,60.); 
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_BX_vs_quality_" + iChTag.str();   // Phase2Hw BX vs quality distribution 
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "Phase2Hw BX vs quality;Phase2Hw quality;Phase2Hw BX",
@@ -430,13 +468,13 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "Phase2Hw_BXOK_phi_" + iChTag.str();   // phi distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "Phase2Hw BXOK phi;Phase2Hw phi;#entries/Phase2Hw phi",
-				   100,0.,180.); 
+				   100,-1.,1.); 
     
 
 	hName = "Phase2Hw_BXOK_phiB_" + iChTag.str();   // phiB distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
-				   "Pjase2 BXOK phiB;phiB;#entries/phiB",
-				   100,-100,100);
+				   "Phase2 BXOK phiB;phiB;#entries/phiB",
+				   100,-1.2,1.2);
 				
 
 	hName = "Phase2Hw_BXOK_chi2_" + iChTag.str();   // chi2 distribution 
@@ -455,26 +493,38 @@ void DTNtupleTriggerAnalyzer::book()
 
 	// ***** PHASE2Hw - Hw Madrid primitives real vs TwinMuxOut
 
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_vs_TwinMuxOut_BX_" + iChTag.str();   // BX distribution 
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "Phase2Hw_vs_TMux BX;TMux_BX; Ph2TpgHw BX",
 				   11,-5.5,5.5, 21,-10.5,10.5);  
 
+	hName = "Phase2Hw_minus_TwinMuxOut_BX_vs_TwinMuxOut_phi_" + iChTag.str();   // Delta BX vs TMux phi
+	m_plots[hName]  = new TH2F(hName.c_str(),
+				   "Phase2Hw_Phase1_BX vs TMux_phi;TMux phi; Ph2TpgHw BX - TMux BX",
+				   100,-0.4,0.3, 21,-10.5,10.5); 
+	//NEW uuu
+	hName = "Phase2Hw_minus_TwinMuxOut_quality_vs_TwinMuxOut_quality_" + iChTag.str();   // Delta primitive quality vs TMux quality
+	m_plots[hName]  = new TH2F(hName.c_str(),
+				   "Phase2Hw_TMux_Delta_quality vs TMux_quality;TMux quality; Ph2TpgHw quality - TMux quality",
+				   8,0.5,8.5, 16,-5.5,10.5); 
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_vs_TwinMuxOut_quality_" + iChTag.str();   // quality distribution 
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "Phase2Hw_vs_TMux quality; TMux quality; Ph2TpgHw quality",
-				   11,-0.5,10.5, 10,-0.5,10.5); 
-
+				   11,-0.5,10.5, 11,-0.5,10.5); 
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_vs_TwinMuxOut_phi_" + iChTag.str();   // phi distribution 
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "Phase2Hw_vs_TMux phi;TMux phi; Ph2TpgHw phi",
-				   100,-0.6,0.6, 100,0.,180.); 
-	//	 100,-0.6,0.6); 
+				   100,-0.4,0.3, 100,-0.4,0.3); 
+	//	 60,-1.2,1.2); 
 
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_vs_TwinMuxOut_phiB_" + iChTag.str();   // phiB distribution 
 	m_plots[hName]  = new TH2F(hName.c_str(),
-				   "Pjase2Hw_vs_TMux phiB; TMux phiB; Ph2TpgHw phiB",
-				   100,-0.2,0.2, 100,-100,100);
+				   "Phase2Hw_vs_TMux phiB; TMux phiB; Ph2TpgHw phiB",
+				   100,-1.2,1.2, 100,-1.2,1.2);
 
       }
 
@@ -495,12 +545,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "Phase2Hw_vs_EmuAm_phi_" + iChTag.str();   // phi distribution 
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "Phase2Hw_vs_Emu phi;Phase2Hw phi;#entries/Phase2Hw phi",
-				   100,0.,180., 100,0.,180.); 
-	//	 100,-0.6,0.6); 
+				   100,-1.,1., 100,-1.,1.); 
+	//	 60,-1.2,1.2); 
 
 	hName = "Phase2Hw_vs_EmuAm_phiB_" + iChTag.str();   // phiB distribution 
 	m_plots[hName]  = new TH2F(hName.c_str(),
-				   "Pjase2Hw_vs_Emu phiB;phiB;#entries/phiB",
+				   "Phase2Hw_vs_Emu phiB;phiB;#entries/phiB",
 				   100,-100,100, 100,-100,100);
 
 	hName = "Phase2Hw_vs_EmuAm_chi2_" + iChTag.str();   // chi2 distribution 
@@ -530,11 +580,11 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "Phase2Hw_vs_EmuHb_phi_" + iChTag.str();   // phi distribution 
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "Phase2Hw_vs_EmuHb phi;Phase2Hw phi;#entries/Phase2Hw phi",
-				   100,0.,180., 100,0.,180.); 
+				   100,-1.,1., 100,-1.,1.); 
 
 	hName = "Phase2Hw_vs_EmuHb_phiB_" + iChTag.str();   // phiB distribution 
 	m_plots[hName]  = new TH2F(hName.c_str(),
-				   "Pjase2Hw_vs_EmuHb phiB;phiB;#entries/phiB",
+				   "Phase2Hw_vs_EmuHb phiB;phiB;#entries/phiB",
 				   100,-100,100, 100,-100,100);
 
 	hName = "Phase2Hw_vs_EmuHb_chi2_" + iChTag.str();   // chi2 distribution 
@@ -566,12 +616,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "Phase2EmuHb_phi_" + iChTag.str();   // phi distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "Phase2EmuHb phi;Phase2EmuHb phi;#entries/Phase2EmuHb phi",
-				   100,0.,180.); 
-	//	 100,-0.6,0.6); 
+				   100,-1.,1.); 
+	//	 60,-1.2,1.2); 
 
 	hName = "Phase2EmuHb_phiB_" + iChTag.str();   // phiB distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
-				   "Pjase2 phiB;phiB;#entries/phiB",
+				   "Phase2 phiB;phiB;#entries/phiB",
 				   100,-100,100);
 
 	hName = "Phase2EmuHb_chi2_" + iChTag.str();   // chi2 distribution 
@@ -594,12 +644,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "Phase2EmuHb_BXOK_phi_" + iChTag.str();   // phi distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "Phase2EmuHb BXOK phi;Phase2EmuHb phi;#entries/Phase2EmuHb phi",
-				   100,0.,180.); 
-	//	 100,-0.6,0.6); 
+				   100,-1.,1.); 
+	//	 60,-1.2,1.2); 
 
 	hName = "Phase2EmuHb_BXOK_phiB_" + iChTag.str();   // phiB distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
-				   "Pjase2 BXOK phiB;phiB;#entries/phiB",
+				   "Phase2 BXOK phiB;phiB;#entries/phiB",
 				   100,-100,100);
 
 
@@ -632,12 +682,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "Phase2EmuAm_phi_" + iChTag.str();   // phi distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "Phase2EmuAm phi;Phase2EmuAm phi;#entries/Phase2EmuAm phi",
-				   100,0.,180.); 
-	//	 100,-0.6,0.6); 
+				   100,-1.,1.); 
+	//	 60,-1.2,1.2); 
 
 	hName = "Phase2EmuAm_phiB_" + iChTag.str();   // phiB distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
-				   "Pjase2 phiB;phiB;#entries/phiB",
+				   "Phase2 phiB;phiB;#entries/phiB",
 				   100,-100,100);
 
 	hName = "Phase2EmuAm_chi2_" + iChTag.str();   // chi2 distribution 
@@ -660,12 +710,12 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "Phase2EmuAm_BXOK_phi_" + iChTag.str();   // phi distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "Phase2EmuAm BXOK phi;Phase2EmuAm phi;#entries/Phase2EmuAm phi",
-				   100,0.,180.); 
-	//	 100,-0.6,0.6); 
+				   100,-1.,1.); 
+	//	 60,-1.2,1.2); 
 
 	hName = "Phase2EmuAm_BXOK_phiB_" + iChTag.str();   // phiB distribution 
 	m_plots[hName]  = new TH1F(hName.c_str(),
-				   "Pjase2 BXOK phiB;phiB;#entries/phiB",
+				   "Phase2 BXOK phiB;phiB;#entries/phiB",
 				   100,-100,100);
 
 	hName = "Phase2EmuAm_BXOK_chi2_" + iChTag.str();   // chi2 distribution 
@@ -741,9 +791,7 @@ void DTNtupleTriggerAnalyzer::fill()
 
 	  std::string  hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_t0" + iChTag.str(); // vs t0
 	  m_effs[hName]->Fill(iBestTpgPhiHw[iMB-1] < 9999, seg_phi_t0->at(iBestSeg[iMB-1]));
-	
-
-	
+		
 	  hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_philoc" + iChTag.str();  // vs philoc
 	  m_effs[hName]->Fill(iBestTpgPhiHw[iMB-1] < 9999, philoc);
 
@@ -756,6 +804,9 @@ void DTNtupleTriggerAnalyzer::fill()
 	  hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_dirGlb_phi" + iChTag.str();  // vs dirGlb_phi
 	  m_effs[hName]->Fill(iBestTpgPhiHw[iMB-1] < 9999, seg_dirGlb_phi->at(iBestSeg[iMB-1]));
 
+	  hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_dirGlb_phi_posGlb_phi" + iChTag.str();  // vs posGlb_phi (x) and dirGlb_phi (y)
+	  m_effs[hName]->Fill(iBestTpgPhiHw[iMB-1] < 9999, seg_dirGlb_phi->at(iBestSeg[iMB-1]), seg_posGlb_phi->at(iBestSeg[iMB-1]));
+ 
 	  hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_normChi2" + iChTag.str();  // vs normChi2
 	  m_effs[hName]->Fill(iBestTpgPhiHw[iMB-1] < 9999, seg_phi_normChi2->at(iBestSeg[iMB-1]));
 
@@ -876,17 +927,42 @@ void DTNtupleTriggerAnalyzer::fill()
 	if(m_ph2TpgPhiHw)   {   // ph2TpgPhiHw and segment correlation
 
 	  if(iBestTpgPhiHw[iMB-1] < 9999)  { 
-	    hName = "ph2TpgPhiHw_BX_vs_nHits" + iChTag.str();   // BX vs nHits
+
+	    hName = "ph2TpgPhiHw_BX_vs_nHits" + iChTag.str();   // BX vs seg nHits
 	    m_plots[hName]->Fill(seg_phi_nHits->at(iBestSeg[iMB-1]), ph2TpgPhiHw_BX->at(iBestTpgPhiHw[iMB-1]));  
 
-	    hName = "ph2TpgPhiHw_quality_vs_nHits" + iChTag.str();   // BX vs nHits
+	    hName = "ph2TpgPhiHw_quality_vs_nHits" + iChTag.str();   // ph2 quality vs seg nhits
 	    m_plots[hName]->Fill(seg_phi_nHits->at(iBestSeg[iMB-1]), ph2TpgPhiHw_quality->at(iBestTpgPhiHw[iMB-1]));  
 
-	    hName = "ph2TpgPhiHw_phi_vs_seg_posLoc_x" + iChTag.str();   // BX vs nHits
-	    m_plots[hName]->Fill(seg_posLoc_x->at(iBestSeg[iMB-1]), ph2TpgPhiHw_phi->at(iBestTpgPhiHw[iMB-1]));  
+	    hName = "ph2TpgPhiHw_phi_vs_seg_posLoc_x" + iChTag.str();   // ph2 phi vs seg posLoc_x
+	    m_plots[hName]->Fill(seg_posLoc_x->at(iBestSeg[iMB-1]), phi_Ph2_conv*ph2TpgPhiHw_phi->at(iBestTpgPhiHw[iMB-1]));  
 
-	    hName = "ph2TpgPhiHw_phiB_vs_seg_dirLoc_x" + iChTag.str();   // BX vs nHits
-	    m_plots[hName]->Fill(seg_dirLoc_x->at(iBestSeg[iMB-1]), ph2TpgPhiHw_phiB->at(iBestTpgPhiHw[iMB-1]));  
+	    hName = "ph2TpgPhiHw_phi_vs_seg_posGlb_phi" + iChTag.str();   // ph2 phi vs seg posGlb_phi
+	    m_plots[hName]->Fill(seg_posGlb_phi->at(iBestSeg[iMB-1]), phi_Ph2_conv*ph2TpgPhiHw_phi->at(iBestTpgPhiHw[iMB-1]));  
+
+	    hName = "ph2TpgPhiHw_posLoc_x_vs_seg_posLoc_x" + iChTag.str();   // ph2 posLoc_x vs seg posLoc_x
+	    m_plots[hName]->Fill(seg_posLoc_x->at(iBestSeg[iMB-1]), ph2TpgPhiHw_posLoc_x->at(iBestTpgPhiHw[iMB-1]));  
+
+
+	    hName = "ph2TpgPhiHw_phiB_vs_seg_dirLoc_x" + iChTag.str();   // ph2 phiB vs seg dirLoc_x
+	    m_plots[hName]->Fill(seg_dirLoc_x->at(iBestSeg[iMB-1]), phiB_Ph2_conv*ph2TpgPhiHw_phiB->at(iBestTpgPhiHw[iMB-1]));
+ 
+	    hName = "ph2TpgPhiHw_phi_plus_phiB_vs_seg_dirLoc_x" + iChTag.str();   // ph2 phi + phiB vs seg dirLoc_x
+	    m_plots[hName]->Fill(seg_dirLoc_x->at(iBestSeg[iMB-1]), 
+	    			 phi_Ph2_conv*ph2TpgPhiHw_phi->at(iBestTpgPhiHw[iMB-1]) + 
+	    			 phiB_Ph2_conv*ph2TpgPhiHw_phiB->at(iBestTpgPhiHw[iMB-1])); 
+	    
+
+	    hName = "Phase2Hw_t0_vs_segment_t0" + iChTag.str();    // phase 2 t0 vs segment t0
+	    m_plots[hName]->Fill(seg_phi_t0->at(iBestSeg[iMB-1]),ph2TpgPhiHw_t0->at(iBestTpgPhiHw[iMB-1]));
+
+	    //NEW
+	    hName = "Phase2Hw_t0_minus_segment_t0" + iChTag.str();   // Phase2 prim t0 minus segment t0 
+	    m_plots[hName]->Fill(ph2TpgPhiHw_t0->at(iBestTpgPhiHw[iMB-1])-seg_phi_t0->at(iBestSeg[iMB-1]));
+				  
+	    hName = "ph2TpgPhiHw_quality_vs_seg_posGlb_phi" + iChTag.str();   // quality vs segment posLoc_phi 
+	    m_plots[hName]->Fill(seg_posGlb_phi->at(iBestSeg[iMB-1]), ph2TpgPhiHw_quality->at(iBestTpgPhiHw[iMB-1]));
+
 	  }
 	}
 
@@ -963,10 +1039,10 @@ void DTNtupleTriggerAnalyzer::fill()
 	  m_plots[hName]->Fill(ph2TpgPhiHw_quality->at(itr));
 
 	  hName = "Phase2Hw_phi_" + iChTag.str();    // phi
-	  m_plots[hName]->Fill(ph2TpgPhiHw_phi->at(itr)*phi_Ph2_conv);
+	  m_plots[hName]->Fill(phi_Ph2_conv*ph2TpgPhiHw_phi->at(itr));
 
 	  hName = "Phase2Hw_phiB_" + iChTag.str();    // phiB
-	  m_plots[hName]->Fill(ph2TpgPhiHw_phiB->at(itr)*phiB_Ph2_conv);
+	  m_plots[hName]->Fill(phiB_Ph2_conv*ph2TpgPhiHw_phiB->at(itr));
 
 	  hName = "Phase2Hw_chi2_" + iChTag.str();    // chi2
 	  m_plots[hName]->Fill(ph2TpgPhiHw_chi2->at(itr));
@@ -1011,12 +1087,18 @@ void DTNtupleTriggerAnalyzer::fill()
 		hName = "Phase2Hw_vs_TwinMuxOut_BX_" + iChTag.str();    // BX
 		m_plots[hName]->Fill(ltTwinMuxOut_BX->at(itr2), ph2TpgPhiHw_BX->at(itr));
 
+		hName = "Phase2Hw_minus_TwinMuxOut_BX_vs_TwinMuxOut_phi_" + iChTag.str();   // Delta primitive BX vs TMux phi
+		m_plots[hName]->Fill(phi_Ph1_conv*ltTwinMuxOut_phi->at(itr2), ph2TpgPhiHw_BX->at(itr)-ltTwinMuxOut_BX->at(itr2));
+	
+		hName = "Phase2Hw_minus_TwinMuxOut_quality_vs_TwinMuxOut_quality_" + iChTag.str();   // Delta primitive quality vs TMux quality
+		m_plots[hName]->Fill(ltTwinMuxOut_quality->at(itr2), ph2TpgPhiHw_quality->at(itr)-ltTwinMuxOut_quality->at(itr2));
+		
 		hName = "Phase2Hw_vs_TwinMuxOut_phi_" + iChTag.str();    // phi
-		m_plots[hName]->Fill(ltTwinMuxOut_phi->at(itr2), ph2TpgPhiHw_phi->at(itr));
+		m_plots[hName]->Fill(phi_Ph1_conv*ltTwinMuxOut_phi->at(itr2), phi_Ph2_conv*ph2TpgPhiHw_phi->at(itr));
 
 		hName = "Phase2Hw_vs_TwinMuxOut_phiB_" + iChTag.str();    // phiB
-		m_plots[hName]->Fill(ltTwinMuxOut_phiB->at(itr2), ph2TpgPhiHw_phiB->at(itr));
-     	  
+		m_plots[hName]->Fill(phiB_Ph1_conv*ltTwinMuxOut_phiB->at(itr2), phiB_Ph2_conv*ph2TpgPhiHw_phiB->at(itr));
+		
 	      }
 	    }
 	  }
@@ -1036,10 +1118,10 @@ void DTNtupleTriggerAnalyzer::fill()
 		m_plots[hName]->Fill(ph2TpgPhiEmuAm_BX->at(itr2), ph2TpgPhiHw_BX->at(itr));
 
 		hName = "Phase2Hw_vs_EmuAm_phi_" + iChTag.str();    // phi
-		m_plots[hName]->Fill(ph2TpgPhiEmuAm_phi->at(itr2), ph2TpgPhiHw_phi->at(itr));
+		m_plots[hName]->Fill(phi_Ph2_conv*ph2TpgPhiEmuAm_phi->at(itr2), phi_Ph2_conv*ph2TpgPhiHw_phi->at(itr));
 
 		hName = "Phase2Hw_vs_EmuAm_phiB_" + iChTag.str();    // phiB
-		m_plots[hName]->Fill(ph2TpgPhiEmuAm_phiB->at(itr2), ph2TpgPhiHw_phiB->at(itr));
+		m_plots[hName]->Fill(ph2TpgPhiEmuAm_phiB->at(itr2), phiB_Ph2_conv*ph2TpgPhiHw_phiB->at(itr));
 
 		hName = "Phase2Hw_vs_EmuAm_chi2_" + iChTag.str();    // chi2
 		m_plots[hName]->Fill(ph2TpgPhiEmuAm_chi2->at(itr2), ph2TpgPhiHw_chi2->at(itr));
@@ -1065,10 +1147,10 @@ void DTNtupleTriggerAnalyzer::fill()
 		m_plots[hName]->Fill(ph2TpgPhiEmuHb_BX->at(itr2), ph2TpgPhiHw_BX->at(itr));
 
 		hName = "Phase2Hw_vs_EmuHb_phi_" + iChTag.str();    //phi
-		m_plots[hName]->Fill(ph2TpgPhiEmuHb_phi->at(itr2), ph2TpgPhiHw_phi->at(itr));
+		m_plots[hName]->Fill(phi_Ph2_conv*ph2TpgPhiEmuHb_phi->at(itr2), phi_Ph2_conv*ph2TpgPhiHw_phi->at(itr));
 
 		hName = "Phase2Hw_vs_EmuHb_phiB_" + iChTag.str();    // phiB
-		m_plots[hName]->Fill(ph2TpgPhiEmuHb_phiB->at(itr2), ph2TpgPhiHw_phiB->at(itr));
+		m_plots[hName]->Fill(ph2TpgPhiEmuHb_phiB->at(itr2), phiB_Ph2_conv*ph2TpgPhiHw_phiB->at(itr));
 
 		hName = "Phase2Hw_vs_EmuHb_chi2_" + iChTag.str();    // chi2
 		m_plots[hName]->Fill(ph2TpgPhiEmuHb_chi2->at(itr2), ph2TpgPhiHw_chi2->at(itr));
@@ -1100,10 +1182,10 @@ void DTNtupleTriggerAnalyzer::fill()
 	  m_plots[hName]->Fill(ph2TpgPhiEmuHb_quality->at(itr));
 	  
 	  hName = "Phase2EmuHb_phi_" + iChTag.str();    // phi
-	  m_plots[hName]->Fill(ph2TpgPhiEmuHb_quality->at(itr)*phi_Ph2_conv);
+	  m_plots[hName]->Fill(ph2TpgPhiEmuHb_phi->at(itr)*phi_Ph2_conv);
 	  
 	  hName = "Phase2EmuHb_phiB_" + iChTag.str();    // phiB
-	  m_plots[hName]->Fill(ph2TpgPhiEmuHb_quality->at(itr)*phiB_Ph2_conv);
+	  m_plots[hName]->Fill(ph2TpgPhiEmuHb_phiB->at(itr)*phiB_Ph2_conv);
 	  
 	  hName = "Phase2EmuHb_chi2_" + iChTag.str();    // chi2
 	  m_plots[hName]->Fill(ph2TpgPhiEmuHb_chi2->at(itr));
@@ -1117,10 +1199,10 @@ void DTNtupleTriggerAnalyzer::fill()
 	    m_plots[hName]->Fill(ph2TpgPhiEmuHb_quality->at(itr));
 	    
 	    hName = "Phase2EmuHb_BXOK_phi_" + iChTag.str();    // phi
-	    m_plots[hName]->Fill(ph2TpgPhiEmuHb_quality->at(itr)*phi_Ph2_conv);
+	    m_plots[hName]->Fill(phi_Ph2_conv*ph2TpgPhiEmuHb_phi->at(itr));
 	    
 	    hName = "Phase2EmuHb_BXOK_phiB_" + iChTag.str();    // phiB
-	    m_plots[hName]->Fill(ph2TpgPhiEmuHb_quality->at(itr)*phiB_Ph2_conv);
+	    m_plots[hName]->Fill(ph2TpgPhiEmuHb_quality->at(itr));
 	    
 	    hName = "Phase2EmuHb_BXOK_chi2_" + iChTag.str();    // chi2
 	    m_plots[hName]->Fill(ph2TpgPhiEmuHb_chi2->at(itr));
@@ -1151,10 +1233,10 @@ void DTNtupleTriggerAnalyzer::fill()
 	  m_plots[hName]->Fill(ph2TpgPhiEmuAm_quality->at(itr));
 
 	  hName = "Phase2EmuAm_phi_" + iChTag.str();    // phi
-	  m_plots[hName]->Fill(ph2TpgPhiEmuAm_quality->at(itr)*phi_Ph2_conv);
+	  m_plots[hName]->Fill(phi_Ph2_conv*ph2TpgPhiEmuAm_phi->at(itr));
 
 	  hName = "Phase2EmuAm_phiB_" + iChTag.str();    // phiB
-	  m_plots[hName]->Fill(ph2TpgPhiEmuAm_quality->at(itr)*phiB_Ph2_conv);
+	  m_plots[hName]->Fill(phiB_Ph2_conv*ph2TpgPhiEmuAm_phiB->at(itr));
 
 	  hName = "Phase2EmuAm_chi2_" + iChTag.str();    // chi2
 	  m_plots[hName]->Fill(ph2TpgPhiEmuAm_chi2->at(itr));
