@@ -15,7 +15,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 80.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 MB3",
             "caption"           : "DT SliceTest",
@@ -47,7 +47,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 MB4",
             "caption"           : "DT SliceTest",
@@ -79,7 +79,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 80.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB1",
             "caption"           : "DT SliceTest",
@@ -111,7 +111,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 80.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB2",
             "caption"           : "DT SliceTest",
@@ -143,7 +143,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 80.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB3",
             "caption"           : "DT SliceTest",
@@ -175,7 +175,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB4",
             "caption"           : "DT SliceTest",
@@ -207,7 +207,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 80.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 MB3",
             "caption"           : "DT SliceTest",
@@ -239,7 +239,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 MB4",
             "caption"           : "DT SliceTest",
@@ -271,7 +271,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 80.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB1",
             "caption"           : "DT SliceTest",
@@ -303,7 +303,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 80.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB2",
             "caption"           : "DT SliceTest",
@@ -335,7 +335,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 80.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB3",
             "caption"           : "DT SliceTest",
@@ -367,7 +367,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer and layer"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB4",
             "caption"           : "DT SliceTest",
@@ -1193,7 +1193,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "fraction of mached digis"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 wire eff. w.r.t. Phase-2 MB3",
@@ -1225,7 +1225,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "fraction of mached digis"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 wire eff. w.r.t. Phase-2 MB4",
@@ -1257,7 +1257,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "fraction of mached digis"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 wire eff. w.r.t. Phase-1 MB3",
@@ -1289,7 +1289,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "wire"],
-            "y"                 : [-0.5, 12.5, "superlayer / layer"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
             "z"                 : [0.0, 1.0, "fraction of mached digis"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 wire eff. w.r.t. Phase-1 MB4",
@@ -1328,7 +1328,7 @@
         "plot"      :
         {
             "x"                 : [0.0, 100.0, "efficiency"],
-            "y"                 : [-0.5, 12.5, "# of wires"],
+            "y"                 : [-0.5, 13.5, "# of wires"],
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-2 wire eff. w.r.t. Phase-1",
             "caption"           : "DT SliceTest",
@@ -1525,7 +1525,7 @@
                 "label"             : "Phase-2",
                 "legendEntry"       : "Phase-2",
                 "folder"            : "",
-                "plot"		    : "hTimeDiffThetaPhiPh2St2"
+                "plot"		    : "hTimeDiffThetaPh2St2"
 	    }
 
         },
@@ -1663,44 +1663,6 @@
             "filenamePlot"      : "06_MultipleHits_Time_MB4_Phi",
             "fileType"          : ["png", "root",  "pdf"]
         }
-    },
-
-    "Multiple Hits Time MB4 Theta"   :
-    {
-        "inputs"    :
-        {
-            "Phase-1"   :
-            {
-                "label"             : "Phase-1",
-                "legendEntry"       : "Phase-1",
-                "folder"            : "",
-                "plot"		    : "hTimeDiffThetaPh1St4"
-	    },
-            "Phase-2"   :
-            {
-                "label"             : "Phase-2",
-                "legendEntry"       : "Phase-2",
-                "folder"            : "",
-                "plot"		    : "hTimeDiffThetaPh2St4"
-	    }
-
-        },
-        "plot"      :
-        {
-            "x"                 : [0.0, 500.0, "time difference"],
-            "y"                 : [-0.5, 12.5, "entries"],
-            "option"            : "verbLeg",
-            "legendTitle"       : "MB4",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.55, 0.67, 0.89, 0.84]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "06_MultipleHits_Time_MB4_Theta",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
     }
+
 }
