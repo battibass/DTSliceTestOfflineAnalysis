@@ -39,7 +39,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 10.0, "quality"],
+            "x"                 : [0.0, 10.0, "Phase-2 trigger quality"],
             "y"                 : [0.8, 1.05, "entries"],
             "option"            : "",
             "legendTitle"       : "Phase-2 trigger quality",
@@ -51,7 +51,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "03_quality_Phase2",
+            "filenamePlot"      : "01_quality_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -96,7 +96,7 @@
         },
         "plot"      :
         {
-            "x"                 : [-10.0, 10.0, "BX"],
+            "x"                 : [-10.0, 10.0, "Phase-2 trigger BX"],
             "y"                 : [0.8, 1.05, "entries"],
             "option"            : "",
             "legendTitle"       : "Phase-2 trigger BX",
@@ -108,7 +108,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "02_BX_Phase2",
+            "filenamePlot"      : "01_BX_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -152,7 +152,7 @@
         },
         "plot"      :
         {
-            "x"                 : [-1.0, 1.0, "phi"],
+            "x"                 : [-0.4, 0.4, "Phase-2 trigger #phi (rad)"],
             "y"                 : [0.8, 1.05, "entries"],
             "option"            : "",
             "legendTitle"       : "Phase-2 trigger phi",
@@ -164,7 +164,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "07_phi_Phase2",
+            "filenamePlot"      : "01_phi_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -208,7 +208,7 @@
         },
         "plot"      :
         {
-            "x"                 : [-100.0, 100.0, "phiB"],
+            "x"                 : [-100.0, 100.0, "Phase-2 trigger #phi_{B} (rad)"],
             "y"                 : [-1.2, 1.2, "entries"],
             "option"            : "",
             "legendTitle"       : "Phase-2 trigger",
@@ -220,7 +220,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "08_phiB_Phase2",
+            "filenamePlot"      : "01_phiB_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -264,7 +264,7 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 32.0, "chi2"],
+            "x"                 : [0.0, 32.0, "Phase-2 trigger #chi^2"],
             "y"                 : [0.8, 1.05, "entries"],
             "option"            : "",
             "legendTitle"       : "Phase-2 trigger",
@@ -276,7 +276,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "06_chi2_Phase2",
+            "filenamePlot"      : "01_chi2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -320,7 +320,7 @@
         },
         "plot"      :
         {
-            "x"                 : [-60.0, 60.0, "t0"],
+            "x"                 : [-60.0, 60.0, "Phase-2 trigger t0 (ns)"],
             "y"                 : [0.8, 1.05, "entries"],
             "option"            : "",
             "legendTitle"       : "Phase-2 trigger",
@@ -332,14 +332,14 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "06_t0_Phase2",
+            "filenamePlot"      : "01_t0_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
  
 
-    "Phase-2 t0 - TwinMux t0"   :
+    "Phase-2 t0 - Segment t0"   :
     {
         "inputs"    :
         {
@@ -374,10 +374,10 @@
         },
         "plot"      :
         {
-            "x"                 : [-20.0, 20.0, "Ph2 trig t0 - TwinMux t0"],
+            "x"                 : [-20.0, 20.0, "Phase2 trigger t0 - segment t0 (ns)"],
             "y"                 : [0.8, 1.05, "entries"],
             "option"            : "",
-            "legendTitle"       : "Phase-2 t0 - TwinMux t0 ",
+            "legendTitle"       : "Phase2 t0 - segment t0 ",
             "caption"           : "DT SliceTest",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -386,7 +386,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "05_Phase2_TwinMux_Delta_t0",
+            "filenamePlot"      : "05_trig_seg_t0_diff_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -407,8 +407,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 10.0, "quality"],
-            "y"                 : [-10.0, 10.0, "BX"],
+            "x"                 : [0.0, 10.0, "Phase-2 trigger quality"],
+            "y"                 : [-10.0, 10.0, "Phase-2 trigger BX"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 trigger MB1",
             "caption"           : "DT SliceTest",
@@ -419,7 +419,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_BX_vs_quality_MB1_Phase2",
+            "filenamePlot"      : "02_BX_vs_quality_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -439,8 +439,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 10.0, "quality"],
-            "y"                 : [-10.0, 10.0, "BX"],
+            "x"                 : [0.0, 10.0, "Phase-2 trigger quality"],
+            "y"                 : [-10.0, 10.0, "Phase-2 trigger BX"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 trigger MB2",
             "caption"           : "DT SliceTest",
@@ -451,7 +451,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_BX_vs_quality_MB2_Phase2",
+            "filenamePlot"      : "02_BX_vs_quality_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -471,8 +471,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 10.0, "quality"],
-            "y"                 : [-10.0, 10.0, "BX"],
+            "x"                 : [0.0, 10.0, "Phase-2 trigger quality"],
+            "y"                 : [-10.0, 10.0, "Phase-2 trigger BX"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 trigger MB3",
             "caption"           : "DT SliceTest",
@@ -483,7 +483,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_BX_vs_quality_MB3_Phase2",
+            "filenamePlot"      : "02_BX_vs_quality_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -503,8 +503,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 10.0, "quality"],
-            "y"                 : [-10.0, 10.0, "BX"],
+            "x"                 : [0.0, 10.0, "Phase-2 trigger quality"],
+            "y"                 : [-10.0, 10.0, "Phase-2 trigger BX"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 trigger MB4",
             "caption"           : "DT SliceTest",
@@ -515,530 +515,10 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_BX_vs_quality_MB4_Phase2",
+            "filenamePlot"      : "02_BX_vs_quality_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
-
-
-
-   "Phase-2 vs TwinMux quality MB1"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux quality MB1",
-                "legendEntry"       : "Phase2 vs TwinMux quality MB1",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_quality_MB1"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [0.0,7.0, "TwinMux quality"],
-            "y"                 : [0.0,10.0, "Phase2 quality"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB1_quality",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-  "Phase-2 vs TwinMux quality MB2"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux quality MB2",
-                "legendEntry"       : "Phase2 vs TwinMux quality MB2",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_quality_MB2"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [0.0,7.0, "TwinMux quality"],
-            "y"                 : [0.0,10.0, "Phase2 quality"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB2",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB2_quality",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-  "Phase-2 vs TwinMux quality MB3"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux quality MB3",
-                "legendEntry"       : "Phase2 vs TwinMux quality MB3",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_quality_MB3"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [0.0,7.0, "TwinMux quality"],
-            "y"                 : [0.0,10.0, "Phase2 quality"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB3",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB3_quality",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-   "Phase-2 vs TwinMux quality MB4"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux quality MB4",
-                "legendEntry"       : "Phase2 vs TwinMux quality MB4",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_quality_MB4"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [0.0,7.0, "TwinMux quality"],
-            "y"                 : [0.0,10.0, "Phase2 quality"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB4",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB4_quality",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-  "Phase-2 vs TwinMux phi MB1"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux phi MB1",
-                "legendEntry"       : "Phase2 vs TwinMux phi MB1",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_phi_MB1"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.6,0.6, "TwinMux phi"],
-            "y"                 : [-0.6,0.6, "Phase2 phi"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB1_phi",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-  "Phase-2 vs TwinMux phi MB2"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux phi MB2",
-                "legendEntry"       : "Phase2 vs TwinMux phi MB2",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_phi_MB2"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.6,0.6, "TwinMux phi"],
-            "y"                 : [-0.6,0.6, "Phase2 phi"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB2",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB2_phi",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-   "Phase-2 vs TwinMux phi MB3"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux phi MB3",
-                "legendEntry"       : "Phase2 vs TwinMux phi MB3",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_phi_MB3"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.6,0.6, "TwinMux phi"],
-            "y"                 : [-0.6,0.6, "Phase2 phi"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB3",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB3_phi",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-   "Phase-2 vs TwinMux phi MB4"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux phi MB4",
-                "legendEntry"       : "Phase2 vs TwinMux phi MB4",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_phi_MB4"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.6,0.6, "TwinMux phi"],
-            "y"                 : [-0.6,0.6, "Phase2 phi"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB4",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB4_phi",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-   "Phase-2 vs TwinMux phiB MB1"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux phiB MB1",
-                "legendEntry"       : "Phase2 vs TwinMux phiB MB1",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_phiB_MB1"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-1.3,1.3, "TwinMux phiB"],
-            "y"                 : [-1.3,1.3, "Phase2 phiB"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB1_phiB",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-   "Phase-2 vs TwinMux phiB MB2"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux phiB MB2",
-                "legendEntry"       : "Phase2 vs TwinMux phiB MB2",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_phiB_MB2"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-1.3,1.3, "TwinMux phiB"],
-            "y"                 : [-1.3,1.3, "Phase2 phiB"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB2",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB2_phiB",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-   "Phase-2 vs TwinMux phiB MB3"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux phiB MB3",
-                "legendEntry"       : "Phase2 vs TwinMux phiB MB3",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_phiB_MB3"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-1.3,1.3, "TwinMux phiB"],
-            "y"                 : [-1.3,1.3, "Phase2 phiB"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB3",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB3_phiB",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-   "Phase-2 vs TwinMux phiB MB4"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 vs TwinMux phiB MB4",
-                "legendEntry"       : "Phase2 vs TwinMux phiB MB4",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_phiB_MB4"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-1.3,1.3, "TwinMux phiB"],
-            "y"                 : [-1.3,1.3, "Phase2 phiB"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB4",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_vs_TwinMux_MB4_phiB",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-"Phase-2 vs Phase-1 BX MB1"   :
- 
-   {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase- vs TwinMux BX MB1",
-                "legendEntry"       : "Phase2 vs TwinMux BX MB1",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_BX_MB1"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-5.0,5.0, "Phase-1 BX"],
-            "y"                 : [-10.0,10.0, "Phase-2 BX"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2Hw_vs_TwinMuxOut_BX_MB1",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-"Phase-2 vs Phase-1 BX MB2"   :
- 
-   {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase- vs TwinMux BX MB2",
-                "legendEntry"       : "Phase2 vs TwinMux BX MB2",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_BX_MB2"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-5.0,5.0, "Phase-1 BX"],
-            "y"                 : [-10.0,10.0, "Phase-2 BX"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB2",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2Hw_vs_TwinMuxOut_BX_MB2",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-"Phase-2 vs Phase-1 BX MB3"   :
- 
-   {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase- vs TwinMux BX MB3",
-                "legendEntry"       : "Phase2 vs TwinMux BX MB3",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_BX_MB3"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-5.0,5.0, "Phase-1 BX"],
-            "y"                 : [-10.0,10.0, "Phase-2 BX"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB3",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2Hw_vs_TwinMuxOut_BX_MB3",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-"Phase-2 vs Phase-1 BX MB4"   :
- 
-   {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase- vs TwinMux BX MB4",
-                "legendEntry"       : "Phase2 vs TwinMux BX MB4",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_vs_TwinMuxOut_BX_MB4"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-5.0,5.0, "Phase-1 BX"],
-            "y"                 : [-10.0,10.0, "Phase-2 BX"],
-            "option"            : "colz",
-            "legendTitle"       : "Phase-2 vs TwinMux MB4",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2Hw_vs_TwinMuxOut_BX_MB4",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-
    "Phase-2 BX vs segm nHits MB1"   :
     {
         "inputs"    :
@@ -1054,8 +534,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0,10.0, "segm nHits"],
-            "y"                 : [-10.0,10.0, "phase2 BX"],
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [-10.0,10.0, "Phase-2 trigger BX"],
             "option"            : "colz",
             "legendTitle"       : "MB1",
             "caption"           : "DT SliceTest",
@@ -1066,7 +546,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_BX_vs_segm_nHits_MB1",
+            "filenamePlot"      : "07_BX_vs_seg_nHits_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1086,8 +566,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0,10.0, "segm nHits"],
-            "y"                 : [-10.0,10.0, "phase2 BX"],
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [-10.0,10.0, "Phase-2 trigger BX"],
             "option"            : "colz",
             "legendTitle"       : "MB2",
             "caption"           : "DT SliceTest",
@@ -1098,7 +578,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_BX_vs_segm_nHits_MB2",
+            "filenamePlot"      : "07_BX_vs_seg_nHits_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1118,8 +598,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0,10.0, "segm nHits"],
-            "y"                 : [-10.0,10.0, "phase2 BX"],
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [-10.0,10.0, "Phase-2 trigger BX"],
             "option"            : "colz",
             "legendTitle"       : "MB3",
             "caption"           : "DT SliceTest",
@@ -1130,7 +610,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_BX_vs_segm_nHits_MB3",
+            "filenamePlot"      : "07_BX_vs_seg_nHits_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1151,8 +631,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0,10.0, "segm nHits"],
-            "y"                 : [-10.0,10.0, "phase2 BX"],
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [-10.0,10.0, "Phase-2 trigger BX"],
             "option"            : "colz",
             "legendTitle"       : "MB4",
             "caption"           : "DT SliceTest",
@@ -1163,7 +643,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_BX_vs_segm_nHits_MB4",
+            "filenamePlot"      : "07_BX_vs_seg_nHits_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1183,8 +663,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0,10.0, "segm nHits"],
-            "y"                 : [-10.0,10.0, "phase2 quality"],
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [-10.0,10.0, "Phase-2 trigger quality"],
             "option"            : "colz",
             "legendTitle"       : "MB1",
             "caption"           : "DT SliceTest",
@@ -1195,7 +675,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_quality_vs_segm_nHits_MB1",
+            "filenamePlot"      : "06_qual_vs_seg_nHits_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1215,8 +695,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0,10.0, "segm nHits"],
-            "y"                 : [-10.0,10.0, "phase2 quality"],
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [-10.0,10.0, "Phase-2 trigger quality"],
             "option"            : "colz",
             "legendTitle"       : "MB2",
             "caption"           : "DT SliceTest",
@@ -1227,7 +707,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_quality_vs_segm_nHits_MB2",
+            "filenamePlot"      : "06_qual_vs_seg_nHits_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1247,8 +727,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0,10.0, "segm nHits"],
-            "y"                 : [-10.0,10.0, "phase2 quality"],
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [-10.0,10.0, "Phase-2 trigger quality"],
             "option"            : "colz",
             "legendTitle"       : "MB3",
             "caption"           : "DT SliceTest",
@@ -1259,7 +739,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_quality_vs_segm_nHits_MB3",
+            "filenamePlot"      : "06_qual_vs_seg_nHits_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1280,8 +760,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0,10.0, "segm nHits"],
-            "y"                 : [-10.0,10.0, "phase2 quality"],
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [-10.0,10.0, "Phase-2 trigger quality"],
             "option"            : "colz",
             "legendTitle"       : "MB4",
             "caption"           : "DT SliceTest",
@@ -1292,270 +772,11 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_quality_vs_segm_nHits_MB4",
+            "filenamePlot"      : "06_qual_vs_seg_nHits_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
-
-  "Phase-2 phi vs segm posLoc_x MB1"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 phi vs seg posLoc_x MB1",
-                "legendEntry"       : "MB1",
-                "folder"            : "",
-                "plot"		    : "ph2TpgPhiHw_phi_vs_seg_posLoc_xMB1"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-200.0,200.0, "seg posLoc_x"],
-            "y"                 : [-1.2,1.2, "phase2 phi"],
-            "option"            : "colz",
-            "legendTitle"       : "MB1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_phi_vs_seg_posLoc_x_MB1",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-  "Phase-2 phi vs segm posLoc_x MB2"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 phi vs seg posLoc_x MB2",
-                "legendEntry"       : "MB2",
-                "folder"            : "",
-                "plot"		    : "ph2TpgPhiHw_phi_vs_seg_posLoc_xMB2"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-200.0,200.0, "seg posLoc_x"],
-            "y"                 : [-1.2,1.2, "phase2 phi"],
-            "option"            : "colz",
-            "legendTitle"       : "MB2",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_phi_vs_seg_posLoc_x_MB2",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-  "Phase-2 phi vs segm posLoc_x MB3"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 phi vs seg posLoc_x MB3",
-                "legendEntry"       : "MB3",
-                "folder"            : "",
-                "plot"		    : "ph2TpgPhiHw_phi_vs_seg_posLoc_xMB3"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-200.0,200.0, "seg posLoc_x"],
-            "y"                 : [-1.2,1.2, "phase2 phi"],
-            "option"            : "colz",
-            "legendTitle"       : "MB3",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_phi_vs_seg_posLoc_x_MB3",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-   "Phase-2 phi vs segm posLoc_x MB4"   :
-
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 phi vs seg posLoc_x MB4",
-                "legendEntry"       : "MB4",
-                "folder"            : "",
-                "plot"		    : "ph2TpgPhiHw_phi_vs_seg_posLoc_xMB4"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-200.0,200.0, "seg posLoc_x"],
-            "y"                 : [-1.2,1.2, "phase2 phi"],
-            "option"            : "colz",
-            "legendTitle"       : "MB4",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_phi_vs_seg_posLoc_x_MB4",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
- "Phase-2 phiB vs segm dirLoc_x MB1"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 phiB vs seg dirLoc_x MB1",
-                "legendEntry"       : "Phase2 phiB vs seg dirLoc_x MB1",
-                "folder"            : "",
-                "plot"		    : "ph2TpgPhiHw_phiB_vs_seg_dirLoc_xMB1"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-1.0, 1.0, "seg dirLoc_x"],
-            "y"                 : [-2.0,2.0, "phase2 phiB"],
-            "option"            : "colz",
-            "legendTitle"       : "MB1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_phiB_vs_seg_dirLoc_x_MB1",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
- "Phase-2 phiB vs segm dirLoc_x MB2"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 phiB vs seg dirLoc_x MB2",
-                "legendEntry"       : "Phase2 phiB vs seg dirLoc_x MB2",
-                "folder"            : "",
-                "plot"		    : "ph2TpgPhiHw_phiB_vs_seg_dirLoc_xMB2"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-1.0, 1.0, "seg dirLoc_x"],
-            "y"                 : [-2.0,2.0, "phase2 phiB"],
-            "option"            : "colz",
-            "legendTitle"       : "MB2",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_phiB_vs_seg_dirLoc_x_MB2",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
- "Phase-2 phiB vs segm dirLoc_x MB3"   :
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 phiB vs seg dirLoc_x MB3",
-                "legendEntry"       : "Phase2 phiB vs seg dirLoc_x MB3",
-                "folder"            : "",
-                "plot"		    : "ph2TpgPhiHw_phiB_vs_seg_dirLoc_xMB3"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-1.0, 1.0, "seg dirLoc_x"],
-            "y"                 : [-2.0,2.0, "phase2 phiB"],
-            "option"            : "colz",
-            "legendTitle"       : "MB3",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_phiB_vs_seg_dirLoc_x_MB3",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-   "Phase-2 phiB vs segm dirLoc_x MB4"   :
-
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 phiB vs seg dirLoc_x MB4",
-                "legendEntry"       : "Phase2 phiB vs seg dirLoc_x MB4",
-                "folder"            : "",
-                "plot"		    : "ph2TpgPhiHw_phiB_vs_seg_dirLoc_xMB4"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-1.0, 1.0, "seg dirLoc_x"],
-            "y"                 : [-2.0,2.0, "phase2 phiB"],
-            "option"            : "colz",
-            "legendTitle"       : "MB4",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_Phase2_phiB_vs_seg_dirLoc_x_MB4",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-"Phase-2 efficiency vs segm nHits MB1"   :
+    "Phase-2 efficiency vs segm nHits MB1"   :
     {
         "inputs"    :
         {
@@ -1570,8 +791,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 10.0, "seg nHits"],
-            "y"                 : [0.5,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [0.0, 10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [0.5, 1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB1",
             "caption"           : "DT SliceTest",
@@ -1582,12 +803,12 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_efficAnyBX_vs_seg_nHits_MB1",
+            "filenamePlot"      : "03_eff_vs_seg_nHits_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
-"Phase-2 efficiency vs segm nHits MB2"   :
+    "Phase-2 efficiency vs segm nHits MB2"   :
     {
         "inputs"    :
         {
@@ -1602,8 +823,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 10.0, "seg nHits"],
-            "y"                 : [0.5,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [0.0, 10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [0.5,1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB2",
             "caption"           : "DT SliceTest",
@@ -1614,7 +835,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_efficAnyBX_vs_seg_nHits_MB2",
+            "filenamePlot"      : "03_eff_vs_seg_nHits_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1634,8 +855,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 10.0, "seg nHits"],
-            "y"                 : [0.5,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [0.0, 10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [0.5,1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB3",
             "caption"           : "DT SliceTest",
@@ -1646,7 +867,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_efficAnyBX_vs_seg_nHits_MB3",
+            "filenamePlot"      : "03_eff_vs_seg_nHits_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1666,8 +887,8 @@
         },
         "plot"      :
         {
-            "x"                 : [0.0, 10.0, "seg nHits"],
-            "y"                 : [0.5,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [0.0, 10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [0.5,1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB4",
             "caption"           : "DT SliceTest",
@@ -1678,7 +899,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_efficAnyBX_vs_seg_nHits_MB4",
+            "filenamePlot"      : "03_eff_vs_seg_nHits_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1698,8 +919,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-50.0, 50.0, "seg t0"],
-            "y"                 : [0.5,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [-50.0, 50.0, "Reconstrcuted segment t0 (ns)"],
+            "y"                 : [0.5,1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB1",
             "caption"           : "DT SliceTest",
@@ -1710,7 +931,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_efficAnyBX_vs_seg_t0_MB1",
+            "filenamePlot"      : "03_eff_vs_seg_t0_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1730,8 +951,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-50.0, 50.0, "seg t0"],
-            "y"                 : [0.5,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [-50.0, 50.0, "Reconstrcuted segment t0 (ns)"],
+            "y"                 : [0.5,1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB2",
             "caption"           : "DT SliceTest",
@@ -1742,7 +963,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_efficAnyBX_vs_seg_t0_MB2",
+            "filenamePlot"      : "03_eff_vs_seg_t0_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1762,8 +983,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-50.0, 50.0, "seg t0"],
-            "y"                 : [0.5,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [-50.0, 50.0, "Reconstrcuted segment t0 (ns)"],
+            "y"                 : [0.5,1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB3",
             "caption"           : "DT SliceTest",
@@ -1774,7 +995,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_efficAnyBX_vs_seg_t0_MB3",
+            "filenamePlot"      : "03_eff_vs_seg_t0_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1794,8 +1015,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-50.0, 50.0, "seg t0"],
-            "y"                 : [0.5,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [-50.0, 50.0, "Reconstrcuted segment t0 (ns)"],
+            "y"                 : [0.5,1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB4",
             "caption"           : "DT SliceTest",
@@ -1806,7 +1027,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase2_efficAnyBX_vs_seg_t0_MB4",
+            "filenamePlot"      : "03_eff_vs_seg_t0_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1827,8 +1048,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-1.0,-0.2, "seg posGlb phi"],
-            "y"                 : [0.0,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [-1.0,-0.2, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [0.0,1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB1",
             "caption"           : "DT SliceTest",
@@ -1839,7 +1060,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_trigeff_ph2TpgPhiHw_AnyBX_vs_posGlb_phi_MB1",
+            "filenamePlot"      : "03_eff_vs_phi_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1860,8 +1081,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-1.0,-0.2, "seg posGlb phi"],
-            "y"                 : [0.0,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [-1.0,-0.2, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [0.0,1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB2",
             "caption"           : "DT SliceTest",
@@ -1872,7 +1093,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_trigeff_ph2TpgPhiHw_AnyBX_vs_posGlb_phi_MB2",
+            "filenamePlot"      : "03_eff_vs_phi_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1893,8 +1114,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-1.0,-0.2, "seg posGlb phi"],
-            "y"                 : [0.0,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [-1.0,-0.2, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [0.0,1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB3",
             "caption"           : "DT SliceTest",
@@ -1905,7 +1126,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_trigeff_ph2TpgPhiHw_AnyBX_vs_posGlb_phi_MB3",
+            "filenamePlot"      : "03_eff_vs_phi_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1925,8 +1146,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-1.0,-0.2, "seg posGlb phi"],
-            "y"                 : [0.0,1.05, "phase2 Efficiency AnyBX"],
+            "x"                 : [-1.0,-0.2, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [0.0,1.05, "Phase-2 trigger efficiency (AnyBX)"],
             "option"            : "",
             "legendTitle"       : "MB4",
             "caption"           : "DT SliceTest",
@@ -1937,7 +1158,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_trigeff_ph2TpgPhiHw_AnyBX_vs_posGlb_phi_MB4",
+            "filenamePlot"      : "03_eff_vs_phi_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1958,8 +1179,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-0.4,0.4, "seg posGlob_phi"],
-            "y"                 : [-1.0,0.0, "phase2 phi"],
+            "x"                 : [-0.4,0.4, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [-1.0,0.0, "Phase-2 trigger #phi (rad)"],
             "option"            : "colz",
             "legendTitle"       : "MB1",
             "caption"           : "DT SliceTest",
@@ -1970,7 +1191,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_phi_vs_seg_posGlb_phi_MB1",
+            "filenamePlot"      : "04_trig_vs_seg_phi_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1991,8 +1212,8 @@
         "plot"      :
         {
 
-            "x"                 : [-0.4,0.4, "seg posGlob_phi"],
-            "y"                 : [-1.0,0.0, "phase2 phi"],
+            "x"                 : [-0.4,0.4, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [-1.0,0.0, "Phase-2 trigger #phi (rad)"],
             "option"            : "colz",
             "legendTitle"       : "MB2",
             "caption"           : "DT SliceTest",
@@ -2003,7 +1224,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_phi_vs_seg_posGlb_phi_MB2",
+            "filenamePlot"      : "04_trig_vs_seg_phi_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2023,8 +1244,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-1.0,0.0, "seg posGlob_phi"],
-            "y"                 : [-0.4,0.4, "phase2 phi"],
+            "x"                 : [-1.0,0.0, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [-0.4,0.4, "Phase-2 trigger #phi (rad)"],
             "option"            : "colz",
             "legendTitle"       : "MB3",
             "caption"           : "DT SliceTest",
@@ -2035,7 +1256,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_phi_vs_seg_posGlb_phi_MB3",
+            "filenamePlot"      : "04_trig_vs_seg_phi_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2055,8 +1276,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-1.0,0.0, "seg posGlob_phi"],
-            "y"                 : [-0.4,0.4, "phase2 phi"],
+            "x"                 : [-1.0,0.0, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [-0.4,0.4, "Phase-2 trigger #phi (rad)"],
             "option"            : "colz",
             "legendTitle"       : "MB4",
             "caption"           : "DT SliceTest",
@@ -2067,7 +1288,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_phi_vs_seg_posGlb_phi_MB4",
+            "filenamePlot"      : "04_trig_vs_seg_phi_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2089,7 +1310,7 @@
         "plot"      :
         {
             "x"                 : [-1.0,1.0, "seg dirLoc_x"],
-            "y"                 : [-1.0,1.0, "phase2 phi+phiB"],
+            "y"                 : [-1.0,1.0, "Phase-2 trigger #psi = #phi + #phi_{B} (rad)"],
             "option"            : "colz",
             "legendTitle"       : "MB1",
             "caption"           : "DT SliceTest",
@@ -2100,7 +1321,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_phi_plus_phiB_vs_seg_dirLoc_x_MB1",
+            "filenamePlot"      : "04_trig_psi_vs_seg_dir_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2121,8 +1342,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-1.0,1.0, "seg dirLoc_x"],
-            "y"                 : [-1.0,1.0, "phase2 phi+phiB"],
+            "x"                 : [-1.0,1.0, "Reconstructed segment dX/dZ"],
+            "y"                 : [-1.0,1.0, "Phase-2 trigger #psi = #phi + #phi_{B} (rad)"],
             "option"            : "colz",
             "legendTitle"       : "MB2",
             "caption"           : "DT SliceTest",
@@ -2133,7 +1354,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_phi_plus_phiB_vs_seg_dirLoc_x_MB2",
+            "filenamePlot"      : "04_trig_psi_vs_seg_dir_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2154,8 +1375,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-1.0,1.0, "seg dirLoc_x"],
-            "y"                 : [-1.0,1.0, "phase2 phi+phiB"],
+            "x"                 : [-1.0,1.0, "Reconstructed segment dX/dZ"],
+            "y"                 : [-1.0,1.0, "Phase-2 trigger #psi = #phi + #phi_{B} (rad)"],
             "option"            : "colz",
             "legendTitle"       : "MB3",
             "caption"           : "DT SliceTest",
@@ -2166,7 +1387,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_phi_plus_phiB_vs_seg_dirLoc_x_MB3",
+            "filenamePlot"      : "04_trig_psi_vs_seg_dir_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2187,8 +1408,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-1.0,1.0, "seg dirLoc_x"],
-            "y"                 : [-1.0,1.0, "phase2 phi+phiB"],
+            "x"                 : [-1.0,1.0, "Reconstructed segment dX/dZ"],
+            "y"                 : [-1.0,1.0, "Phase-2 trigger #psi = #phi + #phi_{B} (rad)"],
             "option"            : "colz",
             "legendTitle"       : "MB4",
             "caption"           : "DT SliceTest",
@@ -2199,7 +1420,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_phi_plus_phiB_vs_seg_dirLoc_x_MB4",
+            "filenamePlot"      : "04_trig_psi_vs_seg_dir_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2220,8 +1441,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-200.0,200.0, "seg posLoc_x"],
-            "y"                 : [-200.0,200.0, "phase2 trig posLoc_x"],
+            "x"                 : [-200.0,200.0, "Reconstructed segment local position x (cm)"],
+            "y"                 : [-200.0,200.0, "Phase-2 trigger local position x (cm)"],
             "option"            : "colz",
             "legendTitle"       : "MB1",
             "caption"           : "DT SliceTest",
@@ -2232,7 +1453,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_posLoc_x_vs_seg_posLoc_x_MB1",
+            "filenamePlot"      : "04_trig_vs_seg_x_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2253,8 +1474,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-200.0,200.0, "seg posLoc_x"],
-            "y"                 : [-200.0,200.0, "phase2 trig posLoc_x"],
+            "x"                 : [-200.0,200.0, "Reconstructed segment local position x (cm)"],
+            "y"                 : [-200.0,200.0, "Phase-2 trigger local position x (cm)"],
             "option"            : "colz",
             "legendTitle"       : "MB2",
             "caption"           : "DT SliceTest",
@@ -2265,7 +1486,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_posLoc_x_vs_seg_posLoc_x_MB2",
+            "filenamePlot"      : "04_trig_vs_seg_x_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2286,8 +1507,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-200.0,200.0, "seg posLoc_x"],
-            "y"                 : [-200.0,200.0, "phase2 trig posLoc_x"],
+            "x"                 : [-200.0,200.0, "Reconstructed segment local position x (cm)"],
+            "y"                 : [-200.0,200.0, "Phase-2 trigger local position x (cm)"],
             "option"            : "colz",
             "legendTitle"       : "MB3",
             "caption"           : "DT SliceTest",
@@ -2298,7 +1519,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_posLoc_x_vs_seg_posLoc_x_MB3",
+            "filenamePlot"      : "04_trig_vs_seg_x_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2319,8 +1540,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-200.0,200.0, "seg posLoc_x"],
-            "y"                 : [-200.0,200.0, "phase2 trig posLoc_x"],
+            "x"                 : [-200.0,200.0, "Reconstructed segment local position x (cm)"],
+            "y"                 : [-200.0,200.0, "Phase-2 trigger local position x (cm)"],
             "option"            : "colz",
             "legendTitle"       : "MB4",
             "caption"           : "DT SliceTest",
@@ -2331,14 +1552,13 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_posLoc_x_vs_seg_posLoc_x_MB4",
+            "filenamePlot"      : "04_trig_vs_seg_x_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
 
 
 "Phase-2 trig t0 vs segm t0 MB1"   :
-
     {
         "inputs"    :
         {
@@ -2353,8 +1573,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-60.0,60.0, "seg t0"],
-            "y"                 : [-60.0,60.0, "phase2 trig t0"],
+            "x"                 : [-60.0,60.0, "Reconstructed segment t0 (ns)"],
+            "y"                 : [-60.0,60.0, "Phase-2 trigger t0 (ns)"],
             "option"            : "colz",
             "legendTitle"       : "MB1",
             "caption"           : "DT SliceTest",
@@ -2365,7 +1585,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_t0_vs_seg_t0_MB1",
+            "filenamePlot"      : "05_trig_vs_seg_t0_MB1_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2386,8 +1606,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-60.0,60.0, "seg t0"],
-            "y"                 : [-60.0,60.0, "phase2 trig t0"],
+            "x"                 : [-60.0,60.0, "Reconstructed segment t0 (ns)"],
+            "y"                 : [-60.0,60.0, "Phase-2 trigger t0 (ns)"],
             "option"            : "colz",
             "legendTitle"       : "MB2",
             "caption"           : "DT SliceTest",
@@ -2398,7 +1618,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_t0_vs_seg_t0_MB2",
+            "filenamePlot"      : "05_trig_vs_seg_t0_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2419,8 +1639,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-60.0,60.0, "seg t0"],
-            "y"                 : [-60.0,60.0, "phase2 trig t0"],
+            "x"                 : [-60.0,60.0, "Reconstructed segment t0 (ns)"],
+            "y"                 : [-60.0,60.0, "Phase-2 trigger t0 (ns)"],
             "option"            : "colz",
             "legendTitle"       : "MB3",
             "caption"           : "DT SliceTest",
@@ -2431,7 +1651,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_t0_vs_seg_t0_MB3",
+            "filenamePlot"      : "05_trig_vs_seg_t0_MB3_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -2452,8 +1672,8 @@
         },
         "plot"      :
         {
-            "x"                 : [-60.0,60.0, "seg t0"],
-            "y"                 : [-60.0,60.0, "phase2 trig t0"],
+            "x"                 : [-60.0,60.0, "Reconstructed segment t0 (ns)"],
+            "y"                 : [-60.0,60.0, "Phase-2 trigger t0 (ns)"],
             "option"            : "colz",
             "legendTitle"       : "MB4",
             "caption"           : "DT SliceTest",
@@ -2464,284 +1684,8 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_phase2_t0_vs_seg_t0_MB4",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-
-
-"Phase-2 trig BX - TwinMux BX vs TwinMux phi MB1"   :
-
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 trig BX - TwinMux BX vs TwiMux phi MB1",
-                "legendEntry"       : "MB1",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_minus_TwinMuxOut_BX_vs_TwinMuxOut_phi_MB1"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.4,0.3, "TwinMux phi"],
-            "y"                 : [-10.5,10.5, "phase2 trig BX - TwinMux BX"],
-            "option"            : "colz",
-            "legendTitle"       : "MB1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_phase2_trig_BX_minus_TwinMux_BX_vs_TwinMux_phi_MB1",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-"Phase-2 trig BX - TwinMux BX vs TwinMux phi MB2"   :
-
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 trig BX - TwinMux BX vs TwiMux phi MB2",
-                "legendEntry"       : "MB2",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_minus_TwinMuxOut_BX_vs_TwinMuxOut_phi_MB2"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.4,0.3, "TwinMux phi"],
-            "y"                 : [-10.5,10.5, "phase2 trig BX - TwinMux BX"],
-            "option"            : "colz",
-            "legendTitle"       : "MB2",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_phase2_trig_BX_minus_TwinMux_BX_vs_TwinMux_BX_MB2",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-"Phase-2 trig BX - TwinMux BX vs TwinMux phi MB3"   :
-
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 trig BX - TwinMux BX vs TwiMux phi MB3",
-                "legendEntry"       : "MB3",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_minus_TwinMuxOut_BX_vs_TwinMuxOut_phi_MB3"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.4,0.3, "TwinMux phi"],
-            "y"                 : [-10.5,10.5, "phase2 trig BX - TwinMux BX"],
-            "option"            : "colz",
-            "legendTitle"       : "MB3",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_phase2_trig_BX_minus_TwinMux_BX_vs_TwinMux_BX_MB3",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-"Phase-2 trig BX - TwinMux BX vs TwinMux phi MB4"   :
-
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 trig BX - TwinMux BX vs TwiMux phi MB4",
-                "legendEntry"       : "MB4",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_minus_TwinMuxOut_BX_vs_TwinMuxOut_phi_MB4"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.4,0.3, "TwinMux phi"],
-            "y"                 : [-10.5,10.5, "phase2 trig BX - TwinMux BX"],
-            "option"            : "colz",
-            "legendTitle"       : "MB4",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_phase2_trig_BX_minus_TwinMux_BX_vs_TwinMux_BX_MB4",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-
-"Phase-2 quality - TwinMux quality vs TwinMux quality MB1"   :
-
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 quality - TwinMux quality vs TwiMux quality MB1",
-                "legendEntry"       : "MB1",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_minus_TwinMuxOut_quality_vs_TwinMuxOut_quality_MB1"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.4,0.3, "TwinMux quality"],
-            "y"                 : [-10.5,10.5, "phase2 trig quality - TwinMux quality"],
-            "option"            : "colz",
-            "legendTitle"       : "MB1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_phase2_trig_quality_minus_TwinMux_quality_vs_TwinMux_quality_MB1",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-"Phase-2 quality - TwinMux quality vs TwinMux quality MB2"   :
-
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 quality - TwinMux quality vs TwiMux quality MB2",
-                "legendEntry"       : "MB2",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_minus_TwinMuxOut_quality_vs_TwinMuxOut_quality_MB2"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.4,0.3, "TwinMux quality"],
-            "y"                 : [-10.5,10.5, "phase2 trig quality - TwinMux quality"],
-            "option"            : "colz",
-            "legendTitle"       : "MB2",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_phase2_trig_quality_minus_TwinMux_quality_vs_TwinMux_quality_MB2",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-"Phase-2 quality - TwinMux quality vs TwinMux quality MB3"   :
-
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 quality - TwinMux quality vs TwiMux quality MB3",
-                "legendEntry"       : "MB3",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_minus_TwinMuxOut_quality_vs_TwinMuxOut_quality_MB3"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.4,0.3, "TwinMux quality"],
-            "y"                 : [-10.5,10.5, "phase2 trig quality - TwinMux quality"],
-            "option"            : "colz",
-            "legendTitle"       : "MB3",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_phase2_trig_quality_minus_TwinMux_quality_vs_TwinMux_quality_MB3",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-"Phase-2 quality - TwinMux quality vs TwinMux quality MB4"   :
-
-    {
-        "inputs"    :
-        {
-             "quality"   :
-            {
-                "label"             : "Phase2 quality - TwinMux quality vs TwiMux quality MB4",
-                "legendEntry"       : "MB4",
-                "folder"            : "",
-                "plot"		    : "Phase2Hw_minus_TwinMuxOut_quality_vs_TwinMuxOut_quality_MB4"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-0.4,0.3, "TwinMux quality"],
-            "y"                 : [-10.5,10.5, "phase2 trig quality - TwinMux quality"],
-            "option"            : "colz",
-            "legendTitle"       : "MB4",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "01_phase2_trig_quality_minus_TwinMux_quality_vs_TwinMux_quality_MB4",
+            "filenamePlot"      : "05_trig_vs_seg_t0_MB4_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     }
-
-
-
-
-
-
-
-
-
 }   
