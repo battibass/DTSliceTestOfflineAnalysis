@@ -138,7 +138,11 @@ void DTNtupleDigiAnalyzer::book()
 	  m_plots[hName] = new TH2F(hName,"Occupancy;wire;layer / superlayer",100,0.5,100.5,12,0.5,12.5);
 
 	  hName = ("hOccupancyMultiple" + stTag).c_str();
-	  m_plots[hName] = new TH2F(hName, "Occupancy;wire;layer / superlayer", 100, 0.5, 100.5, 12, 0.5, 12.5);
+	  m_plots[hName] = new TH2F(hName, "Occupancy;wire;layer / superlayer",100,0.5,100.5,12,0.5,12.5);
+
+	  hName = ("hAvgDigiTime" + stTag).c_str();
+	  m_plots[hName] = new TProfile2D(hName, "Average digi time;wire;layer / superlayer", 
+					  100,0.5,100.5,12,0.5,12.5,m_timeBoxMin[typeTag],m_timeBoxMax[typeTag]);
 
 	  hName = ("hWireByWireEff" + stTag).c_str();
 	  m_effs[hName] = new TEfficiency(hName,"Wire by wire matching efficiency;wire;layer / superlayer",100,0.5,100.5,12,0.5,12.5);
@@ -223,6 +227,7 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
       string stTag = stTagS.str();
       
       m_plots[("hOccupancy" + stTag).c_str()]->Fill(wire,slAndLay);
+      static_cast<TProfile2D *>(m_plots[("hAvgDigiTime" + stTag).c_str()])->Fill(wire,slAndLay,time);
 
       WireId wireId(st,sl,lay,wire);
       digisByWire[wireId].push_back(time);
@@ -389,7 +394,28 @@ void DTNtupleDigiAnalyzer::endJob()
 	    }
 	  
 	  outTxtFile.close();
-	  
+
+	  auto hAvgDigiTime = static_cast<TProfile2D *>(m_plots[("hAvgDigiTime" + tag).c_str()]);
+	  float avgDigiTimeChamb = hAvgDigiTime->GetMean(3); // z axis
+
+	  hName = ("hAvgDigiTimeSummary" + tag).c_str();
+	  auto hAvgDigiTimeSummary = new TH1F(hName, "Average digi time summary;average digi time;# wires",50,avgDigiTimeChamb-25.,avgDigiTimeChamb+25.);
+
+	  nBinsX = hAvgDigiTime->GetNbinsX();
+	  nBinsY = hAvgDigiTime->GetNbinsY();
+
+	  for (int iBinX = 1; iBinX <= nBinsX; ++ iBinX)
+	    {
+	      for (int iBinY = 1; iBinY <= nBinsY; ++ iBinY)
+		{
+		  
+		  int iBin = hAvgDigiTime->GetBin(iBinX, iBinY);
+		  if (hAvgDigiTime->GetBinEntries(iBin) > 10)
+		    {
+		      hAvgDigiTimeSummary->Fill(hAvgDigiTime->GetBinContent(iBin));
+		    }
+		}
+	    }	  
 	}
     }
   
