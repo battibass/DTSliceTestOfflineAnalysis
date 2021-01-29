@@ -53,6 +53,9 @@ class DTNtupleDigiAnalyzer : public DTNtupleBaseAnalyzer
   std::map<std::string,float> m_timeBoxMax;
   std::map<std::string,int>   m_timeBoxBins;
 
+  std::map<int,std::map<std::string,float>> m_timeBoxMinTP;
+  std::map<int,std::map<std::string,float>> m_timeBoxMaxTP;
+
   std::map<TString, TH1*> m_plots;
   std::map<TString, TEfficiency*> m_effs;
   
