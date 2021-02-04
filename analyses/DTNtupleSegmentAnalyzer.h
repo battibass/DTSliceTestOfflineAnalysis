@@ -24,9 +24,6 @@ class DTNtupleSegmentAnalyzer : public DTNtupleBaseAnalyzer
   ~DTNtupleSegmentAnalyzer();
 
   virtual void Loop() override;
-  void PreLoop();
-
-  string m_deadFileName;
   
  protected:
 
@@ -34,6 +31,8 @@ class DTNtupleSegmentAnalyzer : public DTNtupleBaseAnalyzer
   virtual void fill() override;
   virtual void endJob() override;
 
+  void preLoop();
+  
   void baseAnalysis();
 
   void measureEfficiency(string tag);
@@ -43,6 +42,7 @@ class DTNtupleSegmentAnalyzer : public DTNtupleBaseAnalyzer
   void comparisonAnalysis();
 
   TFile m_outFile;
+  string m_baseOutFolder;
 
   std::vector<std::string> m_tags;
   std::map<std::string, std::vector<WireId>> m_deadWires;

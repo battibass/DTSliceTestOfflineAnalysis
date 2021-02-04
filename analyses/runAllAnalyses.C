@@ -24,7 +24,6 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
   digiAnalysis.Loop();
 
   DTNtupleSegmentAnalyzer segmentAnalysis(inputFile, runName + "/segment/results_segment.root");
-  segmentAnalysis.PreLoop();
   segmentAnalysis.Loop();
 
   DTNtupleTriggerAnalyzer triggerAnalysis(inputFile, runName + "/trigger/results_trigger.root");

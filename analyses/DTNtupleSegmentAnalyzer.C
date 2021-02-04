@@ -1,6 +1,7 @@
 #include "DTNtupleSegmentAnalyzer.h"
 
 #include "TProfile.h"
+#include "TObjString.h"
 #include "TCanvas.h"
 #include "TMath.h"
 #include "TF1.h"
@@ -26,9 +27,8 @@ DTNtupleSegmentAnalyzer::DTNtupleSegmentAnalyzer(const TString & inFileName,
   m_tags.push_back("Ph1");
   m_tags.push_back("Ph2");
 
-  TObjArray *tx = outFileName.Tokenize("/");
-  m_deadFileName = (((TObjString *)(tx->At(0)))->String()).Data();
-  cout<<"m_deadFileName "<<m_deadFileName<<endl;
+  TObjArray *pathArray = outFileName.Tokenize("/");
+  m_baseOutFolder = static_cast<TObjString *>(pathArray->At(0))->String().Data();
 
 }
 
@@ -37,7 +37,7 @@ DTNtupleSegmentAnalyzer::~DTNtupleSegmentAnalyzer()
 
 }
 
-void DTNtupleSegmentAnalyzer::PreLoop()
+void DTNtupleSegmentAnalyzer::preLoop()
 {
 
   // maps by "tag"
@@ -50,12 +50,11 @@ void DTNtupleSegmentAnalyzer::PreLoop()
 
   for (const auto & tag : m_tags)
     {
-      std::string deadFileNameRun = m_deadFileName 
-                                    + "/segment/DeadList/DeadList_" 
-	                            + m_deadFileName 
-                                    + tag;
+      std::string deadFileNameRun = m_baseOutFolder 
+                                    + "/segment/dead_channels/deadChannelList_" 
+	                            + tag;
 
-      std::string deadFileName = "deadChannelList" + tag;
+      std::string deadFileName = "config/deadChannelList_" + tag;
 
       std::cout << "[DTNtupleSegmentAnalyzer] Info will be saved in "
 		<< deadFileNameRun << " and in "
@@ -79,8 +78,6 @@ void DTNtupleSegmentAnalyzer::PreLoop()
 
   if (fChain == 0) return;
   Long64_t nEntries = fChain->GetEntriesFast();
-
-  //nEntries=50000;
 
   for (Long64_t jentry=0; jentry<nEntries; ++jentry) 
     {
@@ -197,6 +194,7 @@ void DTNtupleSegmentAnalyzer::PreLoop()
 void DTNtupleSegmentAnalyzer::Loop()
 {
 
+  preLoop();
   book();
 
   if (fChain == 0) return;
