@@ -6,6 +6,7 @@
 
 #include <TROOT.h>
 #include <TStyle.h>
+#include <TSystem.h>
 #include <TFile.h>
 #include <TLatex.h>
 #include <TCanvas.h>
@@ -16,8 +17,11 @@
 //  run as root 't0s_stability.C("runNumber1 runNumber2 runNumber3 ...")
 
 void t0StabilityPlot(std::vector<std::string> fileNames,
-		     std::vector<std::string> labels)
+		     std::vector<std::string> labels,
+		     TString baseOutFolder)
 {
+
+  gSystem->Exec("mkdir -p " + baseOutFolder + "/"); 
 
   gStyle->SetOptStat(0);
   gStyle->SetOptTitle(0);
@@ -173,10 +177,13 @@ void t0StabilityPlot(std::vector<std::string> fileNames,
 	  latex->SetTextAlign(31);
 	  latex->DrawLatex(0.90, 0.94, "DT SliceTest");
 	  
-	  canvas->SaveAs(Form("tp_time_diff_MB%i_%s.png",iSt, typeTag.c_str()));
+	  canvas->SaveAs(Form("%s/tp_time_diff_MB%i_%s.png",baseOutFolder.Data(), iSt, typeTag.c_str()));
 
 	}
     }
+
+  gSystem->Exec("python plotAndPublish/publishDir.py " + baseOutFolder + " ./plotAndPublish/index.php"); 
+  gSystem->Exec("cp -r " + baseOutFolder + " /eos/user/b/battilan/www/DTDPG/SliceTest/2021/stability/"); 
 
 }
 

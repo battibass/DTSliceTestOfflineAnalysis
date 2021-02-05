@@ -30,23 +30,23 @@ m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(
   m_timeBoxMax["Ph2"]  =  3750.;
   m_timeBoxBins["Ph2"] = 1250;
 
-  m_timeBoxMinTP[1]["Ph1"] = -350.;
+  m_timeBoxMinTP[1]["Ph1"] =  350.;
   m_timeBoxMaxTP[1]["Ph1"] =  750.;
-  m_timeBoxMinTP[2]["Ph1"] = -350.;
+  m_timeBoxMinTP[2]["Ph1"] =  350.;
   m_timeBoxMaxTP[2]["Ph1"] =  750.;
-  m_timeBoxMinTP[3]["Ph1"] = -350.;
+  m_timeBoxMinTP[3]["Ph1"] =  350.;
   m_timeBoxMaxTP[3]["Ph1"] =  750.;
-  m_timeBoxMinTP[4]["Ph1"] = -350.;
+  m_timeBoxMinTP[4]["Ph1"] =  350.;
   m_timeBoxMaxTP[4]["Ph1"] =  750.;
 
-  m_timeBoxMinTP[1]["Ph2"] = -1050.;
-  m_timeBoxMaxTP[1]["Ph2"] =  -700.;
-  m_timeBoxMinTP[2]["Ph2"] = -1050.;
-  m_timeBoxMaxTP[2]["Ph2"] =  -700.;
-  m_timeBoxMinTP[3]["Ph2"] =     0.;
-  m_timeBoxMaxTP[3]["Ph2"] =   300.;
-  m_timeBoxMinTP[4]["Ph2"] =     0.;
-  m_timeBoxMaxTP[4]["Ph2"] =   300.;
+  m_timeBoxMinTP[1]["Ph2"] = -1000.;
+  m_timeBoxMaxTP[1]["Ph2"] =  -800.;
+  m_timeBoxMinTP[2]["Ph2"] = -1000.;
+  m_timeBoxMaxTP[2]["Ph2"] =  -800.;
+  m_timeBoxMinTP[3]["Ph2"] =    50.;
+  m_timeBoxMaxTP[3]["Ph2"] =   250.;
+  m_timeBoxMinTP[4]["Ph2"] =    50.;
+  m_timeBoxMaxTP[4]["Ph2"] =   250.;
 
   // File with the wires to mask to be used. Its lines should be of the form
   // MB2 SL3 L4 2 6 31
@@ -160,7 +160,7 @@ void DTNtupleDigiAnalyzer::book()
 
 	  hName = ("hAvgDigiTime" + stTag).c_str();
 	  m_plots[hName] = new TProfile2D(hName, "Average digi time;wire;layer / superlayer", 
-					  100,0.5,100.5,12,0.5,12.5,-1200.,1200.);
+					  100,0.5,100.5,12,0.5,12.5,m_timeBoxMinTP[iSt][typeTag],m_timeBoxMaxTP[iSt][typeTag]);
 
 	  hName = ("hWireByWireEff" + stTag).c_str();
 	  m_effs[hName] = new TEfficiency(hName,"Wire by wire matching efficiency;wire;layer / superlayer",100,0.5,100.5,12,0.5,12.5);
@@ -188,7 +188,7 @@ void DTNtupleDigiAnalyzer::book()
 		  string layerTag = layerTagS.str();
 		  
 		  hName = ("hTimeBox" + layerTag).c_str();
-		  m_plots[hName] = new TH1F(hName,"Digi time box;time (ns);entries",m_timeBoxBins[typeTag],m_timeBoxMinTP[iSt][typeTag],m_timeBoxMaxTP[iSt][typeTag]);
+		  m_plots[hName] = new TH1F(hName,"Digi time box;time (ns);entries",m_timeBoxBins[typeTag],m_timeBoxMin[typeTag],m_timeBoxMax[typeTag]);
 		}
 	    } 
 	}

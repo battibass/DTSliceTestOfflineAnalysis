@@ -148,6 +148,12 @@ for keyPlot in config:
     if hasVerbRes :
         option = option.replace("verbRes","")
 
+    hasXRangeFromHisto = option.find("xRangeFromHisto") > -1
+    if hasXRangeFromHisto :
+        option = option.replace("xRangeFromHisto","")
+
+
+
     pad.SetGrid()
     pad.Draw()
 
@@ -199,10 +205,11 @@ for keyPlot in config:
         else :
             histo = inputHistos[iHisto]
             
-        if histoClass == "TEfficiency" and histoDim == 1 :
-            histo.GetXaxis().SetLimits(plotX[0], plotX[1])
-        else :
-            histo.GetXaxis().SetRangeUser(plotX[0], plotX[1])
+        if not hasXRangeFromHisto:
+            if histoClass == "TEfficiency" and histoDim == 1 :
+                histo.GetXaxis().SetLimits(plotX[0], plotX[1])
+            else :
+                histo.GetXaxis().SetRangeUser(plotX[0], plotX[1])
             
         histo.GetYaxis().SetRangeUser(rangeY[0], rangeY[1])
 
@@ -215,6 +222,12 @@ for keyPlot in config:
             histo.SetContour(nBins)
             histo.Draw(option)
                                 
+        if histoClass == "TProfile2D" : 
+            histo.SetMinimum(plotZ[0])
+            histo.SetMaximum(plotZ[1])
+            gStyle.SetPalette(1)
+            histo.Draw(option)
+
         elif histoClass == "TH2F" :
             gStyle.SetPalette(1)
             histo.Draw(option)
