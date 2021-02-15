@@ -276,9 +276,10 @@ for keyPlot in config:
                 nOverFlow  = int(inputHistos[iHisto].GetBinContent(inputHistos[iHisto].GetNbinsX()+1))
                 legEntry = legEntry + "   [uf/of: " + str(nUnderFlow) + "/" +str(nOverFlow) + "]" 
 
-            if hasVerbRes :
-                sigma    = int(inputHistos[iHisto].GetFunction("fPhi").GetParameter(2) * 10000.)
-                sigmaErr = int(inputHistos[iHisto].GetFunction("fPhi").GetParError(2) * 10000.)
+            fitFunc = inputHistos[iHisto].GetFunction("fPhi")
+            if fitFunc and hasVerbRes :
+                sigma    = int(fitFunc.GetParameter(2) * 10000.)
+                sigmaErr = int(fitFunc.GetParError(2) * 10000.)
                 legEntry = legEntry + "  [#sigma of gaussian fit = " + str(sigma) + " ]"
 
             leg.AddEntry(inputHistos[iHisto], legEntry, 'LP')

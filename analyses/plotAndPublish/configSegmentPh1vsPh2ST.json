@@ -1,5 +1,315 @@
 {
 
+    "Phase-1 vs Phase-2 t0 from segment MB1"   :
+    {
+        "inputs"    :
+        {
+            "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"             : "Ph1hT0_st1"
+           },
+            "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"             : "Ph2hT0_st1"
+           }
+       },
+        "plot"      :
+        {
+            "x"                 : [-75.0, 75.0, "segment t0 (ns)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "hist",
+            "legendTitle"       : "t0 segment - MB1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "01_Phase1_vs_Phase2_t0_MB1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 vs Phase-2 n #phi hits per segment MB1"   :
+    {
+        "inputs"    :
+        {
+             "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"              : "Ph1hPhiNhits_st1"
+            },
+             "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"              : "Ph2hPhiNhits_st1"
+                }
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 9.0, "# hits (#phi-view)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "hist",
+            "legendTitle"       : "# hits per segment - MB1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "02_Phase1_vs_Phase2_PhiNhits_MB1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 vs Phase-2 segment - hit residual MB1 SL1"   :
+    {
+        "inputs"    :
+        {
+             "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"             : "Ph1hitResX_st1_sl1"
+           },
+             "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"             : "Ph2hitResX_st1_sl1"
+               }
+           
+        },
+        "plot"      :
+        {
+            "x"                 : [-0.75, 0.75, "hit - segment |position| residual (cm)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbReshist",
+            "legendTitle"       : "MB1 super-layer 1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "04_Phase1_vs_Phase2_HitRes_MB1_SL1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 vs Phase-2 segment - hit residual MB1 SL3"   :
+    {
+        "inputs"    :
+        {
+             "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"             : "Ph1hitResX_st1_sl3"
+           },
+             "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"             : "Ph2hitResX_st1_sl3"
+               }
+           
+        },
+        "plot"      :
+        {
+            "x"                 : [-0.75, 0.75, "hit - segment |position| residual (cm)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbReshist",
+            "legendTitle"       : "MB1 super-layer 3",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "04_Phase1_vs_Phase2_HitRes_MB1_SL3",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 vs Phase-2 t0 from segment MB2"   :
+    {
+        "inputs"    :
+        {
+            "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"             : "Ph1hT0_st2"
+           },
+            "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"             : "Ph2hT0_st2"
+           }
+       },
+        "plot"      :
+        {
+            "x"                 : [-75.0, 75.0, "segment t0 (ns)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "hist",
+            "legendTitle"       : "t0 segment - MB2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "01_Phase1_vs_Phase2_t0_MB2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 vs Phase-2 n #phi hits per segment MB2"   :
+    {
+        "inputs"    :
+        {
+             "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"              : "Ph1hPhiNhits_st2"
+            },
+             "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"              : "Ph2hPhiNhits_st2"
+                }
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 9.0, "# hits (#phi-view)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "hist",
+            "legendTitle"       : "# hits per segment - MB2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "02_Phase1_vs_Phase2_PhiNhits_MB2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 vs Phase-2 segment - hit residual MB2 SL1"   :
+    {
+        "inputs"    :
+        {
+             "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"             : "Ph1hitResX_st2_sl1"
+           },
+             "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"             : "Ph2hitResX_st2_sl1"
+               }
+           
+        },
+        "plot"      :
+        {
+            "x"                 : [-0.75, 0.75, "hit - segment |position| residual (cm)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbReshist",
+            "legendTitle"       : "MB2 super-layer 1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "04_Phase1_vs_Phase2_HitRes_MB2_SL1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 vs Phase-2 segment - hit residual MB2 SL3"   :
+    {
+        "inputs"    :
+        {
+             "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"             : "Ph1hitResX_st2_sl3"
+           },
+             "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"             : "Ph2hitResX_st2_sl3"
+               }
+           
+        },
+        "plot"      :
+        {
+            "x"                 : [-0.75, 0.75, "hit - segment |position| residual (cm)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbReshist",
+            "legendTitle"       : "MB2 super-layer 3",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "04_Phase1_vs_Phase2_HitRes_MB2_SL3",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
     "Phase-1 vs Phase-2 t0 from segment MB3"   :
     {
         "inputs"    :
