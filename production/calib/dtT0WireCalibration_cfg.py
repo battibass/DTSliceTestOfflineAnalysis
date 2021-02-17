@@ -10,7 +10,7 @@ process = cms.Process("PROD")
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '111X_dataRun3_Prompt_v2', #default value
+                 '112X_dataRun3_Prompt_v2', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -285,7 +285,7 @@ process.MessageLogger = cms.Service("MessageLogger",
     errors = cms.untracked.PSet(
         placeholder = cms.untracked.bool(True)
     ),
-    fwkJobReports = cms.untracked.vstring('FrameworkJobReport'),
+#    fwkJobReports = cms.untracked.vstring('FrameworkJobReport'),
     infos = cms.untracked.PSet(
         Root_NoDictionary = cms.untracked.PSet(
             limit = cms.untracked.int32(0),
@@ -326,7 +326,8 @@ process.CSCGeometryESModule = cms.ESProducer("CSCGeometryESModule",
     applyAlignment = cms.bool(True),
     debugV = cms.untracked.bool(False),
     useCentreTIOffsets = cms.bool(False),
-    useDDD = cms.bool(False),
+    fromDDD = cms.bool(False),
+    fromDD4hep = cms.bool(False),
     useGangedStripsInME1a = cms.bool(True),
     useOnlyWiresInME1a = cms.bool(False),
     useRealWireGeometry = cms.bool(True)
@@ -426,8 +427,8 @@ process.ParabolicParametrizedMagneticFieldProducer = cms.ESProducer("AutoParamet
 
 
 process.RPCGeometryESModule = cms.ESProducer("RPCGeometryESModule",
-    compatibiltyWith11 = cms.untracked.bool(True),
-    useDDD = cms.untracked.bool(False)
+    fromDD4hep = cms.untracked.bool(False),
+    fromDDD = cms.untracked.bool(False)
 )
 
 
@@ -514,7 +515,8 @@ process.idealForDigiCSCGeometry = cms.ESProducer("CSCGeometryESModule",
     applyAlignment = cms.bool(False),
     debugV = cms.untracked.bool(False),
     useCentreTIOffsets = cms.bool(False),
-    useDDD = cms.bool(False),
+    fromDDD = cms.bool(False),
+    fromDD4hep = cms.bool(False),
     useGangedStripsInME1a = cms.bool(True),
     useOnlyWiresInME1a = cms.bool(False),
     useRealWireGeometry = cms.bool(True)
