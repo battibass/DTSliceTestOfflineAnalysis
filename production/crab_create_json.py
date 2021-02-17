@@ -41,11 +41,11 @@ PARSER.add_argument("runNumber",
                     help="Number of the run to be analyzed")
 
 PARSER.add_argument("-d", "--dataset",
-                    default="/Cosmics/Commissioning2020-v1/RAW",
+                    default="/Cosmics/Commissioning2021-v1/RAW",
                     help="Dataset to be processed")
 
 PARSER.add_argument("-o", "--outLFNBase",
-                    default="/store/group/dpg_dt/comm_dt/commissioning_2020_data/crab/",
+                    default="/store/group/dpg_dt/comm_dt/commissioning_2021_data/crab/",
                     help="Output LFN base directory")
 
 PARSER.add_argument("-v", "--version",
