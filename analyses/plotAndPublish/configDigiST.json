@@ -1,4 +1,68 @@
 {   
+    "Phase-1 Occupancy MB1"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB1",
+                "legendEntry"       : "MB1",
+                "folder"            : "",
+                "plot"		    : "hOccupancyPh1St1"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 MB1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "01_Occupancy_MB1_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 Occupancy MB2"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB2",
+                "legendEntry"       : "MB2",
+                "folder"            : "",
+                "plot"		    : "hOccupancyPh1St2"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 MB2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "01_Occupancy_MB2_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
     "Phase-1 Occupancy MB3"   :
     {
         "inputs"    :
@@ -191,6 +255,70 @@
         }
     },
 
+    "Phase-1 Occupancy (including multiple digis) MB1"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB1",
+                "legendEntry"       : "MB1",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh1St1"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 MB1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "07_OccupancyMultiple_MB1_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 Occupancy (including multiple digis) MB2"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "MB2",
+                "legendEntry"       : "MB2",
+                "folder"            : "",
+                "plot"		    : "hOccupancyMultiplePh1St2"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 80.0, "wire"],
+            "y"                 : [-0.5, 13.5, "superlayer and layer"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 MB2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.69, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "07_OccupancyMultiple_MB2_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
     "Phase-1 Occupancy (including multiple digis) MB3"   :
     {
         "inputs"    :
@@ -379,6 +507,324 @@
         "output"    :
         {
             "filenamePlot"      : "07_OccupancyMultiple_MB4_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 TimeBox SL1 MB1"   : 
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "Layer1",
+                "legendEntry"       : "Layer1",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer1Layer1"
+		},
+             "Layer2"   :
+            {
+                "label"             : "Layer2",
+                "legendEntry"       : "Layer2",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer1Layer2"
+		},
+             "Layer3"   :
+            {
+                "label"             : "Layer3",
+                "legendEntry"       : "Layer3",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer1Layer3"
+		},
+             "Layer4"   :
+            {
+                "label"             : "Layer4",
+                "legendEntry"       : "Layer4",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer1Layer4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "Phase-1 MB1 SL1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "02_TimeBox_MB1_SL1_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 TimeBox SL2 MB1"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "Layer1",
+                "legendEntry"       : "Layer1",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer2Layer1"
+		},
+             "Layer2"   :
+            {
+                "label"             : "Layer2",
+                "legendEntry"       : "Layer2",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer2Layer2"
+		},
+             "Layer3"   :
+            {
+                "label"             : "Layer3",
+                "legendEntry"       : "Layer3",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer2Layer3"
+		},
+             "Layer4"   :
+            {
+                "label"             : "Layer4",
+                "legendEntry"       : "Layer4",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer2Layer4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "Phase-1 MB1 SL2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "02_TimeBox_MB1_SL2_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 TimeBox SL3 MB1"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "Layer1",
+                "legendEntry"       : "Layer1",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer3Layer1"
+		},
+             "Layer2"   :
+            {
+                "label"             : "Layer2",
+                "legendEntry"       : "Layer2",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer3Layer2"
+		},
+             "Layer3"   :
+            {
+                "label"             : "Layer3",
+                "legendEntry"       : "Layer3",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer3Layer3"
+		},
+             "Layer4"   :
+            {
+                "label"             : "Layer4",
+                "legendEntry"       : "Layer4",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St1SuperLayer3Layer4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "Phase-1 MB1 SL3",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "02_TimeBox_MB1_SL3_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 TimeBox SL1 MB2"   : 
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "Layer1",
+                "legendEntry"       : "Layer1",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer1Layer1"
+		},
+             "Layer2"   :
+            {
+                "label"             : "Layer2",
+                "legendEntry"       : "Layer2",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer1Layer2"
+		},
+             "Layer3"   :
+            {
+                "label"             : "Layer3",
+                "legendEntry"       : "Layer3",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer1Layer3"
+		},
+             "Layer4"   :
+            {
+                "label"             : "Layer4",
+                "legendEntry"       : "Layer4",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer1Layer4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "Phase-1 MB2 SL1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "02_TimeBox_MB2_SL1_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 TimeBox SL2 MB2"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "Layer1",
+                "legendEntry"       : "Layer1",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer2Layer1"
+		},
+             "Layer2"   :
+            {
+                "label"             : "Layer2",
+                "legendEntry"       : "Layer2",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer2Layer2"
+		},
+             "Layer3"   :
+            {
+                "label"             : "Layer3",
+                "legendEntry"       : "Layer3",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer2Layer3"
+		},
+             "Layer4"   :
+            {
+                "label"             : "Layer4",
+                "legendEntry"       : "Layer4",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer2Layer4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "Phase-1 MB2 SL2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "02_TimeBox_MB2_SL2_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-1 TimeBox SL3 MB2"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "Layer1",
+                "legendEntry"       : "Layer1",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer3Layer1"
+		},
+             "Layer2"   :
+            {
+                "label"             : "Layer2",
+                "legendEntry"       : "Layer2",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer3Layer2"
+		},
+             "Layer3"   :
+            {
+                "label"             : "Layer3",
+                "legendEntry"       : "Layer3",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer3Layer3"
+		},
+             "Layer4"   :
+            {
+                "label"             : "Layer4",
+                "legendEntry"       : "Layer4",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh1St2SuperLayer3Layer4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "Phase-1 MB2 SL3",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "02_TimeBox_MB2_SL3_Phase1",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -701,6 +1147,59 @@
         }
     },
 
+    "Phase-2 TimeBox SL2 MB1"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "Layer1",
+                "legendEntry"       : "Layer1",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh2St1SuperLayer2Layer1"
+		},
+             "Layer2"   :
+            {
+                "label"             : "Layer2",
+                "legendEntry"       : "Layer2",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh2St1SuperLayer2Layer2"
+		},
+             "Layer3"   :
+            {
+                "label"             : "Layer3",
+                "legendEntry"       : "Layer3",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh2St1SuperLayer2Layer3"
+		},
+             "Layer4"   :
+            {
+                "label"             : "Layer4",
+                "legendEntry"       : "Layer4",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh2St1SuperLayer2Layer4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "Phase-2 MB1 SL2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "02_TimeBox_MB1_SL2_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
     "Phase-2 TimeBox SL3 MB1"   :
     {
         "inputs"    :
@@ -807,7 +1306,7 @@
         }
     },
 
-    "Phase-2 TimeBox SL3 MB2"   :
+    "Phase-2 TimeBox SL2 MB2"   :
     {
         "inputs"    :
         {
@@ -816,28 +1315,28 @@
                 "label"             : "Layer1",
                 "legendEntry"       : "Layer1",
                 "folder"            : "",
-                "plot"		    : "hTimeBoxPh2St2SuperLayer3Layer1"
+                "plot"		    : "hTimeBoxPh2St2SuperLayer2Layer1"
 		},
              "Layer2"   :
             {
                 "label"             : "Layer2",
                 "legendEntry"       : "Layer2",
                 "folder"            : "",
-                "plot"		    : "hTimeBoxPh2St2SuperLayer3Layer2"
+                "plot"		    : "hTimeBoxPh2St2SuperLayer2Layer2"
 		},
              "Layer3"   :
             {
                 "label"             : "Layer3",
                 "legendEntry"       : "Layer3",
                 "folder"            : "",
-                "plot"		    : "hTimeBoxPh2St2SuperLayer3Layer3"
+                "plot"		    : "hTimeBoxPh2St2SuperLayer2Layer3"
 		},
              "Layer4"   :
             {
                 "label"             : "Layer4",
                 "legendEntry"       : "Layer4",
                 "folder"            : "",
-                "plot"		    : "hTimeBoxPh2St2SuperLayer3Layer4"
+                "plot"		    : "hTimeBoxPh2St2SuperLayer2Layer4"
 		}
 
         },
@@ -846,7 +1345,7 @@
             "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbLeg",
-            "legendTitle"       : "Phase-2 MB2 SL3",
+            "legendTitle"       : "Phase-2 MB2 SL2",
             "caption"           : "DT SliceTest",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -855,60 +1354,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "02_TimeBox_MB2_SL3_Phase2",
-            "fileType"          : ["png", "root",  "pdf"]
-        }
-    },
-
-    "Phase-2 TimeBox SL1 MB2"   : 
-    {
-        "inputs"    :
-        {
-             "Layer1"   :
-            {
-                "label"             : "Layer1",
-                "legendEntry"       : "Layer1",
-                "folder"            : "",
-                "plot"		    : "hTimeBoxPh2St2SuperLayer1Layer1"
-		},
-             "Layer2"   :
-            {
-                "label"             : "Layer2",
-                "legendEntry"       : "Layer2",
-                "folder"            : "",
-                "plot"		    : "hTimeBoxPh2St2SuperLayer1Layer2"
-		},
-             "Layer3"   :
-            {
-                "label"             : "Layer3",
-                "legendEntry"       : "Layer3",
-                "folder"            : "",
-                "plot"		    : "hTimeBoxPh2St2SuperLayer1Layer3"
-		},
-             "Layer4"   :
-            {
-                "label"             : "Layer4",
-                "legendEntry"       : "Layer4",
-                "folder"            : "",
-                "plot"		    : "hTimeBoxPh2St2SuperLayer1Layer4"
-		}
-
-        },
-        "plot"      :
-        {
-            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
-            "y"                 : [0.8, 1.05, "Entries"],
-            "option"            : "verbLeg",
-            "legendTitle"       : "Phase-2 MB2 SL1",
-            "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
-        },
-        "output"    :
-        {
-            "filenamePlot"      : "02_TimeBox_MB2_SL1_Phase2",
+            "filenamePlot"      : "02_TimeBox_MB2_SL2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1015,6 +1461,59 @@
         "output"    :
         {
             "filenamePlot"      : "02_TimeBox_MB3_SL1_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Phase-2 TimeBox SL2 MB3"   :
+    {
+        "inputs"    :
+        {
+             "Layer1"   :
+            {
+                "label"             : "Layer1",
+                "legendEntry"       : "Layer1",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh2St3SuperLayer2Layer1"
+		},
+             "Layer2"   :
+            {
+                "label"             : "Layer2",
+                "legendEntry"       : "Layer2",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh2St3SuperLayer2Layer2"
+		},
+             "Layer3"   :
+            {
+                "label"             : "Layer3",
+                "legendEntry"       : "Layer3",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh2St3SuperLayer2Layer3"
+		},
+             "Layer4"   :
+            {
+                "label"             : "Layer4",
+                "legendEntry"       : "Layer4",
+                "folder"            : "",
+                "plot"		    : "hTimeBoxPh2St3SuperLayer2Layer4"
+		}
+
+        },
+        "plot"      :
+        {
+            "x"                 : [-1250.0, 4250.0, "digi time (ns)"],
+            "y"                 : [0.8, 1.05, "Entries"],
+            "option"            : "verbLeg",
+            "legendTitle"       : "Phase-2 MB3 SL2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.49, 0.67, 0.85, 0.80]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "02_TimeBox_MB3_SL2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1178,6 +1677,70 @@
         }
     },
 
+    "Fraction of phase-1 hits matched with phase-2 MB1"   :
+    {
+        "inputs"    :
+        {
+            "MB1"   :
+            {
+                "label"             : "MB1",
+                "legendEntry"       : "MB1",
+                "folder"            : "",
+                "plot"		    : "hWireByWireEffPh1St1"
+	    }
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 100.0, "wire"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
+            "z"                 : [0.0, 1.0, "fraction of mached digis"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 wire eff. w.r.t. Phase-2 MB1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.39, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "03_MatchedDigisByWire_MB1_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Fraction of phase-1 hits matched with phase-2 MB2"   :
+    {
+        "inputs"    :
+        {
+            "MB2"   :
+            {
+                "label"             : "MB2",
+                "legendEntry"       : "MB2",
+                "folder"            : "",
+                "plot"		    : "hWireByWireEffPh1St2"
+	    }
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 100.0, "wire"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
+            "z"                 : [0.0, 1.0, "fraction of mached digis"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-1 wire eff. w.r.t. Phase-2 MB2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.39, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "03_MatchedDigisByWire_MB2_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
     "Fraction of phase-1 hits matched with phase-2 MB3"   :
     {
         "inputs"    :
@@ -1238,6 +1801,70 @@
         "output"    :
         {
             "filenamePlot"      : "03_MatchedDigisByWire_MB4_Phase1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Fraction of phase-2 hits matched with phase-1 MB1"   :
+    {
+        "inputs"    :
+        {
+            "MB1"   :
+            {
+                "label"             : "MB1",
+                "legendEntry"       : "MB1",
+                "folder"            : "",
+                "plot"		    : "hWireByWireEffPh2St1"
+	    }
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 100.0, "wire"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
+            "z"                 : [0.0, 1.0, "fraction of mached digis"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-2 wire eff. w.r.t. Phase-1 MB1",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.39, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "03_MatchedDigisByWire_MB1_Phase2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+    "Fraction of phase-2 hits matched with phase-1 MB2"   :
+    {
+        "inputs"    :
+        {
+            "MB2"   :
+            {
+                "label"             : "MB2",
+                "legendEntry"       : "MB2",
+                "folder"            : "",
+                "plot"		    : "hWireByWireEffPh2St2"
+	    }
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0, 100.0, "wire"],
+            "y"                 : [-0.5, 13.5, "superlayer / layer"],
+            "z"                 : [0.0, 1.0, "fraction of mached digis"],
+            "option"            : "colz",
+            "legendTitle"       : "Phase-2 wire eff. w.r.t. Phase-1 MB2",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.39, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "03_MatchedDigisByWire_MB2_Phase2",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
@@ -1310,6 +1937,20 @@
     {
         "inputs"    :
         {
+            "MB1"   :
+            {
+                "label"             : "MB1",
+                "legendEntry"       : "MB1",
+                "folder"            : "",
+                "plot"		    : "hEffSummaryPh2St1"
+	    },
+            "MB2"   :
+            {
+                "label"             : "MB2",
+                "legendEntry"       : "MB2",
+                "folder"            : "",
+                "plot"		    : "hEffSummaryPh2St2"
+	    },
             "MB3"   :
             {
                 "label"             : "MB3",
@@ -1333,7 +1974,7 @@
             "legendTitle"       : "Phase-2 wire eff. w.r.t. Phase-1",
             "caption"           : "DT SliceTest",
             "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [3, 4, 1, 2, 5, 6, 7, 8, 9],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
             "legendRange"       : [0.39, 0.67, 0.75, 0.80]
         },
@@ -1386,6 +2027,20 @@
     {
         "inputs"    :
         {
+            "MB1"   :
+            {
+                "label"             : "MB1",
+                "legendEntry"       : "MB1",
+                "folder"            : "",
+                "plot"		    : "hEffSummaryPh1St1"
+	    },
+            "MB2"   :
+            {
+                "label"             : "MB2",
+                "legendEntry"       : "MB2",
+                "folder"            : "",
+                "plot"		    : "hEffSummaryPh1St2"
+	    },
             "MB3"   :
             {
                 "label"             : "MB3",
@@ -1408,8 +2063,8 @@
             "option"            : "verbLeg",
             "legendTitle"       : "Phase-1 wire eff. w.r.t. Phase-2",
             "caption"           : "DT SliceTest",
-            "logo"              : ["CMS", "Preliminary"],
-            "colorMap"          : [3, 4, 1, 2, 5, 6, 7, 8, 9],
+	    "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
             "legendRange"       : [0.39, 0.67, 0.75, 0.80]
         },
@@ -1424,6 +2079,13 @@
     {
         "inputs"    :
         {
+            "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"		    : "hTimeDiffPhiPh1St1"
+	    },
             "Phase-2"   :
             {
                 "label"             : "Phase-2",
@@ -1431,7 +2093,6 @@
                 "folder"            : "",
                 "plot"		    : "hTimeDiffPhiPh2St1"
 	    }
-
         },
         "plot"      :
         {
@@ -1456,6 +2117,13 @@
     {
         "inputs"    :
         {
+            "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"		    : "hTimeDiffThetaPh1St1"
+	    },
             "Phase-2"   :
             {
                 "label"             : "Phase-2",
@@ -1488,6 +2156,13 @@
     {
         "inputs"    :
         {
+            "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"		    : "hTimeDiffPhiPh1St2"
+	    },
             "Phase-2"   :
             {
                 "label"             : "Phase-2",
@@ -1495,7 +2170,6 @@
                 "folder"            : "",
                 "plot"		    : "hTimeDiffPhiPh2St2"
 	    }
-
         },
         "plot"      :
         {
@@ -1520,6 +2194,13 @@
     {
         "inputs"    :
         {
+            "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"		    : "hTimeDiffThetaPh1St2"
+	    },
             "Phase-2"   :
             {
                 "label"             : "Phase-2",
@@ -1527,7 +2208,6 @@
                 "folder"            : "",
                 "plot"		    : "hTimeDiffThetaPh2St2"
 	    }
-
         },
         "plot"      :
         {
