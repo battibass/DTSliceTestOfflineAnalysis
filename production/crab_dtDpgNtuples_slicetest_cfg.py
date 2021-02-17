@@ -25,7 +25,7 @@ config.section_('Data')
 config.Data.inputDataset = json_data["dataset"]
 
 config.Data.splitting    = 'LumiBased'
-config.Data.unitsPerJob  = 5  
+config.Data.unitsPerJob  = 10  
 config.Data.runRange     = json_data["runNumber"]
 config.Data.inputDBS     = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader/'
 config.Data.outLFNDirBase  = json_data["outLFNBase"]
