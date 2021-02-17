@@ -30,7 +30,7 @@ def appendToGlobalTag(process, rcd, tag, fileName, label) :
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '111X_dataRun3_Prompt_v2', #default value
+                 '112X_dataRun3_Prompt_v2', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -110,7 +110,7 @@ options.register('ntupleName',
 
 options.parseArguments()
 
-process = cms.Process("DTNTUPLES",eras.Run2_2018)
+process = cms.Process("DTNTUPLES",eras.Run3)
 
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
@@ -119,7 +119,7 @@ process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(options.nEvents))
 
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.GlobalTag.globaltag = cms.string(options.globalTag)
 
