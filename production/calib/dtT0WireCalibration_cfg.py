@@ -16,7 +16,7 @@ options.register('globalTag',
                  "Global Tag")
 
 options.register('runNumber',
-                 '336977', #default value
+                 '339652', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                  "Run number to be looked for in either 'inputFolderCentral' or 'inputFolderDT' folders")
@@ -28,13 +28,13 @@ options.register('inputFile',
                  "The input file to be processed, if non null overrides runNumber based input file selection")
 
 options.register('inputFolderCentral',
-                 '/eos/cms/store/data/Commissioning2020/MiniDaq/RAW/v1/', #default value
+                 '/eos/cms/store/data/Commissioning2021/MiniDaq/RAW/v1/', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
                  "Base EOS folder with input files from MiniDAQ runs with central tier0 transfer")
 
 options.register('inputFolderDT',
-                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2020_data/root/', #default value
+                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2021_data/root/', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
                  "Base EOS folder with input files from MiniDAQ runs with DT 'private' tier0 transfer")
