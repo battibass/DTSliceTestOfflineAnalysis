@@ -131,7 +131,6 @@ void t0StabilityPlot(std::vector<std::string> fileNames,
 	  leg->SetTextSize(0.02);
 	  leg->SetHeader(Form("Wheel 2, Sector 12, MB%i %s", iSt, typeTag.c_str()), "C");
 	  
-	  int iHisto = 0;
 	  float yRange = 0.;
 	  for(auto & plot : plotsBySt.second)
 	    {
@@ -140,6 +139,7 @@ void t0StabilityPlot(std::vector<std::string> fileNames,
 		yRange = yRangeHisto;
 	    }
 
+	  int iHisto = 0;
 	  yRange *= 1.25;
 	  
 	  for(auto & plot : plotsBySt.second)
@@ -155,7 +155,8 @@ void t0StabilityPlot(std::vector<std::string> fileNames,
 	      plot->SetLineColor(colorArray.at(iHisto));
 	      plot->SetLineWidth(2);
 
-	      leg->AddEntry(plot, labels.at(iHisto).c_str(), "l");	      
+	      leg->AddEntry(plot, labels.at(iHisto).c_str(), "l");
+	      ++iHisto;
 	    }
 
 	  leg->Draw();
@@ -183,7 +184,7 @@ void t0StabilityPlot(std::vector<std::string> fileNames,
     }
 
   gSystem->Exec("python plotAndPublish/publishDir.py " + baseOutFolder + " ./plotAndPublish/index.php"); 
-  gSystem->Exec("cp -r " + baseOutFolder + " /eos/user/b/battilan/www/DTDPG/SliceTest/2021/stability/"); 
+  gSystem->Exec("cp -r " + baseOutFolder + " /eos/project/c/cmsweb/www/MUON/dpgdt/sx5/Results/SliceTest/stability/"); 
 
 }
 
