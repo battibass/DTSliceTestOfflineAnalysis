@@ -42,7 +42,7 @@ options.register('nEvents',
                  "Maximum number of processed events")
 
 options.register('runNumber',
-                 '336978', #default value
+                 '339653', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                  "Run number to be looked for in either 'inputFolderCentral' or 'inputFolderDT' folders")
@@ -54,7 +54,7 @@ options.register('inputFile',
                  "The input file to be processed, if non null overrides runNumber based input file selection")
 
 options.register('inputFolderCentral',
-                 '/eos/cms/store/data/Commissioning2020/MiniDaq/RAW/v1/', #default value
+                 '/eos/cms/store/data/Commissioning2021/MiniDaq/RAW/v1/', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
                  "Base EOS folder with input files from MiniDAQ runs with central tier0 transfer")
@@ -100,6 +100,12 @@ options.register('runOnDat',
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.bool,
                  "If set to True switches source from 'PoolSource' to 'NewEventStreamFileReader'")
+
+options.register('runOnTestPulse',
+                 False, #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.bool,
+                 "If set to True switches off the filling of all collections but digis")
 
 options.register('ntupleName',
                  '', #default value
@@ -200,6 +206,10 @@ process.p = cms.Path(process.muonDTDigis
 if options.tTrigFilePh2 and options.t0FilePh2 :
     from DTDPGAnalysis.DTNtuples.customiseDtPhase2Reco_cff import customiseForPhase2Reco
     process = customiseForPhase2Reco(process,"p", options.tTrigFilePh2, options.t0FilePh2)
+
+if options.runOnTestPulse :
+    from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForTestPulseRun
+    process = customiseForTestPulseRun(process)
 
 xml_base = etree.Element("options") 
 
