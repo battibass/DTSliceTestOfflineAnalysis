@@ -105,6 +105,8 @@ class DTNtupleTriggerAnalyzer : public DTNtupleBaseAnalyzer
   Double_t phi_Ph2_conv; // in cm, local position in the station
   Double_t phiB_Ph2_conv; // to transform in radians
 
+  Double_t phi_offset; // offset between ph2 primitive phi and seg_posGlb_phi of the segment
+
   Int_t BXOK_TwinMuxOut;
   Int_t BXOK_ph2Hw;  // -269
   Int_t BXOK_ph2EmuHb; // to be properly set

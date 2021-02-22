@@ -24,6 +24,7 @@ DTNtupleTriggerAnalyzer::DTNtupleTriggerAnalyzer(const TString & inFileName,
 
   phi_Ph2_conv = 0.8/65536;// 0.025; // in cm, local position in the station 
   phiB_Ph2_conv = 1.4/2048.;// 1/4096.; // to transform in radians
+  phi_offset = 0.525; // offset between ph2 primitive phi and seg_posGlb_phi of the segment (to be added to phi of the segment)
 
   BXOK_TwinMuxOut = 0;
   // BXOK_ph2Hw = 3295; // From ntuple based on SX5 run 329705
@@ -95,6 +96,8 @@ void DTNtupleTriggerAnalyzer::book()
       if(m_ph2TpgPhiHw && m_segments)   {  //*** ph2TpgPhiHw and segments must be "true"
 
 	// -------------- efficiency plots for ph2TpgPhiHw
+
+	//***PLOTTED IN JSON
 	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_t0" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs t0; t0; primitive effic.",
@@ -105,6 +108,7 @@ void DTNtupleTriggerAnalyzer::book()
 					"trigger efficiency AnyBX vs philoc; philoc; primitive effic",
 					40,-80.,80.);
 
+	//***PLOTTED IN JSON
 	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_nHits" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs nHits; nHits; primitive effic",
@@ -115,6 +119,7 @@ void DTNtupleTriggerAnalyzer::book()
 					"trigger efficiency AnyBX vs dirGlb_phi; dirGlb_phi; primitive effic",
 					30,-2.,1.);
 
+	//***PLOTTED IN JSON
 	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_posGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs posGlb_phi; posGlb_phi; ph2TpgPhiHw effic",
@@ -168,6 +173,8 @@ void DTNtupleTriggerAnalyzer::book()
       if(m_ph2TpgPhiEmuAm && m_segments)   {  //*** ph2TpgEmuAm and segments must be "true"
 
 	// -------------- efficiency plots for ph2TpgPhiEmuAm
+
+ 
 	hName = "trigeff_ph2TpgPhiEmuAm_AnyBX_vs_t0" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs t0; t0; primitive effic.",
@@ -188,6 +195,7 @@ void DTNtupleTriggerAnalyzer::book()
 					"trigger efficiency AnyBX vs dirGlb_phi; dirGlb_phi; primitive effic",
 					30,-2.,1.);
 
+ 
 	hName = "trigeff_ph2TpgPhiEmuAm_AnyBX_vs_posGlb_phi" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs posGlb_phi; posGlb_phi; ph2TpgPhiEmuAm effic",
@@ -327,11 +335,17 @@ void DTNtupleTriggerAnalyzer::book()
 				   "ph2TpgPhiHw phi vs segment posLoc x; segment posLoc x; ph2TpgHw phi", 
 				   100, -200., 200., 50,-0.5,0.5);  
 	
-	         
+	//***PLOTTED IN JSON	         
 	hName = "ph2TpgPhiHw_phi_vs_seg_posGlb_phi" + iChTag.str();   // Phase 2 phi vs seg posGlb_phi 
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "ph2TpgPhiHw phi vs segment Glb_phi midPlane; segment Phi; ph2TpgHw Phi", 
 				   100, -1., 0., 100,-0.4, 0.4);  
+
+	//***PLOTTED IN JSON	
+	hName = "ph2TpgPhiHw_phi_minus_seg_posGlb_phi" + iChTag.str();   // residuals Phase 2 phi minus seg posGlb_phi 
+	m_plots[hName]  = new TH1F(hName.c_str(),
+				   "ph2TpgPhiHw phi minus segment Glb_phi midPlane; Events ; segment Phi - ph2TpgHw Phi", 
+				   100, -0.15, 0.15);  
 				 
 
 	hName = "ph2TpgPhiHw_phiB_vs_seg_dirLoc_x" + iChTag.str();   // phiB vs dirLoc_x
@@ -339,25 +353,59 @@ void DTNtupleTriggerAnalyzer::book()
 				   "ph2TpgPhiHw phiB vs segment dirLoc x; segment dirLoc x; ph2TpgHw phiB", 
 				   100, -1.0, 1., 100,-2.,2.);  
 
+	//***PLOTTED IN JSON
 	hName = "ph2TpgPhiHw_phi_plus_phiB_vs_seg_dirLoc_x" + iChTag.str();   // phi + phiB vs dirLoc_x
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "ph2TpgPhiHw phi plus phiB vs segment dirLoc x; segment dirLoc x; ph2TpgHw phi + phiB", 
 				   100, -1., 1., 100,-1.,1.);  
 
+	//***PLOTTED IN JSON
 	hName = "ph2TpgPhiHw_posLoc_x_vs_seg_posLoc_x" + iChTag.str(); //  ph2 posLoc_ vs seg posLoc_x
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "ph2TpgPhiHw posLoc_s vs segm posLoc_x; segment posLoc x; ph2TpgHw posLoc_x", 
 				   100, -200., 200., 100,-200.,200.);  
 
+	//***PLOTTED IN JSON
+	hName = "ph2TpgPhiHw_posLoc_x_minus_seg_posLoc_x" + iChTag.str(); //  residuals ph2 posLoc_ minus seg posLoc_x
+	m_plots[hName]  = new TH1F(hName.c_str(),
+				   "ph2TpgPhiHw posLoc_s vs segm posLoc_x; segment posLoc x; ph2TpgHw posLoc_x", 
+				   100, -50., 50.);  
+
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_t0_vs_segment_t0" + iChTag.str();   // Phase2 prim t0 vs segment t0 
 	m_plots[hName]  = new TH2F(hName.c_str(),
 				   "Phase2Hw t0 vs segment_t0; Segment t0; Phase2Hw t0",
 				   60, -60., 60., 60, -60, 60); 
-	//NEW
+	//***PLOTTED IN JSON
 	hName = "Phase2Hw_t0_minus_segment_t0" + iChTag.str();   // Phase2 prim tminus segment t0 
 	m_plots[hName]  = new TH1F(hName.c_str(),
 				   "Phase2Hw t0 - segment_t0; Phase 2 trig t0 - Segment t0; Phase2Hw t0Entries",
 				   120, -40., 40.); 
+
+	//***PLOTTED IN JSON --
+	hName = "Phase2Hw_t0_minus_segment_t0_qual9_" + iChTag.str();   // Phase2 prim tminus segment t0  qual9
+	m_plots[hName]  = new TH1F(hName.c_str(),
+				   "Phase2Hw t0 - segment_t0 for qual9; Phase 2 trig t0 - Segment t0; Entries",
+				   120, -40., 40.); 
+
+	//***PLOTTED IN JSON --
+	hName = "Phase2Hw_t0_minus_segment_t0_qual8_" + iChTag.str();   // Phase2 prim tminus segment t0 qual8
+	m_plots[hName]  = new TH1F(hName.c_str(),
+				   "Phase2Hw t0 - segment_t0 for qual8; Phase 2 trig t0 - Segment t0; Entries",
+				   120, -40., 40.); 
+
+	//***PLOTTED IN JSON --
+	hName = "Phase2Hw_t0_minus_segment_t0_qual6_" + iChTag.str();   // Phase2 prim tminus segment t0 qual6
+	m_plots[hName]  = new TH1F(hName.c_str(),
+				   "Phase2Hw t0 - segment_t0 for qual6; Phase 2 trig t0 - Segment t0; Entries",
+				   120, -40., 40.); 
+
+	//***PLOTTED IN JSON --
+	hName = "Phase2Hw_t0_minus_segment_t0_qual4or3_" + iChTag.str();   // Phase2 prim tminus segment t0  qual4 or 3
+	m_plots[hName]  = new TH1F(hName.c_str(),
+				   "Phase2Hw t0 - segment_t0 for qual4or3; Phase 2 trig t0 - Segment t0; Entries",
+				   120, -40., 40.); 
+
 			       
 	hName = "ph2TpgPhiHw_quality_vs_seg_posGlb_phi" + iChTag.str();   // priitive quality vs segment posGlb_phi
 	m_plots[hName]  = new TH2F(hName.c_str(),
@@ -938,27 +986,52 @@ void DTNtupleTriggerAnalyzer::fill()
 	    m_plots[hName]->Fill(seg_posLoc_x->at(iBestSeg[iMB-1]), phi_Ph2_conv*ph2TpgPhiHw_phi->at(iBestTpgPhiHw[iMB-1]));  
 
 	    hName = "ph2TpgPhiHw_phi_vs_seg_posGlb_phi" + iChTag.str();   // ph2 phi vs seg posGlb_phi
-	    m_plots[hName]->Fill(seg_posGlb_phi->at(iBestSeg[iMB-1]), phi_Ph2_conv*ph2TpgPhiHw_phi->at(iBestTpgPhiHw[iMB-1]));  
+	    m_plots[hName]->Fill(seg_posGlb_phi->at(iBestSeg[iMB-1]), phi_Ph2_conv*ph2TpgPhiHw_phi->at(iBestTpgPhiHw[iMB-1])); 
+
+	    hName = "ph2TpgPhiHw_phi_minus_seg_posGlb_phi" + iChTag.str();   // rsiduals ph2 phi minus seg posGlb_phi
+	    m_plots[hName]->Fill(phi_Ph2_conv*ph2TpgPhiHw_phi->at(iBestTpgPhiHw[iMB-1])-(phi_offset+seg_posGlb_phi->at(iBestSeg[iMB-1])));  
 
 	    hName = "ph2TpgPhiHw_posLoc_x_vs_seg_posLoc_x" + iChTag.str();   // ph2 posLoc_x vs seg posLoc_x
 	    m_plots[hName]->Fill(seg_posLoc_x->at(iBestSeg[iMB-1]), ph2TpgPhiHw_posLoc_x->at(iBestTpgPhiHw[iMB-1]));  
 
+	    hName = "ph2TpgPhiHw_posLoc_x_minus_seg_posLoc_x" + iChTag.str();   // residuals ph2 posLoc_x minus seg posLoc_x
+	    m_plots[hName]->Fill(ph2TpgPhiHw_posLoc_x->at(iBestTpgPhiHw[iMB-1]) - seg_posLoc_x->at(iBestSeg[iMB-1]));  
 
 	    hName = "ph2TpgPhiHw_phiB_vs_seg_dirLoc_x" + iChTag.str();   // ph2 phiB vs seg dirLoc_x
 	    m_plots[hName]->Fill(seg_dirLoc_x->at(iBestSeg[iMB-1]), phiB_Ph2_conv*ph2TpgPhiHw_phiB->at(iBestTpgPhiHw[iMB-1]));
  
 	    hName = "ph2TpgPhiHw_phi_plus_phiB_vs_seg_dirLoc_x" + iChTag.str();   // ph2 phi + phiB vs seg dirLoc_x
-	    m_plots[hName]->Fill(seg_dirLoc_x->at(iBestSeg[iMB-1]), 
+	    m_plots[hName]->Fill(atan(seg_dirLoc_x->at(iBestSeg[iMB-1])), 
 	    			 phi_Ph2_conv*ph2TpgPhiHw_phi->at(iBestTpgPhiHw[iMB-1]) + 
 	    			 phiB_Ph2_conv*ph2TpgPhiHw_phiB->at(iBestTpgPhiHw[iMB-1])); 
 	    
-
 	    hName = "Phase2Hw_t0_vs_segment_t0" + iChTag.str();    // phase 2 t0 vs segment t0
 	    m_plots[hName]->Fill(seg_phi_t0->at(iBestSeg[iMB-1]),ph2TpgPhiHw_t0->at(iBestTpgPhiHw[iMB-1]));
 
-	    //NEW
+	    //***PLOTTED IN JSON
 	    hName = "Phase2Hw_t0_minus_segment_t0" + iChTag.str();   // Phase2 prim t0 minus segment t0 
 	    m_plots[hName]->Fill(ph2TpgPhiHw_t0->at(iBestTpgPhiHw[iMB-1])-seg_phi_t0->at(iBestSeg[iMB-1]));
+
+	    if(ph2TpgPhiHw_quality->at(iBestTpgPhiHw[iMB-1])==9)  { 
+	      //***PLOTTED IN JSON
+	      hName = "Phase2Hw_t0_minus_segment_t0_qual9_" + iChTag.str();   // Phase2 prim t minus segment t0 for qual9
+	      m_plots[hName]->Fill(ph2TpgPhiHw_t0->at(iBestTpgPhiHw[iMB-1])-seg_phi_t0->at(iBestSeg[iMB-1]));		
+	    }
+	    else if(ph2TpgPhiHw_quality->at(iBestTpgPhiHw[iMB-1])==8)  { 
+	      //***PLOTTED IN JSON
+	      hName = "Phase2Hw_t0_minus_segment_t0_qual8_" + iChTag.str();   // Phase2 prim t minus segment t0 for qual8
+	      m_plots[hName]->Fill(ph2TpgPhiHw_t0->at(iBestTpgPhiHw[iMB-1])-seg_phi_t0->at(iBestSeg[iMB-1]));		
+	    }
+	    else if(ph2TpgPhiHw_quality->at(iBestTpgPhiHw[iMB-1])==6)  { 
+	      //***PLOTTED IN JSON
+	      hName = "Phase2Hw_t0_minus_segment_t0_qual6_" + iChTag.str();   // Phase2 prim t minus segment t0 for qual6
+	      m_plots[hName]->Fill(ph2TpgPhiHw_t0->at(iBestTpgPhiHw[iMB-1])-seg_phi_t0->at(iBestSeg[iMB-1]));		
+	    }
+	    else if(ph2TpgPhiHw_quality->at(iBestTpgPhiHw[iMB-1])==4 || ph2TpgPhiHw_quality->at(iBestTpgPhiHw[iMB-1])==3)  { 
+	      //***PLOTTED IN JSON
+	      hName = "Phase2Hw_t0_minus_segment_t0_qual4or3_" + iChTag.str();   // Phase2 prim t minus segment t0 for qual4 or 3
+	      m_plots[hName]->Fill(ph2TpgPhiHw_t0->at(iBestTpgPhiHw[iMB-1])-seg_phi_t0->at(iBestSeg[iMB-1]));		
+	    }
 				  
 	    hName = "ph2TpgPhiHw_quality_vs_seg_posGlb_phi" + iChTag.str();   // quality vs segment posLoc_phi 
 	    m_plots[hName]->Fill(seg_posGlb_phi->at(iBestSeg[iMB-1]), ph2TpgPhiHw_quality->at(iBestTpgPhiHw[iMB-1]));

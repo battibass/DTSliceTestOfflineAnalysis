@@ -384,6 +384,316 @@
         }
     },
 
+   "Phase-2 and TwinMux effic vs posGlb_phi MB1"   :
+    {
+        "inputs"    :
+        {
+             "TMux MB1"   :
+            {
+                "label"             : "TMux MB1",
+                "legendEntry"       : "TMux MB1",
+                "folder"            : "",
+                "plot"		    : "trigeff_TwinMuxOut_AnyBX_vs_posGlb_phiMB1"
+		},
+
+             "Phase2 MB1"   :
+            {
+                "label"             : "Phase2 MB1",
+                "legendEntry"       : "Phase2 MB1",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_AnyBX_vs_posGlb_phiMB1"
+		}
+        },
+        "plot"      :
+        {
+            "x"                 : [-1.0,-0.2, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [0.0,1.05, "Trigger efficiency (AnyBX)"],
+            "option"            : "",
+            "legendTitle"       : "MB1 AnyBX Trigger Efficiency",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.29, 0.27, 0.65, 0.40]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "08_Phase2_TwinMux_eff_vs_phi_MB1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+   "Phase-2 and TwinMux effic vs posGlb_phi MB2"   :
+    {
+        "inputs"    :
+        {
+             "TMux MB2"   :
+            {
+                "label"             : "TMux MB2",
+                "legendEntry"       : "TMux MB2",
+                "folder"            : "",
+                "plot"		    : "trigeff_TwinMuxOut_AnyBX_vs_posGlb_phiMB2"
+		},
+
+             "Phase2 MB2"   :
+            {
+                "label"             : "Phase2 MB2",
+                "legendEntry"       : "Phase2 MB2",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_AnyBX_vs_posGlb_phiMB2"
+		}
+        },
+        "plot"      :
+        {
+            "x"                 : [-1.0,-0.2, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [0.0,1.05, "Trigger efficiency (AnyBX)"],
+            "option"            : "",
+            "legendTitle"       : "MB2 AnyBX Trigger Efficiency",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.29, 0.27, 0.65, 0.40]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "08_Phase2_TwinMux_eff_vs_phi_MB2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+   "Phase-2 and TwinMux effic vs posGlb_phi MB3"   :
+    {
+        "inputs"    :
+        {
+             "TMux MB3"   :
+            {
+                "label"             : "TMux MB3",
+                "legendEntry"       : "TMux MB3",
+                "folder"            : "",
+                "plot"		    : "trigeff_TwinMuxOut_AnyBX_vs_posGlb_phiMB3"
+		},
+
+             "Phase2 MB3"   :
+            {
+                "label"             : "Phase2 MB3",
+                "legendEntry"       : "Phase2 MB3",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_AnyBX_vs_posGlb_phiMB3"
+		}
+        },
+        "plot"      :
+        {
+            "x"                 : [-1.0,-0.2, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [0.0,1.05, "Trigger efficiency (AnyBX)"],
+            "option"            : "",
+            "legendTitle"       : "MB3 AnyBX Trigger Efficiency",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.29, 0.27, 0.65, 0.40]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "08_Phase2_TwinMux_eff_vs_phi_MB3",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+   "Phase-2 and TwinMux effic vs posGlb_phi MB4"   :
+    {
+        "inputs"    :
+        {
+             "TMux MB4"   :
+            {
+                "label"             : "TMux MB4",
+                "legendEntry"       : "TMux MB4",
+                "folder"            : "",
+                "plot"		    : "trigeff_TwinMuxOut_AnyBX_vs_posGlb_phiMB4"
+		},
+
+             "Phase2 MB4"   :
+            {
+                "label"             : "Phase2 MB4",
+                "legendEntry"       : "Phase2 MB4",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_AnyBX_vs_posGlb_phiMB4"
+		}
+        },
+        "plot"      :
+        {
+            "x"                 : [-1.0,-0.2, "Reconstructed segment global#phi (rad)"],
+            "y"                 : [0.0,1.05, "Trigger efficiency (AnyBX)"],
+            "option"            : "",
+            "legendTitle"       : "MB4 AnyBX Trigger Efficiency",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.29, 0.27, 0.65, 0.40]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "08_Phase2_TwinMux_eff_vs_phi_MB4",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+   "Phase-2 and TwinMux effic vs segm nHits MB1"   :
+    {
+        "inputs"    :
+        {
+             "TMux MB1"   :
+            {
+                "label"             : "TMux MB1",
+                "legendEntry"       : "TMux MB1",
+                "folder"            : "",
+                "plot"		    : "trigeff_TwinMuxOut_AnyBX_vs_nHitsMB1"
+		},
+
+             "Phase2 MB1"   :
+            {
+                "label"             : "Phase2 MB1",
+                "legendEntry"       : "Phase2 MB1",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_AnyBX_vs_nHitsMB1"
+		}
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [0.0,1.05, "Trigger efficiency (AnyBX)"],
+            "option"            : "",
+            "legendTitle"       : "MB1 AnyBX Trigger Efficiency",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.29, 0.27, 0.65, 0.40]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "08_Phase2_TwinMux_eff_vs_nHits_MB1",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+   "Phase-2 and TwinMux effic vs segm nHits MB2"   :
+    {
+        "inputs"    :
+        {
+             "TMux MB2"   :
+            {
+                "label"             : "TMux MB2",
+                "legendEntry"       : "TMux MB2",
+                "folder"            : "",
+                "plot"		    : "trigeff_TwinMuxOut_AnyBX_vs_nHitsMB2"
+		},
+
+             "Phase2 MB2"   :
+            {
+                "label"             : "Phase2 MB2",
+                "legendEntry"       : "Phase2 MB2",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_AnyBX_vs_nHitsMB2"
+		}
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [0.0,1.05, "Trigger efficiency (AnyBX)"],
+            "option"            : "",
+            "legendTitle"       : "MB2 AnyBX Trigger Efficiency",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.29, 0.27, 0.65, 0.40]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "08_Phase2_TwinMux_eff_vs_nHits_MB2",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+   "Phase-2 and TwinMux effic vs segm nHits MB3"   :
+    {
+        "inputs"    :
+        {
+             "TMux MB3"   :
+            {
+                "label"             : "TMux MB3",
+                "legendEntry"       : "TMux MB3",
+                "folder"            : "",
+                "plot"		    : "trigeff_TwinMuxOut_AnyBX_vs_nHitsMB3"
+		},
+
+             "Phase2 MB3"   :
+            {
+                "label"             : "Phase2 MB3",
+                "legendEntry"       : "Phase2 MB3",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_AnyBX_vs_nHitsMB3"
+		}
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [0.0,1.05, "Trigger efficiency (AnyBX)"],
+            "option"            : "",
+            "legendTitle"       : "MB3 AnyBX Trigger Efficiency",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.29, 0.27, 0.65, 0.40]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "08_Phase2_TwinMux_eff_vs_nHits_MB3",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
+   "Phase-2 and TwinMux effic vs segm nHits MB4"   :
+    {
+        "inputs"    :
+        {
+             "TMux MB4"   :
+            {
+                "label"             : "TMux MB4",
+                "legendEntry"       : "TMux MB4",
+                "folder"            : "",
+                "plot"		    : "trigeff_TwinMuxOut_AnyBX_vs_nHitsMB4"
+		},
+
+             "Phase2 MB4"   :
+            {
+                "label"             : "Phase2 MB4",
+                "legendEntry"       : "Phase2 MB4",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_AnyBX_vs_nHitsMB4"
+		}
+        },
+        "plot"      :
+        {
+            "x"                 : [0.0,10.0, "# of reconstructed segment#phi hits"],
+            "y"                 : [0.0,1.05, "Trigger efficiency (AnyBX)"],
+            "option"            : "",
+            "legendTitle"       : "MB4 AnyBX Trigger Efficiency",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.29, 0.27, 0.65, 0.40]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "08_Phase2_TwinMux_eff_vs_nHits_MB4",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
    "Phase-2 vs Phase-1 BX MB1"   :
    {
         "inputs"    :
