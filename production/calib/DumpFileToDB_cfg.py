@@ -2,7 +2,7 @@
 # Configuration
 ########################################
 
-INPUTFILE = "337261_cosmics_ttrig.txt"
+INPUTFILE = "339711_cosmics_ttrig.txt"
 
 OUTPUTFILE = INPUTFILE.replace(".txt",".db")
 

@@ -16,7 +16,7 @@ options.register('globalTag',
                  "Global Tag")
 
 options.register('runNumber',
-                 '339652', #default value
+                 '339708', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                  "Run number to be looked for in either 'inputFolderCentral' or 'inputFolderDT' folders")
