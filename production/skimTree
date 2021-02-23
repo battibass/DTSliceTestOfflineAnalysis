@@ -1,0 +1,121 @@
+#!/usr/bin/env python
+"""
+This program can be used to skim DTNtuples by applying cuts on an
+input tree and copy the result to an output ROOT file. As well, you
+can remove specific branches from the tree. The main purpose of the
+script is reducing the file size to speed up the processing during
+analysis. Note, that you can load multiple files at once from your
+locale storage device and EOS."
+"""
+
+import argparse
+
+#----------------------
+# Setup argument parser
+#----------------------
+
+PARSER = argparse.ArgumentParser(description=__doc__)
+
+PARSER.add_argument("fileNamesInput",
+                    help="Path to the input DTNtuple ROOT files. Multiple files are given as \
+                          string separated with blanks, e.g., \"filename1 filename2\".")
+
+PARSER.add_argument("fileNameOutput",
+                    help="Path to the output DTNtuple ROOT file")
+
+PARSER.add_argument("-d", "--directory",
+                    default="dtNtupleProducer",
+                    help="Directory in the input ROOT file which contains the DTNtuple")
+
+PARSER.add_argument("-t", "--tree",
+                    default="DTTREE",
+                    help="Name of the tree holding the variables")
+
+PARSER.add_argument("-c", "--cut",
+                    default="",
+                    help="Cut string which is used on input tree (applied as CopyTree() \
+                          argument), e.g., \"mu_pt>30 && abs(mu_eta)<2.4\"")
+
+PARSER.add_argument("-r", "--remove",
+                    default="",
+                    help="List of branches, which are removed from tree, e.g., \"mu_pt \
+                          mu_eta\" or \"mu_*\", all removes them all unless something \
+                          is kept with --keep")
+
+PARSER.add_argument("-k", "--keep",
+                    default="",
+                    help="List of branches, which are explicitly kept in tree, e.g., \
+                          \"mu_pt mu_eta\". This option deactivates the 'remove' argument \
+                          for the specified branches")
+
+PARSER.add_argument("-v", "--verbosity",
+                    default=1,
+                    help="Increase or decrease output verbosity for input/output tree \
+                          properties")
+
+ARGS = PARSER.parse_args()
+
+#-------------------------------------------------------------------
+# Generate subtree by applying cut within the CopyTree ROOT function
+#-------------------------------------------------------------------
+
+import ROOT # import this here, otherwise it overwrites the argparse stuff
+
+# Get input tree as TChain
+TREE_PATH = ARGS.directory + "/" + ARGS.tree
+if ARGS.verbosity == 1:
+    print("Used path to tree in files :")
+    print("----------------------------")
+    print(TREE_PATH)
+    print("")
+
+TREE_INPUT = ROOT.TChain(TREE_PATH)
+if ARGS.verbosity == 1:
+    print("Input files :")
+    print("-------------")
+for fileName in ARGS.fileNamesInput.split(" "):
+    if ARGS.verbosity == 1:
+        print(fileName)
+    TREE_INPUT.AddFile(fileName)
+if ARGS.verbosity == 1:
+    print("")
+
+# Deactivate and reactivate branches from 'remove' and 'keep' arguments
+if ARGS.remove == "all":
+    for branch in TREE_INPUT.GetListOfBranches():
+        if not branch.GetName() in ARGS.cut:
+            TREE_INPUT.SetBranchStatus(branch.GetName(), 0)
+else:
+    BRANCHES_REMOVE = ARGS.remove.split(" ")
+    if BRANCHES_REMOVE != [""]:
+        for branch in BRANCHES_REMOVE:
+            TREE_INPUT.SetBranchStatus(branch, 0)
+
+
+BRANCHES_KEEP = ARGS.keep.split(" ")
+if BRANCHES_KEEP != [""]:
+    for branch in BRANCHES_KEEP:
+        TREE_INPUT.SetBranchStatus(branch, 1)
+
+# Make output directory and copy input tree
+FILE_OUTPUT = ROOT.TFile.Open(ARGS.fileNameOutput, "recreate")
+DIR_OUTPUT = FILE_OUTPUT.mkdir(ARGS.directory)
+DIR_OUTPUT.cd()
+TREE_OUTPUT = TREE_INPUT.CopyTree(ARGS.cut)
+
+# Print some info if verbosity is set to 1
+if ARGS.verbosity == 1:
+    print("Number of entries in tree :")
+    print("---------------------------")
+    print("Input :  {}".format(TREE_INPUT.GetEntries()))
+    print("Output : {}".format(TREE_OUTPUT.GetEntries()))
+    print("")
+
+    print("Number of branches in tree :")
+    print("----------------------------")
+    print("Input :  {}".format(len(TREE_INPUT.GetListOfBranches())))
+    print("Output : {}".format(len(TREE_OUTPUT.GetListOfBranches())))
+
+# Write output tree and file
+TREE_OUTPUT.Write()
+FILE_OUTPUT.Close()

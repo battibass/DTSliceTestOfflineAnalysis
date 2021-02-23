@@ -1,0 +1,83 @@
+#!/usr/bin/env python
+"""
+This program can be used to print DTNtuples size for each
+of the tree branches and fillers.
+"""
+
+import argparse
+import math
+
+#-----------------------
+#  Setup argument parser
+#-----------------------
+
+PARSER = argparse.ArgumentParser(description=__doc__)
+
+PARSER.add_argument("fileNameInput",
+                    help="Path to the input DTNtuple ROOT files")
+
+PARSER.add_argument("-d", "--directory",
+                    default="dtNtupleProducer",
+                    help="Directory in the input ROOT file which \
+                          contains the DTNtuple")
+
+PARSER.add_argument("-t", "--tree",
+                    default="DTTREE",
+                    help="Name of the tree holding the variables")
+
+ARGS = PARSER.parse_args()
+
+#-------------------------------
+# Print the size of a given tree
+#-------------------------------
+
+import ROOT # import this here, otherwise it overwrites the argparse stuff
+
+# Get input tree as TChain
+TREE_PATH = ARGS.directory + "/" + ARGS.tree
+print("Used path to tree in file :")
+print("---------------------------")
+print(TREE_PATH)
+print("")
+
+print("Input file :")
+print("------------")
+print(ARGS.fileNameInput)
+print("")
+
+TREE_INPUT = ROOT.TChain(TREE_PATH)
+TREE_INPUT.AddFile(ARGS.fileNameInput)
+
+N_ENTRIES = TREE_INPUT.GetEntries()
+
+print("Number of entries in tree : {}".format(N_ENTRIES))
+print("")
+
+FILLER_SIZES = {}
+TOTAL_SIZE = 0.
+
+print("Branches and size (kB) :")
+print("------------------------")
+for branch in TREE_INPUT.GetListOfBranches():
+    branchName = branch.GetName()
+    branchSize = branch.GetZipBytes() / math.pow(2, 10)
+    # CB there is some additional memory from the key
+    # which is not considered
+    print("    Name : {:40.40} - size : {:12.2f}".format(branchName, branchSize))
+    TOTAL_SIZE += branchSize
+    fillerName = branchName.split("_")[0]
+    if FILLER_SIZES.has_key(fillerName):
+        FILLER_SIZES[fillerName] += branchSize
+    else:
+        FILLER_SIZES[fillerName] = branchSize
+print("")
+
+print("Fillers and size (kB) :")
+print("-----------------------")
+for filler, size in FILLER_SIZES.iteritems():
+    print("    Name : {:20.20} - size : {:12.2f} \t - % of total : {:12.2f}".format(filler, size, size / TOTAL_SIZE * 100))
+print("")
+
+print("TOTAL size (kB) : {:12.2f}".format(TOTAL_SIZE))
+print("Size/event (kB) : {:12.2f}".format(TOTAL_SIZE / N_ENTRIES))
+print("")
