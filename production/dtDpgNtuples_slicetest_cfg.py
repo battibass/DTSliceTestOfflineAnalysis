@@ -42,7 +42,7 @@ options.register('nEvents',
                  "Maximum number of processed events")
 
 options.register('runNumber',
-                 '339711', #default value
+                 '339929', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                  "Run number to be looked for in either 'inputFolderCentral' or 'inputFolderDT' folders")
@@ -206,6 +206,9 @@ process.p = cms.Path(process.muonDTDigis
 if options.tTrigFilePh2 and options.t0FilePh2 :
     from DTDPGAnalysis.DTNtuples.customiseDtPhase2Reco_cff import customiseForPhase2Reco
     process = customiseForPhase2Reco(process,"p", options.tTrigFilePh2, options.t0FilePh2)
+
+    from DTDPGAnalysis.DTNtuples.customiseDtPhase2Emulator_cff import customiseForPhase2Emulator
+    process = customiseForPhase2Emulator(process,"p")
 
 if options.runOnTestPulse :
     from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForTestPulseRun
