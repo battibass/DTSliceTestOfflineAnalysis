@@ -46,5 +46,18 @@ __init__.py
 # DB files
 *.db
 
+# Production folders
+production/cmsrun_xml
+production/crab.log
+production/crab_jobs
+production/crab_jsons
+
+# Analysis results
+analyses/run*
+
 # txt files
 *.txt
+
+# Calibration files and folders
+production/calib/Run*-ttrig_timebox_v*/
+production/calib/dtCalibration_*.log
