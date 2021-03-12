@@ -95,7 +95,6 @@ class DTNtupleTriggerAnalyzer : public DTNtupleBaseAnalyzer
   Int_t iSec;
   Int_t iPhihits_min;
 
-
   Double_t pi;
   
   Double_t phi_Ph1_conv;  // conversion from trig phi to phi in rad in Phase1
@@ -104,8 +103,7 @@ class DTNtupleTriggerAnalyzer : public DTNtupleBaseAnalyzer
 
   Double_t phi_Ph2_conv; // in cm, local position in the station
   Double_t phiB_Ph2_conv; // to transform in radians
-
-  Double_t phi_offset; // offset between ph2 primitive phi and seg_posGlb_phi of the segment
+  Double_t phi_offset;
 
   Int_t BXOK_TwinMuxOut;
   Int_t BXOK_ph2Hw;  // -269
