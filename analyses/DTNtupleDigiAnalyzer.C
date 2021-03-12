@@ -144,6 +144,9 @@ void DTNtupleDigiAnalyzer::book()
   for (const auto & typeTag : typeTags)
     {
   
+      TString hName = ("hNDigis" + typeTag).c_str(); 
+      m_plots[hName] = new TH1F(hName,"# of digis ;# of digis,entries",101,-0.5,100.5);
+
       for (const auto iSt : m_stations[typeTag])
 	{
       
@@ -152,7 +155,7 @@ void DTNtupleDigiAnalyzer::book()
       
 	  string stTag = stTagS.str();
 	  
-	  TString hName = ("hOccupancy" + stTag).c_str(); 
+	  hName = ("hOccupancy" + stTag).c_str(); 
 	  m_plots[hName] = new TH2F(hName,"Occupancy;wire;layer / superlayer",100,0.5,100.5,12,0.5,12.5);
 
 	  hName = ("hOccupancyMultiple" + stTag).c_str();
@@ -193,7 +196,7 @@ void DTNtupleDigiAnalyzer::book()
 	    } 
 	}
 
-      TString hName = ("hFracEffWires" + typeTag).c_str();
+      hName = ("hFracEffWires" + typeTag).c_str();
       m_effs[hName] = new TEfficiency(hName,"Fraction of wires with eff in [0.90:1.00] range",4,0.5,4.5);
       
     }
@@ -223,11 +226,15 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
 
   DTNtupleDigi & digi = digiObjs[typeTag];
 
+  int nDigis = 0;
+  
   for (std::size_t iDigi = 0; iDigi < (*digi.nDigis); ++iDigi)
     {
       
       // The slice test sector
-      if(digi.sector->at(iDigi) != 12 || digi.wheel->at(iDigi) != 2) continue;    
+      if(digi.sector->at(iDigi) != 12 || digi.wheel->at(iDigi) != 2) continue;
+
+      ++nDigis;
       
       int st  = digi.station->at(iDigi);
       int sl  = digi.superLayer->at(iDigi);
@@ -261,6 +268,8 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
       m_plots[("hTimeBox"+ layerTag).c_str()]->Fill(time);
     }
 
+  m_plots[("hNDigis"+ typeTag).c_str()]->Fill(nDigis);
+  
   for (auto & wireAndDigis : digisByWire)
     {
       

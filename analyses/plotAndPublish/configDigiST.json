@@ -1,4 +1,44 @@
 {   
+    "N digis"   :
+    {
+        "inputs"    :
+        {
+            "Phase-1"   :
+            {
+                "label"             : "Phase-1",
+                "legendEntry"       : "Phase-1",
+                "folder"            : "",
+                "plot"		    : "hNDigisPh1"
+	    },
+
+	    "Phase-2"   :
+            {
+                "label"             : "Phase-2",
+                "legendEntry"       : "Phase-2",
+                "folder"            : "",
+                "plot"		    : "hNDigisPh2"
+	    }	    
+
+        },
+        "plot"      :
+        {
+            "x"                 : [-0.5, 100.5, "# of digis"],
+            "y"                 : [1, 13.5, "entries"],
+            "option"            : "nEntrieslogY",
+            "legendTitle"       : "# of digis in ST sector",
+            "caption"           : "DT SliceTest",
+            "logo"              : ["CMS", "Preliminary"],
+            "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
+            "legendRange"       : [0.39, 0.67, 0.85, 0.84]
+        },
+        "output"    :
+        {
+            "filenamePlot"      : "00_nDigis",
+            "fileType"          : ["png", "root",  "pdf"]
+        }
+    },
+
     "Phase-1 Occupancy MB1"   :
     {
         "inputs"    :

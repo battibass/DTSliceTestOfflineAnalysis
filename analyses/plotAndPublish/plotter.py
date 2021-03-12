@@ -36,13 +36,13 @@ def efficiencyPalette() :
 Setup argument parser
 """
 
-parser = argparse.ArgumentParser(description="This program takes an input JSON config and extracts plots from ROOT files. " \
-                                             + "The output consists of a plot with superimposed plots from multiple files." )
-parser.add_argument("inputJsonConfig", help="Path to the input JSON config file")
-parser.add_argument("inputFile", help="The input file to be processed")
-parser.add_argument("plotFolder", help="Plot output folder")
-parser.add_argument("-f", "--fast", default=0, action="count", help="Skip fetching and saving the fit canvases for each plot")
-parser.add_argument("-v", "--verbosity", default=1, help="Increase or decrease output verbosity")
+parser = argparse.ArgumentParser(description='This program takes an input JSON config and extracts plots from ROOT files. ' \
+                                             + 'The output consists of a plot with superimposed plots from multiple files.' )
+parser.add_argument('inputJsonConfig', help='Path to the input JSON config file')
+parser.add_argument('inputFile', help='The input file to be processed')
+parser.add_argument('plotFolder', help='Plot output folder')
+parser.add_argument('-f', '--fast', default=0, action='count', help='Skip fetching and saving the fit canvases for each plot')
+parser.add_argument('-v', '--verbosity', default=1, help='Increase or decrease output verbosity')
 args = parser.parse_args()
 
 """
@@ -58,11 +58,11 @@ Go through plots defined in config JSON
 
 from ROOT import * # import this here, otherwise it overwrites the argparse stuff
 gROOT.SetBatch(True) # set ROOT to batch mode, this suppresses printing canvases
-gROOT.ProcessLine("gErrorIgnoreLevel = 1001;") # suppress stdout pollution of canvas.Print(...)
+gROOT.ProcessLine('gErrorIgnoreLevel = 1001;') # suppress stdout pollution of canvas.Print(...)
 
 TH1.AddDirectory(False)
 gStyle.SetOptTitle(0)
-gStyle.SetPaintTextFormat("1.3f");
+gStyle.SetPaintTextFormat('1.3f');
 gStyle.SetHistMinimumZero()
 
 inputFile = TFile.Open(args.inputFile)
@@ -102,8 +102,7 @@ for keyPlot in config:
                 inputName = keys.GetName()
 
                 print('Load plot \'{}\': {}'.format(inputFolders[iHisto], inputName))
-                print inputDir.Get(inputName).ClassName()
-
+                
                 histo = inputDir.Get(inputName).Clone(str(iHisto))
                 inputHistos.append(histo)
 
@@ -136,23 +135,25 @@ for keyPlot in config:
 
     option = config[keyPlot]['plot']['option']
              
-    hasLogY = option.find("logY") > -1
+    hasLogY = 'logY' in option
     if hasLogY :
-        option = option.replace("logY","")
+        option = option.replace('logY','')
 
-    hasVerbLeg = option.find("verbLeg") > -1
+    hasNEntries = 'nEntries' in option
+    if hasNEntries :
+        option = option.replace('nEntries','')
+
+    hasVerbLeg = 'verbLeg' in option
     if hasVerbLeg :
-        option = option.replace("verbLeg","")
+        option = option.replace('verbLeg','')
 
-    hasVerbRes = option.find("verbRes") > -1
+    hasVerbRes = 'verbRes' in option
     if hasVerbRes :
-        option = option.replace("verbRes","")
+        option = option.replace('verbRes','')
 
-    hasXRangeFromHisto = option.find("xRangeFromHisto") > -1
+    hasXRangeFromHisto = 'xRangeFromHisto' in option
     if hasXRangeFromHisto :
-        option = option.replace("xRangeFromHisto","")
-
-
+        option = option.replace('xRangeFromHisto','')
 
     pad.SetGrid()
     pad.Draw()
@@ -167,14 +168,14 @@ for keyPlot in config:
  
     gStyle.SetOptStat(0)
         
-    if config[keyPlot]['plot'].has_key("z") :
+    if 'z' in config[keyPlot]['plot'] :
         plotZ = config[keyPlot]['plot']['z']
 
     rangeY = plotY[:2]
 
     for iHisto in range(len(inputHistos)):
 
-        if inputHistos[iHisto].ClassName() == "TH1F" :
+        if inputHistos[iHisto].ClassName() == 'TH1F' :
 
             if not hasLogY :
                 rangeY[0] = 0.0
@@ -189,7 +190,7 @@ for keyPlot in config:
         histoDim   = inputHistos[iHisto].GetDimension()
         histoClass = inputHistos[iHisto].ClassName()
 
-        inputHistos[iHisto].SetTitle(";"+plotX[2]+";"+plotY[2])
+        inputHistos[iHisto].SetTitle(';'+plotX[2]+';'+plotY[2])
             
         if iHisto == 0 :
                 inputHistos[iHisto].Draw(option)
@@ -198,22 +199,22 @@ for keyPlot in config:
 
         canvas.Update()
 
-        if histoClass == "TEfficiency" and histoDim == 1:
+        if histoClass == 'TEfficiency' and histoDim == 1:
             histo = inputHistos[iHisto].GetPaintedGraph()
-        elif histoClass == "TEfficiency" and histoDim == 2:
+        elif histoClass == 'TEfficiency' and histoDim == 2:
             histo = inputHistos[iHisto].GetPaintedHistogram()
         else :
             histo = inputHistos[iHisto]
             
         if not hasXRangeFromHisto:
-            if histoClass == "TEfficiency" and histoDim == 1 :
+            if histoClass == 'TEfficiency' and histoDim == 1 :
                 histo.GetXaxis().SetLimits(plotX[0], plotX[1])
             else :
                 histo.GetXaxis().SetRangeUser(plotX[0], plotX[1])
             
         histo.GetYaxis().SetRangeUser(rangeY[0], rangeY[1])
 
-        if histoClass == "TEfficiency" and histoDim == 2 : 
+        if histoClass == 'TEfficiency' and histoDim == 2 : 
             palette = efficiencyPalette()
             nBins = len(palette)
             gStyle.SetPalette(nBins,array('i',palette))
@@ -222,13 +223,13 @@ for keyPlot in config:
             histo.SetContour(nBins)
             histo.Draw(option)
                                 
-        if histoClass == "TProfile2D" : 
+        if histoClass == 'TProfile2D' : 
             histo.SetMinimum(plotZ[0])
             histo.SetMaximum(plotZ[1])
             gStyle.SetPalette(1)
             histo.Draw(option)
 
-        elif histoClass == "TH2F" :
+        elif histoClass == 'TH2F' :
             gStyle.SetPalette(1)
             histo.Draw(option)
 
@@ -245,7 +246,7 @@ for keyPlot in config:
         histo.GetXaxis().SetTitleSize(22)
         histo.GetXaxis().SetLabelSize(20)
         histo.GetXaxis().SetTitleOffset(1.2)
-        if plotX[2] == "sector" and histo.GetXaxis().GetNbins() <= 14 :
+        if plotX[2] == 'sector' and histo.GetXaxis().GetNbins() <= 14 :
             for iBinX in range(1,histo.GetXaxis().GetNbins() +1) :
                 histo.GetXaxis().SetBinLabel(iBinX,str(iBinX))
         
@@ -255,7 +256,7 @@ for keyPlot in config:
         histo.GetYaxis().SetTitleSize(22)
         histo.GetYaxis().SetLabelSize(20)
         histo.GetYaxis().SetTitleOffset(1.5)
-        if plotY[2] == "wheel" and histo.GetYaxis().GetNbins() == 5 :
+        if plotY[2] == 'wheel' and histo.GetYaxis().GetNbins() == 5 :
             for iBinY in range(1,histo.GetYaxis().GetNbins() +1) :
                 histo.GetYaxis().SetBinLabel(iBinY,str(iBinY - 3))
                     
@@ -274,14 +275,18 @@ for keyPlot in config:
             if hasVerbLeg :
                 nUnderFlow = int(inputHistos[iHisto].GetBinContent(0))
                 nOverFlow  = int(inputHistos[iHisto].GetBinContent(inputHistos[iHisto].GetNbinsX()+1))
-                legEntry = legEntry + "   [uf/of: " + str(nUnderFlow) + "/" +str(nOverFlow) + "]" 
+                legEntry = '{}   [uf/of: {}/{}]'.format(legEntry, nUnderFlow, nOverFlow)
+
+            if hasNEntries :
+                nEntries  = int(inputHistos[iHisto].GetEntries())
+                legEntry = '{}   [# entries: {}]'.format(legEntry, nEntries) 
 
             if hasVerbRes :
-                fitFunc = inputHistos[iHisto].GetFunction("fPhi")
+                fitFunc = inputHistos[iHisto].GetFunction('fPhi')
                 if fitFunc :
                     sigma    = int(fitFunc.GetParameter(2) * 10000.)
                     sigmaErr = int(fitFunc.GetParError(2) * 10000.)
-                    legEntry = legEntry + "  [#sigma of gaussian fit = " + str(sigma) + " ]"
+                    legEntry = '{}  [#sigma of gaussian fit = {}]'.format(legEntry, round(sigma))
 
             leg.AddEntry(inputHistos[iHisto], legEntry, 'LP')
 
