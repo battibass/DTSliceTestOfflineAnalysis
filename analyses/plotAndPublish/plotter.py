@@ -5,6 +5,12 @@ from array import *
 import json
 
 """
+Custom plotting options
+"""
+optionFlags = ['logY', 'nEntries', 'verbLeg', 'verbRes', 'xRangeFromHisto']
+
+
+"""
 Function to define color plaette for 2D efficiency plots
 """
 
@@ -134,31 +140,20 @@ for keyPlot in config:
     pad = TPad('pad', 'pad', 0.01, 0.00, 1.00, 1.00)
 
     option = config[keyPlot]['plot']['option']
-             
-    hasLogY = 'logY' in option
-    if hasLogY :
-        option = option.replace('logY','')
+    optionPlotter = {}
+    
+    for flag in optionFlags:
 
-    hasNEntries = 'nEntries' in option
-    if hasNEntries :
-        option = option.replace('nEntries','')
-
-    hasVerbLeg = 'verbLeg' in option
-    if hasVerbLeg :
-        option = option.replace('verbLeg','')
-
-    hasVerbRes = 'verbRes' in option
-    if hasVerbRes :
-        option = option.replace('verbRes','')
-
-    hasXRangeFromHisto = 'xRangeFromHisto' in option
-    if hasXRangeFromHisto :
-        option = option.replace('xRangeFromHisto','')
+        hasFlag = flag in option
+        optionPlotter[flag] = hasFlag
+        
+        if hasFlag:
+            option = option.replace(flag,'')
 
     pad.SetGrid()
     pad.Draw()
 
-    if hasLogY :
+    if optionPlotter['logY'] :
         pad.SetLogy()
 
     pad.cd()
@@ -177,7 +172,7 @@ for keyPlot in config:
 
         if inputHistos[iHisto].ClassName() == 'TH1F' :
 
-            if not hasLogY :
+            if not optionPlotter['logY'] :
                 rangeY[0] = 0.0
 
             rangeYFromHisto = inputHistos[iHisto].GetMaximum() * 1.5
@@ -206,7 +201,7 @@ for keyPlot in config:
         else :
             histo = inputHistos[iHisto]
             
-        if not hasXRangeFromHisto:
+        if not optionPlotter['xRangeFromHisto']:
             if histoClass == 'TEfficiency' and histoDim == 1 :
                 histo.GetXaxis().SetLimits(plotX[0], plotX[1])
             else :
@@ -246,9 +241,6 @@ for keyPlot in config:
         histo.GetXaxis().SetTitleSize(22)
         histo.GetXaxis().SetLabelSize(20)
         histo.GetXaxis().SetTitleOffset(1.2)
-        if plotX[2] == 'sector' and histo.GetXaxis().GetNbins() <= 14 :
-            for iBinX in range(1,histo.GetXaxis().GetNbins() +1) :
-                histo.GetXaxis().SetBinLabel(iBinX,str(iBinX))
         
         histo.GetYaxis().SetLabelSize(22)
         histo.GetYaxis().SetTitleFont(63)
@@ -256,10 +248,7 @@ for keyPlot in config:
         histo.GetYaxis().SetTitleSize(22)
         histo.GetYaxis().SetLabelSize(20)
         histo.GetYaxis().SetTitleOffset(1.5)
-        if plotY[2] == 'wheel' and histo.GetYaxis().GetNbins() == 5 :
-            for iBinY in range(1,histo.GetYaxis().GetNbins() +1) :
-                histo.GetYaxis().SetBinLabel(iBinY,str(iBinY - 3))
-                    
+        
         canvas.Update()
 
     canvas.Update()
@@ -272,16 +261,16 @@ for keyPlot in config:
 
         for iHisto in range(len(inputHistos)):
             legEntry = inputLegendEntries[iHisto]
-            if hasVerbLeg :
+            if optionPlotter['verbLeg'] :
                 nUnderFlow = int(inputHistos[iHisto].GetBinContent(0))
                 nOverFlow  = int(inputHistos[iHisto].GetBinContent(inputHistos[iHisto].GetNbinsX()+1))
                 legEntry = '{}   [uf/of: {}/{}]'.format(legEntry, nUnderFlow, nOverFlow)
 
-            if hasNEntries :
+            if optionPlotter['nEntries'] :
                 nEntries  = int(inputHistos[iHisto].GetEntries())
                 legEntry = '{}   [# entries: {}]'.format(legEntry, nEntries) 
 
-            if hasVerbRes :
+            if optionPlotter['verbRes'] :
                 fitFunc = inputHistos[iHisto].GetFunction('fPhi')
                 if fitFunc :
                     sigma    = int(fitFunc.GetParameter(2) * 10000.)
