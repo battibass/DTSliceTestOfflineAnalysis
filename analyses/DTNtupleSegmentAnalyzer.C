@@ -229,6 +229,17 @@ void DTNtupleSegmentAnalyzer::book()
   
   m_outFile.cd();
 
+  std::vector<std::string> typeTags = { "Ph1", "Ph2" };
+
+  for (const auto & typeTag : typeTags)
+    {
+      
+      auto hName = Form("%snSegments",typeTag.c_str()); 
+      m_plots[hName] = new TH1F(hName,
+				"# of segments;# of segments;entries",
+				51,-0.5,50.5);
+    }
+
   for (int st=1; st<5; st++)
     {
 
@@ -253,8 +264,6 @@ void DTNtupleSegmentAnalyzer::book()
 				101,0.9,1.01,101,0.9,1.01);
     }
 	
-  std::vector<std::string> typeTags = { "Ph1", "Ph2" };
-
   for (const auto & typeTag : typeTags)
     {
       
@@ -560,11 +569,11 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
 
   //Phase1
 
+  int nSegPh1 = 0;
   for (uint iSeg = 0; iSeg < seg_nSegments; ++iSeg) 
     {
 
-      if(seg_sector->at(iSeg) != 12 || seg_wheel->at(iSeg) != 2) continue;    
-
+      if(seg_sector->at(iSeg) != 12 || seg_wheel->at(iSeg) != 2) continue;
       //Chi2 cut if needed
       
       //if(seg_hasPhi->at(iSeg)    && seg_phi_normChi2->at(iSeg) > 3.84) continue;
@@ -573,6 +582,7 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
       //Select segment with t0 < of a specific time  to avoid out of time events
       //if(abs(seg_phi_t0->at(iSeg)) > 15) continue;
 
+      ++nSegPh1;
       int nHits = 0;
       if(seg_hasPhi->at(iSeg))
 	{
@@ -612,8 +622,12 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
 
     }
 
+  m_plots["Ph1nSegments"]->Fill(nSegPh1);
+
+  
   //Phase2
 
+  int nSegPh2 = 0;
   for (uint iSeg = 0; iSeg < ph2Seg_nSegments; ++iSeg) 
     {
       
@@ -626,7 +640,8 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
       
       //Select segment with t0 < of a specific time  to avoid out of time events
       //if(abs(ph2Seg_phi_t0->at(iSeg)) > 15) continue;
-      
+
+      ++nSegPh2;
       int nHits = 0;
       if(ph2Seg_hasPhi->at(iSeg))
 	{
@@ -665,6 +680,8 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
       m_plots[Form("Ph2hNhits_st%d",ph2Seg_station->at(iSeg))]->Fill(nHits);
 
     }
+  
+  m_plots["Ph2nSegments"]->Fill(nSegPh2);
 
 }
 
