@@ -28,7 +28,7 @@ m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(
 
   m_timeBoxMin["Ph2"]  = -1250.;
   m_timeBoxMax["Ph2"]  =  3750.;
-  m_timeBoxBins["Ph2"] = 1250;
+  m_timeBoxBins["Ph2"] =  1250;
 
   m_timeBoxMinTP[1]["Ph1"] =  350.;
   m_timeBoxMaxTP[1]["Ph1"] =  750.;
@@ -39,14 +39,14 @@ m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(
   m_timeBoxMinTP[4]["Ph1"] =  350.;
   m_timeBoxMaxTP[4]["Ph1"] =  750.;
 
-  m_timeBoxMinTP[1]["Ph2"] = -1000.;
-  m_timeBoxMaxTP[1]["Ph2"] =  -800.;
-  m_timeBoxMinTP[2]["Ph2"] = -1000.;
-  m_timeBoxMaxTP[2]["Ph2"] =  -800.;
-  m_timeBoxMinTP[3]["Ph2"] =    50.;
-  m_timeBoxMaxTP[3]["Ph2"] =   250.;
-  m_timeBoxMinTP[4]["Ph2"] =    50.;
-  m_timeBoxMaxTP[4]["Ph2"] =   250.;
+  m_timeBoxMinTP[1]["Ph2"] =   0.;
+  m_timeBoxMaxTP[1]["Ph2"] = 400.;
+  m_timeBoxMinTP[2]["Ph2"] =   0.;
+  m_timeBoxMaxTP[2]["Ph2"] = 400.;
+  m_timeBoxMinTP[3]["Ph2"] =   0.;
+  m_timeBoxMaxTP[3]["Ph2"] = 400.;
+  m_timeBoxMinTP[4]["Ph2"] =   0.;
+  m_timeBoxMaxTP[4]["Ph2"] = 400.;
 
   // File with the wires to mask to be used. Its lines should be of the form
   // MB2 SL3 L4 2 6 31
@@ -182,8 +182,7 @@ void DTNtupleDigiAnalyzer::book()
 	  for (int iSl = 1; iSl <= 3; ++iSl)
 	    {
 	      for (int iLayer = 1; iLayer <= 4; ++iLayer)
-		{
-		  
+		{		  
 		  stringstream layerTagS;
 		  layerTagS << typeTag
 			    << "St" << iSt
@@ -195,6 +194,20 @@ void DTNtupleDigiAnalyzer::book()
 		  hName = ("hTimeBox" + layerTag).c_str();
 		  m_plots[hName] = new TH1F(hName,"Digi time box;time (ns);entries",m_timeBoxBins[typeTag],m_timeBoxMin[typeTag],m_timeBoxMax[typeTag]);
 		}
+	      
+	      stringstream slTagS;
+	      slTagS << typeTag
+		     << "St" << iSt
+		     << "SuperLayer" << iSl;
+
+	      string slTag = slTagS.str();
+		  
+	      hName = ("hIneffWires" + slTag).c_str();
+	      m_plots[hName] = new TH1F(hName,"# ineff wires per SL;# inefficient wires;entries",10,0.5,10.5);
+
+	      hName = ("hTimeIneffWires" + slTag).c_str();
+	      m_plots[hName] = new TH1F(hName,"time for cases wit >= 4 ineff wires per SL;lumisection;entries",350,0.5,350.5);
+	      
 	    } 
 	}
 
@@ -350,14 +363,22 @@ std::set<WireId> DTNtupleDigiAnalyzer::wiresWithInTimeDigis(std::string typeTag,
 
 void DTNtupleDigiAnalyzer::fillEff(std::string typeTag, const std::set<WireId> & wireIdProbes, const std::set<WireId> & wireIdRefs)
 {
+
+  std::map<std::string, int> ineffWiresPerSL;
   
   for (const auto & wireIdRef : wireIdRefs)
     {
       stringstream stTagS;
       stTagS << typeTag
              << "St" << wireIdRef.m_chamb;
-      
+
       std::string stTag = stTagS.str();
+      
+      stringstream slTagS;
+      slTagS << stTag
+	     << "SuperLayer" << wireIdRef.m_sl;
+
+      std::string slTag = slTagS.str();
       
       bool hasWireMatch = false;
       
@@ -372,7 +393,25 @@ void DTNtupleDigiAnalyzer::fillEff(std::string typeTag, const std::set<WireId> &
       
       int slAndLay = wireIdRef.m_layer + (wireIdRef.m_sl - 1) * 4;
       m_effs[("hWireByWireEff" + stTag).c_str()]->Fill(hasWireMatch,wireIdRef.m_wire,slAndLay);
+
+      if (!hasWireMatch)
+	{
+	  if(ineffWiresPerSL.find(slTag) == ineffWiresPerSL.end())
+	    ineffWiresPerSL[slTag] = 0;
+
+	  ineffWiresPerSL[slTag]++;
+	}
+      } 
+
+  for( auto & ineffWiresPerSLPair : ineffWiresPerSL)
+    {
+      auto slTag = ineffWiresPerSLPair.first;
+      auto nIneffWires = ineffWiresPerSLPair.second;
+
+      m_plots[("hIneffWires"+ slTag).c_str()]->Fill(nIneffWires);
       
+      if (nIneffWires >=4)
+	m_plots[("hTimeIneffWires"+ slTag).c_str()]->Fill(event_lumiBlock);
     } 
   
 }
