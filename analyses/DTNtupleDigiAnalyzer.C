@@ -171,7 +171,9 @@ void DTNtupleDigiAnalyzer::book()
 	  hName = ("hEffSummary" + stTag).c_str();
 	  m_plots[hName] = new TH1F(hName,"Efficiency summary;efficiency,# wires",110,0.5,1.05);	  
 
-	  hName = ("hTimeDiffPhi"   + stTag).c_str();
+	  hName = ("hTimeDiffPhiSL1"   + stTag).c_str();
+	  m_plots[hName] = new TH1F(hName,"Wire by wire digi time difference;time difference;entries",125,0.,500.);
+	  hName = ("hTimeDiffPhiSL3"   + stTag).c_str();
 	  m_plots[hName] = new TH1F(hName,"Wire by wire digi time difference;time difference;entries",125,0.,500.);
 
 	  hName = ("hTimeDiffTheta" + stTag).c_str();
@@ -309,8 +311,10 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
             {
               if (wireId.m_sl == 2) 
 		m_plots[("hTimeDiffTheta" + stTag).c_str()]->Fill((*digiIt) - timePrev);
-              else
-		m_plots[("hTimeDiffPhi"   + stTag).c_str()]->Fill((*digiIt) - timePrev);
+              else if (wireId.m_sl == 1) 
+		m_plots[("hTimeDiffPhiSL1"   + stTag).c_str()]->Fill((*digiIt) - timePrev);
+              else if (wireId.m_sl == 3) 
+		m_plots[("hTimeDiffPhiSL3"   + stTag).c_str()]->Fill((*digiIt) - timePrev);
               timePrev = (*digiIt);
             }
         }
