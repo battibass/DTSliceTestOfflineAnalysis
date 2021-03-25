@@ -1,23 +1,42 @@
 #!/usr/bin/env python
+# pylint: disable=C0103
+
+"""
+Add php formatting file recursively to a given folder.
+"""
 
 import argparse
-import sys
 import os
 
-"""
-Setup argument parser
-"""
+#########################
+# Setup argument parser
+#########################
 
-parser = argparse.ArgumentParser(description="This program goes from the toplevel directory recursively downwards and places a index PHP in each directory. Then, it's possible to browse files more conveniently with a web browser. Note, that the PHP files have to be accessed through a web server such as Apache with PHP support.")
-parser.add_argument("toplevelDirectory", help="Path to the toplevel directory, which is the starting point for the recursion")
-parser.add_argument("inputPHPfile", help="Path to the file source, which is placed in each directory")
-parser.add_argument("-o", "--outputFilename", default="index.php", help="Name of the output file, which is placed in each directory")
-parser.add_argument("-v", "--verbosity", default=1, help="Increase or decrease output verbosity")
+parser = argparse.ArgumentParser(description="This program goes from the toplevel \
+                                              directory recursively downwards and \
+                                              places a index PHP in each directory. \
+                                              Then, it's possible to browse files \
+                                              more conveniently with a web browser. \
+                                              Note, that the PHP files have to be \
+                                              accessed through a web server such \
+                                              as Apache with PHP support.")
+parser.add_argument("toplevelDirectory", help="Path to the toplevel directory, which \
+                                               is the starting point for the recursion")
+parser.add_argument("inputPHPfile", help="Path to the file source, which is placed \
+                                          in each directory")
+parser.add_argument("-o", "--outputFilename", default="index.php",
+                    help="Name of the output file, which is placed in each directory")
+parser.add_argument("-v", "--verbosity", default=1,
+                    help="Increase or decrease output verbosity")
 args = parser.parse_args()
 
-"""
-Go through directories from given toplevel directory and put the given PHP file in each directory
-"""
+#########################
+# Go through directories
+# from given toplevel
+# directory and put the
+# given PHP file in each
+# directory
+#########################
 
 # Read input PHP file
 with open(args.inputPHPfile, 'r') as f:

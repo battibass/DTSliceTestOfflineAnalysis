@@ -16,7 +16,7 @@
         {
             "x"                 : [0.0, 80.0, "wire"],
             "y"                 : [-0.5, 13.5, "superlayer and layer"],
-            "z"                 : [475.0, 505.0, "avg digi time"],
+            "z"                 : [475.0, 525.0, "avg digi time"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 MB1",
             "caption"           : "DT SliceTest",
@@ -49,7 +49,7 @@
         {
             "x"                 : [0.0, 80.0, "wire"],
             "y"                 : [-0.5, 13.5, "superlayer and layer"],
-            "z"                 : [475.0, 505.0, "avg digi time"],
+            "z"                 : [475.0, 525.0, "avg digi time"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 MB2",
             "caption"           : "DT SliceTest",
@@ -82,7 +82,7 @@
         {
             "x"                 : [0.0, 80.0, "wire"],
             "y"                 : [-0.5, 13.5, "superlayer and layer"],
-            "z"                 : [475.0, 505.0, "avg digi time"],
+            "z"                 : [475.0, 525.0, "avg digi time"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 MB3",
             "caption"           : "DT SliceTest",
@@ -115,7 +115,7 @@
         {
             "x"                 : [0.0, 100.0, "wire"],
             "y"                 : [-0.5, 13.5, "superlayer and layer"],
-            "z"                 : [475.0, 505.0, "avg digi time"],
+            "z"                 : [475.0, 525.0, "avg digi time"],
             "option"            : "colz",
             "legendTitle"       : "Phase-1 MB4",
             "caption"           : "DT SliceTest",
@@ -148,7 +148,7 @@
         {
             "x"                 : [0.0, 80.0, "wire"],
             "y"                 : [-0.5, 13.5, "superlayer and layer"],
-            "z"                 : [-920.0, -870.0, "avg digi time"],
+            "z"                 : [100.0, 200.0, "avg digi time"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB1",
             "caption"           : "DT SliceTest",
@@ -181,7 +181,7 @@
         {
             "x"                 : [0.0, 80.0, "wire"],
             "y"                 : [-0.5, 13.5, "superlayer and layer"],
-            "z"                 : [-920.0, -870.0, "avg digi time"],
+            "z"                 : [100.0, 200.0, "avg digi time"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB2",
             "caption"           : "DT SliceTest",
