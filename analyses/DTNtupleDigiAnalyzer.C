@@ -206,7 +206,7 @@ void DTNtupleDigiAnalyzer::book()
 	      m_plots[hName] = new TH1F(hName,"# ineff wires per SL;# inefficient wires;entries",10,0.5,10.5);
 
 	      hName = ("hTimeIneffWires" + slTag).c_str();
-	      m_plots[hName] = new TH1F(hName,"time for cases wit >= 4 ineff wires per SL;lumisection;entries",350,0.5,350.5);
+	      m_plots[hName] = new TH1F(hName,"time for cases wit >= 4 ineff wires per SL;lumisection;entries",2000,0.5,2000.5);
 	      
 	    } 
 	}
