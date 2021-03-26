@@ -358,6 +358,11 @@ void DTNtupleSegmentAnalyzer::book()
 					  "Wire by wire efficiency; wire; layer / superlayer",
 					  100,0.5,100.5, 12, 0.5, 12.5);
 
+	  hName = Form("%soccByWire_st%d",typeTag.c_str(),st);
+	  m_plots[hName] = new TH2F(hName,
+				    "Wire by wire occpuancy; wire; layer / superlayer",
+				    100,0.5,100.5, 12, 0.5, 12.5);
+
 	  hName = Form("%seffSummary_st%d",typeTag.c_str(),st);
 	  m_plots[hName] = new TH1F(hName,"Efficiency summary;efficiency,# wires",110,0.5,1.05);
 
@@ -603,6 +608,17 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
 	      m_plots[Form("Ph1hT0VsX_st%d",seg_station->at(iSeg))]->Fill(seg_posLoc_x->at(iSeg), t0);
 	    }
 	  
+	  for (int iHit = 0; iHit < seg_phi_nHits->at(iSeg); ++iHit)
+	    {
+	      int wire = getXY<float>(seg_phiHits_wire,iSeg,iHit);
+	      int layer = getXY<float>(seg_phiHits_layer,iSeg,iHit);
+	      int sl = getXY<float>(seg_phiHits_superLayer,iSeg,iHit);
+
+	      int slAndLay = layer + (sl - 1) * 4; // 1 - 12
+
+	      m_plots[Form("Ph1occByWire_st%d",seg_station->at(iSeg))]->Fill(wire,slAndLay);
+	    }
+
 	}
 
       if(seg_hasZed->at(iSeg))
@@ -615,6 +631,16 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
 
 	  if(seg_z_nHits->at(iSeg) == 4)
 	    m_plots[Form("Ph1hThetaProbChi2_st%d",seg_station->at(iSeg))]->Fill(TMath::Prob(seg_z_normChi2->at(iSeg)*2,2));
+
+	  for (int iHit = 0; iHit < seg_z_nHits->at(iSeg); ++iHit)
+	    {
+	      int wire = getXY<float>(seg_zHits_wire,iSeg,iHit);
+	      int layer = getXY<float>(seg_zHits_layer,iSeg,iHit);
+
+	      int slAndLay = layer + 4; // 5 - 8
+
+	      m_plots[Form("Ph1occByWire_st%d",seg_station->at(iSeg))]->Fill(wire,slAndLay);
+	    }
 
 	}
       
@@ -662,6 +688,17 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
 	      m_plots[Form("Ph2hT0VsX_st%d",ph2Seg_station->at(iSeg))]->Fill(ph2Seg_posLoc_x->at(iSeg), t0);
 	    }
 	  
+	  for (int iHit = 0; iHit < ph2Seg_phi_nHits->at(iSeg); ++iHit)
+	    {
+	      int wire = getXY<float>(ph2Seg_phiHits_wire,iSeg,iHit);
+	      int layer = getXY<float>(ph2Seg_phiHits_layer,iSeg,iHit);
+	      int sl = getXY<float>(ph2Seg_phiHits_superLayer,iSeg,iHit);
+
+	      int slAndLay = layer + (sl - 1) * 4; // 1 - 12
+
+	      m_plots[Form("Ph2occByWire_st%d",ph2Seg_station->at(iSeg))]->Fill(wire,slAndLay);
+	    }
+
 	}
 
       if(ph2Seg_hasZed->at(iSeg))
@@ -674,6 +711,16 @@ void DTNtupleSegmentAnalyzer::baseAnalysis()
 
 	  if(ph2Seg_z_nHits->at(iSeg) == 4)
 	    m_plots[Form("Ph2hThetaProbChi2_st%d",ph2Seg_station->at(iSeg))]->Fill(TMath::Prob(ph2Seg_z_normChi2->at(iSeg)*2,2));
+
+	  for (int iHit = 0; iHit < ph2Seg_z_nHits->at(iSeg); ++iHit)
+	    {
+	      int wire = getXY<float>(ph2Seg_zHits_wire,iSeg,iHit);
+	      int layer = getXY<float>(ph2Seg_zHits_layer,iSeg,iHit);
+
+	      int slAndLay = layer + 4; // 5 - 8
+
+	      m_plots[Form("Ph2occByWire_st%d",ph2Seg_station->at(iSeg))]->Fill(wire,slAndLay);
+	    }
 
 	}
 
