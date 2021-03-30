@@ -148,7 +148,7 @@
         {
             "x"                 : [0.0, 80.0, "wire"],
             "y"                 : [-0.5, 13.5, "superlayer and layer"],
-            "z"                 : [125.0, 225.0, "avg digi time"],
+            "z"                 : [130.0, 170.0, "avg digi time"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB1",
             "caption"           : "DT SliceTest",
@@ -181,7 +181,7 @@
         {
             "x"                 : [0.0, 80.0, "wire"],
             "y"                 : [-0.5, 13.5, "superlayer and layer"],
-            "z"                 : [25.0, 75.0, "avg digi time"],
+            "z"                 : [130.0, 170.0, "avg digi time"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB2",
             "caption"           : "DT SliceTest",
@@ -214,7 +214,7 @@
         {
             "x"                 : [0.0, 80.0, "wire"],
             "y"                 : [-0.5, 13.5, "superlayer and layer"],
-            "z"                 : [25.0, 75.0, "avg digi time"],
+            "z"                 : [130.0, 170.0, "avg digi time"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB4",
             "caption"           : "DT SliceTest",
@@ -247,7 +247,7 @@
         {
             "x"                 : [0.0, 100.0, "wire"],
             "y"                 : [-0.5, 13.5, "superlayer and layer"],
-            "z"                 : [0.0, 50.0, "avg digi time"],
+            "z"                 : [130.0, 170.0, "avg digi time"],
             "option"            : "colz",
             "legendTitle"       : "Phase-2 MB4",
             "caption"           : "DT SliceTest",
