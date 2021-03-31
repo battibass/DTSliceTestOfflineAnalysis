@@ -128,10 +128,38 @@ process.HFRecalParameterBlock = cms.PSet(
 )
 
 process.maxEvents = cms.untracked.PSet(
+    input = cms.untracked.int32(-1),
+    output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
+)
+
+process.maxLuminosityBlocks = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
 )
 
 process.options = cms.untracked.PSet(
+    FailPath = cms.untracked.vstring(),
+    IgnoreCompletely = cms.untracked.vstring(),
+    Rethrow = cms.untracked.vstring(),
+    SkipEvent = cms.untracked.vstring(),
+    allowUnscheduled = cms.obsolete.untracked.bool,
+    canDeleteEarly = cms.untracked.vstring(),
+    emptyRunLumiMode = cms.obsolete.untracked.string,
+    eventSetup = cms.untracked.PSet(
+        forceNumberOfConcurrentIOVs = cms.untracked.PSet(
+            allowAnyLabel_=cms.required.untracked.uint32
+        ),
+        numberOfConcurrentIOVs = cms.untracked.uint32(1)
+    ),
+    fileMode = cms.untracked.string('FULLMERGE'),
+    forceEventSetupCacheClearOnNewRun = cms.untracked.bool(False),
+    makeTriggerResults = cms.obsolete.untracked.bool,
+    numberOfConcurrentLuminosityBlocks = cms.untracked.uint32(1),
+    numberOfConcurrentRuns = cms.untracked.uint32(1),
+    numberOfStreams = cms.untracked.uint32(0),
+    numberOfThreads = cms.untracked.uint32(1),
+    printDependencies = cms.untracked.bool(False),
+    sizeOfStackForThreadsInKB = cms.optional.untracked.uint32,
+    throwIfIllegalParameter = cms.untracked.bool(True),
     wantSummary = cms.untracked.bool(True)
 )
 
@@ -139,8 +167,7 @@ process.MEtoEDMConverter = cms.EDProducer("MEtoEDMConverter",
     Frequency = cms.untracked.int32(50),
     MEPathToSave = cms.untracked.string(''),
     Name = cms.untracked.string('MEtoEDMConverter'),
-    Verbosity = cms.untracked.int32(0),
-    deleteAfterCopy = cms.untracked.bool(True)
+    Verbosity = cms.untracked.int32(0)
 )
 
 
@@ -179,12 +206,28 @@ process.dtTPmonitorTest = cms.EDProducer("DTOccupancyTest",
 )
 
 
-process.load('EventFilter.DTRawToDigi.dtab7unpacker_cfi')
+process.dtunpacker = cms.EDProducer("OglezDTAB7RawToDigi",
+    DTAB7_FED_Source = cms.InputTag("rawDataCollector"),
+    channelMapping = cms.untracked.string('july2019'),
+    debug = cms.untracked.bool(False),
+    doHexDumping = cms.untracked.bool(False),
+    feds = cms.untracked.vint32(1368),
+    rawTPVars = cms.untracked.bool(False),
+    xShiftFilename = cms.FileInPath('L1Trigger/DTTriggerPhase2/data/wire_rawId_x.txt'),
+    zShiftFilename = cms.FileInPath('L1Trigger/DTTriggerPhase2/data/wire_rawId_z.txt')
+)
 
-process.dtunpacker = process.dtAB7unpacker.clone()
 
-
-process.dtunpackerPhase2 = process.dtAB7unpacker.clone()
+process.dtunpackerPhase2 = cms.EDProducer("OglezDTAB7RawToDigi",
+    DTAB7_FED_Source = cms.InputTag("rawDataCollector"),
+    channelMapping = cms.untracked.string('july2019'),
+    debug = cms.untracked.bool(False),
+    doHexDumping = cms.untracked.bool(False),
+    feds = cms.untracked.vint32(1368),
+    rawTPVars = cms.untracked.bool(False),
+    xShiftFilename = cms.FileInPath('L1Trigger/DTTriggerPhase2/data/wire_rawId_x.txt'),
+    zShiftFilename = cms.FileInPath('L1Trigger/DTTriggerPhase2/data/wire_rawId_z.txt')
+)
 
 
 process.eventInfoProvider = cms.EDFilter("EventCoordinatesSource",
@@ -220,14 +263,10 @@ process.output = cms.OutputModule("PoolOutputModule",
 
 
 process.DQMStore = cms.Service("DQMStore",
-    LSbasedMode = cms.untracked.bool(False),
-    collateHistograms = cms.untracked.bool(False),
-    enableMultiThread = cms.untracked.bool(False),
-    forceResetOnBeginLumi = cms.untracked.bool(False),
-    referenceFileName = cms.untracked.string(''),
+    enableMultiThread = cms.untracked.bool(True),
     saveByLumi = cms.untracked.bool(False),
-    verbose = cms.untracked.int32(0),
-    verboseQT = cms.untracked.int32(0)
+    trackME = cms.untracked.string(''),
+    verbose = cms.untracked.int32(0)
 )
 
 
@@ -296,6 +335,7 @@ process.MessageLogger = cms.Service("MessageLogger",
     ),
     statistics = cms.untracked.vstring('cerr_stats'),
     suppressDebug = cms.untracked.vstring(),
+    suppressFwkInfo = cms.untracked.vstring(),
     suppressInfo = cms.untracked.vstring(),
     suppressWarning = cms.untracked.vstring(),
     warnings = cms.untracked.PSet(
@@ -325,9 +365,9 @@ process.CSCGeometryESModule = cms.ESProducer("CSCGeometryESModule",
     appendToDataLabel = cms.string(''),
     applyAlignment = cms.bool(True),
     debugV = cms.untracked.bool(False),
-    useCentreTIOffsets = cms.bool(False),
-    fromDDD = cms.bool(False),
     fromDD4hep = cms.bool(False),
+    fromDDD = cms.bool(False),
+    useCentreTIOffsets = cms.bool(False),
     useGangedStripsInME1a = cms.bool(True),
     useOnlyWiresInME1a = cms.bool(False),
     useRealWireGeometry = cms.bool(True)
@@ -369,10 +409,14 @@ process.CastorGeometryFromDBEP = cms.ESProducer("CastorGeometryFromDBEP",
 
 
 process.DTGeometryESModule = cms.ESProducer("DTGeometryESModule",
+    DDDetector = cms.ESInputTag("",""),
     alignmentsLabel = cms.string(''),
     appendToDataLabel = cms.string(''),
     applyAlignment = cms.bool(True),
-    fromDDD = cms.bool(False)
+    attribute = cms.string('MuStructure'),
+    fromDD4hep = cms.bool(False),
+    fromDDD = cms.bool(False),
+    value = cms.string('MuonBarrelDT')
 )
 
 
@@ -389,7 +433,9 @@ process.EcalEndcapGeometryFromDBEP = cms.ESProducer("EcalEndcapGeometryFromDBEP"
 )
 
 
-process.EcalLaserCorrectionService = cms.ESProducer("EcalLaserCorrectionService")
+process.EcalLaserCorrectionService = cms.ESProducer("EcalLaserCorrectionService",
+    maxExtrapolationTimeInSec = cms.uint32(0)
+)
 
 
 process.EcalPreshowerGeometryFromDBEP = cms.ESProducer("EcalPreshowerGeometryFromDBEP",
@@ -460,7 +506,9 @@ process.StripCPEfromTrackAngleESProducer = cms.ESProducer("StripCPEESProducer",
 )
 
 
-process.TrackerRecoGeometryESProducer = cms.ESProducer("TrackerRecoGeometryESProducer")
+process.TrackerRecoGeometryESProducer = cms.ESProducer("TrackerRecoGeometryESProducer",
+    usePhase2Stacks = cms.bool(False)
+)
 
 
 process.VolumeBasedMagneticFieldESProducer = cms.ESProducer("VolumeBasedMagneticFieldESProducerFromDB",
@@ -481,6 +529,59 @@ process.ZdcGeometryFromDBEP = cms.ESProducer("ZdcGeometryFromDBEP",
 )
 
 
+process.caloSimulationParameters = cms.ESProducer("CaloSimParametersESModule",
+    appendToDataLabel = cms.string(''),
+    fromDD4Hep = cms.bool(False)
+)
+
+
+process.ctppsBeamParametersFromLHCInfoESSource = cms.ESProducer("CTPPSBeamParametersFromLHCInfoESSource",
+    appendToDataLabel = cms.string(''),
+    beamDivX45 = cms.double(0.1),
+    beamDivX56 = cms.double(0.1),
+    beamDivY45 = cms.double(0.1),
+    beamDivY56 = cms.double(0.1),
+    lhcInfoLabel = cms.string(''),
+    vtxOffsetX45 = cms.double(0.01),
+    vtxOffsetX56 = cms.double(0.01),
+    vtxOffsetY45 = cms.double(0.01),
+    vtxOffsetY56 = cms.double(0.01),
+    vtxOffsetZ45 = cms.double(0.01),
+    vtxOffsetZ56 = cms.double(0.01),
+    vtxStddevX = cms.double(0.02),
+    vtxStddevY = cms.double(0.02),
+    vtxStddevZ = cms.double(0.02)
+)
+
+
+process.ctppsInterpolatedOpticalFunctionsESSource = cms.ESProducer("CTPPSInterpolatedOpticalFunctionsESSource",
+    appendToDataLabel = cms.string(''),
+    lhcInfoLabel = cms.string(''),
+    opticsLabel = cms.string('')
+)
+
+
+process.ecalSimulationParametersEB = cms.ESProducer("EcalSimParametersESModule",
+    appendToDataLabel = cms.string(''),
+    fromDD4Hep = cms.bool(False),
+    name = cms.string('EcalHitsEB')
+)
+
+
+process.ecalSimulationParametersEE = cms.ESProducer("EcalSimParametersESModule",
+    appendToDataLabel = cms.string(''),
+    fromDD4Hep = cms.bool(False),
+    name = cms.string('EcalHitsEE')
+)
+
+
+process.ecalSimulationParametersES = cms.ESProducer("EcalSimParametersESModule",
+    appendToDataLabel = cms.string(''),
+    fromDD4Hep = cms.bool(False),
+    name = cms.string('EcalHitsES')
+)
+
+
 process.fakeForIdealAlignment = cms.ESProducer("FakeAlignmentProducer",
     appendToDataLabel = cms.string('fakeForIdeal')
 )
@@ -493,6 +594,17 @@ process.hcalDDDRecConstants = cms.ESProducer("HcalDDDRecConstantsESModule",
 
 process.hcalDDDSimConstants = cms.ESProducer("HcalDDDSimConstantsESModule",
     appendToDataLabel = cms.string('')
+)
+
+
+process.hcalSimulationConstants = cms.ESProducer("HcalSimulationConstantsESModule",
+    appendToDataLabel = cms.string('')
+)
+
+
+process.hcalSimulationParameters = cms.ESProducer("HcalSimParametersESModule",
+    appendToDataLabel = cms.string(''),
+    fromDD4Hep = cms.bool(False)
 )
 
 
@@ -514,9 +626,9 @@ process.idealForDigiCSCGeometry = cms.ESProducer("CSCGeometryESModule",
     appendToDataLabel = cms.string('idealForDigi'),
     applyAlignment = cms.bool(False),
     debugV = cms.untracked.bool(False),
-    useCentreTIOffsets = cms.bool(False),
-    fromDDD = cms.bool(False),
     fromDD4hep = cms.bool(False),
+    fromDDD = cms.bool(False),
+    useCentreTIOffsets = cms.bool(False),
     useGangedStripsInME1a = cms.bool(True),
     useOnlyWiresInME1a = cms.bool(False),
     useRealWireGeometry = cms.bool(True)
@@ -524,10 +636,14 @@ process.idealForDigiCSCGeometry = cms.ESProducer("CSCGeometryESModule",
 
 
 process.idealForDigiDTGeometry = cms.ESProducer("DTGeometryESModule",
+    DDDetector = cms.ESInputTag("",""),
     alignmentsLabel = cms.string('fakeForIdeal'),
     appendToDataLabel = cms.string('idealForDigi'),
     applyAlignment = cms.bool(False),
-    fromDDD = cms.bool(False)
+    attribute = cms.string('MuStructure'),
+    fromDD4hep = cms.bool(False),
+    fromDDD = cms.bool(False),
+    value = cms.string('MuonBarrelDT')
 )
 
 
@@ -536,6 +652,12 @@ process.idealForDigiTrackerGeometry = cms.ESProducer("TrackerDigiGeometryESModul
     appendToDataLabel = cms.string('idealForDigi'),
     applyAlignment = cms.bool(False),
     fromDDD = cms.bool(False)
+)
+
+
+process.muonGeometryConstants = cms.ESProducer("MuonGeometryConstantsESModule",
+    appendToDataLabel = cms.string(''),
+    fromDD4Hep = cms.bool(False)
 )
 
 
@@ -666,6 +788,7 @@ process.trackerGeometryDB = cms.ESProducer("TrackerDigiGeometryESModule",
 
 process.trackerNumberingGeometryDB = cms.ESProducer("TrackerGeometricDetESModule",
     appendToDataLabel = cms.string(''),
+    fromDD4hep = cms.bool(False),
     fromDDD = cms.bool(False)
 )
 
@@ -986,5 +1109,3 @@ process.p = cms.Path(process.dtunpacker+process.dtTPmonitor+process.dtTPmonitorT
 
 
 process.outpath = cms.EndPath(process.output)
-
-
