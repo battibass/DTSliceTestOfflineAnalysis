@@ -498,7 +498,7 @@
         },
         "output"    :
         {
-            "filenamePlot"      : "01_Phase1_vs_Phase2_t0",
+            "filenamePlot"      : "01_Phase1_vs_Phase2_t0_MB4",
             "fileType"          : ["png", "root",  "pdf"]
         }
     },
