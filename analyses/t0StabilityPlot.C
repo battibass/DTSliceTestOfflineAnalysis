@@ -62,7 +62,7 @@ void t0StabilityPlot(std::vector<std::string> fileNames,
 
 	      if (iFile > 0)
 		{ 
-		  auto result = new TH1F(Form("hTimeDiff%sSt%i",typeTag.c_str(),iSt),";time difference (ns); # wires",51,-25.5,25.5);
+		  auto result = new TH1F(Form("hTimeDiff%sSt%i",typeTag.c_str(),iSt),";time difference (ns); # wires",255,-25.5,25.5);
 		  plots[typeTag][iSt].push_back(result);
 
 		  auto ref = profiles[typeTag][iSt].at(0);
