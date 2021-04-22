@@ -1,15 +1,22 @@
 #!/usr/bin/env python
 """
-This program generates a JSON that is then processed by the crab
-configuration scripts for global run ntuple production.
+This program takes care of skimming of DTNtuples:
+- it checks for the presence of already skimmed files
+- it allows parallel skimming using HTCondor
+- it allows sequential interactive skimming
+- it provides a status summary of the skim process
 """
 
 import argparse
 from datetime import datetime
+from os import path, makedirs 
+from sys import exit
 import subprocess
 import glob
-import sys
-import os
+
+#----------------
+# Variables
+#----------------
 
 FILES_PER_JOB = 10
 
@@ -18,13 +25,13 @@ FILES_PER_JOB = 10
 #-----------------
 
 def non_skimmed_files(input_folder, version):
-
+    
     results = []
     
-    paths_orig = glob.glob(os.path.join(input_folder, "*.root"))
-    paths_skim = glob.glob(os.path.join(input_folder, "skim_" + version, "*.root"))
-    files_orig = [os.path.basename(path_orig) for path_orig in paths_orig]
-    files_skim = [os.path.basename(path_skim).replace("_skim", "") for path_skim in paths_skim]
+    paths_orig = glob.glob(path.join(input_folder, "*.root"))
+    paths_skim = glob.glob(path.join(input_folder, "skim_" + version, "*.root"))
+    files_orig = [path.basename(path_orig) for path_orig in paths_orig]
+    files_skim = [path.basename(path_skim).replace("_skim", "") for path_skim in paths_skim]
 
     for file_orig in files_orig:
         if file_orig not in files_skim:
@@ -38,8 +45,8 @@ def interactive_skim_command(input_folder, input_file, cut_string, version):
 
     command = ["skimTree", 
                "-c '{}'".format(cut_string),
-               os.path.join(input_folder, input_file),
-               os.path.join(input_folder, "skim_" + version, output_file)]
+               path.join(input_folder, input_file),
+               path.join(input_folder, "skim_" + version, output_file)]
 
     process = subprocess.Popen(command, stdout=subprocess.PIPE)
     output, error = process.communicate()
@@ -63,8 +70,8 @@ def interactive_skim(input_folder, cut_string, version):
 
 def condor_create_sh(input_folder, job_folder, input_files, cut_string, version, i_file):
 
-    abs_folder = os.path.abspath(input_folder)
-    sh_file_name = os.path.join(job_folder, "run_skim_{}.sh".format(i_file))
+    abs_folder = path.abspath(input_folder)
+    sh_file_name = path.join(job_folder, "run_skim_{}.sh".format(i_file))
     sh_file = open(sh_file_name,"w")
 
     sh_file.write("#! /usr/bin/bash\n")
@@ -77,8 +84,8 @@ def condor_create_sh(input_folder, job_folder, input_files, cut_string, version,
 
         command = ["skimTree", 
                    "-c '{}'".format(cut_string),
-                   os.path.join(abs_folder, input_file),
-                   os.path.join(abs_folder, "skim_" + version, output_file),
+                   path.join(abs_folder, input_file),
+                   path.join(abs_folder, "skim_" + version, output_file),
                    "\n"]
 
         sh_file.write(" ".join(command))
@@ -89,7 +96,7 @@ def condor_create_sh(input_folder, job_folder, input_files, cut_string, version,
 
 def condor_create_jdl(input_folder, job_folder, sh_file_name, version, i_file):
 
-    jdl_file_name = os.path.join(job_folder, "run_skim_{}.jdl".format(i_file))
+    jdl_file_name = path.join(job_folder, "run_skim_{}.jdl".format(i_file))
     jdl_file = open(jdl_file_name, "w")
 
     jdl_file.write("executable = {}\n".format(sh_file_name))
@@ -144,7 +151,7 @@ def status(input_folder, version):
         print("[{}] if you have no running jobs, please re-run this macro using either the 'condor_skim' or the 'interactive_skim' command.".format(__file__))
     else:
         print("[{}] all files have been skimmed, you can now proceed running hadd, e.g.: ".format(__file__, n_files_to_process))
-        print("[{}] hadd DTNtuple_RUNNUMBER_skim_{}.root {}/skim_{}/DTNtuple*root ".format(__file__, version, input_folder, version))
+        print("[{}] hadd DTDPGNtuple_${COSMIC_RUN}_skim_{}.root {}/skim_{}/DT*root ".format(__file__, version, input_folder, version))
 
     return
 
@@ -180,15 +187,15 @@ if __name__ == '__main__':
 
     if ARGS.command not in COMMANDS:
         print("[{}] command : {} must be either 'condor_skim', 'interactive_skim' or 'status'. Quitting".format(__file__, ARGS.command))
-        sys.exit(100)
+        exit(100)
 
-    if not os.path.isdir(ARGS.crabOutputFolder):
+    if not path.isdir(ARGS.crabOutputFolder):
         print("[{}] folder : {} does not exist. Quitting".format(__file__, ARGS.crabOutputFolder))
-        sys.exit(100)
+        exit(100)
 
     job_tag_name = datetime.now().strftime("%d%m%Y_%H%M%S")
-    job_folder = os.path.join("./condor_jobs", "{}_{}".format(job_tag_name, ARGS.version))
-    skim_folder = os.path.join(ARGS.crabOutputFolder, "skim_{}".format(ARGS.version))
+    job_folder = path.join("./condor_jobs", "{}_{}".format(job_tag_name, ARGS.version))
+    skim_folder = path.join(ARGS.crabOutputFolder, "skim_{}".format(ARGS.version))
 
     OUT_FOLDERS = []
     
@@ -199,8 +206,8 @@ if __name__ == '__main__':
         OUT_FOLDERS.append(job_folder)
 
     for folder in OUT_FOLDERS:
-        folder_path = os.path.join(folder)
-        if not os.path.exists(folder_path):
+        folder_path = path.join(folder)
+        if not path.exists(folder_path):
             os.makedirs(folder_path)
 
     if ARGS.command == "condor_skim":
@@ -208,8 +215,8 @@ if __name__ == '__main__':
     elif ARGS.command == "interactive_skim":
         interactive_skim(ARGS.crabOutputFolder, ARGS.cut, ARGS.version)
     elif ARGS.command == "status":
-        if not os.path.isdir(skim_folder):
+        if not path.isdir(skim_folder):
             print("[{}] folder : {} does not exist. Quitting".format(__file__, skim_folder))
-            sys.exit(100)
+            exit(100)
         status(ARGS.crabOutputFolder, ARGS.version)
         
