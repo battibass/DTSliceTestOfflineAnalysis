@@ -208,7 +208,7 @@ if __name__ == '__main__':
     for folder in OUT_FOLDERS:
         folder_path = path.join(folder)
         if not path.exists(folder_path):
-            os.makedirs(folder_path)
+            makedirs(folder_path)
 
     if ARGS.command == "condor_skim":
         condor_skim(ARGS.crabOutputFolder, job_folder, ARGS.cut, ARGS.version)
