@@ -85,6 +85,9 @@ void runAllAnalyses(TString xmlFile)
   for (const auto & fileToCopy : filesToCopy)
     gSystem->Exec("cp " + fileToCopy + " run" + runNumber + "/cfg/");
 
+  TString maskFile = "./maskFile.txt";
+  if (maskFile != "") gSystem->Exec("cp " + maskFile + " run" + runNumber  + "/cfg/");
+
   runAllAnalyses(ntupleName, atoi(runNumber));
 
 }
