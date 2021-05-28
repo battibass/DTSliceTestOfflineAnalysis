@@ -249,13 +249,25 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
       // The slice test sector
       if(digi.sector->at(iDigi) != 12 || digi.wheel->at(iDigi) != 2) continue;
 
-      ++nDigis;
-      
+
       int st  = digi.station->at(iDigi);
       int sl  = digi.superLayer->at(iDigi);
       int lay = digi.layer->at(iDigi);
-      
       int wire = digi.wire->at(iDigi);
+
+      if (maskedWires.count(st)){
+         if (maskedWires[st].count(sl)){
+              if (maskedWires[st][sl].count(lay)){
+                  if (std::count(maskedWires[st][sl][lay].begin(), maskedWires[st][sl][lay].end(), wire)) 
+		     //cout << "masked MB" << st << " SL" << sl << " L" << lay << " w" << wire << std::endl;
+		     continue;
+              }
+         }
+      }
+
+
+      ++nDigis;
+            
       int slAndLay = lay + (sl - 1) * 4;
       
       double time = digi.time->at(iDigi);
@@ -294,7 +306,7 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
               << "St" << wireId.m_chamb;
 
       string stTag = stTagS.str();
-
+/*
       if (maskedWires.count(wireId.m_chamb))
         {
           if (maskedWires[wireId.m_chamb].count(wireId.m_sl))
@@ -305,7 +317,7 @@ void DTNtupleDigiAnalyzer::fillBasic(std::string typeTag,
                 }
             }
         }
-
+*/
       auto & digiTimes =  wireAndDigis.second;
 
       if (digiTimes.size() > 1)

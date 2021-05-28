@@ -36,8 +36,6 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
 void runAllAnalyses(TString xmlFile)
 {
 
-  TString calibFolder = "/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2020_data/calib/";
-
   TString runNumber = "";
   TString ntupleName = "";
 
@@ -63,8 +61,7 @@ void runAllAnalyses(TString xmlFile)
 	}
       else if (nodeName.Contains("File") 
 	       && !nodeName.Contains("input")
-	       && !nodeContent.EqualTo("")
-	       && !nodeContent.Contains(calibFolder))
+	       && !nodeContent.EqualTo(""))
 	{
 	  filesToCopy.push_back(nodeContent);
 	}
@@ -73,6 +70,13 @@ void runAllAnalyses(TString xmlFile)
     }
 
   xml.FreeDoc(xmlDoc);
+
+  TString maskFile = "./maskFile.txt";
+
+  if (!gSystem->AccessPathName(maskFile))
+    filesToCopy.push_back(maskFile);
+
+  if (maskFile != "") gSystem->Exec("cp " + maskFile + " run" + runNumber  + "/cfg/");
   
   if (runNumber == "" || ntupleName == "" || !runNumber.IsDec())
     {
