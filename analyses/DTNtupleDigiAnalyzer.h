@@ -26,6 +26,10 @@ class DTNtupleDigiAnalyzer : public DTNtupleBaseAnalyzer
                        const TString & outFileName,
                        std::string outFolder);
 
+  DTNtupleDigiAnalyzer(const std::vector<TString> & inFileNames,
+                       const TString & outFileName,
+                       std::string outFolder);
+
   ~DTNtupleDigiAnalyzer();
 
   virtual void Loop() override;

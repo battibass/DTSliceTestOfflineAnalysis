@@ -40,6 +40,45 @@ DTNtupleTriggerAnalyzer::DTNtupleTriggerAnalyzer(const TString & inFileName,
 
 }
 
+DTNtupleTriggerAnalyzer::DTNtupleTriggerAnalyzer(const std::vector<TString> & inFileNames,
+						 const TString & outFileName) :
+  m_outFile(outFileName,"RECREATE"), DTNtupleBaseAnalyzer(inFileNames)  
+{ 
+
+  // Configuration parameters to switch on / off
+  // different parts of the analyses
+  m_twinMux = true;   
+  m_ph2TpgPhiHw = true;
+  m_ph2TpgPhiEmuAm = false;
+  m_ph2TpgPhiEmuHb = false;
+  m_segments = true;
+
+  nMaxEvents = 99999999999; // maximum number of events to be processed
+
+  iWh = 2;
+  iSec = 12;
+  iPhihits_min = 4;
+
+  phi_Ph1_conv = 0.5/2048.;  // conversion from trig phi to phi in rad in Phase1
+  phiB_Ph1_conv = 1./512.;  // conversion from trig phiB to phiB in rad in Phase1
+
+  phi_Ph2_conv = 0.8/65536;// 0.025; // in cm, local position in the station 
+  phiB_Ph2_conv = 1.4/2048.;// 1/4096.; // to transform in radians
+  phi_offset = 0.525; // offset between ph2 primitive phi and seg_posGlb_phi of the segment (to be added to phi of the segment)
+
+  BXOK_TwinMuxOut = 0;
+  // BXOK_ph2Hw = 3295; // From ntuple based on SX5 run 329705
+  // BXOK_ph2Hw = 3391; // From ntuple based on global run 330160
+  // BXOK_ph2Hw = 3392; // From ntuple based on global run 330163
+  // BXOK_ph2Hw = 3366; // From ntuple based on miniDAQ run 330463
+  BXOK_ph2Hw = 0; // From ntuple based on miniDAQ run 338150
+  BXOK_ph2EmuHb = 0; // to be properly set
+  BXOK_ph2EmuAm = 0; // to be properly set
+
+  pi=TMath::Pi();
+
+}
+
 DTNtupleTriggerAnalyzer::~DTNtupleTriggerAnalyzer() 
 { 
 
@@ -138,32 +177,32 @@ void DTNtupleTriggerAnalyzer::book()
 	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_philoc_" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX vs philoc; philoc; primitive effic",
-					40,-80.,80.);
+					40,-1.,1.);
 
 	hName = "trigeff_ph2TpgPhiHw_qual_8_AnyBX_vs_philoc_" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX qual 8 vs philoc; philoc; primitive effic",
-					40,-80.,80.);
+					40,-1.,1.);
 
 	hName = "trigeff_ph2TpgPhiHw_qual_6_or_7_AnyBX_vs_philoc_" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX qual 6 or 7 vs philoc; philoc; primitive effic",
-					40,-80.,80.);
+					40,-1.,1.);
 
 	hName = "trigeff_ph2TpgPhiHw_qual_6_to_8_AnyBX_vs_philoc_" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX qual 6 to 8 vs philoc; philoc; primitive effic",
-					40,-80.,80.);
+					40,-1.,1.);
 
 	hName = "trigeff_ph2TpgPhiHw_qual_3_AnyBX_vs_philoc_" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX qual 3 vs philoc; philoc; primitive effic",
-					40,-80.,80.);
+					40,-1.,1.);
 
 	hName = "trigeff_ph2TpgPhiHw_qual_1_AnyBX_vs_philoc_" + iChTag.str();
 	m_effs[hName] = new TEfficiency(hName.c_str(),
 					"trigger efficiency AnyBX qual 1 vs philoc; philoc; primitive effic",
-					40,-80.,80.);
+					40,-1.,1.);
 
 	
 	hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_seg_dirLoc_x_" + iChTag.str();
@@ -1118,11 +1157,13 @@ void DTNtupleTriggerAnalyzer::fill()
 
       if(iBestSeg[iMB-1]<9999) {  // there is a good segment in the station we are in
 
-	tan_phi = seg_dirLoc_x->at(iBestSeg[iMB-1])/seg_dirLoc_z->at(iBestSeg[iMB-1]);
-	philoc = atan(tan_phi)*180/(pi);  // local phi
+	tan_phi = -seg_dirLoc_x->at(iBestSeg[iMB-1])/seg_dirLoc_z->at(iBestSeg[iMB-1]);
+	philoc = atan(tan_phi);  // local phi
 
-	if(m_ph2TpgPhiHw  && fabs(philoc)<30)   {   // ph2TpgPhiHw efficiency at AnyBX
+	if(m_ph2TpgPhiHw)   {   // ph2TpgPhiHw efficiency at AnyBX
 	  
+	  hName = "Phase2Hw_phi_plus_phiB_" + iChTag.str();   // phase2 trig phi + phiB 
+	  m_plots[hName]->Fill(philoc);
 
 	  std::string  hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_t0_" + iChTag.str(); // vs t0
 	  m_effs[hName]->Fill(iBestTpgPhiHw[iMB-1] < 9999, seg_phi_t0->at(iBestSeg[iMB-1]));
@@ -1336,7 +1377,7 @@ void DTNtupleTriggerAnalyzer::fill()
  
 	}
 
-	if(m_ph2TpgPhiEmuAm && fabs(philoc)<30)   {   // ph2TpgPhiEmuHw efficiency 
+	if(m_ph2TpgPhiEmuAm)   {   // ph2TpgPhiEmuHw efficiency 
 
 	  //at AnyBX
   	
@@ -1383,7 +1424,7 @@ void DTNtupleTriggerAnalyzer::fill()
 
 	}
 
-	if(m_twinMux && fabs(philoc)<30)   {   // TwinMuxOut efficiency 
+	if(m_twinMux)   {   // TwinMuxOut efficiency 
      
 	  // AnyBX
 	  hName = "trigeff_TwinMuxOut_AnyBX_vs_t0_" + iChTag.str();  // vs nHits
@@ -1631,10 +1672,6 @@ void DTNtupleTriggerAnalyzer::fill()
 
 	  hName = "Phase2Hw_t0_vs_phiB_" + iChTag.str();   // phase2 trig t0 vs phiB 
 	  m_plots[hName]->Fill(phiB_Ph2_conv*ph2TpgPhiHw_phiB->at(itr),ph2TpgPhiHw_t0->at(itr));
-
-	  hName = "Phase2Hw_phi_plus_phiB_" + iChTag.str();   // phase2 trig phi + phiB 
-	  m_plots[hName]->Fill(phi_Ph2_conv*ph2TpgPhiHw_phi->at(itr)+
-			       phiB_Ph2_conv*ph2TpgPhiHw_phiB->at(itr));
 
 	  hName = "Phase2Hw_t0_vs_phi_plus_phiB_" + iChTag.str();   // phase2 trig t0 vs phi + phiB 
 	  m_plots[hName]->Fill(phi_Ph2_conv*ph2TpgPhiHw_phi->at(itr)+

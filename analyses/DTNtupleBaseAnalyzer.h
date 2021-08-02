@@ -14,8 +14,8 @@
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
-#include "vector"
-#include "TClonesArray.h"
+#include <vector>
+#include <TClonesArray.h>
 
 class WireId
 {
@@ -287,9 +287,8 @@ public :
 
    static constexpr bool USE_MUONS = false;
  
-   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
+   TChain          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
-   TFile m_inFile;
 
    std::map<std::string, DTNtupleDigi>    digiObjs;
    std::map<std::string, DTNtupleSegment> segmentObjs;
@@ -855,10 +854,11 @@ public :
    TBranch        *b_ph2TpgPhiEmuAm_index;   //!
 
    DTNtupleBaseAnalyzer(const TString &fileName);
+   DTNtupleBaseAnalyzer(const std::vector<TString> &fileNames);
    virtual ~DTNtupleBaseAnalyzer();
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
-   virtual void     Init(TTree *tree);
+   virtual void     Init(TChain *tree);
    virtual void     Loop();
    virtual void     LoadObjs();
    virtual Bool_t   Notify();

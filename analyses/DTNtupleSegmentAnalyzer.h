@@ -21,6 +21,8 @@ class DTNtupleSegmentAnalyzer : public DTNtupleBaseAnalyzer
   
   DTNtupleSegmentAnalyzer(const TString & inFileName,
 			  const TString & outFileName);
+  DTNtupleSegmentAnalyzer(const std::vector<TString> & inFileNames,
+			  const TString & outFileName);
   ~DTNtupleSegmentAnalyzer();
 
   virtual void Loop() override;

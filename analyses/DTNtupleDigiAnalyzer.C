@@ -96,6 +96,99 @@ m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(
   }
 }
 
+
+DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer(const std::vector<TString> & inFileNames,
+                                           const TString & outFileName,
+                                           std::string outFolder) :
+m_outFile(outFileName,"RECREATE"), m_outFolder(outFolder), DTNtupleBaseAnalyzer(inFileNames)  
+{ 
+
+  // The list of chambers to monitor
+  m_stations["Ph1"].push_back(1);
+  m_stations["Ph1"].push_back(2);
+  m_stations["Ph1"].push_back(3);
+  m_stations["Ph1"].push_back(4);
+
+  m_stations["Ph2"].push_back(1);
+  m_stations["Ph2"].push_back(2);
+  m_stations["Ph2"].push_back(3);
+  m_stations["Ph2"].push_back(4);
+
+  m_timeBoxMin["Ph1"]  =  -750.;
+  m_timeBoxMax["Ph1"]  =  4250.;
+  m_timeBoxBins["Ph1"] =  1250;
+
+  m_timeBoxMin["Ph2"]  = -1250.;
+  m_timeBoxMax["Ph2"]  =  3750.;
+  m_timeBoxBins["Ph2"] =  1250;
+
+  m_timeBoxMinTP[1]["Ph1"] =  350.;
+  m_timeBoxMaxTP[1]["Ph1"] =  750.;
+  m_timeBoxMinTP[2]["Ph1"] =  350.;
+  m_timeBoxMaxTP[2]["Ph1"] =  750.;
+  m_timeBoxMinTP[3]["Ph1"] =  350.;
+  m_timeBoxMaxTP[3]["Ph1"] =  750.;
+  m_timeBoxMinTP[4]["Ph1"] =  350.;
+  m_timeBoxMaxTP[4]["Ph1"] =  750.;
+
+  m_timeBoxMinTP[1]["Ph2"] =   0.;
+  m_timeBoxMaxTP[1]["Ph2"] = 400.;
+  m_timeBoxMinTP[2]["Ph2"] =   0.;
+  m_timeBoxMaxTP[2]["Ph2"] = 400.;
+  m_timeBoxMinTP[3]["Ph2"] =   0.;
+  m_timeBoxMaxTP[3]["Ph2"] = 400.;
+  m_timeBoxMinTP[4]["Ph2"] =   0.;
+  m_timeBoxMaxTP[4]["Ph2"] = 400.;
+
+  // File with the wires to mask to be used. Its lines should be of the form
+  // MB2 SL3 L4 2 6 31
+  // where 2, 6 and 31 are the wires from the fourth layer of the third superlayer
+  // that should be mask from the second station.
+
+  string maskFile = "./maskFile.txt";
+
+
+  if (maskFile != "") {
+    ifstream myfile (maskFile);
+
+    if (myfile.is_open()) {
+      string line;
+      while ( getline (myfile, line) ) {
+        TString tmpline = line;
+        TString tok;
+        Ssiz_t from = 0;
+        int theStation = 0;
+        int theSL = 0;
+        int theL = 0;
+        while (tmpline.Tokenize(tok, from, " "))
+          {
+//             if      (tok.Contains("MB")) theStation = atoi(tok.Data()[2]);
+//             else if (tok.Contains("SL")) theSL      = atoi(tok.Data()[2]);
+//             else if (tok.Contains("L"))  theL       = atoi(tok.Data()[1]);
+            if      (tok.Contains("MB")) {
+              TString tmpstr(tok(2, 2));
+              theStation = tmpstr.Atoi();
+            }
+            else if (tok.Contains("SL")) {
+              TString tmpstr(tok(2, 2));
+              theSL = tmpstr.Atoi();
+            }
+            else if (tok.Contains("L"))  {
+              TString tmpstr(tok(1, 1));
+              theL = tmpstr.Atoi();
+            }
+            else maskedWires[theStation][theSL][theL].push_back(tok.Atoi());
+          }
+        }
+      myfile.close();
+    }
+    else 
+      cout << "[DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer] Unable to open mask wire file: NO WIRE WILL BE MASKED!" << std::endl;
+
+  }
+}
+
+
 DTNtupleDigiAnalyzer::~DTNtupleDigiAnalyzer() 
 { 
 

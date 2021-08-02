@@ -33,6 +33,29 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
 
 }
 
+void runAllAnalyses(std::vector<TString> inputFiles, TString runNumbers)
+{
+
+  TString runsName = "runs_" + runNumbers;
+
+  gSystem->Exec("mkdir -p " + runsName + "/digi/");
+  gSystem->Exec("mkdir -p " + runsName + "/trigger/");
+  gSystem->Exec("mkdir -p " + runsName + "/segment/");
+
+  //CB find a more elegant solution to pass directory
+  DTNtupleDigiAnalyzer digiAnalysis(inputFiles, runsName + "/digi/results_digi.root", (runsName + "/digi/").Data());
+  digiAnalysis.Loop();
+
+  DTNtupleSegmentAnalyzer segmentAnalysis(inputFiles, runsName + "/segment/results_segment.root");
+  segmentAnalysis.Loop();
+
+  DTNtupleTriggerAnalyzer triggerAnalysis(inputFiles, runsName + "/trigger/results_trigger.root");
+  triggerAnalysis.Loop();
+
+  gSystem->Exec("rm *d *pcm *so");
+
+}
+
 void runAllAnalyses(TString xmlFile)
 {
 

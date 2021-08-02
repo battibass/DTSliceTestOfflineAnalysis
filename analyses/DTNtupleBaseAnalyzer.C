@@ -6,10 +6,23 @@
 #include <iostream>
 
 DTNtupleBaseAnalyzer::DTNtupleBaseAnalyzer(const TString &inFileName) : 
-  fChain(0), m_inFile(inFileName,"READ") 
+  fChain(0) 
+{
+
+  fChain = new TChain("dtNtupleProducer/DTTREE");
+  fChain->Add(inFileName);
+  Init(fChain);
+
+}
+
+
+DTNtupleBaseAnalyzer::DTNtupleBaseAnalyzer(const std::vector<TString> &inFileNames) : 
+  fChain(0)
 {
   
-  fChain = static_cast<TTree*>(m_inFile.Get("dtNtupleProducer/DTTREE"));
+  fChain = new TChain("dtNtupleProducer/DTTREE");
+  for (const auto & inFileName : inFileNames)
+    fChain->Add(inFileName);
   Init(fChain);
 
 }
@@ -17,7 +30,7 @@ DTNtupleBaseAnalyzer::DTNtupleBaseAnalyzer(const TString &inFileName) :
 
 DTNtupleBaseAnalyzer::~DTNtupleBaseAnalyzer()
 {
-   m_inFile.Close();
+
 }
 
 
@@ -43,7 +56,7 @@ Long64_t DTNtupleBaseAnalyzer::LoadTree(Long64_t entry)
 }
 
 
-void DTNtupleBaseAnalyzer::Init(TTree *tree)
+void DTNtupleBaseAnalyzer::Init(TChain *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch

@@ -32,6 +32,26 @@ DTNtupleSegmentAnalyzer::DTNtupleSegmentAnalyzer(const TString & inFileName,
 
 }
 
+DTNtupleSegmentAnalyzer::DTNtupleSegmentAnalyzer(const std::vector<TString> & inFileNames,
+						 const TString & outFileName) :
+  m_outFile(outFileName,"RECREATE"), DTNtupleBaseAnalyzer(inFileNames)  
+{ 
+
+  m_timeBoxMin["Ph1"]  =  -750.;
+  m_timeBoxMax["Ph1"]  =  4250.;
+
+  m_timeBoxMin["Ph2"]  = -1250.;
+  m_timeBoxMax["Ph2"]  =  3750.;
+
+  // CB make this constexpr
+  m_tags.push_back("Ph1");
+  m_tags.push_back("Ph2");
+
+  TObjArray *pathArray = outFileName.Tokenize("/");
+  m_baseOutFolder = static_cast<TObjString *>(pathArray->At(0))->String().Data();
+
+}
+
 DTNtupleSegmentAnalyzer::~DTNtupleSegmentAnalyzer() 
 { 
 

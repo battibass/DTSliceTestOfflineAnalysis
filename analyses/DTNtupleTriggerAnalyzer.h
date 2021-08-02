@@ -28,6 +28,10 @@ class DTNtupleTriggerAnalyzer : public DTNtupleBaseAnalyzer
 			   const TString & outFileName
 			   );
 
+  DTNtupleTriggerAnalyzer( const std::vector<TString> & inFileNames,
+			   const TString & outFileName
+			   );
+
   ~DTNtupleTriggerAnalyzer();
   
   virtual void Loop() override;
