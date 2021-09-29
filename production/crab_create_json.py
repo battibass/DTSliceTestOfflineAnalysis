@@ -43,7 +43,7 @@ if __name__ == '__main__':
                         help="Number of the run to be analyzed")
 
     PARSER.add_argument("-d", "--dataset",
-                        default="/MiniDaq/Commissioning2021-v1/RAW",
+                        default="/ExpressCosmics/Commissioning2021-Express-v1/FEVT",
                         help="Dataset to be processed")
 
     PARSER.add_argument("-o", "--outLFNBase",

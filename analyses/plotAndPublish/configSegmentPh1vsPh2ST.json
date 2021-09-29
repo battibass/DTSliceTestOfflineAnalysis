@@ -25,7 +25,7 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "hist",
             "legendTitle"       : "t0 segment - MB1",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
@@ -64,7 +64,7 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "hist",
             "legendTitle"       : "# hits per segment - MB1",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
@@ -103,11 +103,11 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbReshist",
             "legendTitle"       : "MB1 super-layer 1",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.30, 0.67, 0.89, 0.80]
         },
         "output"    :
         {
@@ -142,11 +142,11 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbReshist",
             "legendTitle"       : "MB1 super-layer 3",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.30, 0.67, 0.89, 0.80]
         },
         "output"    :
         {
@@ -180,7 +180,7 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "hist",
             "legendTitle"       : "t0 segment - MB2",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
@@ -219,7 +219,7 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "hist",
             "legendTitle"       : "# hits per segment - MB2",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
@@ -258,11 +258,11 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbReshist",
             "legendTitle"       : "MB2 super-layer 1",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.30, 0.67, 0.89, 0.80]
         },
         "output"    :
         {
@@ -297,11 +297,11 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbReshist",
             "legendTitle"       : "MB2 super-layer 3",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.30, 0.67, 0.89, 0.80]
         },
         "output"    :
         {
@@ -335,7 +335,7 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "hist",
             "legendTitle"       : "t0 segment - MB3",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
@@ -374,7 +374,7 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "hist",
             "legendTitle"       : "# hits per segment - MB3",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
@@ -413,11 +413,11 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbReshist",
             "legendTitle"       : "MB3 super-layer 1",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.30, 0.67, 0.89, 0.80]
         },
         "output"    :
         {
@@ -452,11 +452,11 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbReshist",
             "legendTitle"       : "MB3 super-layer 3",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.30, 0.67, 0.89, 0.80]
         },
         "output"    :
         {
@@ -490,7 +490,7 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "hist",
             "legendTitle"       : "t0 segment - MB4",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
@@ -529,7 +529,7 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "hist",
             "legendTitle"       : "# hits per segment - MB4",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
@@ -569,11 +569,11 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbReshist",
             "legendTitle"       : "MB4 super-layer 1",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.30, 0.67, 0.89, 0.80]
         },
         "output"    :
         {
@@ -608,11 +608,11 @@
             "y"                 : [0.8, 1.05, "Entries"],
             "option"            : "verbReshist",
             "legendTitle"       : "MB4 super-layer 3",
-            "caption"           : "DT SliceTest",
+            "caption"           : "DT SliceTest (Cosmic ray data, 2021)",
             "logo"              : ["CMS", "Preliminary"],
             "colorMap"          : [1, 2, 3, 4, 5, 6, 7, 8, 9],
             "markerMap"         : [20, 21, 22, 23, 24, 25, 26],
-            "legendRange"       : [0.30, 0.67, 0.85, 0.80]
+            "legendRange"       : [0.30, 0.67, 0.89, 0.80]
         },
         "output"    :
         {

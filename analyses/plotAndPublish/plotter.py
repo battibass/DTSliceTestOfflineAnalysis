@@ -155,6 +155,7 @@ for keyPlot in config:
     # Setup canvas with all elements
     canvas = TCanvas('canvas', 'canvas', 800, 800)
 
+    
     pad = TPad('pad', 'pad', 0.01, 0.00, 1.00, 1.00)
 
     option = config[keyPlot]['plot']['option']
@@ -167,6 +168,9 @@ for keyPlot in config:
 
         if hasFlag:
             option = option.replace(flag,'')
+
+    if "colz" in option:
+        pad.SetRightMargin(0.15)
 
     pad.SetGrid()
     pad.Draw()
@@ -265,7 +269,7 @@ for keyPlot in config:
         histo.GetYaxis().SetLabelFont(43)
         histo.GetYaxis().SetTitleSize(22)
         histo.GetYaxis().SetLabelSize(20)
-        histo.GetYaxis().SetTitleOffset(1.5)
+        histo.GetYaxis().SetTitleOffset(2.0 if histoClass == 'TH1F' and histo.GetMaximum() > 1000 else 1.5)
 
         canvas.Update()
 
@@ -292,9 +296,9 @@ for keyPlot in config:
             if optionPlotter['verbRes']:
                 fitFunc = inputHistos[iHisto].GetFunction('fPhi')
                 if fitFunc:
-                    sigma    = int(fitFunc.GetParameter(2) * 10000.)
-                    sigmaErr = int(fitFunc.GetParError(2) * 10000.)
-                    legEntry = '{}  [#sigma of gaussian fit = {}]'.format(legEntry, round(sigma))
+                    sigma    = fitFunc.GetParameter(2)
+                    sigmaErr = fitFunc.GetParError(2)
+                    legEntry = '{}  [#sigma of gaussian fit = {:4.3f} cm]'.format(legEntry, sigma)
 
             leg.AddEntry(inputHistos[iHisto], legEntry, 'LP')
 

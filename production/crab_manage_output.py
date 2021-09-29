@@ -151,7 +151,7 @@ def status(input_folder, version):
         print("[{}] if you have no running jobs, please re-run this macro using either the 'condor_skim' or the 'interactive_skim' command.".format(__file__))
     else:
         print("[{}] all files have been skimmed, you can now proceed running hadd, e.g.: ".format(__file__, n_files_to_process))
-        print("[{}] hadd DTDPGNtuple_${COSMIC_RUN}_skim_{}.root {}/skim_{}/DT*root ".format(__file__, version, input_folder, version))
+        print("[{}] hadd DTDPGNtuple_runRUN_skim_{}.root {}/skim_{}/DT*root ".format(__file__, version, input_folder, version))
 
     return
 

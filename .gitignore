@@ -61,3 +61,11 @@ analyses/run*
 # Calibration files and folders
 production/calib/Run*-ttrig_timebox_v*/
 production/calib/dtCalibration_*.log
+
+# Analysis and production folders
+analyses/run*/
+production/calib/Run*/
+production/cmsrun_xml/
+production/condor_jobs/
+production/crab_jsons/
+production/crab_xml/
