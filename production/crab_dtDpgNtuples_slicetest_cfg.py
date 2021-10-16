@@ -33,4 +33,4 @@ config.Data.outLFNDirBase  = json_data["outLFNBase"]
 config.section_('Site')
 config.Site.storageSite = 'T2_CH_CERN'
 
-print config
+print(config)

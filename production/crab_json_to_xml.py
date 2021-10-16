@@ -1,16 +1,18 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
-This program generates an XML file to be processed by 
-the offline DTSliceTestOfflineAnalysis workflow which 
-combines information from the JSON file produced for 
-ntuple production with CRAB and the actual location of 
+This program generates an XML file to be processed by
+the offline DTSliceTestOfflineAnalysis workflow which
+combines information from the JSON file produced for
+ntuple production with CRAB and the actual location of
 the (skimmed and merged) DTDPGNtuple
 """
 
-import lxml.etree as etree
 import argparse
 import json
+import sys
 import os
+
+import lxml.etree as etree
 
 #----------------
 # Variables
@@ -37,14 +39,14 @@ if __name__ == '__main__':
     #---------------------------------
     # Generate XML configuration file
     #---------------------------------
-    
+
     if not os.path.isfile(ARGS.crabJSONFile):
         print("[{}] file : {} does not exist. Quitting".format(__file__, ARGS.crabJSONFile))
-        exit(100)
+        sys.exit(100)
 
     if not os.path.isfile(ARGS.dtNtuple):
         print("[{}] file : {} does not exist. Quitting".format(__file__, ARGS.dtNtuple))
-        exit(100)
+        sys.exit(100)
 
     # READ and parse JSON
     with open(ARGS.crabJSONFile) as json_file:
@@ -56,14 +58,14 @@ if __name__ == '__main__':
               "tTrigFile" : "",
               "tTrigFilePh2" : "",
               "vDriftFile" : "",
-              "inputFolderCentral" : "dataset {}".format(JSON["dataset"]), 
-              "inputFolderDT" : "NONE", 
-              "globalTag" : "NONE", 
-              "runNumber" : JSON["runNumber"], 
-              "ntupleName" : os.path.abspath(ARGS.dtNtuple), 
-              "nEvents" : "-1", 
-              "runOnTestPulse" : "False", 
-              "runOnDat" : "False", 
+              "inputFolderCentral" : "dataset {}".format(JSON["dataset"]),
+              "inputFolderDT" : "NONE",
+              "globalTag" : "NONE",
+              "runNumber" : JSON["runNumber"],
+              "ntupleName" : os.path.abspath(ARGS.dtNtuple),
+              "nEvents" : "-1",
+              "runOnTestPulse" : "False",
+              "runOnDat" : "False",
               "inputFile" : "NONE"}
 
     for param_string in JSON["config_params"]:
@@ -78,7 +80,7 @@ if __name__ == '__main__':
                 PARAMS[var] = path
 
     # fill and write XML
-    XML_BASE = etree.Element("options") 
+    XML_BASE = etree.Element("options")
 
     for var, param in PARAMS.items():
         etree.SubElement(XML_BASE, var).text = param
@@ -91,4 +93,5 @@ if __name__ == '__main__':
     out_file_name = "ntuple_cfg_run" + PARAMS["runNumber"] + ".xml"
     out_file_path = os.path.join(OUT_FOLDER, out_file_name)
 
-    with open(out_file_path, 'w') as file: file.write(xml_string)
+    with open(out_file_path, 'w') as file:
+        file.write(xml_string.decode("utf-8"))

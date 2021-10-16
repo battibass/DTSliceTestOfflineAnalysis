@@ -30,7 +30,7 @@ def appendToGlobalTag(process, rcd, tag, fileName, label) :
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '113X_dataRun3_Prompt_v3', #default value
+                 '120X_dataRun3_Prompt_v2', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -158,13 +158,13 @@ else :
     
     if os.path.exists(runFolder) :
         files = subprocess.check_output(["ls", runFolder])
-        process.source.fileNames = ["file://" + runFolder + "/" + f for f in files.split()]
+        process.source.fileNames = ["file://" + runFolder + "/" + f.decode("utf-8") for f in files.split()]
 
     else :
         print('[dtDpgNtuples_slicetest_cfg.py]: files not found there, looking under:\n\t\t\t{}'.format(options.inputFolderDT))
 
         files = subprocess.check_output(["ls", options.inputFolderDT])
-        filesFromRun = [f for f in files.split() if f.find(runStr[3:]) > -1]
+        filesFromRun = [f.decode("utf-8") for f in files.split() if f.find(runStr[3:]) > -1]
 
         if len(filesFromRun) == 1 :
             process.source.fileNames.append("file://" + options.inputFolderDT + "/" + filesFromRun[0])
@@ -173,7 +173,7 @@ else :
             print('[dtDpgNtuples_slicetest_cfg.py]: {} files found, can\'t run!'.format(len(filesFromRun)))
             sys.exit(999)
 
-print process.source.fileNames
+print(process.source.fileNames)
 
 ntupleName = options.ntupleName if options.ntupleName else "./DTDPGNtuple_run" + str(options.runNumber) + ".root"  
 
@@ -216,7 +216,7 @@ if options.runOnTestPulse :
 
 xml_base = etree.Element("options") 
 
-for var, val in options._singletons.iteritems():
+for var, val in options._singletons.items():
     if var == "ntupleName":
         etree.SubElement(xml_base, var).text = os.path.abspath(ntupleName)
     elif var.find("File") > -1 and val != "":
@@ -232,4 +232,4 @@ xml_string = etree.tostring(xml_base, pretty_print=True)
 out_file_name = "ntuple_cfg_run" + str(options.runNumber) + ".xml"
 out_file_path = os.path.join(XML_FOLDER, out_file_name)
 
-with open(out_file_path, 'w') as file: file.write(xml_string)
+with open(out_file_path, 'w') as file: file.write(xml_string.decode("utf-8"))

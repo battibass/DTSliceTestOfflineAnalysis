@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This program takes care of skimming of DTNtuples:
 - it checks for the presence of already skimmed files
