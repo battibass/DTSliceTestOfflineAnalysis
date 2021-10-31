@@ -47,10 +47,13 @@ __init__.py
 *.db
 
 # Production folders
-production/cmsrun_xml
+production/cmsrun_xml/
 production/crab.log
-production/crab_jobs
-production/crab_jsons
+production/crab_jobs*/
+production/crab_jsons/
+production/calib/Run*/
+production/condor_jobs/
+production/crab_xml/
 
 # Analysis results
 analyses/run*
@@ -61,11 +64,3 @@ analyses/run*
 # Calibration files and folders
 production/calib/Run*-ttrig_timebox_v*/
 production/calib/dtCalibration_*.log
-
-# Analysis and production folders
-analyses/run*/
-production/calib/Run*/
-production/cmsrun_xml/
-production/condor_jobs/
-production/crab_jsons/
-production/crab_xml/
