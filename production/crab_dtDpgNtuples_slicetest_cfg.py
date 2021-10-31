@@ -29,10 +29,10 @@ config.Data.unitsPerJob  = 10
 config.Data.runRange     = json_data["runNumber"]
 config.Data.inputDBS     = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader/'
 config.Data.outLFNDirBase  = json_data["outLFNBase"]
-config.Data.ignoreLocality = True
+# config.Data.ignoreLocality = True
  
 config.section_('Site')
 config.Site.storageSite = 'T2_CH_CERN'
-config.Site.whitelist = ['T2_CH_CERN']
+# config.Site.whitelist = ['T2_CH_CERN']
 
 print(config)
