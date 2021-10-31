@@ -14,5 +14,9 @@ export DTSAMPLEDIR=$TTRIG_DATASET
 echo "[$0]: Configuring CRAB using $CRAB_CONFIG_SCRIPT"
 . $CRAB_CONFIG_SCRIPT
 
+echo "[$0]: Configuring RUCIO"
+source /cvmfs/cms.cern.ch/rucio/setup-py3.sh
+export RUCIO_ACCOUNT=`whoami`
+
 echo "[$0]: Initializing proxy"
 voms-proxy-init -voms cms -valid 192:0
