@@ -8,6 +8,10 @@ import sys
 import os
 
 XML_FOLDER = "./cmsrun_xml/"
+HAS_AUTOCOND = os.path.isfile("./slice_test_autocond.py")
+
+if HAS_AUTOCOND:
+    import slice_test_autocond as autocond
 
 def appendToGlobalTag(process, rcd, tag, fileName, label) :
 
@@ -42,7 +46,7 @@ options.register('nEvents',
                  "Maximum number of processed events")
 
 options.register('runNumber',
-                 '339929', #default value
+                 '346104', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                  "Run number to be looked for in either 'inputFolderCentral' or 'inputFolderDT' folders")
@@ -54,10 +58,10 @@ options.register('inputFile',
                  "The input file to be processed, if non null overrides runNumber based input file selection")
 
 options.register('inputFolderCentral',
-                 '/eos/cms/store/data/Commissioning2021/MiniDaq/RAW/v1/', #default value
+                 '/eos/cms/store/express/Commissioning2021/ExpressCosmics/FEVT/Express-v1/', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
-                 "Base EOS folder with input files from MiniDAQ runs with central tier0 transfer")
+                 "Base EOS folder with input files from MiniDAQ/Global runs with central tier0 transfer")
 
 options.register('inputFolderDT',
                  '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2021_data/root/', #default value
@@ -113,6 +117,12 @@ options.register('ntupleName',
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple, if non null overrides 'standard' naming based on runNumber option")
 
+if HAS_AUTOCOND:
+    options.register('autocond',
+                 '', #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 "Autocond label: valid ones are {}".format(autocond.labels()))
 
 options.parseArguments()
 
@@ -129,11 +139,20 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.GlobalTag.globaltag = cms.string(options.globalTag)
 
-process = appendToGlobalTag(process, "DTTtrigRcd", "ttrig", options.tTrigFile, "cosmics")
-process = appendToGlobalTag(process, "DTT0Rcd", "t0", options.t0File, "")
+goodAutocond = HAS_AUTOCOND and options.autocond
 
-process = appendToGlobalTag(process, "DTTtrigRcd", "ttrig", options.tTrigFilePh2, "cosmics_ph2")
-process = appendToGlobalTag(process, "DTT0Rcd", "t0", options.t0FilePh2, "ph2")
+tTrigFile = autocond.get_ttrig("phase1",options.autocond) \
+            if (goodAutocond and not options.tTrigFile) else options.tTrigFile
+tTrigFilePh2 = autocond.get_ttrig("phase2",options.autocond) \
+               if (goodAutocond and not options.tTrigFilePh2) else options.tTrigFilePh2
+t0File = autocond.get_t0i("phase1") if (goodAutocond and not options.t0File) else options.t0File
+t0FilePh2 = autocond.get_t0i("phase2") if (goodAutocond and not options.t0FilePh2) else options.t0FilePh2
+    
+process = appendToGlobalTag(process, "DTTtrigRcd", "ttrig", tTrigFile, "cosmics")
+process = appendToGlobalTag(process, "DTT0Rcd", "t0", t0File, "")
+
+process = appendToGlobalTag(process, "DTTtrigRcd", "ttrig", tTrigFilePh2, "cosmics_ph2")
+process = appendToGlobalTag(process, "DTT0Rcd", "t0", t0FilePh2, "ph2")
 
 process = appendToGlobalTag(process, "DTMtimeRcd", "vDrift", options.vDriftFile, "")
 
@@ -203,9 +222,9 @@ process.p = cms.Path(process.muonDTDigis
                      + process.dtlocalrecoT0Seg
                      + process.dtNtupleProducer)
 
-if options.tTrigFilePh2 and options.t0FilePh2 :
+if tTrigFilePh2 and t0FilePh2 :
     from DTDPGAnalysis.DTNtuples.customiseDtPhase2Reco_cff import customiseForPhase2Reco
-    process = customiseForPhase2Reco(process,"p", options.tTrigFilePh2, options.t0FilePh2)
+    process = customiseForPhase2Reco(process,"p", tTrigFilePh2, t0FilePh2)
 
     from DTDPGAnalysis.DTNtuples.customiseDtPhase2Emulator_cff import customiseForPhase2Emulator
     process = customiseForPhase2Emulator(process,"p")
@@ -219,10 +238,21 @@ xml_base = etree.Element("options")
 for var, val in options._singletons.items():
     if var == "ntupleName":
         etree.SubElement(xml_base, var).text = os.path.abspath(ntupleName)
-    elif var.find("File") > -1 and val != "":
+    elif var == "vDriftFile" and val != "":
         etree.SubElement(xml_base, var).text = os.path.abspath(val)
+    elif var.find("File"):
+        continue
     else:
         etree.SubElement(xml_base, var).text = str(val)
+        
+if t0File != "":
+    etree.SubElement(xml_base, "t0File").text = os.path.abspath(t0File)
+if t0FilePh2 != "":
+    etree.SubElement(xml_base, "t0FilePh2").text = os.path.abspath(t0FilePh2)
+if tTrigFile != "":
+    etree.SubElement(xml_base, "tTrigFile").text = os.path.abspath(tTrigFile)
+if tTrigFilePh2 != "":
+    etree.SubElement(xml_base, "tTrigFilePh2").text = os.path.abspath(tTrigFilePh2)
 
 if not os.path.exists(XML_FOLDER):
     os.makedirs(XML_FOLDER)
