@@ -6,7 +6,7 @@
 
 UTILS_FOLDER="./plotAndPublish/"
 PUBLUSH_FOLDER="/eos/project/c/cmsweb/www/MUON/dpgdt/sx5/Results/SliceTest"
-# PUBLUSH_FOLDER="/eos/user/b/battilan/www/DTDPG/SliceTest/2021"
+# PUBLUSH_FOLDER="/eos/user/b/battilan/www/DTDPG/SliceTest/2022"
 
 PLOTTER_CFGS=("configDigiST.json" "configDigiTestPulseST.json" "configTriggerST.json" "configTriggerTwinMuxST.json" "configSegmentST.json" "configSegmentPh1vsPh2ST.json")
 PLOTTER_ROOTS=("results_digi.root" "results_digi.root" "results_trigger.root" "results_trigger.root" "results_segment.root" "results_segment.root")

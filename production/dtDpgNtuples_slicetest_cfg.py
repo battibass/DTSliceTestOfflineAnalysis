@@ -34,7 +34,7 @@ def appendToGlobalTag(process, rcd, tag, fileName, label) :
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '120X_dataRun3_Prompt_v2', #default value
+                 '122X_dataRun3_Prompt_v3', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -46,7 +46,7 @@ options.register('nEvents',
                  "Maximum number of processed events")
 
 options.register('runNumber',
-                 '346104', #default value
+                 '347683', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                  "Run number to be looked for in either 'inputFolderCentral' or 'inputFolderDT' folders")
@@ -58,13 +58,13 @@ options.register('inputFile',
                  "The input file to be processed, if non null overrides runNumber based input file selection")
 
 options.register('inputFolderCentral',
-                 '/eos/cms/store/express/Commissioning2021/ExpressCosmics/FEVT/Express-v1/', #default value
+                 '/eos/cms/store/data/Commissioning2022/MiniDaq/RAW/v1/', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
                  "Base EOS folder with input files from MiniDAQ/Global runs with central tier0 transfer")
 
 options.register('inputFolderDT',
-                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2021_data/root/', #default value
+                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2022_data/root/', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
                  "Base EOS folder with input files from MiniDAQ runs with DT 'private' tier0 transfer")
@@ -240,7 +240,7 @@ for var, val in options._singletons.items():
         etree.SubElement(xml_base, var).text = os.path.abspath(ntupleName)
     elif var == "vDriftFile" and val != "":
         etree.SubElement(xml_base, var).text = os.path.abspath(val)
-    elif var.find("File"):
+    elif "File" in var:
         continue
     else:
         etree.SubElement(xml_base, var).text = str(val)

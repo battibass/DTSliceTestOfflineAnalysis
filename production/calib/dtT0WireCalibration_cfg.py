@@ -28,13 +28,13 @@ options.register('inputFile',
                  "The input file to be processed, if non null overrides runNumber based input file selection")
 
 options.register('inputFolderCentral',
-                 '/eos/cms/store/data/Commissioning2021/MiniDaq/RAW/v1/', #default value
+                 '/eos/cms/store/data/Commissioning2022/MiniDaq/RAW/v1/', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
                  "Base EOS folder with input files from MiniDAQ runs with central tier0 transfer")
 
 options.register('inputFolderDT',
-                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2021_data/root/', #default value
+                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2022_data/root/', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.string,
                  "Base EOS folder with input files from MiniDAQ runs with DT 'private' tier0 transfer")
