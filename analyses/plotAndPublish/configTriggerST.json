@@ -2879,7 +2879,7 @@
     },
 
 
-"Phase-2 - trigger efficiency vs seg dirLoc_x for different qualities MB1"   :
+    "Phase-2 - trigger efficiency vs seg dirLoc_x for different qualities MB1"   :
     {
         "inputs"    :
         {
@@ -2888,14 +2888,42 @@
                 "label"             : "qual_all",
                 "legendEntry"       : "qual=All",
                 "folder"            : "",
-                "plot"		    : "trigeff_ph2TpgPhiHw_AnyBX_vs_seg_philoc_x_MB1"
+                "plot"		    : "trigeff_ph2TpgPhiHw_AnyBX_vs_seg_dirLoc_x_MB1"
 		},
             "qual8"   :
             {
                 "label"             : "qual8",
                 "legendEntry"       : "qual=8",
                 "folder"            : "",
-                "plot"		    : "trigeff_ph2TpgPhiHw_qual_8_AnyBX_vs_seg_philoc_x_MB1"
+                "plot"		    : "trigeff_ph2TpgPhiHw_qual_8_AnyBX_vs_seg_dirLoc_x_MB1"
+		},
+            "qual6or7"   :
+            {
+                "label"             : "qual6or7",
+                "legendEntry"       : "qual=6 - 7",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_qual_6_or_7_AnyBX_vs_seg_dirLoc_x_MB1"
+		},
+	    "qual6to8"   :
+	    {
+                "label"             : "qual6to8",
+                "legendEntry"       : "qual=6-7-8",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_qual_6_to_8_AnyBX_vs_seg_dirLoc_x_MB1"
+		},
+             "qual3"   :
+            {
+                "label"             : "qual3",
+                "legendEntry"       : "qual=3",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_qual_3_AnyBX_vs_seg_dirLoc_x_MB1"
+		},
+             "qual1"   :
+            {
+                "label"             : "qual1",
+                "legendEntry"       : "qual=1",
+                "folder"            : "",
+                "plot"		    : "trigeff_ph2TpgPhiHw_qual_1_AnyBX_vs_seg_dirLoc_x_MB1"
 		}
 
         },
