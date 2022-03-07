@@ -52,18 +52,18 @@ def interactive_skim_command(input_folder, input_file, cut_string, version):
     output, error = process.communicate()
 
     print("[skimTree OUTPUT]:")
-    print(output)
+    print(output.decode("utf8"))
 
     if error:
         print("[skimTree ERROR]:")
-        print(error)
+        print(error.decode("utf8"))
 
     return
 
 def interactive_skim(input_folder, cut_string, version):
 
     for input_file in non_skimmed_files(input_folder, version):
-        print("[{}] running interactive skim for folder : {} and input file : {} .".format(__file__, input_folder, input_file))
+        print(f"[interactive_skim] running interactive skim for folder : {input_folder} and input file : {input_file} .")
         interactive_skim_command(input_folder, input_file, cut_string, version) 
 
     return
@@ -71,7 +71,7 @@ def interactive_skim(input_folder, cut_string, version):
 def condor_create_sh(input_folder, job_folder, input_files, cut_string, version, i_file):
 
     abs_folder = path.abspath(input_folder)
-    sh_file_name = path.join(job_folder, "run_skim_{}.sh".format(i_file))
+    sh_file_name = path.join(job_folder, f"run_skim_{i_file}.sh")
     sh_file = open(sh_file_name,"w")
 
     sh_file.write("#! /usr/bin/bash\n")
@@ -118,11 +118,11 @@ def condor_skim_command(jdl_file_name):
     output, error = process.communicate()
 
     print("[condor OUTPUT]:")
-    print(output)
+    print(output.decode("utf8"))
 
     if error:
         print("[condor ERROR]:")
-        print(error)
+        print(error.decode("utf8"))
 
     return
 
@@ -133,11 +133,11 @@ def condor_skim(input_folder, job_folder, cut_string, version):
     file_blocks = [files_tbp[i_file:i_file + FILES_PER_JOB] for i_file in range(0, len(files_tbp), FILES_PER_JOB)]
 
     for file_block, i_block in zip(file_blocks, range(1, len(file_blocks)+1)):
-        print("[{}] creating .sh script for file block # {}.".format(__file__, i_block))
+        print(f"[condor_skim] creating .sh script for file block # {i_block}.")
         sh_file_name = condor_create_sh(input_folder, job_folder, file_block, cut_string, version, i_block)
-        print("[{}] creating condor .jdl file for .sh script # {}.".format(__file__, i_block))
+        print(f"[condor_skim] creating condor .jdl file for .sh script # {i_block}.")
         jdl_file_name = condor_create_jdl(input_folder, job_folder, sh_file_name, version, i_block)
-        print("[{}] running condor_submit for .jdl file # {}.".format(__file__, i_block))
+        print(f"[condor_skim] running condor_submit for .jdl file # {i_block}.")
         condor_skim_command(jdl_file_name)
         
     return
@@ -147,11 +147,11 @@ def status(input_folder, version):
     n_files_to_process = len(non_skimmed_files(input_folder, version))
 
     if n_files_to_process:    
-        print("[{}] there are {} files which are not yet skimmed.".format(__file__, n_files_to_process))
-        print("[{}] if you have no running jobs, please re-run this macro using either the 'condor_skim' or the 'interactive_skim' command.".format(__file__))
+        print(f"[status] there are {n_files_to_process} files which are not yet skimmed.".format(__file__, ))
+        print("[status] if you have no running jobs, please re-run this macro using either the 'condor_skim' or the 'interactive_skim' command.".format(__file__))
     else:
-        print("[{}] all files have been skimmed, you can now proceed running hadd, e.g.: ".format(__file__, n_files_to_process))
-        print("[{}] hadd DTDPGNtuple_runRUN_skim_{}.root {}/skim_{}/DT*root ".format(__file__, version, input_folder, version))
+        print("[status] all files have been skimmed, you can now proceed running hadd, e.g.: ")
+        print(f"[status] hadd DTDPGNtuple_runRUN_skim_{version}.root {input_folder}/skim_{version}/DT*root")
 
     return
 
