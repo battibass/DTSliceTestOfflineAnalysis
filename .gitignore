@@ -54,6 +54,7 @@ production/crab_jsons/
 production/calib/Run*/
 production/condor_jobs/
 production/crab_xml/
+production/*root
 
 # Analysis results
 analyses/run*
