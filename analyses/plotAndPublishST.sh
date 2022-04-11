@@ -5,8 +5,8 @@
 ##########################
 
 UTILS_FOLDER="./plotAndPublish/"
-PUBLUSH_FOLDER="/eos/project/c/cmsweb/www/MUON/dpgdt/sx5/Results/SliceTest"
-# PUBLUSH_FOLDER="/eos/user/b/battilan/www/DTDPG/SliceTest/2021"
+#PUBLUSH_FOLDER="/eos/project/c/cmsweb/www/MUON/dpgdt/sx5/Results/SliceTest"
+PUBLUSH_FOLDER="/eos/user/b/balvarez/www/DTDPG/SliceTest/2021"
 
 PLOTTER_CFGS=("configDigiST.json" "configDigiTestPulseST.json" "configTriggerST.json" "configTriggerTwinMuxST.json" "configSegmentST.json" "configSegmentPh1vsPh2ST.json")
 PLOTTER_ROOTS=("results_digi.root" "results_digi.root" "results_trigger.root" "results_trigger.root" "results_segment.root" "results_segment.root")
@@ -37,5 +37,19 @@ done
 
 python3 $UTILS_FOLDER/$PUBLISH_CMD $RUN_FOLDER $UTILS_FOLDER/$INDEX_FILE
 
-# scp -r $RUN_FOLDER dtdqm@lxplus:$PUBLUSH_FOLDER
+
+##########################
+# Emulator
+##########################
+# create some variables
+runnumber=$1
+find="run"
+replace=""
+number=${runnumber//$find/$replace}
+echo $number    
+
+root -b << EOF
+gROOT->ProcessLine(".x printPlots_run.C(\"${runnumber//$find/$replace}\")");
+EOF
+
 cp -r $RUN_FOLDER $PUBLUSH_FOLDER

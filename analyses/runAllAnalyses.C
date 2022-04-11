@@ -8,6 +8,7 @@
 #include "DTNtupleDigiAnalyzer.h"
 #include "DTNtupleTriggerAnalyzer.h"
 #include "DTNtupleSegmentAnalyzer.h"
+#include "DTNtupleTPGSimAnalyzer.h"
 
 void runAllAnalyses(TString inputFile, Int_t runNumber)
 {
@@ -18,6 +19,7 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
   gSystem->Exec("mkdir -p " + runName + "/digi/");
   gSystem->Exec("mkdir -p " + runName + "/trigger/");
   gSystem->Exec("mkdir -p " + runName + "/segment/");
+  gSystem->Exec("mkdir -p " + runName + "/emulator/");
 
   //CB find a more elegant solution to pass directory
   DTNtupleDigiAnalyzer digiAnalysis(inputFile, runName + "/digi/results_digi.root", (runName + "/digi/").Data());
@@ -28,6 +30,10 @@ void runAllAnalyses(TString inputFile, Int_t runNumber)
 
   DTNtupleTriggerAnalyzer triggerAnalysis(inputFile, runName + "/trigger/results_trigger.root");
   triggerAnalysis.Loop();
+
+  DTNtupleTPGSimAnalyzer emuAnalysis(inputFile, runName +"/emulator/results_emulator.root", false);  
+  emuAnalysis.Loop();
+
 
   gSystem->Exec("rm *d *pcm *so");
 
@@ -51,6 +57,7 @@ void runAllAnalyses(std::vector<TString> inputFiles, TString runNumbers)
 
   DTNtupleTriggerAnalyzer triggerAnalysis(inputFiles, runsName + "/trigger/results_trigger.root");
   triggerAnalysis.Loop();
+
 
   gSystem->Exec("rm *d *pcm *so");
 
