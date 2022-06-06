@@ -1,0 +1,4 @@
+<bin file="runSliceTestAnalysis.cpp" name="runSliceTestAnalysis">
+  <use name="root"/>
+  <use name="DTDPGAnalysis/DTSliceTestOfflineAnalysis"/>
+</bin>

@@ -2,18 +2,22 @@
 Package collecting the offline analysis programs for the DT slice-test
 
 ## Downloading the package and setting up the environment:
-```
-git clone https://github.com/battibass/DTSliceTestOfflineAnalysis.git
 
-cd DTSliceTestOfflineAnalysis
+From your favourite CMSSW area `src/` folder:
+```bash
+git clone https://github.com/battibass/DTSliceTestOfflineAnalysis.git DTDPGAnalysis/DTSliceTestOfflineAnalysis -b poa
 
-# For bash:
-. configForSliceTestAnalysis.sh
-
-# For (t)csh:
-. configForSliceTestAnalysis.sh
+cmsenv
+scramv1 b -j 5
 ```
 
-## Running ntuple production and analyses
-You can find instructions at: [https://twiki.cern.ch/twiki/bin/view/CMS/DTSliceTestOfflineAnalysis](https://twiki.cern.ch/twiki/bin/view/CMS/DTSliceTestOfflineAnalysis)
+This makes the analysis command and the plotting one available "everywhere"
+after a `cmsenv`
 
+## Running the analysis and publishing plots
+
+```bash
+runSliceTestAnalysis 351176 /eos/cms/store/group/dpg_dt/comm_dt/commissioning_2022_data/ntuples/ST/DTDPGNtuple_run351176_skim_seg_in_slicetest_v1.root 
+
+plotAndPublish.sh run351176
+```
