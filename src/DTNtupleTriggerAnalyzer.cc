@@ -1,6 +1,7 @@
 
 #include "DTNtupleTriggerAnalyzer.h"
 
+
 DTNtupleTriggerAnalyzer::DTNtupleTriggerAnalyzer(const TString& inFileName, const TString& outFileName)
     : DTNtupleBaseAnalyzer(inFileName), m_outFile(outFileName, "RECREATE") {
   // Configuration parameters to switch on / off
@@ -1032,9 +1033,6 @@ void DTNtupleTriggerAnalyzer::fill() {
 
         if (m_ph2TpgPhiHw) {  // ph2TpgPhiHw efficiency at AnyBX
 
-          hName = "Phase2Hw_phi_plus_phiB_" + iChTag.str();  // phase2 trig phi + phiB
-          m_plots[hName]->Fill(philoc);
-
           std::string hName = "trigeff_ph2TpgPhiHw_AnyBX_vs_t0_" + iChTag.str();  // vs t0
           m_effs[hName]->Fill(iBestTpgPhiHw[iMB - 1] < 9999, seg_phi_t0->at(iBestSeg[iMB - 1]));
 
@@ -1521,6 +1519,9 @@ void DTNtupleTriggerAnalyzer::fill() {
 
           hName = "Phase2Hw_phiB_" + iChTag.str();  // phiB
           m_plots[hName]->Fill(phiB_Ph2_conv * ph2TpgPhiHw_phiB->at(itr));
+
+          hName = "Phase2Hw_phi_plus_phiB_" + iChTag.str();  // phase2 trig t0 vs phi + phiB
+          m_plots[hName]->Fill(phi_Ph2_conv * ph2TpgPhiHw_phi->at(itr) + phiB_Ph2_conv * ph2TpgPhiHw_phiB->at(itr));
 
           hName = "Phase2Hw_chi2_" + iChTag.str();  // chi2
           m_plots[hName]->Fill(ph2TpgPhiHw_chi2->at(itr));
