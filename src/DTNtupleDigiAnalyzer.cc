@@ -209,7 +209,7 @@ void DTNtupleDigiAnalyzer::book() {
 
   for (const auto &typeTag : typeTags) {
     TString hName = ("hNDigis" + typeTag).c_str();
-    m_plots[hName] = new TH1F(hName, "# of digis ;# of digis,entries", 101, -0.5, 100.5);
+    m_plots[hName] = new TH1F(hName, "# of digis ;# of digis,entries", 301, -0.5, 300.5);
 
     for (const auto iSt : m_stations[typeTag]) {
       std::stringstream stTagS;
