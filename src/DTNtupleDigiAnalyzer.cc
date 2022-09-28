@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iomanip>
 #include <algorithm>
+#include <cstdlib>
 
 DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer(const TString &inFileName, const TString &outFileName, std::string outFolder)
     : DTNtupleBaseAnalyzer(inFileName), m_outFile(outFileName, "RECREATE"), m_outFolder(outFolder) {
@@ -49,39 +50,43 @@ DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer(const TString &inFileName, const TStr
   // where 2, 6 and 31 are the wires from the fourth layer of the third superlayer
   // that should be mask from the second station.
 
-  std::string maskFile = "./maskFile.txt";
+  const char * cmssw_base = std::getenv("CMSSW_BASE");
+  
+  std::string maskFile = cmssw_base ?  
+    std::string{cmssw_base} + "/src/DTDPGAnalysis/DTSliceTestOfflineAnalysis/utils/maskFile.txt" : 
+    "./maskFile.txt";
 
-  if (maskFile != "") {
-    std::ifstream myfile(maskFile);
-
-    if (myfile.is_open()) {
-      std::string line;
-      while (getline(myfile, line)) {
-        TString tmpline = line;
-        TString tok;
-        Ssiz_t from = 0;
-        int theStation = 0;
-        int theSL = 0;
-        int theL = 0;
-        while (tmpline.Tokenize(tok, from, " ")) {
-          //             if      (tok.Contains("MB")) theStation = atoi(tok.Data()[2]);
-          //             else if (tok.Contains("SL")) theSL      = atoi(tok.Data()[2]);
-          //             else if (tok.Contains("L"))  theL       = atoi(tok.Data()[1]);
-          if (tok.Contains("MB")) {
-            TString tmpstr(tok(2, 2));
-            theStation = tmpstr.Atoi();
-          } else if (tok.Contains("SL")) {
-            TString tmpstr(tok(2, 2));
-            theSL = tmpstr.Atoi();
-          } else if (tok.Contains("L")) {
-            TString tmpstr(tok(1, 1));
-            theL = tmpstr.Atoi();
-          } else
-            maskedWires[theStation][theSL][theL].push_back(tok.Atoi());
+  std::ifstream myfile(maskFile);
+    
+  if (myfile.is_open()) {
+    std::string line;
+    while (getline(myfile, line)) {
+      TString tmpline = line;
+      TString tok;
+      Ssiz_t from = 0;
+      int theStation = 0;
+      int theSL = 0;
+      int theL = 0;
+      while (tmpline.Tokenize(tok, from, " ")) {
+        //             if      (tok.Contains("MB")) theStation = atoi(tok.Data()[2]);
+        //             else if (tok.Contains("SL")) theSL      = atoi(tok.Data()[2]);
+        //             else if (tok.Contains("L"))  theL       = atoi(tok.Data()[1]);
+        if (tok.Contains("MB")) {
+          TString tmpstr(tok(2, 2));
+          theStation = tmpstr.Atoi();
+        } else if (tok.Contains("SL")) {
+          TString tmpstr(tok(2, 2));
+          theSL = tmpstr.Atoi();
+        } else if (tok.Contains("L")) {
+          TString tmpstr(tok(1, 1));
+          theL = tmpstr.Atoi();
+        } else {
+          maskedWires[theStation][theSL][theL].push_back(tok.Atoi());
         }
       }
-      myfile.close();
-    } else
+    }
+    myfile.close();
+  } else {
       std::cout << "[DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer] Unable to open mask wire file: NO WIRE WILL BE MASKED!"
                 << std::endl;
   }
@@ -133,41 +138,45 @@ DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer(const std::vector<TString> &inFileNam
   // where 2, 6 and 31 are the wires from the fourth layer of the third superlayer
   // that should be mask from the second station.
 
-  std::string maskFile = "./maskFile.txt";
+    const char * cmssw_base = std::getenv("CMSSW_BASE");
+  
+  std::string maskFile = cmssw_base ?  
+    std::string{cmssw_base} + "/src/DTDPGAnalysis/DTSliceTestOfflineAnalysis/utils/maskFile.txt" : 
+    "./maskFile.txt";
 
-  if (maskFile != "") {
-    std::ifstream myfile(maskFile);
+  std::ifstream myfile(maskFile);
 
-    if (myfile.is_open()) {
-      std::string line;
-      while (getline(myfile, line)) {
-        TString tmpline = line;
-        TString tok;
-        Ssiz_t from = 0;
-        int theStation = 0;
-        int theSL = 0;
-        int theL = 0;
-        while (tmpline.Tokenize(tok, from, " ")) {
-          //             if      (tok.Contains("MB")) theStation = atoi(tok.Data()[2]);
-          //             else if (tok.Contains("SL")) theSL      = atoi(tok.Data()[2]);
-          //             else if (tok.Contains("L"))  theL       = atoi(tok.Data()[1]);
-          if (tok.Contains("MB")) {
-            TString tmpstr(tok(2, 2));
-            theStation = tmpstr.Atoi();
-          } else if (tok.Contains("SL")) {
-            TString tmpstr(tok(2, 2));
-            theSL = tmpstr.Atoi();
-          } else if (tok.Contains("L")) {
-            TString tmpstr(tok(1, 1));
-            theL = tmpstr.Atoi();
-          } else
+  if (myfile.is_open()) {
+    std::string line;
+    while (getline(myfile, line)) {
+      TString tmpline = line;
+      TString tok;
+      Ssiz_t from = 0;
+      int theStation = 0;
+      int theSL = 0;
+      int theL = 0;
+      while (tmpline.Tokenize(tok, from, " ")) {
+        //             if      (tok.Contains("MB")) theStation = atoi(tok.Data()[2]);
+        //             else if (tok.Contains("SL")) theSL      = atoi(tok.Data()[2]);
+        //             else if (tok.Contains("L"))  theL       = atoi(tok.Data()[1]);
+        if (tok.Contains("MB")) {
+          TString tmpstr(tok(2, 2));
+          theStation = tmpstr.Atoi();
+        } else if (tok.Contains("SL")) {
+          TString tmpstr(tok(2, 2));
+          theSL = tmpstr.Atoi();
+        } else if (tok.Contains("L")) {
+          TString tmpstr(tok(1, 1));
+          theL = tmpstr.Atoi();
+        } else {
             maskedWires[theStation][theSL][theL].push_back(tok.Atoi());
         }
       }
-      myfile.close();
-    } else
-      std::cout << "[DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer] Unable to open mask wire file: NO WIRE WILL BE MASKED!"
-                << std::endl;
+    }
+    myfile.close();
+  } else {
+    std::cout << "[DTNtupleDigiAnalyzer::DTNtupleDigiAnalyzer] Unable to open mask wire file: NO WIRE WILL BE MASKED!"
+              << std::endl;
   }
 }
 
