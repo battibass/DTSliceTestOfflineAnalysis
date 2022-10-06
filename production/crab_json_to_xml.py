@@ -41,11 +41,11 @@ if __name__ == '__main__':
     #---------------------------------
 
     if not os.path.isfile(ARGS.crabJSONFile):
-        print("[{}] file : {} does not exist. Quitting".format(__file__, ARGS.crabJSONFile))
+        print(f"[crab_json_to_xml] file : {ARGS.crabJSONFile} does not exist. Quitting")
         sys.exit(100)
 
     if not os.path.isfile(ARGS.dtNtuple):
-        print("[{}] file : {} does not exist. Quitting".format(__file__, ARGS.dtNtuple))
+        print(f"[crab_json_to_xml] file : {ARGS.dtNtuple} does not exist. Quitting")
         sys.exit(100)
 
     # READ and parse JSON

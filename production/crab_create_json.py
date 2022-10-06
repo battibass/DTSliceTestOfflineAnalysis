@@ -45,11 +45,11 @@ if __name__ == '__main__':
                         help="Number of the run to be analyzed")
 
     PARSER.add_argument("-d", "--dataset",
-                        default="/ExpressCosmics/Commissioning2021-Express-v1/FEVT",
+                        default="/ExpressCosmics/Commissioning2022-Express-v1/FEVT",
                         help="Dataset to be processed")
 
     PARSER.add_argument("-o", "--outLFNBase",
-                        default="/store/group/dpg_dt/comm_dt/commissioning_2021_data/crab/",
+                        default="/store/group/dpg_dt/comm_dt/commissioning_2022_data/crab/",
                         help="Output LFN base directory")
 
     PARSER.add_argument("-v", "--version",
