@@ -776,7 +776,7 @@ void DTNtupleSegmentAnalyzer::measureEfficiency(std::string Tag) {
 
     if (nHitsTheta < 3)
       continue;
-    if (!seg.hasZed->at(iSeg) || seg.phi_nHits->at(iSeg) < 7)
+    if (!seg.hasZed->at(iSeg) || seg.phi_nHits->at(iSeg) < 4)
       continue;
     if (seg.sector->at(iSeg) != 12 || seg.wheel->at(iSeg) != 2)
       continue;
