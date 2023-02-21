@@ -23,8 +23,8 @@ DTNtupleTriggerAnalyzer::DTNtupleTriggerAnalyzer(const TString & inFileName,
   phi_Ph1_conv = 0.5/2048.;  // conversion from trig phi to phi in rad in Phase1
   phiB_Ph1_conv = 1./512.;  // conversion from trig phiB to phiB in rad in Phase1
 
-  phi_Ph2_conv = 0.8/65536;// 0.025; // in cm, local position in the station 
-  phiB_Ph2_conv = 1.4/2048.;// 1/4096.; // to transform in radians
+  phi_Ph2_conv = 0.5/65536;// 0.025; // in cm, local position in the station 
+  phiB_Ph2_conv = 2./4096.;// 1/4096.; // to transform in radians
   phi_offset = 0.525; // offset between ph2 primitive phi and seg_posGlb_phi of the segment (to be added to phi of the segment)
 
   BXOK_TwinMuxOut = 0;
