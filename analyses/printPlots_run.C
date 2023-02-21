@@ -1,4 +1,3 @@
-//#include "tdrstyle.C"
 #include "TH1.h"
 #include "TH2.h"
 #include <TStyle.h>
@@ -42,10 +41,7 @@ void printPlots_run(std::string run) {
   gStyle->SetOptStat(0);
   std::vector<std::string> stuffTags = {"Time", "Pos", "Psi"};
 
-  TString runNumber = run; 
-  //TString file = "results_run" + runNumber + ".root";
-  TString file = "run" + runNumber + "/emulator/results_emulator.root";
-  //gSystem->Exec("mkdir run" + runNumber);
+  TString file = run + "/emulator/results_emulator.root";
 
   TFile data1(file);
   
@@ -176,7 +172,7 @@ void printPlots_run(std::string run) {
       m_plots_peak[specific1DPlot + "_peak_" + chambTag + "_" + categories.at(1)]->GetYaxis()->SetTitle(axisAndUnitsSegs.at(j).c_str());
     }
   }
-  std::string cmd = "mkdir run" + std::string(runNumber)+"/emulator"; // + "/" + generalPlot;
+  std::string cmd = std::string("mkdir ") + run + std::string("/emulator"); // + "/" + generalPlot;
   for (auto & generalPlot : general1DPlots) {
     gSystem->Exec((cmd + "/" + generalPlot).c_str());
   }
@@ -200,7 +196,6 @@ void printPlots_run(std::string run) {
   }
   for (auto & specificPlot : moreSpecific2DPlotsSegs) {
     gSystem->Exec((cmd + "/" + specificPlot).c_str());
-    //gSystem->Exec("mkdir run" + runNumber + "/" + specificPlot);
   }
 /*
   for (auto & generalPlot : generalEffPlots) {
@@ -208,7 +203,7 @@ void printPlots_run(std::string run) {
     sprintf(name,"%s",nameHisto.c_str());
     m_effs[name] = (TEfficiency*) data1.Get(name);
     m_effs[name]->Draw();
-    sprintf(name,"run%s/%s.png",run.c_str(),nameHisto.c_str());
+    sprintf(name,"%s/%s.png",run.c_str(),nameHisto.c_str());
     gPad->SaveAs(name);
     if (fileOK) cout << nameHisto << ".png" << endl;
   } */ 
@@ -219,7 +214,7 @@ void printPlots_run(std::string run) {
     m_plots[name] = (TH1F*) data1.Get(name);
     m_plots[name]->SetTitle("");
     m_plots[name]->Draw();
-    sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),generalPlot.c_str(),nameHisto.c_str());
+    sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),generalPlot.c_str(),nameHisto.c_str());
     DrawPrelimLabel(myCanvas);
     DrawLumiLabel(myCanvas, Lumi);
     SaveCanvas(myCanvas, name);
@@ -298,8 +293,6 @@ void printPlots_run(std::string run) {
   effHWCatsTitles["vsph2SegT0LimGoodBX"] = "; Phase-2 Segment t0 (ns); Phase-2 Trigger Primitive Efficiency"; 
   effHWCatsTitles["vsph2SegT0LimCombi"] = "; Phase-2 Segment t0 (ns); Phase-2 Trigger Primitive Efficiency"; 
   
-  double mean;  
-  char meanStr[40];
   std::map<std::string, float> limit_inf; 
   std::map<std::string, float> limit_sup;
   limit_inf["vsSegX"]=-100;
@@ -321,7 +314,7 @@ void printPlots_run(std::string run) {
   limit_sup["vsph2SegT0Lim"]=12.5;
   float limitInf, limitSup; 
   
-  gSystem->Exec("mkdir run" + runNumber + "/emulator/" + "hTimeOBDT");
+  gSystem->Exec((std::string("mkdir ") + run + std::string("/emulator/hTimeOBDT")).c_str());
   std::vector<std::string> obdtTags = {"MB1_phi1", "MB1_phi2", "MB2_phi1", "MB2_phi2", "MB3_phi1b", "MB3_phi2b", "MB4_phi1b", "MB4_phi2b","MB4_phi3b", "MB4_phi4b"};
   for (auto & obdtTag : obdtTags) {
     std::string nameHisto = "hTimeOBDT_"  + obdtTag;
@@ -330,7 +323,7 @@ void printPlots_run(std::string run) {
     m_plots[name] = (TH1F*) data1.Get(name);
     m_plots[name]->SetTitle("");
     m_plots[name]->Draw();
-    sprintf(name,"run%s/emulator/hTimeOBDT/%s.png",run.c_str(),nameHisto.c_str());
+    sprintf(name,"%s/emulator/hTimeOBDT/%s.png",run.c_str(),nameHisto.c_str());
     // gPad->SaveAs(name);
     DrawPrelimLabel(myCanvas);
     DrawLumiLabel(myCanvas, Lumi);
@@ -338,7 +331,7 @@ void printPlots_run(std::string run) {
     delete myCanvas;
   }
   
-  gSystem->Exec("mkdir run" + runNumber + "/emulator/" + "hSegmentHits");
+  gSystem->Exec((std::string("mkdir ") + run + std::string("/emulator/hSegmentHits")).c_str());
   
   for (int i = 0; i<chambTags.size(); i++) {
     auto chambTag = chambTags.at(i);
@@ -352,7 +345,7 @@ void printPlots_run(std::string run) {
       m_plots[name] = (TH1F*) data1.Get(name);
       m_plots[name]->SetTitle("");
       m_plots[name]->Draw();
-      sprintf(name,"run%s/emulator/hHits/%s.png",run.c_str(),nameHisto.c_str());
+      sprintf(name,"%s/emulator/hHits/%s.png",run.c_str(),nameHisto.c_str());
       // gPad->SaveAs(name);
       DrawPrelimLabel(myCanvas, chambTag);
       DrawLumiLabel(myCanvas, Lumi);
@@ -399,7 +392,7 @@ void printPlots_run(std::string run) {
           }
           leg->Draw("same");
           nameHisto = segment + "SegmentHits_" + chambTag + "_" + quality + "_" + to_string(system_group_number);
-          sprintf(name,"run%s/emulator/hSegmentHits/%s.png",run.c_str(),nameHisto.c_str());
+          sprintf(name,"%s/emulator/hSegmentHits/%s.png",run.c_str(),nameHisto.c_str());
           DrawPrelimLabel(myCanvas, chambTag);
           DrawLumiLabel(myCanvas, Lumi);
           SaveCanvas(myCanvas, name);
@@ -411,6 +404,8 @@ void printPlots_run(std::string run) {
 
 
     ////////////////////////// EFFICIENCY PLOTS ////////////////////////////
+    double mean;  
+    char meanStr[40];
 
     // ALL vs GOOD BX
     for (auto & system : systems) {
@@ -479,7 +474,7 @@ void printPlots_run(std::string run) {
 
       nameHisto = "hEff" + system + what + "_" + chambTag;
       leg->Draw();
-      sprintf(name,"run%s/emulator/hEff%s/%s_AllvsGood.png",run.c_str(),system.c_str(),nameHisto.c_str());
+      sprintf(name,"%s/emulator/hEff%s/%s_AllvsGood.png",run.c_str(),system.c_str(),nameHisto.c_str());
       // gPad->SaveAs(name);
       DrawPrelimLabel(myCanvas, chambTag);
       DrawLumiLabel(myCanvas, Lumi);
@@ -494,7 +489,7 @@ void printPlots_run(std::string run) {
       //if (chambTag == "MB2") continue; 
       char namePassed[128]; 
       char nameTotal[128]; 
-      TGraphAsymmErrors* pEff = 0;
+      TGraphAsymmErrors pEff(std::nullptr_t);
       
       for (auto & HWCat : effWhichBX){
       if (true) {      
@@ -572,7 +567,7 @@ void printPlots_run(std::string run) {
       TLine l2 = TLine(limitSup, 0, limitSup, 1.2);
       // l1.Draw("same");
       // l2.Draw("same");
-      sprintf(name,"run%s/emulator/hEff%s/%s_combined.png",run.c_str(),system.c_str(),nameHisto.c_str());
+      sprintf(name,"%s/emulator/hEff%s/%s_combined.png",run.c_str(),system.c_str(),nameHisto.c_str());
       // gPad->SaveAs(name);
       DrawPrelimLabel(myCanvas, chambTag);
       DrawLumiLabel(myCanvas, Lumi);
@@ -638,7 +633,7 @@ void printPlots_run(std::string run) {
         
         nameHisto = "hEff" + what + HWCat + "_" + chambTag;
         leg->Draw();
-        sprintf(name,"run%s/emulator/hEffHW/%s_HWTM.png",run.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/hEffHW/%s_HWTM.png",run.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -676,7 +671,7 @@ void printPlots_run(std::string run) {
           // graph->SetMinimum(0);
           // graph->SetMaximum(1.2);
           gPad->Update();
-          sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),generalPlot.c_str(),nameHisto.c_str());
+          sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),generalPlot.c_str(),nameHisto.c_str());
           // gPad->SaveAs(name);
           DrawPrelimLabel(myCanvas, chambTag);
           DrawLumiLabel(myCanvas, Lumi);
@@ -693,11 +688,11 @@ void printPlots_run(std::string run) {
       m_plots[name] = (TH1F*) data1.Get(name);
       m_plots[name]->SetTitle("");
       m_plots[name]->Draw();
-      sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+      sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
       gPad->SaveAs(name);
       if (specificPlot == "hLatenciesHW" || specificPlot == "hBXWindowHW" || specificPlot == "hMultiplicityFW") {
         gPad->SetLogy();
-        sprintf(name,"run%s/emulator/%s/%s_log.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s_log.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -721,7 +716,7 @@ void printPlots_run(std::string run) {
       }
       m_plots2[name]->GetZaxis()->SetLabelSize(.03);
       m_plots2[name]->Draw("colz");
-      sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+      sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
       // gPad->SaveAs(name);
       DrawPrelimLabel(myCanvas, chambTag);
       DrawLumiLabel(myCanvas, Lumi);
@@ -743,7 +738,7 @@ void printPlots_run(std::string run) {
         m_plots_mean[specificPlot + "_mean_" + chambTag + "_" + categories.at(0)]->SetBinContent(j+1, m_plots[name]->GetMean(1));
 		m_plots_peak[specificPlot + "_peak_" + chambTag + "_" + categories.at(0)]->SetBinContent(
 			j+1, m_plots[name]->GetBinCenter(m_plots[name]->GetMaximumBin()));
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -760,7 +755,7 @@ void printPlots_run(std::string run) {
         m_plots2[name]->GetZaxis()->SetLabelSize(.03);
         m_plots2[name]->GetYaxis()->SetTitleOffset(1.6);
         m_plots2[name]->Draw("colz");
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -778,7 +773,7 @@ void printPlots_run(std::string run) {
         m_plots_mean[specificPlot + "_mean_" + chambTag + "_" + categories.at(0)]->SetBinContent(j+1, m_plots[name]->GetMean(1));
 		m_plots_peak[specificPlot + "_peak_" + chambTag + "_" + categories.at(0)]->SetBinContent(
 			j+1, m_plots[name]->GetBinCenter(m_plots[name]->GetMaximumBin()));
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -795,7 +790,7 @@ void printPlots_run(std::string run) {
         m_plots2[name]->GetZaxis()->SetLabelSize(.03);
         m_plots2[name]->GetYaxis()->SetTitleOffset(1.6);
         m_plots2[name]->Draw("colz");
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -818,7 +813,7 @@ void printPlots_run(std::string run) {
           m_plots_mean[specificPlot + "_mean_" + chambTag + "_" + categories.at(0)]->SetBinContent(3+1+k, m_plots[name]->GetMean(1));
 		  m_plots_peak[specificPlot + "_peak_" + chambTag + "_" + categories.at(0)]->SetBinContent(
 			3+1+k, m_plots[name]->GetBinCenter(m_plots[name]->GetMaximumBin()));
-          sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+          sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
           // gPad->SaveAs(name);
           DrawPrelimLabel(myCanvas, chambTag);
           DrawLumiLabel(myCanvas, Lumi);
@@ -837,7 +832,7 @@ void printPlots_run(std::string run) {
           m_plots2[name]->GetZaxis()->SetLabelSize(.03);
           m_plots2[name]->GetYaxis()->SetTitleOffset(1.6);
           m_plots2[name]->Draw("colz");
-          sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+          sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
           // gPad->SaveAs(name);
           DrawPrelimLabel(myCanvas, chambTag);
           DrawLumiLabel(myCanvas, Lumi);
@@ -856,7 +851,7 @@ void printPlots_run(std::string run) {
           m_plots_mean[specificPlot + "_mean_" + chambTag + "_" + categories.at(0)]->SetBinContent(3+1+k, m_plots[name]->GetMean(1));
 		  m_plots_peak[specificPlot + "_peak_" + chambTag + "_" + categories.at(0)]->SetBinContent(
 			3+1+k, m_plots[name]->GetBinCenter(m_plots[name]->GetMaximumBin()));
-          sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+          sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
           // gPad->SaveAs(name);
           DrawPrelimLabel(myCanvas, chambTag);
           DrawLumiLabel(myCanvas, Lumi);
@@ -875,7 +870,7 @@ void printPlots_run(std::string run) {
           m_plots2[name]->GetZaxis()->SetLabelSize(.03);
           m_plots2[name]->GetYaxis()->SetTitleOffset(1.6);
           m_plots2[name]->Draw("colz");
-          sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+          sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
           // gPad->SaveAs(name);
           DrawPrelimLabel(myCanvas, chambTag);
           DrawLumiLabel(myCanvas, Lumi);
@@ -898,7 +893,7 @@ void printPlots_run(std::string run) {
         m_plots_mean[specificPlot + "_mean_" + chambTag + "_" + categories.at(1)]->SetBinContent(j+1, m_plots[name]->GetMean(1));
 	    m_plots_peak[specificPlot + "_peak_" + chambTag + "_" + categories.at(1)]->SetBinContent(
 		  j+1, m_plots[name]->GetBinCenter(m_plots[name]->GetMaximumBin()));
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -915,7 +910,7 @@ void printPlots_run(std::string run) {
         m_plots2[name]->GetZaxis()->SetLabelSize(.03);
         m_plots2[name]->GetYaxis()->SetTitleOffset(1.6);
         m_plots2[name]->Draw("colz");
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -936,7 +931,7 @@ void printPlots_run(std::string run) {
         m_plots_mean[specificPlot + "_mean_" + chambTag + "_" + categories.at(1)]->SetBinContent(j+1, m_plots[name]->GetMean(1));
 		m_plots_peak[specificPlot + "_peak_" + chambTag + "_" + categories.at(1)]->SetBinContent(
 		  j+1, m_plots[name]->GetBinCenter(m_plots[name]->GetMaximumBin()));
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -953,7 +948,7 @@ void printPlots_run(std::string run) {
         m_plots2[name]->GetZaxis()->SetLabelSize(.03);
         m_plots2[name]->GetYaxis()->SetTitleOffset(1.6);
         m_plots2[name]->Draw("colz");
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specificPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -973,7 +968,7 @@ void printPlots_run(std::string run) {
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_res[nameHisto]->Draw();
         m_plots_res[nameHisto]->SetTitle("");
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -985,7 +980,7 @@ void printPlots_run(std::string run) {
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_mean[nameHisto]->Draw();
         m_plots_mean[nameHisto]->SetTitle("");
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -997,7 +992,7 @@ void printPlots_run(std::string run) {
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_peak[nameHisto]->Draw();
         m_plots_peak[nameHisto]->SetTitle("");
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -1011,7 +1006,7 @@ void printPlots_run(std::string run) {
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_res[nameHisto]->Draw();
         m_plots_res[nameHisto]->SetTitle("");
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
         //gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -1023,7 +1018,7 @@ void printPlots_run(std::string run) {
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_mean[nameHisto]->Draw();
         m_plots_mean[nameHisto]->SetTitle("");
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
@@ -1035,7 +1030,7 @@ void printPlots_run(std::string run) {
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_peak[nameHisto]->Draw();
         m_plots_peak[nameHisto]->SetTitle("");
-        sprintf(name,"run%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
+        sprintf(name,"%s/emulator/%s/%s.png",run.c_str(),specific1DPlot.c_str(),nameHisto.c_str());
         // gPad->SaveAs(name);
         DrawPrelimLabel(myCanvas, chambTag);
         DrawLumiLabel(myCanvas, Lumi);
