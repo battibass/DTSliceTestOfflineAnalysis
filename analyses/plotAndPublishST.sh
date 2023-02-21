@@ -42,14 +42,7 @@ python3 $UTILS_FOLDER/$PUBLISH_CMD $RUN_FOLDER $UTILS_FOLDER/$INDEX_FILE
 # Emulator
 ##########################
 # create some variables
-runnumber=$1
-find="run"
-replace=""
-number=${runnumber//$find/$replace}
-echo $number    
 
-root -b << EOF
-gROOT->ProcessLine(".x printPlots_run.C(\"${runnumber//$find/$replace}\")");
-EOF
+root -b -q -l "printPlots_run.C(\"$RUN_FOLDER\")"
 
 cp -r $RUN_FOLDER $PUBLUSH_FOLDER
