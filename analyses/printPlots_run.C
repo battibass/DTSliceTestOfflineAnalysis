@@ -13,7 +13,7 @@
 double getMeanEfficiency(TH1 *plot1, TH1 *plot2, double initialVal, double finalVal){
   double sumPassed = 0.;
   double sumTotal  = 0.;
-  for (unsigned int i = 1; i<=plot1->GetXaxis()->GetNbins(); i++){
+  for (unsigned int i = 1; i<=plot1->GetXaxis()->GetNbins(); ++i){
      if ( plot1->GetXaxis()->GetBinCenter(i) < initialVal || plot1->GetXaxis()->GetBinCenter(i) > finalVal  ) continue; 
      sumPassed = sumPassed + plot1->GetBinContent(i); 
      sumTotal  = sumTotal  + plot2->GetBinContent(i); 
@@ -24,7 +24,7 @@ double getMeanEfficiency(TH1 *plot1, TH1 *plot2, double initialVal, double final
 }
 
 void remove_x_errors(TGraphAsymmErrors *plot) {
-  for (int i = 0; i < plot->GetXaxis()->GetNbins(); i++) {
+  for (int i = 0; i < plot->GetXaxis()->GetNbins(); ++i) {
     plot->SetPointEXlow(i, 0);
     plot->SetPointEXhigh(i, 0);
   }
@@ -85,7 +85,7 @@ void printPlots_run(std::string run) {
   std::map<std::string, TH1*> m_plots_peak;
 
   for (auto & chambTag : chambTags) {
-    for (int j = 0; j < moreSpecific1DPlots.size(); j++){
+    for (int j = 0; j < moreSpecific1DPlots.size(); ++j){
       auto specific1DPlot = moreSpecific1DPlots.at(j);
    
       m_plots_res[specific1DPlot + "_res_" + chambTag + "_" + categories.at(0)] = new TH1F((specific1DPlot + "_res_" + chambTag + "_" + categories.at(0)).c_str(), 
@@ -97,7 +97,7 @@ void printPlots_run(std::string run) {
 	  m_plots_peak[specific1DPlot + "_peak_" + chambTag + "_" + categories.at(0)] = new TH1F((specific1DPlot + "_peak_" + chambTag + "_" + categories.at(0)).c_str(), 
 					    "Peak positions; ; Peak position (a.u.) ",
 					    5,-0.5,4.5); 
-      for (int i = 0; i < 5; i++){
+      for (int i = 0; i < 5; ++i){
         m_plots_res[specific1DPlot + "_res_" + chambTag + "_" + categories.at(0)]->GetXaxis()->SetBinLabel(i+1, labelTagsPlots[i].c_str());
         m_plots_mean[specific1DPlot + "_mean_" + chambTag + "_" + categories.at(0)]->GetXaxis()->SetBinLabel(i+1, labelTagsPlots[i].c_str());
 		m_plots_peak[specific1DPlot + "_peak_" + chambTag + "_" + categories.at(0)]->GetXaxis()->SetBinLabel(i+1, labelTagsPlots[i].c_str());
@@ -112,7 +112,7 @@ void printPlots_run(std::string run) {
 	  m_plots_peak[specific1DPlot + "_peak_" + chambTag + "_" + categories.at(1)] = new TH1F((specific1DPlot + "_peak_" + chambTag + "_" + categories.at(1)).c_str(), 
 					    "Peak positions; ; Peak position (a.u.) ",
 					    5,-0.5,4.5); 
-      for (int i = 0; i < 5; i++){
+      for (int i = 0; i < 5; ++i){
         m_plots_res[specific1DPlot + "_res_" + chambTag + "_" + categories.at(1)]->GetXaxis()->SetBinLabel(i+1, quTags[i].c_str());
         m_plots_mean[specific1DPlot + "_mean_" + chambTag + "_" + categories.at(1)]->GetXaxis()->SetBinLabel(i+1, quTags[i].c_str());
 		m_plots_peak[specific1DPlot + "_peak_" + chambTag + "_" + categories.at(1)]->GetXaxis()->SetBinLabel(i+1, quTags[i].c_str());
@@ -130,7 +130,7 @@ void printPlots_run(std::string run) {
     }
   }
   for (auto & chambTag : chambTags) {
-    for (int j = 0; j < moreSpecific1DPlotsSegs.size(); j++){
+    for (int j = 0; j < moreSpecific1DPlotsSegs.size(); ++j){
       auto specific1DPlot = moreSpecific1DPlotsSegs.at(j);
    
       m_plots_res[specific1DPlot + "_res_" + chambTag + "_" + categories.at(0)] = new TH1F((specific1DPlot + "_res_" + chambTag + "_" + categories.at(0)).c_str(), 
@@ -142,7 +142,7 @@ void printPlots_run(std::string run) {
       m_plots_peak[specific1DPlot + "_peak_" + chambTag + "_" + categories.at(0)] = new TH1F((specific1DPlot + "_peak_" + chambTag + "_" + categories.at(0)).c_str(), 
 					    "Peak positions; ; Peak position (a.u.) ",
 					    5,-0.5,4.5); 
-      for (int i = 0; i < 5; i++){
+      for (int i = 0; i < 5; ++i){
         m_plots_res[specific1DPlot + "_res_" + chambTag + "_" + categories.at(0)]->GetXaxis()->SetBinLabel(i+1, labelTagsPlots[i].c_str());
         m_plots_mean[specific1DPlot + "_mean_" + chambTag + "_" + categories.at(0)]->GetXaxis()->SetBinLabel(i+1, labelTagsPlots[i].c_str());
 		m_plots_peak[specific1DPlot + "_peak_" + chambTag + "_" + categories.at(0)]->GetXaxis()->SetBinLabel(i+1, labelTagsPlots[i].c_str());
@@ -157,7 +157,7 @@ void printPlots_run(std::string run) {
       m_plots_peak[specific1DPlot + "_peak_" + chambTag + "_" + categories.at(1)] = new TH1F((specific1DPlot + "_peak_" + chambTag + "_" + categories.at(1)).c_str(), 
 					    "Peak positions; ; Peak position (a.u.) ",
 					    6,-0.5,5.5); 
-      for (int i = 0; i < 6; i++){
+      for (int i = 0; i < 6; ++i){
         m_plots_res[specific1DPlot + "_res_" + chambTag + "_" + categories.at(1)]->GetXaxis()->SetBinLabel(i+1, quTagsSegs[i].c_str());
         m_plots_mean[specific1DPlot + "_mean_" + chambTag + "_" + categories.at(1)]->GetXaxis()->SetBinLabel(i+1, quTagsSegs[i].c_str());
 		m_plots_peak[specific1DPlot + "_peak_" + chambTag + "_" + categories.at(1)]->GetXaxis()->SetBinLabel(i+1, quTagsSegs[i].c_str());
@@ -333,7 +333,7 @@ void printPlots_run(std::string run) {
   
   gSystem->Exec((std::string("mkdir ") + run + std::string("/emulator/hSegmentHits")).c_str());
   
-  for (int i = 0; i<chambTags.size(); i++) {
+  for (int i = 0; i<chambTags.size(); ++i) {
     auto chambTag = chambTags.at(i);
 
     // HIT PLOTS 
@@ -723,7 +723,7 @@ void printPlots_run(std::string run) {
       SaveCanvas(myCanvas, name);
       delete myCanvas;
     }
-    for (int j = 0; j<labelTags.size(); j++) {
+    for (int j = 0; j<labelTags.size(); ++j) {
       auto labelTag = labelTags.at(j);
     //for (const auto & labelTag : labelTags) {
 
@@ -798,7 +798,7 @@ void printPlots_run(std::string run) {
         delete myCanvas;
       }
       if (labelTag == "All" || labelTag == "Correlated") continue;
-      for (int k = 0; k<slTags.size(); k++) {
+      for (int k = 0; k<slTags.size(); ++k) {
         auto slTag = slTags.at(k);
     //  for (auto  slTag : slTags) {
         for (auto & specificPlot : moreSpecific1DPlots) {
@@ -880,7 +880,7 @@ void printPlots_run(std::string run) {
       } // sl
     } // label
     //for (const auto & quTag : quTags) {
-    for (int j = 0; j<quTags.size(); j++) {
+    for (int j = 0; j<quTags.size(); ++j) {
       auto quTag = quTags.at(j);
       for (auto & specificPlot : moreSpecific1DPlots) {
         std::string nameHisto = specificPlot + "_" + chambTag + "_" + quTag;
@@ -918,7 +918,7 @@ void printPlots_run(std::string run) {
         delete myCanvas;
       }
     }
-    for (int j = 0; j<quTagsSegs.size(); j++) {
+    for (int j = 0; j<quTagsSegs.size(); ++j) {
       auto quTag = quTagsSegs.at(j);
       for (auto & specificPlot : moreSpecific1DPlotsSegs) {
         std::string nameHisto = specificPlot + "_" + chambTag + "_" + quTag;
@@ -963,7 +963,7 @@ void printPlots_run(std::string run) {
  
   for (auto & chambTag : chambTags) {
     for (auto & specific1DPlot : moreSpecific1DPlots) {
-      for (int i = 0; i<2; i++){
+      for (int i = 0; i<2; ++i){
         std::string nameHisto = specific1DPlot + "_res_" + chambTag + "_" + categories.at(i);
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_res[nameHisto]->Draw();
@@ -975,7 +975,7 @@ void printPlots_run(std::string run) {
         SaveCanvas(myCanvas, name);
         delete myCanvas;
       }
-      for (int i = 0; i<2; i++){
+      for (int i = 0; i<2; ++i){
         std::string nameHisto = specific1DPlot + "_mean_" + chambTag + "_" + categories.at(i);
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_mean[nameHisto]->Draw();
@@ -987,7 +987,7 @@ void printPlots_run(std::string run) {
         SaveCanvas(myCanvas, name);
         delete myCanvas;
       }
-	  for (int i = 0; i<2; i++){
+	  for (int i = 0; i<2; ++i){
         std::string nameHisto = specific1DPlot + "_peak_" + chambTag + "_" + categories.at(i);
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_peak[nameHisto]->Draw();
@@ -1001,7 +1001,7 @@ void printPlots_run(std::string run) {
       }
     }
     for (auto & specific1DPlot : moreSpecific1DPlotsSegs) {
-      for (int i = 0; i<2; i++){
+      for (int i = 0; i<2; ++i){
         std::string nameHisto = specific1DPlot + "_res_" + chambTag + "_" + categories.at(i);
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_res[nameHisto]->Draw();
@@ -1013,7 +1013,7 @@ void printPlots_run(std::string run) {
         SaveCanvas(myCanvas, name);
         delete myCanvas;
       }
-      for (int i = 0; i<2; i++){
+      for (int i = 0; i<2; ++i){
         std::string nameHisto = specific1DPlot + "_mean_" + chambTag + "_" + categories.at(i);
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_mean[nameHisto]->Draw();
@@ -1025,7 +1025,7 @@ void printPlots_run(std::string run) {
         SaveCanvas(myCanvas, name);
         delete myCanvas;
       }
-	  for (int i = 0; i<2; i++){
+	  for (int i = 0; i<2; ++i){
         std::string nameHisto = specific1DPlot + "_peak_" + chambTag + "_" + categories.at(i);
         TCanvas* myCanvas = CreateCanvas(nameHisto, false, false);
         m_plots_peak[nameHisto]->Draw();
