@@ -528,7 +528,7 @@ void DTNtupleDigiAnalyzer::endJob() {
     }
   }
 
-  std::for_each(m_effs.begin(), m_effs.end(), [](auto p) { p.second->Write(); });
+  // std::for_each(m_effs.begin(), m_effs.end(), [](auto p) { p.second->Write(); });
   m_outFile.Write();
   m_outFile.Close();
 }
