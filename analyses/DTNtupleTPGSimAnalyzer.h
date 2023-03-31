@@ -1,7 +1,7 @@
 #ifndef DTTnPBaseAnalysis_h
 #define DTTnPBaseAnalysis_h
 
-#include "DTNtupleTPGBaseAnalyzer.h"
+#include "DTNtupleBaseAnalyzer.h"
 
 #include "TFile.h"
 #include "TH1F.h"
@@ -14,7 +14,7 @@
 #include <sstream>
 #include <map>
 
-class DTNtupleTPGSimAnalyzer : public DTNtupleTPGBaseAnalyzer 
+class DTNtupleTPGSimAnalyzer : public DTNtupleBaseAnalyzer 
 {
   
 public:

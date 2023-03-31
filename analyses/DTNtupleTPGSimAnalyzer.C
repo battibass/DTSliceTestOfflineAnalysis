@@ -24,7 +24,7 @@ typedef std::vector <primitive> primitives;
 
 DTNtupleTPGSimAnalyzer::DTNtupleTPGSimAnalyzer(const TString & inFileName,
 const TString & outFileName) :
-m_outFile(outFileName,"RECREATE"), DTNtupleTPGBaseAnalyzer(inFileName)  
+m_outFile(outFileName,"RECREATE"), DTNtupleBaseAnalyzer(inFileName)  
 { 
   
   m_minMuPt = 20;
@@ -44,7 +44,7 @@ m_outFile(outFileName,"RECREATE"), DTNtupleTPGBaseAnalyzer(inFileName)
 DTNtupleTPGSimAnalyzer::DTNtupleTPGSimAnalyzer(const TString & inFileName,
   const TString & outFileName,
 const bool & correct) :
-m_outFile(outFileName,"RECREATE"), DTNtupleTPGBaseAnalyzer(inFileName)  
+m_outFile(outFileName,"RECREATE"), DTNtupleBaseAnalyzer(inFileName)  
 { 
   
   m_minMuPt = 20;
