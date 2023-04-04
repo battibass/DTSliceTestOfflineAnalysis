@@ -5,6 +5,7 @@
 ##########################
 
 UTILS_FOLDER="./plotAndPublish/"
+
 PUBLUSH_FOLDER="/eos/project/c/cmsweb/www/MUON/dpgdt/sx5/Results/SliceTest"
 # PUBLUSH_FOLDER="/eos/user/b/battilan/www/DTDPG/SliceTest/2022"
 
@@ -37,5 +38,12 @@ done
 
 python3 $UTILS_FOLDER/$PUBLISH_CMD $RUN_FOLDER $UTILS_FOLDER/$INDEX_FILE
 
-# scp -r $RUN_FOLDER dtdqm@lxplus:$PUBLUSH_FOLDER
+
+##########################
+# Emulator
+##########################
+# create some variables
+
+root -b -q -l "printPlots_run.C(\"$RUN_FOLDER\")"
+
 cp -r $RUN_FOLDER $PUBLUSH_FOLDER

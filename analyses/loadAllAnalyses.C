@@ -8,5 +8,6 @@ void loadAllAnalyses()
   gROOT->ProcessLine(".L DTNtupleDigiAnalyzer.C++");
   gROOT->ProcessLine(".L DTNtupleTriggerAnalyzer.C++");
   gROOT->ProcessLine(".L DTNtupleSegmentAnalyzer.C++");
+  gROOT->ProcessLine(".L DTNtupleTPGSimAnalyzer.C++");
 
 }
